@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.cohoman.model.integration.persistence.beans.UserBean" table="users" >
+  	  <id name="userid">
+		 <generator class="increment" />
+	  </id>
+
+  	  <property name="username">
+		 <column name="username" />
+	  </property>
+
+  	  <property name="firstname">
+		 <column name="firstname" />
+	  </property>
+
+  	  <property name="lastname">
+		 <column name="lastname" />
+	  </property>
+
+  	  <property name="homephone" />
+  	  <property name="cellphone" />
+  	  <property name="workphone" />
+  	  <property name="email" />
+  	  <property name="unit" />
+  	  <property name="password" />
+  	  <property name="lastlogin" />
+  	  <property name="emergencyinfo" />
+  	  <property name="foodrestrictions" />
+  	  <property name="birthday" />
+  	  <property name="birthmonth" />
+  	  <property name="birthyear" />
+  	  <property name="usertype" />
+
+  </class>
+  
+</hibernate-mapping>

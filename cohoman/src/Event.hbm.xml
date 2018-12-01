@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.cohoman.model.integration.persistence.beans.EventBean" abstract="true" >
+  	  <id name="eventid">
+		 <generator class="increment" />
+	  </id>
+
+  	  <property name="eventtype">
+		 <column name="eventtype" />
+	  </property>
+  	  <property name="eventDate">
+		 <column name="eventDate" />
+	  </property>
+  	  <property name="eventdateend">
+		 <column name="eventdateend" />
+	  </property>
+  	  <property name="eventinfo">
+		 <column name="eventinfo" />
+	  </property>
+
+	  <union-subclass name="org.cohoman.model.integration.persistence.beans.MealEventBean" table="mealevent">
+	  	 <property name="menu" column="menu" />
+	  	 <property name="cook1" column="cook1" />
+	  	 <property name="cook2" column="cook2" />
+	  	 <property name="cook3" column="cook3" />
+	  	 <property name="cook4" column="cook4" />
+	  	 <property name="cleaner1" column="cleaner1" />
+	  	 <property name="cleaner2" column="cleaner2" />
+	  	 <property name="cleaner3" column="cleaner3" />
+	  	 <property name="maxattendees" column="maxattendees" />
+	  	 <property name="ismealclosed" column="ismealclosed" />
+	  </union-subclass>
+	  
+	  <union-subclass name="org.cohoman.model.integration.persistence.beans.PizzaEventBean" table="pizzaevent">
+	  	 <property name="leader1" column="leader1" />
+	  	 <property name="leader2" column="leader2" />
+	  	 <property name="eventName" column="eventName" />
+	  	 <property name="ismealclosed" column="ismealclosed" />
+	  </union-subclass>
+
+	  <union-subclass name="org.cohoman.model.integration.persistence.beans.PotluckEventBean" table="potluckevent">
+	  	 <property name="leader1" column="leader1" />
+	  	 <property name="leader2" column="leader2" />
+	  </union-subclass>
+	
+	  <union-subclass name="org.cohoman.model.integration.persistence.beans.CohoEventBean" table="cohoevent">
+	  	 <property name="eventName" column="eventName" />
+	  	 <property name="enteredby" column="enteredby" />
+	  </union-subclass>
+
+	  <union-subclass name="org.cohoman.model.integration.persistence.beans.PrivateEventBean" table="privateevent">
+	  	 <property name="eventName" column="eventName" />
+	  	 <property name="createdate" column="createdate" />
+	  	 <property name="requester" column="requester" />
+	  	 <property name="expectednumberofadults" column="expectednumberofadults" />
+	  	 <property name="expectednumberofchildren" column="expectednumberofchildren" />
+	  	 <property name="organization" column="organization" />
+	  	 <property name="iscohousingevent" column="iscohousingevent" />
+	  	 <property name="isinclusiveevent" column="isinclusiveevent" />
+	  	 <property name="isexclusiveevent" column="isexclusiveevent" />
+	  	 <property name="isincomeevent" column="isincomeevent" />
+	  	 <property name="aremajorityresidents" column="aremajorityresidents" />
+	  	 <property name="donation" column="donation" />
+	  	 <property name="isphysicallyactiveevent" column="isphysicallyactiveevent" />
+	  	 <property name="isonetimeparty" column="isonetimeparty" />
+	  	 <property name="isclassorworkshop" column="isclassorworkshop" />
+	  	 <property name="state" column="state" />
+	  	 <property name="rejectreason" column="rejectreason" />
+	  	 <property name="approvedby" column="approvedby" />
+	  	 <property name="approvaldate" column="approvaldate" />
+	  </union-subclass>
+	  
+  </class>
+  
+</hibernate-mapping>

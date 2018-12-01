@@ -1,0 +1,167 @@
+package com.gdc4s.nper.view.controller;
+
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
+
+import com.gdc4s.nper.model.dto.MealEventDTO;
+import com.gdc4s.nper.model.service.EventService;
+import com.gdc4s.nper.view.controller.utils.CalendarUtils;
+import com.gdc4s.nper.view.controller.utils.CalendarUtils.MealDate;
+
+@ManagedBean
+@SessionScoped
+public class CreateMealController implements Serializable {
+
+	// Action: call the service layer to build and return a schedule
+	// which is basically a list of weeks of days containing events
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4678206276499587830L;
+	private String mealYear;
+	private String mealMonth;
+	private String mealDay;
+	private String slotNumber;
+
+	private List<MealDate> mealDaysForPeriod;
+	
+	private int chosenMealDateTimestamp;
+
+	private EventService eventService = null;
+	
+	public EventService getEventService() {
+		return eventService;
+	}
+	
+	public void setEventService(EventService eventService) {
+		this.eventService = eventService;
+	}
+
+	public int getChosenMealDateTimestamp() {
+		return chosenMealDateTimestamp;
+	}
+
+	public void setChosenMealDateTimestamp(int chosenMealDateTimestamp) {
+		this.chosenMealDateTimestamp = chosenMealDateTimestamp;
+	}
+
+	public CreateMealController() {
+		GregorianCalendar now = new GregorianCalendar();
+		mealYear = new Integer(now.get(Calendar.YEAR)).toString();
+		mealMonth = new Integer(now.get(Calendar.MONTH)).toString();
+		mealDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
+	}
+	
+	public String getSlotNumber() {
+		return slotNumber;
+	}
+
+	public void setSlotNumber(String slotNumber) {
+		this.slotNumber = slotNumber;
+	}
+
+	public String getMealDay() {
+		return mealDay;
+	}
+
+	public void setMealDay(String mealDay) {
+		this.mealDay = mealDay;
+	}
+
+	public String getMealMonth() {
+		return mealMonth;
+	}
+
+	public void setMealMonth(String mealMonth) {
+		this.mealMonth = mealMonth;
+	}
+
+	public String getMealYear() {
+		return mealYear;
+	}
+
+	public void setMealYear(String mealYear) {
+		this.mealYear = mealYear;
+	}
+
+	private Date eventDate;
+	private String menu = null;
+	private String cook1 = null;
+
+	public CalendarUtils.OneMonth[] getMonthsOfTheYear() {
+		return CalendarUtils.getMonthsOfTheYear();
+	}
+
+	public String[] getDaysOfTheMonth() {
+		return CalendarUtils.getDaysOfTheMonth(Integer.parseInt(mealYear),
+				Integer.parseInt(mealMonth));
+	}
+
+	public CalendarUtils.TimeSlot[] getTimeSlotsOfTheDay() {
+		return CalendarUtils.getTimeSlotsOfTheDay(Integer.parseInt(mealYear),
+				Integer.parseInt(mealMonth));
+	}
+
+	public void setEventDate(Date eventDate) {
+		this.eventDate = eventDate;
+	}
+
+	public void setMenu(String menu) {
+		this.menu = menu;
+	}
+
+	public void setCook1(String cook1) {
+		this.cook1 = cook1;
+	}
+
+	public Date getEventDate() {
+		return eventDate;
+	}
+
+	public String getMenu() {
+		return menu;
+	}
+
+	public String getCook1() {
+		return cook1;
+	}
+
+	public String addMeal() throws Exception {
+		eventDate = calculateTheDate();
+		MealEventDTO dto = createMealEventDTO();
+		eventService.createMealEvent(dto);
+		return "addMeal";
+	}
+	
+	// method to create a MealEvent
+	public MealEventDTO createMealEventDTO() {
+		MealEventDTO dto = new MealEventDTO();
+		dto.setCook1(cook1);
+		dto.setEventDate(eventDate);
+		dto.setMenu(menu);
+		return dto;
+	}
+
+	public List<MealDate> getMealDaysForPeriod() {
+		mealDaysForPeriod = eventService.getMealDaysForPeriod();
+		return mealDaysForPeriod;
+	}
+	
+	private Date calculateTheDate() {
+		CalendarUtils.TimeSlot[] slots = getTimeSlotsOfTheDay();
+		int slotInt = Integer.parseInt(slotNumber);
+		Calendar chosenTimeCal = new GregorianCalendar(Integer.parseInt(mealYear), 
+				Integer.parseInt(mealMonth), Integer.parseInt(mealDay), 
+				slots[slotInt].getHour(), slots[slotInt].getMinutes());
+		
+		Date chosenDate = chosenTimeCal.getTime();
+		return chosenDate;
+	}
+}

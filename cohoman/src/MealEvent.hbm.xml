@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.cohoman.model.integration.persistence.beans.MealEventBean" table="mealevent" >
+  	  <id name="mealeventid">
+		 <generator class="increment" />
+	  </id>
+
+  	  <property name="menu">
+		 <column name="menu" />
+	  </property>
+
+  	  <property name="cook">
+		 <column name="cook" />
+	  </property>
+
+  	  <property name="cleaner">
+		 <column name="cleaner" />
+	  </property>
+
+  </class>
+  
+</hibernate-mapping>

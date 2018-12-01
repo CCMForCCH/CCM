@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.cohoman.model.integration.persistence.beans.TimePeriodBean" table="timeperiods" >
+  
+  	  <id name="timeperiodid">
+		 <generator class="increment" />
+	  </id>
+	  <property name="timeperiodtypeenum">
+	  		<column name="timeperiodtypeenum" />
+	  </property>
+	  <property name="periodstartdate">
+	  		<column name="periodstartdate" />
+	  </property>
+	  <property name="periodenddate">
+	  		<column name="periodenddate" />
+	  </property>
+	  
+  </class>
+  
+</hibernate-mapping>
