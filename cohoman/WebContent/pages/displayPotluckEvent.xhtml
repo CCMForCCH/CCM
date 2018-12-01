@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Display Potluck Meal Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+
+			<h:panelGrid columns="2"  
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Potluck Meal Details:"/>
+          		</f:facet>
+        		
+         		<h:outputText value="*** Internal Error: Missing Event ID"
+					rendered="#{empty displayPotluckEventController.potluckevent.leader1String}" />
+					
+         		<h:outputText value="Starting Date:"
+         			rendered="#{not empty displayPotluckEventController.potluckevent.printableEventDate}"/>
+          		<h:outputText value="#{displayPotluckEventController.potluckevent.printableEventDate}" 
+          			rendered="#{not empty displayPotluckEventController.potluckevent.printableEventDate}"/>  
+          		
+          		<h:outputText value="Leader1:"
+         			rendered="#{not empty displayPotluckEventController.potluckevent.leader1String}"/>
+          		<h:outputText value="#{displayPotluckEventController.potluckevent.leader1String}" 
+          			rendered="#{not empty displayPotluckEventController.potluckevent.leader1String}"/>
+  
+            	<h:outputText value="Leader2:" />
+          		<h:outputText value="#{displayPotluckEventController.potluckevent.leader2String}" 
+          			rendered="#{not empty displayPotluckEventController.potluckevent.leader2String}"/>
+          		<h:outputText value="none" 
+          			rendered="#{empty displayPotluckEventController.potluckevent.leader2String}"/>
+          			     		         	
+         	    <h:outputText value="Information:"
+         			rendered="#{not empty displayPotluckEventController.potluckevent.eventinfo}"/>	
+         		<h:outputText value="#{displayPotluckEventController.potluckevent.eventinfo}" 
+         			rendered="#{not empty displayPotluckEventController.potluckevent.eventinfo}"/>
+
+			</h:panelGrid>	
+			
+			<h:panelGroup style="display:block; text-align:center">	
+			    <br />
+				<h:link value="Return to the Master Calendar" outcome="schedule3.xhtml" />
+			</h:panelGroup>
+			
+		    <h:messages layout="table" errorClass="errors" />
+					
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

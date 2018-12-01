@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit the Current Meal Time Period
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Please Edit the Current Meal Time Period" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Edit the Meal Period Starting and Ending Dates"/>
+         		</f:facet>
+			
+				Starting month:
+				<h:selectOneMenu id="selectStartMonthId" value="#{editTimePeriodController.startMonth}">
+					<f:selectItems value="#{editTimePeriodController.monthsOfTheYear}"
+						var="month" 
+						itemLabel="#{month.monthName}"
+						itemValue="#{month.monthNumber}" />
+					<f:ajax render="selectStartDayId" execute="selectStartDayId" event="change" />
+				</h:selectOneMenu>
+				Starting day:
+				<h:selectOneMenu id="selectStartDayId" value="#{editTimePeriodController.startDay}">
+					<f:selectItems value="#{editTimePeriodController.mondaysOfTheMonth}"
+						var="day" 
+						itemLabel="#{day}"
+						itemValue="#{day}" />
+				</h:selectOneMenu>
+				Starting year:
+				<h:selectOneMenu value="#{editTimePeriodController.startYear}">
+					<f:selectItems value="#{editTimePeriodController.years}"
+						var="year" 
+						itemLabel="#{year}"
+						itemValue="#{year}" />
+					<f:ajax render="selectStartDayId" execute="selectStartDayId" event="change" />
+				</h:selectOneMenu>
+				Ending month:
+				<h:selectOneMenu id="selectEndMonthId" value="#{editTimePeriodController.endMonth}">
+					<f:selectItems value="#{editTimePeriodController.monthsOfTheYear}"
+						var="month" 
+						itemLabel="#{month.monthName}"
+						itemValue="#{month.monthNumber}" />
+					<f:ajax render="selectEndDayId" execute="selectEndDayId" event="change" />
+				</h:selectOneMenu>
+				Ending day:
+				<h:selectOneMenu id="selectEndDayId" value="#{editTimePeriodController.endDay}">
+					<f:selectItems value="#{editTimePeriodController.sundaysOfTheMonth}"
+						var="day" 
+						itemLabel="#{day}"
+						itemValue="#{day}" />
+				</h:selectOneMenu>
+				Ending year:
+				<h:selectOneMenu value="#{editTimePeriodController.endYear}">
+					<f:selectItems value="#{editTimePeriodController.years}"
+						var="year" 
+						itemLabel="#{year}"
+						itemValue="#{year}" />
+					<f:ajax render="selectEndDayId" execute="selectEndDayId" event="change" />
+				</h:selectOneMenu>
+						
+			</h:panelGrid>
+			
+			<h:messages style="color:red;display:block; text-align:center"/>
+         	<br />
+         	
+			<h:panelGroup style="display:block; text-align:center">				
+				<h:commandButton value="Submit Updated Meal Time Period" action="#{editTimePeriodController.editMealTimePeriod}" />
+			</h:panelGroup>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<title><ui:insert name="windowTitle"/></title>
+	<link href="resources/css/styles3.css" rel="stylesheet" type="text/css" />
+</h:head>
+
+<h:body>
+	<div id="heading">
+		<ui:insert name="heading">
+			<ui:include src="/sections/header.xhtml"/>
+		</ui:insert>
+	</div>
+	
+	<div id="logoutbar">
+	<table width="100%" border="0">
+		<tr>
+			<td align="left">
+				<h:form>
+					<h:commandLink rendered="#{authenticateController.loggedin}"
+						value="Main Menu" action="#{enterWebsiteController.chooseViewIndex}"  />
+				</h:form>
+			</td>
+			<td align="right">
+				<h:form>
+					<h:outputText rendered="#{authenticateController.loggedin}" 
+						value="Logged in as #{authenticateController.username}  " />
+					<h:commandButton rendered="#{authenticateController.loggedin}"
+						value="Logout" action="#{authenticateController.logout}" />
+				</h:form>
+		</td></tr>
+	</table>
+	</div>
+	
+	<div id="content">
+		<ui:insert name="content"/>
+	</div>
+	<ui:debug/>
+</h:body>
+</html>

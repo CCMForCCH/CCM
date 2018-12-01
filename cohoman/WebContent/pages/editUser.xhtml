@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit an Existing User
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" title="Edit or Delete User" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Choose to Edit or Delete Specified User"/>
+         		</f:facet>
+		
+				<h:selectOneMenu value="#{editUserController.chosenUserString}">
+					<f:selectItems value="#{editUserController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.username}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+		
+				<h:selectOneRadio value="#{editUserController.userOperation}" layout="pageDirection">
+					<f:selectItem itemValue="changeUser" itemLabel="Change User"/>
+					<f:selectItem itemValue="deleteUser" itemLabel="Delete User" itemDisabled="true" />			
+				</h:selectOneRadio>
+		
+				<h:panelGroup style="display:block; text-align:center">				
+					<h:commandButton value="Submit Choice" action="#{editUserController.editUserView}" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

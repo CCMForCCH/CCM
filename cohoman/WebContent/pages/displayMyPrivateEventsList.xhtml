@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Reservation Requests
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Reserved Events List" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="My Common Space Reservation Requests"/>
+        </f:facet>
+	<br />
+	
+	<h:outputText value="You have no reservation requests." 
+		rendered="#{empty retrievePrivateEventListController.myPrivateEventList}" />
+	
+	<h:dataTable value="#{retrievePrivateEventListController.myPrivateEventList}" var="oneevent" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
+		rendered="#{not empty retrievePrivateEventListController.myPrivateEventList}">
+ 
+		<h:column>
+  			<f:facet name="header">Event Date Start</f:facet> 
+  			#{oneevent.printableEventDate}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Event Name</f:facet> 
+  			#{oneevent.eventName}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Event Information</f:facet> 
+  			#{oneevent.eventinfo}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Reserved Spaces</f:facet> 
+  			#{oneevent.printableSpaceList}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Status</f:facet> 
+  			#{oneevent.state}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Show Request</f:facet> 
+  			<h:link value="details" outcome="displayPrivateEventDetails.xhtml">
+  				<f:param name="chosenPrivateEventId" value="#{oneevent.eventid}"  />
+  			</h:link> 
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Edit Request</f:facet> 
+ 			<h:panelGroup rendered="#{oneevent.state eq 'REQUESTED'}">
+  			<h:link value="edit" outcome="changePrivateEvent">
+  				<f:param name="chosenPrivateEventId" value="#{oneevent.eventid}"  />
+  				<f:param name="privateOperation" value="changeMyPrivateEvent"  />
+  			</h:link>          
+  			</h:panelGroup>         
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Delete Request</f:facet> 
+  			<h:commandLink value="delete" action="#{retrievePrivateEventListController.deletePrivateEvent}">
+  				<f:param name="chosenPrivateEventId" value="#{oneevent.eventid}"  />
+  				<f:param name="privateOperation" value="deletePrivateEvent"  />
+  			</h:commandLink>          
+		</h:column>
+
+</h:dataTable>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

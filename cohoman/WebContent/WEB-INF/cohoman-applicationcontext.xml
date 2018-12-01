@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="eventService"
+		class="org.cohoman.model.service.EventServiceImpl">
+		<property name="eventManager" ref="eventManager" />	
+		<property name="userManager" ref="userManager" />	
+	</bean>		
+
+	<bean id="userService"
+		class="org.cohoman.model.service.UserServiceImpl">
+		<property name="userManager" ref="userManager" />	
+	</bean>		
+
+	<bean id="configurationService"
+		class="org.cohoman.model.service.ConfigurationServiceImpl">  
+		<property name="configurationManager" ref="configurationManager" />	
+	</bean>		
+
+	<bean id="listsService"
+		class="org.cohoman.model.service.ListsServiceImpl">
+		<property name="listsManager" ref="listsManager" />	
+		<property name="userManager" ref="userManager" />	
+	</bean>		
+
+	<bean id="eventManager"
+		class="org.cohoman.model.business.EventManagerImpl">
+		<property name="mealEventDao" ref="mealEventDao" />
+		<property name="pizzaEventDao" ref="pizzaEventDao" />
+		<property name="potluckEventDao" ref="potluckEventDao" />
+		<property name="cohoEventDao" ref="cohoEventDao" />
+		<property name="privateEventDao" ref="privateEventDao" />
+		<property name="spacesDao" ref="spacesDao" />
+		<property name="signupMealDao" ref="signupMealDao" />
+		<property name="signupPizzaDao" ref="signupPizzaDao" />
+		<property name="signupPotluckDao" ref="signupPotluckDao" />
+		<property name="mealSchedule" ref="mealSchedule" />
+	</bean>
+	
+	<bean id="mealSchedule"
+		class="org.cohoman.model.business.MealSchedule">
+		<property name="mealEventDao" ref="mealEventDao" />
+		<property name="pizzaEventDao" ref="pizzaEventDao" />
+		<property name="potluckEventDao" ref="potluckEventDao" />
+	</bean>
+	
+	<bean id="userManager"
+		class="org.cohoman.model.business.UserManagerImpl">
+		<property name="userDao" ref="userDao" />
+	</bean> 
+	<bean id="listsManager"
+		class="org.cohoman.model.business.ListsManagerImpl">
+		<property name="unitsDao" ref="unitsDao" />
+		<property name="userDao" ref="userDao" />
+		<property name="securityDao" ref="securityDao" />
+		<property name="substitutesDao" ref="substitutesDao" />
+		<property name="maintenanceDao" ref="maintenanceDao" />
+		<property name="mtaskDao" ref="mtaskDao" />
+	</bean> 
+	<bean id="configurationManager"
+		class="org.cohoman.model.business.ConfigurationManagerImpl">
+		<property name="timePeriodDao" ref="timePeriodDao" />
+		<property name="unitsDao" ref="unitsDao" />
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	<bean id="mealEventDao"
+		class="org.cohoman.model.integration.persistence.dao.MealEventDaoImpl">
+		<property name="userDao" ref="userDao" />
+	</bean>
+	<bean id="pizzaEventDao"
+		class="org.cohoman.model.integration.persistence.dao.PizzaEventDaoImpl">
+		<property name="userDao" ref="userDao" />
+	</bean>
+	<bean id="potluckEventDao"
+		class="org.cohoman.model.integration.persistence.dao.PotluckEventDaoImpl">
+		<property name="userDao" ref="userDao" />
+	</bean>
+	<bean id="cohoEventDao"
+		class="org.cohoman.model.integration.persistence.dao.CohoEventDaoImpl">
+		<property name="eventSpaceDao" ref="eventSpaceDao" />
+	</bean>
+	<bean id="privateEventDao"
+		class="org.cohoman.model.integration.persistence.dao.PrivateEventDaoImpl">
+		<property name="eventSpaceDao" ref="eventSpaceDao" />
+	</bean>
+	<bean id="userDao"
+		class="org.cohoman.model.integration.persistence.dao.UserDaoImpl">
+	</bean>
+	<bean id="timePeriodDao"
+		class="org.cohoman.model.integration.persistence.dao.TimePeriodDaoImpl">
+	</bean>
+	<bean id="unitsDao"
+		class="org.cohoman.model.integration.persistence.dao.UnitsDaoImpl">
+	</bean>
+	<bean id="securityDao"
+		class="org.cohoman.model.integration.persistence.dao.SecurityDaoImpl">
+	</bean>
+	<bean id="spacesDao"
+		class="org.cohoman.model.integration.persistence.dao.SpacesDaoImpl">
+	</bean>
+	<bean id="signupMealDao"
+		class="org.cohoman.model.integration.persistence.dao.SignupMealDaoImpl">
+	</bean>
+	<bean id="signupPizzaDao"
+		class="org.cohoman.model.integration.persistence.dao.SignupPizzaDaoImpl">
+	</bean>
+	<bean id="signupPotluckDao"
+		class="org.cohoman.model.integration.persistence.dao.SignupPotluckDaoImpl">
+	</bean>
+	<bean id="eventSpaceDao"
+		class="org.cohoman.model.integration.persistence.dao.EventSpaceDaoImpl">
+	</bean>
+	<bean id="substitutesDao"
+		class="org.cohoman.model.integration.persistence.dao.SubstitutesDaoImpl">
+	</bean>
+	<bean id="maintenanceDao"
+		class="org.cohoman.model.integration.persistence.dao.MaintenanceDaoImpl">
+	</bean>
+	<bean id="mtaskDao"
+		class="org.cohoman.model.integration.persistence.dao.MtaskDaoImpl">
+	</bean>
+	
+</beans>

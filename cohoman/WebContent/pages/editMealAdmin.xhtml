@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit an Existing Meal
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" title="Delete Meal" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Choose Meal to Delete"/>
+         		</f:facet>
+		
+				<h:selectOneMenu value="#{editMealAdminController.chosenMealEventString}">
+					<f:selectItems value="#{editMealAdminController.mealEventList}"
+						var="onemeal" 
+						itemLabel="#{onemeal.choosableEventDate}"
+						itemValue="#{onemeal.usableEventid}" />
+				</h:selectOneMenu>
+				
+				<h:panelGroup style="display:block; text-align:center">				
+					<h:commandButton value="Submit Choice" action="#{editMealAdminController.editMealView}" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

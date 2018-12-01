@@ -1,0 +1,33 @@
+.names {
+	margin-left: 20px;
+	margin-right: 20px;
+	border: thin dotted gray;
+	caption-side: bottom;
+	border-collapse: separate;
+}
+
+.times {
+	margin-left: 20px;
+	margin-right: 20px;
+	caption-side: bottom;
+	border-collapse: collapse;
+}
+
+.namesHeader {
+   text-align: center;
+   border: thin solid black;
+}
+
+.last {
+	text-align: right;
+		border: thin dotted gray;
+	padding: 5px;
+		   background: PowderBlue;
+}
+
+.first {
+		text-align: right;
+		border: thin dotted gray;
+	padding: 5px;
+	   background: PowderBlue;
+}

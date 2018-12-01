@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List CH Security Guidelines
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Common House Security Checklist" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Common House Security Checklist"/>
+        </f:facet>
+	<br />
+	
+	<style>
+		ul { display:table; margin:0 5%;}
+	</style>
+	<div>
+	<ul>
+		<li>In the kitchen:
+			<ul>
+				<li>Check behind the two burner gas stove to make sure the gas is off</li>
+				<li>Check the mouse trap under the stove</li>
+				<li>Check freezer to make sure the door is closed</li>
+			</ul>
+		</li>
+		<li>On the first floor:
+			<ul>
+				<li>Check thermostats in DR, LR and Library and reset if appropriate.</li>
+				<li>Close and lock all windows and doors, including Library Sliders 
+				and Dining Room doors</li>
+				<li>Turn off lights</li>
+				<li>Close door to children’s room</li>
+			</ul>
+		</li>
+		<li>Responsible for substitute:
+			<ul>
+				<li>Each person is responsible for finding a substitute if they are unable to carry out the check for any reason</li>
+				<li>Record the substitute in CCM using the add_substitute link</li>
+			</ul>
+		</li>
+		<li>Report any problems by writing a note on the whiteboard in the CH lobby</li>
+		<li>Remind next person on the list to start by hanging the flash-light on their door</li>
+	</ul>
+	</div>
+    <br />
+	<h:link value="Return to the Common House Security Schedule" outcome="displayChSecurityList.xhtml" style="display:block; text-align:center"/>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

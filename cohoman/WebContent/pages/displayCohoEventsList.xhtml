@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List Cohousing Events
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Cohousing Events" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Upcoming Cohousing Events"/>
+        </f:facet>
+	<br />
+	
+	<h:outputText value="There are no upcoming cohousing events." 
+		rendered="#{empty retrieveCohoEventListController.cohoEventList}" />
+	
+	<h:dataTable value="#{retrieveCohoEventListController.cohoEventList}" var="oneevent" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
+		rendered="#{not empty retrieveCohoEventListController.cohoEventList}">
+ 
+		<h:column>
+  			<f:facet name="header">Day of Event</f:facet> 
+  			#{oneevent.printableEventDateDay}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Start Time</f:facet> 
+  			#{oneevent.printableEventDateTimeStart}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">End Time</f:facet> 
+  			#{oneevent.printableEventDateTimeEnd}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Event Name</f:facet> 
+  			#{oneevent.eventName}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Event Information</f:facet> 
+  			#{oneevent.eventinfo}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Entered By</f:facet> 
+  			#{oneevent.enteredbyUsername}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Reserved Spaces</f:facet> 
+  			#{oneevent.printableSpaceList}           
+		</h:column>
+
+</h:dataTable>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

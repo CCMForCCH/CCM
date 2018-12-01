@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List WE Security Guidelines
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="West End Security Checklist" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="West End Security Checklist"/>
+        </f:facet>
+	<br />
+	
+	<style>
+		ul { display:table; margin:0 5%;}
+	</style>
+	<div>
+	<ul>
+		<li>All basement windows are closed and locked: 
+			<ul>
+				<li>rec room</li>
+				<li>exercise area</li>
+				<li>music room</li>
+			</ul>
+		</li>
+		<li>All basement doors that allow one to enter the CH are locked:
+			<ul>
+				<li>recycle room</li>
+				<li>exit from main CH stairway</li>
+				<li>main garage entrance</li>
+				<li>entrance to the bike room from the garage</li>
+			</ul>
+		</li>
+		<li>Responsible for substitute:
+			<ul>
+				<li>Each person is responsible for finding a substitute if they are unable to carry out the check for any reason</li>
+				<li>Record the substitute in CCM using the add_substitute link</li>
+			</ul>
+		</li>
+		<li>Report any problems by writing a note on the whiteboard in the CH lobby</li>
+		<li>Remind next person on the list to start by putting a note in their mail cubby</li>
+	</ul>
+	</div>
+    <br />
+	<h:link value="Return to the West End Security Schedule" outcome="displayWeSecurityList.xhtml" style="display:block; text-align:center"/>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List tasks for a Maintenance item
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+    <h:panelGrid columns="1" title="Periodic Maintenance Tasks" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Periodic Maintenance Tasks"/>
+           <br />
+        </f:facet>
+	<br />
+
+	<b>
+    <h:outputText value="Tasks for Maintenance Item: #{mtaskController.maintenanceItemName}"
+    	style="display:block; text-align:center; font-weight: bold; font-size: 125%;color: blue"/>
+	</b>
+	<br />
+	
+	<h:outputText value="There are no tasks associated with this maintenance item." 
+		rendered="#{empty mtaskController.mtaskDTOList}" />
+	
+	<h:dataTable value="#{mtaskController.mtaskDTOList}" var="onetask" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
+		rendered="#{not empty mtaskController.mtaskDTOList}">
+ 
+ 		<h:column>
+  			<f:facet name="header">Task Start</f:facet> 
+  			#{onetask.printableStartdate}           
+		</h:column>
+ 
+		<h:column>
+  			<f:facet name="header">Vendor Name</f:facet> 
+  			#{onetask.vendorname}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Added By</f:facet> 
+  			#{onetask.username}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Task Completed On</f:facet> 
+  			#{onetask.printableEnddate}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Notes</f:facet> 
+  			#{onetask.notes}           
+		</h:column>
+
+    </h:dataTable>
+	<br />
+	<h:link value="Go back to Maintenance Item Table" outcome="displayMaintenanceListOnly.xhtml" style="display:block; text-align:center"/>
+	
+    </h:panelGrid>
+	<br />
+	
+    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

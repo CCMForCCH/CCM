@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Display Common Meal Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Common Meal Details:"/>
+          		</f:facet>
+        		
+         		<h:outputText value="*** Internal Error:"
+					rendered="#{empty displayMealEventController.mealevent.menu}" />
+
+         		<h:outputText value="Unable to find meal event. Notify CCM Administrator."
+					rendered="#{empty displayMealEventController.mealevent.menu}" />
+					
+         		<h:outputText value="Date:"
+         			rendered="#{not empty displayMealEventController.mealevent.printableEventDate}"/>
+          		<h:outputText value="#{displayMealEventController.mealevent.printableEventDate}" 
+          			rendered="#{not empty displayMealEventController.mealevent.printableEventDate}"/>  
+
+          		<h:outputText value="Menu:" />
+          		<h:outputText value="#{displayMealEventController.mealevent.menu}" />
+       		
+          		<h:outputText value="Lead Cook:" />
+          		<h:outputText value="#{displayMealEventController.mealevent.cook1String}" />
+ 
+           		<h:outputText value="Cook 2:" />
+          		<h:outputText value="#{displayMealEventController.mealevent.cook2String}" 
+          			rendered="#{not empty displayMealEventController.mealevent.cook2String}"/>
+          		<h:outputText value="none" 
+          			rendered="#{empty displayMealEventController.mealevent.cook2String}"/>
+ 
+            	<h:outputText value="Cook 3:" />
+          		<h:outputText value="#{displayMealEventController.mealevent.cook3String}" 
+          			rendered="#{not empty displayMealEventController.mealevent.cook3String}"/>
+          		<h:outputText value="none" 
+          			rendered="#{empty displayMealEventController.mealevent.cook3String}"/>
+ 
+            	<h:outputText value="Cook 4:" />
+          		<h:outputText value="#{displayMealEventController.mealevent.cook4String}" 
+          			rendered="#{not empty displayMealEventController.mealevent.cook4String}"/>
+          		<h:outputText value="none" 
+          			rendered="#{empty displayMealEventController.mealevent.cook4String}"/>
+             	
+             	<h:outputText value="Lead Cleaner:" />
+             	<h:outputText value="#{displayMealEventController.mealevent.cleaner1String}"
+         			rendered="#{not empty displayMealEventController.mealevent.cleaner1String}"/>
+          		<h:outputText value="none" 
+          			rendered="#{empty displayMealEventController.mealevent.cleaner1String}"/>
+
+             	<h:outputText value="Cleaner 2:" />
+             	<h:outputText value="#{displayMealEventController.mealevent.cleaner2String}"
+         			rendered="#{not empty displayMealEventController.mealevent.cleaner2String}"/>
+          		<h:outputText value="none" 
+          			rendered="#{empty displayMealEventController.mealevent.cleaner2String}"/>
+
+             	<h:outputText value="Cleaner 3:" />
+             	<h:outputText value="#{displayMealEventController.mealevent.cleaner3String}"
+         			rendered="#{not empty displayMealEventController.mealevent.cleaner3String}"/>
+          		<h:outputText value="none" 
+          			rendered="#{empty displayMealEventController.mealevent.cleaner3String}"/>
+
+         	    <h:outputText value="Maximum Attendees:"
+         			rendered="#{displayMealEventController.mealevent.maxattendees ne 0}"/>	
+         		<h:outputText value="#{displayMealEventController.mealevent.maxattendees}" 
+         			rendered="#{displayMealEventController.mealevent.maxattendees ne 0}"/>
+         			
+         	    <h:outputText value="Meal Status:"/>	
+         		<h:outputText value="open" 
+         			rendered="#{not displayMealEventController.mealevent.ismealclosed}"/>
+         		<h:outputText value="closed" 
+         			rendered="#{displayMealEventController.mealevent.ismealclosed}"/>
+       			     		         	
+         	    <h:outputText value="Event Information:"
+         			rendered="#{not empty displayMealEventController.mealevent.eventinfo}"/>	
+         		<h:outputText value="#{displayMealEventController.mealevent.eventinfo}" 
+         			rendered="#{not empty displayMealEventController.mealevent.eventinfo}"/>
+
+			</h:panelGrid>	
+			
+			<h:panelGroup style="display:block; text-align:center">	
+			    <br />
+				<h:link value="Return to the Master Calendar" outcome="schedule3.xhtml" />
+			</h:panelGroup>
+			
+		    <h:messages layout="table" errorClass="errors" />
+					
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

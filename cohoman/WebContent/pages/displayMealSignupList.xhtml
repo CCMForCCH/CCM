@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Display Meal Signups
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Cohousing Events List" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Common Meal Signups for #{signupMealController.printableEventDate}&lt;br/&gt;" escape="false"/>
+        </f:facet>
+	<br />
+</h:panelGrid>
+
+<h:panelGrid columns="1" title="Cohousing Events List" 
+	headerClass="formheader" styleClass="formstyle" >
+
+    <h:outputText value="Lead Cook: #{signupMealController.printableLeadCook}"/>
+    <h:outputText value="Menu: #{signupMealController.menu}"/>
+    
+	<h:outputText value="There are no meal signups (yet!)." 
+		rendered="#{empty signupMealController.allMealSignups}" />
+		
+    <h:outputText value="Meal is closed for additional signups!&lt;br/&gt;" escape="false"
+		rendered="#{signupMealController.mealClosed}" style="font-weight: bold"/>
+	<h:outputText value="Maximum signups for the meal has been reached!&lt;br/&gt;" escape="false"
+						rendered="#{signupMealController.maxReached}" style="font-weight: bold"/>
+
+	<h:dataTable value="#{signupMealController.allMealSignups}" var="onesignup" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns"
+		rendered="#{not empty signupMealController.allMealSignups}">
+ 
+ 		<h:column>
+  			<f:facet name="header">Unit</f:facet> 
+  			#{onesignup.unitnumber}           
+		</h:column>
+ 
+		<h:column>
+  			<f:facet name="header">Household</f:facet> 
+  			#{onesignup.username}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Restrictions</f:facet> 
+  			#{onesignup.foodrestrictions}           
+		</h:column>
+
+		<h:column>
+		<div style="text-align: center;">
+  			<f:facet name="header"># of Meals</f:facet> 
+  			<h:panelGroup layout="block"  rendered="#{onesignup.numberattending ne 0}">
+  				#{onesignup.numberattending}
+  			</h:panelGroup>
+  			
+  		</div>           
+		</h:column>
+
+
+	</h:dataTable>
+	<br/>
+	<h:outputText value="Total number of people attending = #{signupMealController.totalPeopleAttending}&lt;br/&gt;" escape="false" 
+	   rendered="#{not empty signupMealController.allMealSignups}" style="font-style: italic"/>
+	<h:outputText value="Maximum number of people that can signup = #{signupMealController.maxnumberattending}" 
+	   rendered="#{signupMealController.maxnumberattending ne 0}" style="font-style: italic"/>
+	
+	<br/>
+	<br/>
+	<hr style="margin: 0; width: 1000px; height: 2px; background: transparent; border: none; border-top: solid 2px black;" />
+	
+<br/>
+<h1>Reimbursement Form for Meal Shoppers</h1>
+Please attach receipts to this page <i>facing out</i>. Place completed form in MEALS box in mailroom.
+<h4>First Person:</h4>
+<h4>Name_____________________  Amount Spent__________________</h4>
+<h4>Check______ or Credit______</h4>
+<br/>
+<h4>Second Person:</h4>
+<h4>Name_____________________  Amount Spent__________________</h4>
+<h4>Check______ or Credit______</h4>
+<br/>
+	<br/>
+	<hr style="margin: 0; width: 1000px; height: 2px; background: transparent; border: none; border-top: solid 2px black;" />
+	
+<h1>Check Writer Response</h1>
+<h4>Amount Paid_____________  Date_____________  Check #_____________ Initials_____________</h4>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Display Reserved Event Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+
+			<h:panelGrid columns="2" title="Display Reserved Event Fields" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Reserved Space Event Details:"/>
+          		</f:facet>
+        		
+         		<h:outputText value="*** Internal Error: Missing Event ID"
+					rendered="#{empty displayReservedEventController.privateevent.eventDate}" />
+					
+					
+			    <h:outputText value="Event Name:"
+         			rendered="#{not empty displayReservedEventController.privateevent.eventName}"/>	
+         		<h:outputText value="#{displayReservedEventController.privateevent.eventName}" 
+         			rendered="#{not empty displayReservedEventController.privateevent.eventName}"/>
+         	
+         	    <h:outputText value="Event Information:"
+         			rendered="#{not empty displayReservedEventController.privateevent.eventinfo}"/>	
+         		<h:outputText value="#{displayReservedEventController.privateevent.eventinfo}" 
+         			rendered="#{not empty displayReservedEventController.privateevent.eventinfo}"/>
+					
+         		<h:outputText value="Starting Date:"
+         			rendered="#{not empty displayReservedEventController.privateevent.printableEventDate}"/>
+          		<h:outputText value="#{displayReservedEventController.privateevent.printableEventDate}" 
+          			rendered="#{not empty displayReservedEventController.privateevent.printableEventDate}"/>  
+ 
+          		<h:outputText value="Ending Date:"
+         			rendered="#{not empty displayReservedEventController.privateevent.printableEventDateEnd}"/>
+          		<h:outputText value="#{displayReservedEventController.privateevent.printableEventDateEnd}" 
+          			rendered="#{not empty displayReservedEventController.privateevent.printableEventDateEnd}"/>  
+
+				<h:outputText value="Number of Adults Expected:" 
+				    rendered="#{not empty displayReservedEventController.privateevent.expectednumberofadults}" />
+				<h:outputText value="#{displayReservedEventController.privateevent.expectednumberofadults}" 
+				    rendered="#{not empty displayReservedEventController.privateevent.expectednumberofadults}" />
+
+				<h:outputText value="Number of Children Expected:" 
+				    rendered="#{not empty displayReservedEventController.privateevent.expectednumberofchildren}" />
+				<h:outputText value="#{displayReservedEventController.privateevent.expectednumberofchildren}" 
+				    rendered="#{not empty displayReservedEventController.privateevent.expectednumberofchildren}" />
+
+				<h:outputText value="Organization (optional):" 
+				    rendered="#{not empty displayReservedEventController.privateevent.organization}" />
+				<h:outputText value="#{displayReservedEventController.privateevent.organization}" 
+				    rendered="#{not empty displayReservedEventController.privateevent.organization}" />
+
+            	<h:outputText value="Reserved Spaces:" />
+          		<h:outputText value="#{displayReservedEventController.privateevent.printableSpaceList}" 
+          			rendered="#{not empty displayReservedEventController.privateevent.printableSpaceList}"/>
+          		<h:outputText value="none" 
+          			rendered="#{empty displayReservedEventController.privateevent.printableSpaceList}"/>
+          			     		
+          		<h:outputText value="Cohouser responsible:"
+         			rendered="#{not empty displayReservedEventController.privateevent.requesterUsername}"/>
+          		<h:outputText value="#{displayReservedEventController.privateevent.requesterUsername}" 
+          			rendered="#{not empty displayReservedEventController.privateevent.requesterUsername}"/>
+
+          		<h:outputText value="Event Characteristics:"
+         			rendered="#{not empty displayReservedEventController.eventCharacteristics}"/>
+          		<h:outputText value="#{displayReservedEventController.eventCharacteristics}" 
+          			rendered="#{not empty displayReservedEventController.eventCharacteristics}"/>
+
+          		<h:outputText value="Income-Producing Characteristics:"
+         			rendered="#{displayReservedEventController.privateevent.isincomeevent}"/>
+          		<h:outputText value="#{displayReservedEventController.incomeEventCharacteristics}" 
+          			rendered="#{displayReservedEventController.privateevent.isincomeevent}"/>
+
+         		<h:outputText value="Physically-Active Characteristics:"
+         			rendered="#{displayReservedEventController.privateevent.isphysicallyactiveevent}"/>
+          		<h:outputText value="#{displayReservedEventController.physicalCharacteristics}" 
+          			rendered="#{displayReservedEventController.privateevent.isphysicallyactiveevent}"/>
+
+         		<h:outputText value="Approved By:"
+         			rendered="#{not empty displayReservedEventController.privateevent.approvedByUsername}"/>
+          		<h:outputText value="#{displayReservedEventController.privateevent.approvedByUsername}" 
+          			rendered="#{not empty displayReservedEventController.privateevent.approvedByUsername}"/>
+
+         		<h:outputText value="Approved On:"
+         			rendered="#{not empty displayReservedEventController.privateevent.approvaldate}"/>
+          		<h:outputText value="#{displayReservedEventController.printableApprovedDate}" 
+          			rendered="#{not empty displayReservedEventController.privateevent.approvaldate}"/>
+		
+			</h:panelGrid>	
+			
+			<h:panelGroup style="display:block; text-align:center">	
+			    <br />
+				<h:link value="Return to the Master Calendar" outcome="schedule3.xhtml" />
+			</h:panelGroup>
+			
+		    <h:messages layout="table" errorClass="errors" />
+					
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List/Signup for an Existing Potluck
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" title="List/Signup for a Potluck" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Signup for a Potluck or List Current Signups"/>
+         		</f:facet>
+				
+				<br />
+ 
+				<h:outputText value = "Choose a potluck to attend:" styleClass="subheading" /> 
+				<h:outputText value="*** No meals thus far in this meal cycle ***"
+					rendered="#{empty signupPotluckController.potluckEventList}"/>
+				<h:selectOneMenu value="#{signupPotluckController.chosenPotluckEventString}"
+					rendered="#{not empty signupPotluckController.potluckEventList}">
+					<f:selectItems value="#{signupPotluckController.potluckEventList}"
+						var="onemeal" 
+						itemLabel="#{onemeal.choosableEventDate}"
+						itemValue="#{onemeal.usableEventid}" />
+					<f:ajax render="chooseoptions signupforwhom numberquestionpotluck" 
+						execute="chooseoptions signupforwhom numberquestionpotluck" event="change" />
+				</h:selectOneMenu>
+				
+				<br />
+				<h:panelGroup id="chooseoptions" layout="block" rendered="#{not empty signupPotluckController.potluckEventList}" >
+					<h:outputText value="As Leader, choose to signup or list all current signups:" 
+						rendered="#{signupPotluckController.leaders}" styleClass="subheading" />
+			    	<h:selectOneRadio value="#{signupPotluckController.signupOperation}" layout="pageDirection"
+						    		rendered="#{signupPotluckController.leaders}">
+						<f:selectItem itemValue="doSignup" itemLabel="Sign me up for the potluck" />			
+						<f:selectItem itemValue="doSignupSomeoneElse" itemLabel="Signup someone else for the potluck" />			
+						<f:selectItem itemValue="listSignups" itemLabel="List potluck signups by unit" />
+						<f:selectItem itemValue="listDishes" itemLabel="List dishes for potluck" />
+						<f:ajax render="numberquestionpotluck itemdescription signupnote" />
+						<f:ajax render="signupforwhom" />
+					</h:selectOneRadio>
+
+					<h:outputText value="Choose to signup or list all current signups:" 
+						rendered="#{!signupPotluckController.leaders}" styleClass="subheading" />
+			    	<h:selectOneRadio value="#{signupPotluckController.signupOperation}" layout="pageDirection"
+			    		rendered="#{!signupPotluckController.leaders}">
+						<f:selectItem itemValue="doSignup" itemLabel="Sign me up for the potluck" />			
+						<f:selectItem itemValue="listSignups" itemLabel="List potluck signups by unit" />
+						<f:selectItem itemValue="listDishes" itemLabel="List dishes for potluck" />
+						<f:ajax render="numberquestionpotluck itemdescription signupnote" />
+						<f:ajax render="signupforwhom" />
+
+					</h:selectOneRadio>
+				</h:panelGroup>
+
+				<br/>
+				<h:panelGroup id="signupforwhom" layout="block" rendered="#{not empty signupPotluckController.potluckEventList}">
+					<h:outputText  value="Choose person to signup for:" 
+				   	rendered="#{signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" />
+
+					<h:selectOneMenu value="#{signupPotluckController.chosenUserString}"
+					rendered="#{signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" >
+						<f:selectItems value="#{signupPotluckController.userList}"
+							var="oneuser" 
+							itemLabel="#{oneuser.username}"
+							itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+				<br/>
+				</h:panelGroup>
+ 	
+				<h:panelGroup id="numberquestionpotluck" layout="block" rendered="#{not empty signupPotluckController.potluckEventList}" >
+					<h:outputText  value="Number attending the potluck: " 
+				   	rendered="#{signupPotluckController.signupOperation eq 'doSignup' ||
+				   		signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" />
+				
+				
+					<h:selectOneMenu  value="#{signupPotluckController.numberattending}"
+				 	rendered="#{signupPotluckController.signupOperation eq 'doSignup' ||
+				 		signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}">
+						<f:selectItems value="#{signupPotluckController.attendingCount}"
+							var="onecount" 
+							itemLabel="#{onecount}"
+							itemValue="#{onecount}" />
+					</h:selectOneMenu>
+				</h:panelGroup>
+ 
+				<h:panelGroup id="itemdescription" layout="block" rendered="#{not empty signupPotluckController.potluckEventList}">
+
+					<h:outputText  value="What category is the item you are bringing: " 
+				   	rendered="#{signupPotluckController.signupOperation eq 'doSignup' ||
+				   		signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" />
+
+					<h:selectOneMenu value="#{signupPotluckController.itemtype}" 
+						rendered="#{signupPotluckController.signupOperation eq 'doSignup' ||
+				   			signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" >
+    					<f:selectItems value="#{signupPotluckController.itemtypes}" />
+					</h:selectOneMenu>
+					<br/>
+					
+					<h:outputText  value="What will you bring: " 
+				   	rendered="#{signupPotluckController.signupOperation eq 'doSignup' ||
+				   		signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" />
+				
+					<h:inputText value="#{signupPotluckController.itemdescription}"  size = "62" maxlength = "63" 
+				   	rendered="#{signupPotluckController.signupOperation eq 'doSignup' ||
+				   		signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" />
+				</h:panelGroup>
+ 
+			</h:panelGrid>
+				
+			<h:panelGrid columns="1" 
+				headerClass="formheader" styleClass="formstyle" rendered="#{not empty signupPotluckController.potluckEventList}" >
+				<br />
+				<h:panelGroup style="display:block; text-align:center">				
+					<h:commandButton value="Submit Choice" action="#{signupPotluckController.signupPotluckView}" >
+                        <f:ajax execute="@form" render="message" />
+					</h:commandButton>
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			<br />
+			<h:panelGroup id="signupnote" style="display:block; text-align:center" rendered="#{not empty signupPotluckController.potluckEventList}" >	
+            		<h:outputText value="Note: setting Number Attending to 0 for signups will delete that signup."
+            		rendered="#{signupPotluckController.signupOperation eq 'doSignup' ||
+				   		signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}"/>
+            </h:panelGroup>
+
+			<h:messages id="message" layout="table" errorClass="errors" />
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

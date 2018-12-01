@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Display Potluck Signups
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Potluck Dishes" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Potluck Signups for #{signupPotluckController.printableEventDate}&lt;br/&gt;" escape="false"/>
+        </f:facet>
+	<br />
+</h:panelGrid>
+
+<h:panelGrid columns="1" title="Potluck Dishes" 
+	headerClass="formheader" styleClass="formstyle" >
+
+    <h:outputText value="Leader: #{signupPotluckController.printableLeader1}"/>
+    
+	<h:outputText value="There are no potluck signups (yet!)." 
+		rendered="#{empty signupPotluckController.allPotluckDishSignups}" />
+		
+	<h:dataTable value="#{signupPotluckController.allPotluckDishSignups}" var="onesignup" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
+		rendered="#{not empty signupPotluckController.allPotluckDishSignups}">
+   
+ 		<h:column>
+  			<f:facet name="header">Entrees</f:facet> 
+  			#{onesignup.entree}           
+		</h:column>
+ 
+		<h:column>
+  			<f:facet name="header">Sides</f:facet> 
+  			#{onesignup.side}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Salads</f:facet> 
+  			#{onesignup.salad}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Desserts</f:facet> 
+  			#{onesignup.dessert}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Other</f:facet> 
+  			#{onesignup.other}           
+		</h:column>
+
+	</h:dataTable>
+	<br/>
+	<h:outputText value=
+	"Total number of people attending = #{signupPotluckController.totalPeopleAttending}&lt;br/&gt;" 
+	   escape="false" rendered="#{not empty signupPotluckController.allPotluckSignups}" style="font-style: italic"/>
+	
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

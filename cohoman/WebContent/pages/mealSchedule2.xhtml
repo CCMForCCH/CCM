@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Meals Calendar
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" 
+				headerClass="formheader" styleClass="formstyle" >
+				  
+	     		<f:facet name="header">
+            		<h:outputText value="Meals Schedule"/>
+         		</f:facet>
+         	
+         	</h:panelGrid>
+
+<br/>
+
+<h:outputText value="*** No meals thus far in the current meal cycle ***"
+	style="display:block; text-align:center" 
+	rendered="#{empty mealsScheduleController.mealTextRows}" />
+
+<h:dataTable value="#{mealsScheduleController.mealTextRows}" var="mealtextrow" styleClass="weeks" headerClass="namesHeader2"
+	rendered="#{not empty mealsScheduleController.mealTextRows}" 
+	rules="all" frame="border" columnClasses="leftmealcolumn,day,day,day,day" width="98%"
+	border="10" cellpadding="5px" cellspacing="5px">
+ 
+
+<h:column >
+<f:facet name="header">Week</f:facet> 
+  	<div id="mealheadings">
+  		<h:outputText value="#{mealtextrow[0].weekstarting}" styleClass="preformatted" />
+  	</div>          
+</h:column>
+
+<h:column >
+<f:facet name="header">1st Meal</f:facet>
+  	<div id="mealDate">#{mealtextrow[0].printableEventDate}</div>
+  	<div id="mealDate">#{mealtextrow[0].mealtype}</div>          
+	<div id="mealDetails">
+		<h:outputText value="#{mealtextrow[0].mealbody}" styleClass="preformatted" />
+	</div>
+</h:column>
+<h:column rendered="#{mealsScheduleController.column2showable == 1}">
+<f:facet name="header">2nd Meal</f:facet>
+  	<div id="mealDate">#{mealtextrow[1].printableEventDate}</div>
+  	<div id="mealDate">#{mealtextrow[1].mealtype}</div>          
+	<div id="mealDetails">
+		<h:outputText value="#{mealtextrow[1].mealbody}" styleClass="preformatted" />
+	</div>
+</h:column>
+<h:column rendered="#{mealsScheduleController.column3showable == 1}">
+<f:facet name="header">3rd Meal</f:facet>
+  	<div id="mealDate">#{mealtextrow[2].printableEventDate}</div>
+  	<div id="mealDate">#{mealtextrow[2].mealtype}</div>          
+	<div id="mealDetails">
+		<h:outputText value="#{mealtextrow[2].mealbody}" styleClass="preformatted" />
+	</div>
+</h:column> 
+<!--  
+<h:column rendered="#{not empty mealtextrow[3].printableEventDate}">
+-->
+<h:column rendered="#{mealsScheduleController.column4showable == 1}">
+<f:facet name="header">4th Meal</f:facet>
+  	<div id="mealDate">#{mealtextrow[3].printableEventDate}</div>
+  	<div id="mealDate">#{mealtextrow[3].mealtype}</div>          
+	<div id="mealDetails">
+		<h:outputText value="#{mealtextrow[3].mealbody}" styleClass="preformatted" />
+	</div>
+</h:column>
+
+
+</h:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

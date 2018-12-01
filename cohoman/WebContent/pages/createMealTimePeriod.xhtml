@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Create a New Meal Time Period
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Please Define A New Meal Period" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter New Meal Period Information"/>
+         		</f:facet>
+
+				Starting month:
+				<h:selectOneMenu id="selectStartMonthId" value="#{createTimePeriodController.startMonth}">
+					<f:selectItems value="#{createTimePeriodController.monthsOfTheYear}"
+						var="month" 
+						itemLabel="#{month.monthName}"
+						itemValue="#{month.monthNumber}" />
+					<f:ajax render="selectStartDayId" execute="selectStartDayId" event="change" />
+				</h:selectOneMenu>
+				Starting day:
+				<h:selectOneMenu id="selectStartDayId" value="#{createTimePeriodController.startDay}">
+					<f:selectItems value="#{createTimePeriodController.mondaysOfTheMonth}"
+						var="day" 
+						itemLabel="#{day}"
+						itemValue="#{day}" />
+				</h:selectOneMenu>
+				Starting year:
+				<h:selectOneMenu value="#{createTimePeriodController.startYear}">
+					<f:selectItems value="#{createTimePeriodController.years}"
+						var="year" 
+						itemLabel="#{year}"
+						itemValue="#{year}" />
+					<f:ajax render="selectStartDayId" execute="selectStartDayId" event="change" />
+				</h:selectOneMenu>
+				Ending month:
+				<h:selectOneMenu id="selectEndMonthId" value="#{createTimePeriodController.endMonth}">
+					<f:selectItems value="#{createTimePeriodController.monthsOfTheYear}"
+						var="month" 
+						itemLabel="#{month.monthName}"
+						itemValue="#{month.monthNumber}" />
+					<f:ajax render="selectEndDayId" execute="selectEndDayId" event="change" />
+				</h:selectOneMenu>
+				Ending day:
+				<h:selectOneMenu id="selectEndDayId" value="#{createTimePeriodController.endDay}">
+					<f:selectItems value="#{createTimePeriodController.sundaysOfTheMonth}"
+						var="day" 
+						itemLabel="#{day}"
+						itemValue="#{day}" />
+				</h:selectOneMenu>
+				Ending year:
+				<h:selectOneMenu value="#{createTimePeriodController.endYear}">
+					<f:selectItems value="#{createTimePeriodController.years}"
+						var="year" 
+						itemLabel="#{year}"
+						itemValue="#{year}" />
+					<f:ajax render="selectEndDayId" execute="selectEndDayId" event="change" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+
+         	<h:messages style="color:red;display:block; text-align:center"/>
+         	<br />
+						
+			<h:panelGroup style="display:block; text-align:center">				
+				<h:commandButton value="Submit New Meal Time Period" action="#{createTimePeriodController.addMealTimePeriod}" />
+			</h:panelGroup>
+				
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

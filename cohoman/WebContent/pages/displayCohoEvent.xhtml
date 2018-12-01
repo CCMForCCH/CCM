@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Display Coho Event Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+
+			<h:panelGrid columns="2" title="Display Coho Event Fields" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Cohousing Event Details:"/>
+          		</f:facet>
+        		
+         		<h:outputText value="*** Internal Error: Missing Event ID"
+					rendered="#{empty displayCohoEventController.cohoevent.eventDate}" />
+					
+					
+			    <h:outputText value="Event Name:"
+         			rendered="#{not empty displayCohoEventController.cohoevent.eventName}"/>	
+         		<h:outputText value="#{displayCohoEventController.cohoevent.eventName}" 
+         			rendered="#{not empty displayCohoEventController.cohoevent.eventName}"/>
+         	
+         	    <h:outputText value="Event Information:"
+         			rendered="#{not empty displayCohoEventController.cohoevent.eventinfo}"/>	
+         		<h:outputText value="#{displayCohoEventController.cohoevent.eventinfo}" 
+         			rendered="#{not empty displayCohoEventController.cohoevent.eventinfo}"/>
+					
+         		<h:outputText value="Starting Date:"
+         			rendered="#{not empty displayCohoEventController.cohoevent.printableEventDate}"/>
+          		<h:outputText value="#{displayCohoEventController.cohoevent.printableEventDate}" 
+          			rendered="#{not empty displayCohoEventController.cohoevent.printableEventDate}"/>  
+ 
+          		<h:outputText value="Ending Date:"
+         			rendered="#{not empty displayCohoEventController.cohoevent.printableEventDateEnd}"/>
+          		<h:outputText value="#{displayCohoEventController.cohoevent.printableEventDateEnd}" 
+          			rendered="#{not empty displayCohoEventController.cohoevent.printableEventDateEnd}"/>  
+          		
+            	<h:outputText value="Spaces Reserved:" />
+          		<h:outputText value="#{displayCohoEventController.cohoevent.printableSpaceList}" 
+          			rendered="#{not empty displayCohoEventController.cohoevent.printableSpaceList}"/>
+          		<h:outputText value="none" 
+          			rendered="#{empty displayCohoEventController.cohoevent.printableSpaceList}"/>
+          			     		
+          		<h:outputText value="Entered By:"
+         			rendered="#{not empty displayCohoEventController.cohoevent.enteredbyUsername}"/>
+          		<h:outputText value="#{displayCohoEventController.cohoevent.enteredbyUsername}" 
+          			rendered="#{not empty displayCohoEventController.cohoevent.enteredbyUsername}"/>
+
+			</h:panelGrid>	
+			
+			<h:panelGroup style="display:block; text-align:center">	
+			    <br />
+				<h:link value="Return to the Master Calendar" outcome="schedule3.xhtml" />
+			</h:panelGroup>
+			
+		    <h:messages layout="table" errorClass="errors" />
+					
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

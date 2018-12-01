@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit Reserved Space Event Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Edit Cohousing Event Fields" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Choose what to change in the reserved space event:"/>
+            		<br />
+         		</f:facet>
+         		
+         		Date:
+				<h:outputText value="#{editPrivateEventController.privateEventDetails.printableEventDate}" />    
+				     		
+				Start time:
+				<h:selectOneMenu id="starttimeId" value="#{editPrivateEventController.slotNumberStart}">
+					<f:selectItems value="#{editPrivateEventController.timeSlotsOfTheDay}"
+						var="slot" 
+						itemLabel="#{slot.slotString}"
+						itemValue="#{slot.slotNumber}" />
+					<f:ajax render="endtimeId" execute="endtimeId" event="change" />
+				</h:selectOneMenu>
+								
+				End time:
+				<h:selectOneMenu id="endtimeId" value="#{editPrivateEventController.slotNumberEnd}">
+					<f:selectItems value="#{editPrivateEventController.timeSlotsOfTheDay}"
+						var="slot" 
+						itemLabel="#{slot.slotString}"
+						itemValue="#{slot.slotNumber}" />
+					<f:ajax render="endtimeId" execute="endtimeId" event="change" />
+				</h:selectOneMenu>
+				
+				Event Name:
+				<h:inputText id="EventName" value="#{editPrivateEventController.privateEventName}" required="true" disabled="true"/>
+											
+				Event Description:
+				<h:inputText id="EventDescription" value="#{editPrivateEventController.privateEventInfo}" size = "50" required="true"/>
+         			
+				<h:outputText value="Number of Adults Expected:" />
+				<h:inputText value="#{editPrivateEventController.privateExpectednumberofadults}" />
+
+				<h:outputText value="Number of Children Expected:" />
+				<h:inputText value="#{editPrivateEventController.privateExpectednumberofchildren}" />
+
+				<h:outputText value="Organization (optional):" />
+				<h:inputText value="#{editPrivateEventController.privateOrganization}" />
+				
+				<h:outputText value="Reserved Spaces:" />
+				<h:selectManyCheckbox value="#{editPrivateEventController.chosenSpaceListStringInts}">
+					<f:selectItems value="#{editPrivateEventController.allSpaces}"
+						var="onespace" 
+						itemLabel="#{onespace.spaceName}"
+						itemValue="#{onespace.spaceId}" />
+				</h:selectManyCheckbox>
+
+				<h:outputText value="Event Characteristics:" />
+				<h:panelGrid columns="10" headerClass="formheader" styleClass="formstyle" >
+				For cohousers:
+				<h:selectBooleanCheckbox id="iscohousingevent"
+					value="#{editPrivateEventController.privateIscohousingevent}" />
+				Cohousers invited:
+				<h:selectBooleanCheckbox id="isinclusiveevent"
+					value="#{editPrivateEventController.privateIsinclusiveevent}" />
+				Private:
+				<h:selectBooleanCheckbox id="isexclusiveevent"
+					value="#{editPrivateEventController.privateIsexclusiveevent}" />
+				Income-producing
+				<h:selectBooleanCheckbox id="isincomeevent"
+					value="#{editPrivateEventController.privateIsincomeevent}" />
+				Physically-active
+				<h:selectBooleanCheckbox id="isphysicallyactiveevent"
+					value="#{editPrivateEventController.privateIsphysicallyactiveevent}" />				
+				</h:panelGrid>	
+
+				For Income-Producing Events:
+				<h:panelGrid columns="4" headerClass="formheader" styleClass="formstyle" >
+				Are a majority of participants residents?
+				<h:selectBooleanCheckbox id="aremajorityresidents"
+					value="#{editPrivateEventController.privateAremajorityresidents}" />
+				Donation ($10 - $100)
+				<h:inputText id="incomeDonation" value="#{editPrivateEventController.privateDonation}" required="true"/>
+				</h:panelGrid>	
+				
+				For Physically-active Events:
+				<h:panelGrid columns="4" headerClass="formheader" styleClass="formstyle" >
+				Is it a one-time party?
+				<h:selectBooleanCheckbox id="Isonetimeparty"
+					value="#{editPrivateEventController.privateIsonetimeparty}" />
+				Is it a class or workshop?
+				<h:selectBooleanCheckbox id="Isclassorworkshop"
+					value="#{editPrivateEventController.privateIsclassorworkshop}" />
+				</h:panelGrid>	
+         					
+			</h:panelGrid>	
+			<br />					
+			<h:panelGroup style="display:block; text-align:center">	
+					<h:commandButton value="Submit Cohousing Event Changes" action="#{editPrivateEventController.editAllPrivateEventView}" />			
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

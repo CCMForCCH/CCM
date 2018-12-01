@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Create a New User
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Please Enter User Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter Profile Information for New User"/>
+         		</f:facet>
+		
+				Username:
+				<h:inputText id="username" value="#{createUserController.username}" size = "33" maxlength = "32" required="true" />
+				Password:
+				<h:inputSecret id="password" value="#{createUserController.password}"  size = "65" maxlength = "64" required="true" />
+				First Name:
+				<h:inputText id="firstname" value="#{createUserController.firstname}" size = "65" maxlength = "64" required="true" />
+				Last Name:
+				<h:inputText id="lastname" value="#{createUserController.lastname}" size = "65" maxlength = "64" required="true" />
+				Unit Number:
+				<h:inputText id="unit" value="#{createUserController.unit}" required="true" size="4" maxlength = "4" />
+				Email address:
+				<h:inputText id="email" value="#{createUserController.email}" size = "65" maxlength = "64" />
+				Home Phone:
+				<h:inputText id="homephone" value="#{createUserController.homephone}" size = "13" maxlength = "12" />
+				Cell Phone:
+				<h:inputText id="cellphone" value="#{createUserController.cellphone}" size = "13" maxlength = "12" />
+				Work Phone:
+				<h:inputText id="workphone" value="#{createUserController.workphone}" size = "13" maxlength = "12" />
+				
+				Birth month:
+				<h:selectOneMenu id="selectBirthMonthId" value="#{createUserController.birthmonth}">
+					<f:selectItems value="#{createUserController.monthsOfTheYear}"
+						var="month" 
+						itemLabel="#{month.monthName}"
+						itemValue="#{month.monthNumber}" />
+					<f:ajax render="selectBirthDayId" execute="selectBirthDayId" event="change" />
+				</h:selectOneMenu>
+				Birth day:
+				<h:selectOneMenu id="selectBirthDayId" value="#{createUserController.birthday}">
+					<f:selectItems value="#{createUserController.daysOfTheMonth}"
+						var="day" 
+						itemLabel="#{day}"
+						itemValue="#{day}" />
+				</h:selectOneMenu>
+				Birth year:
+				<h:selectOneMenu value="#{createUserController.birthyear}">
+					<f:selectItems value="#{createUserController.years}"
+						var="year" 
+						itemLabel="#{year}"
+						itemValue="#{year}" />
+					<f:ajax render="selectBirthDayId" execute="selectBirthDayId" event="change" />
+				</h:selectOneMenu>
+				
+				<h:outputText value="User Type:"  />
+				<h:selectOneMenu value="#{createUserController.chosenusertype}">
+					<f:selectItems value="#{createUserController.userTypes}"
+						var="oneusertype"
+						itemLabel="#{oneusertype}"
+						itemValue="#{oneusertype}" />
+				</h:selectOneMenu>
+				
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center">				
+				<h:commandButton value="Submit" action="#{createUserController.createUser}" />
+			</h:panelGroup>
+			
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

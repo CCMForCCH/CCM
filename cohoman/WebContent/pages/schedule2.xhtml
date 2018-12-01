@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html">
+      
+<h:head>
+<!-- 
+	<h:outputStylesheet library="css" name="styles2.css" />
+	 -->
+	<link href="resources/css/styles2.css" rel="stylesheet" type="text/css" />
+<title>Coho Schedule</title>
+</h:head>
+<h:body>
+
+<h:form>
+
+<h:dataTable value="#{tableData.names}" var="name" styleClass="names" headerClass="namesHeader" 
+	rules="all" frame="border" columnClasses="last,first" width="90%"
+	border="10" cellpadding="5px" cellspacing="5px">
+ 
+ 
+<h:column>
+  <f:facet name="header">Monday</f:facet>            
+		#{name.last}
+	
+	 
+		<h:dataTable value="#{tableData.times}" var="time" styleClass="times" headerClass="namesHeader" >
+		<h:column>
+            #{time.last},
+            </h:column>
+            </h:dataTable>
+        
+</h:column>
+
+<h:column>
+  <f:facet name="header">Tuesday</f:facet>            
+
+            #{name.first}
+</h:column>
+
+<h:column>
+  <f:facet name="header">Wednesday</f:facet>            
+
+            #{name.first}
+</h:column>
+
+</h:dataTable>
+	
+
+</h:form>
+
+</h:body>
+</html>
+

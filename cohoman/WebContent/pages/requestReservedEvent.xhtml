@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Request a Space Reservation
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Please Enter Private Event Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter the Following Space Reservation Information"/>
+         		</f:facet>
+         		
+				Event month:
+				<h:selectOneMenu id="selectMonthId" value="#{requestReservedEventController.privateEventMonth}">
+					<f:selectItems value="#{requestReservedEventController.monthsOfTheYear}"
+						var="month" 
+						itemLabel="#{month.monthName}"
+						itemValue="#{month.monthNumber}" />
+					<f:ajax render="selectDayId" execute="selectDayId" event="change" />
+				</h:selectOneMenu>
+				Event day:
+				<h:selectOneMenu id="selectDayId" value="#{requestReservedEventController.privateEventDay}">
+					<f:selectItems value="#{requestReservedEventController.daysOfTheMonth}"
+						var="day" 
+						itemLabel="#{day}"
+						itemValue="#{day}" />
+				</h:selectOneMenu>
+				Event year:
+				<h:selectOneMenu value="#{requestReservedEventController.privateEventYear}">
+					<f:selectItems value="#{requestReservedEventController.years}"
+						var="year" 
+						itemLabel="#{year}"
+						itemValue="#{year}" />
+					<f:ajax render="selectDayId" execute="selectDayId" event="change" />
+				</h:selectOneMenu>
+				Start time:
+				<h:selectOneMenu id="starttimeId" value="#{requestReservedEventController.slotNumberStart}">
+					<f:selectItems value="#{requestReservedEventController.timeSlotsOfTheDay}"
+						var="slot" 
+						itemLabel="#{slot.slotString}"
+						itemValue="#{slot.slotNumber}" />
+					<f:ajax render="endtimeId" execute="endtimeId" event="change" />
+				</h:selectOneMenu>
+				
+				End time:
+				<h:selectOneMenu id="endtimeId" value="#{requestReservedEventController.slotNumberEnd}">
+					<f:selectItems value="#{requestReservedEventController.timeSlotsOfTheDay}"
+						var="slot" 
+						itemLabel="#{slot.slotString}"
+						itemValue="#{slot.slotNumber}" />
+					<f:ajax render="endtimeId" execute="endtimeId" event="change" />
+				</h:selectOneMenu>
+								
+				Event Name:
+				<h:inputText id="EventName" value="#{requestReservedEventController.privateEventName}" maxlength = "40" required="true"/>
+											
+				Event Description:
+				<h:inputText id="EventDescription" value="#{requestReservedEventController.privateEventInfo}" size = "80" maxlength = "200" required="true"/>
+			
+ 				Number of Adults Expected:
+				<h:selectOneMenu  value="#{requestReservedEventController.privateExpectednumberofadults}" >
+					<f:selectItems value="#{requestReservedEventController.numberOfAdults}"
+						var="onecount" 
+						itemLabel="#{onecount}"
+						itemValue="#{onecount}" />
+				</h:selectOneMenu>
+
+				Number of Children Expected:
+				<h:selectOneMenu  value="#{requestReservedEventController.privateExpectednumberofchildren}" >
+					<f:selectItems value="#{requestReservedEventController.numberOfChildren}"
+						var="onecount" 
+						itemLabel="#{onecount}"
+						itemValue="#{onecount}" />
+				</h:selectOneMenu>
+				
+				Organization (optional):
+				<h:inputText id="Organization" value="#{requestReservedEventController.privateOrganization}" required="false"/>
+
+				Spaces to use:
+				<h:selectManyCheckbox id="SpacesToUse" value="#{requestReservedEventController.chosenSpaceList}" required="true">
+					<f:selectItems value="#{requestReservedEventController.allSpaces}"
+						var="onespace" 
+						itemLabel="#{onespace.spaceName}"
+						itemValue="#{onespace.spaceId}" />
+				</h:selectManyCheckbox>
+						
+				Event Characteristics:
+				<h:selectManyCheckbox id="EventCharacteristics" value="#{requestReservedEventController.chosenCharacteristicsList}" required="true">
+					<f:selectItems value="#{requestReservedEventController.eventCharacteristicsChoices}"
+						var="onechar" 
+						itemLabel="#{onechar}"
+						itemValue="#{onechar}" />
+					<f:ajax event="change" execute="physicallyactive physicallyactivehdr" render="physicallyactive physicallyactivehdr" />
+					<f:ajax event="change" execute="incomeproducing incomeproducinghdr" render="incomeproducing incomeproducinghdr" />
+				</h:selectManyCheckbox>
+			
+				<h:panelGroup id="incomeproducinghdr">
+					<h:outputText  value="For Income-Producing Events:" 
+				   		rendered="#{requestReservedEventController.privateIsincomeevent}" />
+				</h:panelGroup>
+				
+				<h:panelGroup id="incomeproducing" >
+					<h:panelGrid columns="4" headerClass="formheader" styleClass="formstyle" >
+						<h:outputText  value="Are a majority of participants residents?" 
+				  			rendered="#{requestReservedEventController.privateIsincomeevent}" />
+						<h:selectBooleanCheckbox id="aremajorityresidents"
+							value="#{requestReservedEventController.privateAremajorityresidents}" 
+							rendered="#{requestReservedEventController.privateIsincomeevent}" />
+						<h:outputText  value="Donation ($10 - $100)" 
+				  			rendered="#{requestReservedEventController.privateIsincomeevent}" />
+						<h:inputText id="incomeDonation" value="#{requestReservedEventController.privateDonation}" required="true"
+							rendered="#{requestReservedEventController.privateIsincomeevent}" />
+					</h:panelGrid>	
+				</h:panelGroup>
+			
+				<h:panelGroup id="physicallyactivehdr">
+					<h:outputText  value="For Physically-active Events:" 
+				   		rendered="#{requestReservedEventController.privateIsphysicallyactiveevent}" />
+				</h:panelGroup>
+				
+				<h:panelGroup id="physicallyactive" >
+					<h:panelGrid columns="4" headerClass="formheader" styleClass="formstyle" >
+						<h:outputText  value="Is it a one-time party?" 
+				  			rendered="#{requestReservedEventController.privateIsphysicallyactiveevent}" />
+						<h:selectBooleanCheckbox id="Isonetimeparty"
+							value="#{requestReservedEventController.privateIsonetimeparty}" 
+							rendered="#{requestReservedEventController.privateIsphysicallyactiveevent}" />
+						<h:outputText  value="Is it a class or workshop?"
+				  			rendered="#{requestReservedEventController.privateIsphysicallyactiveevent}" />
+						<h:selectBooleanCheckbox id="Isclassorworkshop"
+							value="#{requestReservedEventController.privateIsclassorworkshop}" 
+							rendered="#{requestReservedEventController.privateIsphysicallyactiveevent}" />
+					</h:panelGrid>	
+				</h:panelGroup>
+				
+				<h:outputText  value="IMPORTANT NOTE:" style="font-weight:bold" />
+				<h:outputText  value="Please tell all your guests to observe the procedures for composting and recycling that are posted in the kitchen." />
+				<br/>		
+			</h:panelGrid>
+				
+			<h:panelGroup style="display:block; text-align:center">				
+				<h:commandButton value="Submit Event" action="#{requestReservedEventController.addRequestReservedEvent}" />
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

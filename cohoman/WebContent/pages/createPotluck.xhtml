@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Create a New Potluck
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		
+		<h:outputScript library="javascript" name="checkForMealsCreateDelete.js" />
+		
+		<h:form id="createPotluckFormId">
+
+			<h:panelGrid columns="2" title="Please Enter Potluck Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter Potluck Information"/>
+         		</f:facet>
+         		
+         		<h:outputText value="*** No meals left to create in this meal cycle ***"
+					rendered="#{empty createPotluckController.potluckDaysForPeriod}" />
+         		
+				<h:outputText value="Date:" 
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" />
+				<h:selectOneMenu value="#{createPotluckController.chosenPotluckDateTimestamp}"
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" >
+					<f:selectItems value="#{createPotluckController.potluckDaysForPeriod}"
+						var="oneMealDate" 
+						itemLabel="#{oneMealDate.printableDate}"
+						itemValue="#{oneMealDate.timestamp}" />
+				</h:selectOneMenu>
+			
+				<h:outputText value="Time:" 
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" />
+				<h:selectOneMenu value="#{createPotluckController.slotNumber}"
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}">
+					<f:selectItems value="#{createPotluckController.timeSlotsOfTheDay}"
+						var="slot" 
+						itemLabel="#{slot.slotString}"
+						itemValue="#{slot.slotNumber}" />
+				</h:selectOneMenu>
+				
+				<h:outputText value="Leader:" 
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" />
+				<h:selectOneMenu value="#{createPotluckController.chosenUserString}" 
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" >
+					<f:selectItems value="#{createPotluckController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+				
+				<h:outputText value="Information:" 
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" />
+				<h:inputTextarea id="PotluckInfo" value="#{createPotluckController.potluckInfo}" 
+					rows="3" cols="60" maxlength = "180" required="true" 
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}">
+					<f:validateLength maximum="180" />
+				</h:inputTextarea>
+				
+				
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center" 
+				rendered="#{not empty createPotluckController.potluckDaysForPeriod}" >				
+				<h:commandButton value="Submit Potluck" action="#{createPotluckController.addPotluck}" 
+					onclick="return checkForPotluckCreate(this.form)" />
+			</h:panelGroup>
+			
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

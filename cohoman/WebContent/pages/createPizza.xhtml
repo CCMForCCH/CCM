@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Create a New Pizza/Potluck
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		
+		<h:outputScript library="javascript" name="checkForMealsCreateDelete.js" />
+		
+		<h:form id="createPizzaFormId">
+
+			<h:panelGrid columns="2" title="Please Enter Pizza/Potluck Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter Pizza/Potluck Information"/>
+         		</f:facet>
+         		
+         		<h:outputText value="*** No meals left to create in this meal cycle ***"
+					rendered="#{empty createPizzaController.pizzaDaysForPeriod}" />
+         		
+				<h:outputText value="Date:" 
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" />
+				
+				<h:selectOneMenu value="#{createPizzaController.chosenPizzaDateTimestamp}"
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" >
+					<f:selectItems value="#{createPizzaController.pizzaDaysForPeriod}"
+						var="onePizzaDate" 
+						itemLabel="#{onePizzaDate.printableDate}"
+						itemValue="#{onePizzaDate.timestamp}" />
+				</h:selectOneMenu>
+							
+				<h:outputText value="Leader:" 
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" />
+				<h:selectOneMenu value="#{createPizzaController.chosenUserString}"
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" >
+					<f:selectItems value="#{createPizzaController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+				
+				<h:outputText value="Occasion (optional):" 
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}"/>
+				<h:inputText id="EventName" value="#{createPizzaController.eventName}" maxlength = "40" 
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}"/>
+											
+				<h:outputText value="Information (optional):" 
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}"/>
+				<h:inputText id="EventDescription" value="#{createPizzaController.eventinfo}" size = "50" maxlength = "200" 
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}"/>
+				
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center" 
+				rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" >				
+				<h:commandButton value="Submit Pizza/Potluck" action="#{createPizzaController.addPizza}" 
+					onclick="return checkForPizzaCreate(this.form)"/>
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

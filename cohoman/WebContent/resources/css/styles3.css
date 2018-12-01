@@ -1,0 +1,159 @@
+.weeks {
+	margin-left: 20px;
+	margin-right: 20px;
+	border: thin dotted gray;
+	caption-side: bottom;
+	border-collapse: separate;
+}
+
+.events {
+	text-align: left;
+	border-style: hidden;
+}
+
+.oneevent {
+	text-align: left;
+	background: Yellow;
+}
+
+.namesHeader {
+   text-align: center;
+   font-size: large;
+   border: thin solid black;
+}
+
+.namesHeader2 {
+   text-align: center;
+   font-size: large;
+   border: thin solid black;
+   background: DeepSkyBlue;}
+
+.day {
+	width: 14%;
+	vertical-align:top;
+	text-align: right;
+		border: thin dotted gray;
+	padding: 5px;
+		   background: PowderBlue;
+}
+
+.leftmealcolumn {
+	width: 5%;
+	vertical-align:top;
+	text-align: right;
+		border: thin dotted gray;
+	padding: 5px;
+		   background: DeepSkyBlue;
+}
+#heading {
+	font-size: 200%;
+	text-align: center;
+	font-variant: small-caps;
+	background-color: blue !important;
+}
+
+.formheader {
+	font-size: 170%;
+	color: red;
+	text-transform: capitalize;
+	border-bottom-color: red;
+	border-bottom_style: solid;
+	border-bottom-width: 2px;
+}
+
+.formstyle {
+	margin: 0px auto;
+}
+
+.centered {
+	text-align: center;
+}
+
+#mealDate {
+	text-align: center;
+	 font-size: medium;
+	  font-weight: bold;
+	/*border: thin solid black;*/
+	background: Yellow;
+}
+
+#mealheadings {
+	text-align: center;
+	 font-size: medium;
+	  font-weight: bold;
+	/*border: thin solid black;*/
+
+}
+
+#mealDetails {
+	text-align: left;
+}
+
+.errors {
+	font-style: italic;
+	color: red;
+	text-align: center;
+}
+
+.users {
+		border: thin solid black;
+		border-collapse:collapse;
+}
+
+.usersHeader {
+		text-align: center;
+		font-style: italic;
+		color: Snow;
+		background: Teal;
+}
+
+.oddRow {
+	height:25px;
+	text-align:left;
+	background:MediumTurquoise;
+	border:thin solid black;
+}
+
+.evenRow {
+	text-align:left;
+	background:PowderBlue;
+	border:thin solid black;
+}
+
+.allColumns {
+	border:thin solid black;
+}
+
+.preformatted {
+    white-space: pre-wrap;
+}
+
+.subheading {
+	font-size: medium;
+	font-weight: bold;
+}
+
+.column1 {
+	float: left;
+	width: 11%;
+	padding: 10px;
+}
+
+.column2 {
+	float: left;
+	width: 89%;
+	padding: 10px;
+}
+
+img {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 5px;
+	
+	
+}
+
+* {
+	box-sizing: border-box;
+  }
+}

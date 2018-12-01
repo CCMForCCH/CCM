@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List/Signup for an Existing Meal
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" title="List/Signup for a Meal" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Signup for a Meal or List Current Signups"/>
+         		</f:facet>
+         		
+				<br />
+				<h:outputText value = "Choose a common meal to attend:" styleClass="subheading" /> 			
+				<h:outputText value="*** No meals thus far in this meal cycle ***"
+					rendered="#{empty signupMealController.mealEventList}"/>
+				<h:selectOneMenu value="#{signupMealController.chosenMealEventString}"
+					rendered="#{not empty signupMealController.mealEventList}">
+					<f:selectItems value="#{signupMealController.mealEventList}"
+						var="onemeal" 
+						itemLabel="#{onemeal.choosableEventDate}"
+						itemValue="#{onemeal.usableEventid}" />
+					<f:ajax render="chooseoptions maxattendeesquestion signupforwhom numberquestion sorryClosedLead sorryMaxLead" 
+						execute="chooseoptions maxattendeesquestion signupforwhom numberquestion sorryClosedLead sorryMaxLead" event="change" />
+				</h:selectOneMenu>
+				
+				<br />
+				<h:panelGroup id="chooseoptions" layout="block" rendered="#{not empty signupMealController.mealEventList}">
+					<h:outputText value="As Lead Cook, choose to signup, list all current signups, or options to close the meal" 
+						rendered="#{signupMealController.leadCook and !signupMealController.mealClosed and !signupMealController.maxReached}"
+						styleClass="subheading" />
+					<h:outputText id="sorryClosedLead" value="Sorry, meal is closed for additional signups!&lt;br/&gt;" escape="false"
+						rendered="#{signupMealController.leadCook and signupMealController.mealClosed}" style="font-weight: bold" />
+					<h:outputText id="sorryMaxLead" value="Sorry, maximum signups for the meal has been reached!&lt;br/&gt;" escape="false"
+						rendered="#{signupMealController.leadCook and signupMealController.maxReached}" style="font-weight: bold" />
+			    	<h:selectOneRadio value="#{signupMealController.signupOperation}" layout="pageDirection"
+			    		rendered="#{signupMealController.leadCook and !signupMealController.mealClosed}">
+						<f:selectItem itemValue="doSignup" itemLabel="Sign me up for the meal" 
+							itemDisabled="#{signupMealController.mealClosed}" />			
+						<f:selectItem itemValue="doSignupSomeoneElse" itemLabel="Signup someone else for the meal" 
+							itemDisabled="#{signupMealController.mealClosed}" />			
+						<f:selectItem itemValue="listSignups" itemLabel="List meal signups" />
+						<f:selectItem itemValue="closeMealNow" itemLabel="Close signups for this common meal" />
+						<f:selectItem itemValue="setMaxAttendees" itemLabel="Set the maximum number of attendees" 
+							itemDisabled="#{signupMealController.mealClosed}" />
+						<f:ajax render="numberquestion" />
+						<f:ajax render="signupforwhom" />
+						<f:ajax render="maxattendeesquestion" />
+						<f:ajax render="signupnote" />
+					</h:selectOneRadio>
+
+			    	<h:selectOneRadio value="#{signupMealController.signupOperation}" layout="pageDirection"
+			    		rendered="#{signupMealController.leadCook and signupMealController.mealClosed}">
+						<f:selectItem itemValue="doSignup" itemLabel="Sign me up for the meal" 
+							itemDisabled="#{signupMealController.mealClosed}" />			
+						<f:selectItem itemValue="doSignupSomeoneElse" itemLabel="Signup someone else for the meal" 
+							itemDisabled="#{signupMealController.mealClosed}" />			
+						<f:selectItem itemValue="listSignups" itemLabel="List meal signups" />
+						<f:selectItem itemValue="openMealNow" itemLabel="Open signups for this common meal" />
+						<f:selectItem itemValue="setMaxAttendees" itemLabel="Set the maximum number of attendees" 
+							itemDisabled="#{signupMealController.mealClosed}" />
+						<f:ajax render="numberquestion" />
+						<f:ajax render="signupforwhom" />
+						<f:ajax render="maxattendeesquestion" />
+						<f:ajax render="signupnote" />
+					</h:selectOneRadio>
+					
+					<h:outputText value="Choose to signup or list all current signups:" styleClass="subheading"
+						rendered="#{!signupMealController.leadCook and !signupMealController.mealClosed and !signupMealController.maxReached}"/>
+					<h:outputText value="Sorry, meal is closed for additional signups!&lt;br/&gt;" escape="false" 
+						rendered="#{!signupMealController.leadCook and signupMealController.mealClosed}" style="font-weight: bold" />
+					<h:outputText value="Sorry, maximum signups for the Meal has been reached!&lt;br/&gt;" escape="false" 
+						rendered="#{!signupMealController.leadCook and signupMealController.maxReached}" style="font-weight: bold" />
+			    	<h:selectOneRadio value="#{signupMealController.signupOperation}" layout="pageDirection"
+			    		rendered="#{!signupMealController.leadCook}">
+						<f:selectItem itemValue="doSignup" itemLabel="Sign me up for the meal" 
+							itemDisabled="#{signupMealController.mealClosed}" />			
+						<f:selectItem itemValue="listSignups" itemLabel="List meal signups" />
+						<f:ajax render="numberquestion" />
+						<f:ajax render="signupforwhom" />
+						<f:ajax render="maxattendeesquestion" />
+						<f:ajax render="signupnote" />
+					</h:selectOneRadio>
+				</h:panelGroup>
+				
+				<br/>
+				<h:panelGroup id="signupforwhom" layout="block" rendered="#{not empty signupMealController.mealEventList}" >
+					<h:outputText  value="Choose person to signup for:" 
+				   	rendered="#{signupMealController.signupOperation eq 'doSignupSomeoneElse'}" />
+
+					<h:selectOneMenu value="#{signupMealController.chosenUserString}"
+					rendered="#{signupMealController.signupOperation eq 'doSignupSomeoneElse'}" >
+						<f:selectItems value="#{signupMealController.userList}"
+							var="oneuser" 
+							itemLabel="#{oneuser.username}"
+							itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+				<br/>
+				</h:panelGroup>
+				
+				<h:panelGroup id="numberquestion" layout="block" rendered="#{not empty signupMealController.mealEventList}" >
+					<h:outputText  value="Choose Number Attending:" 
+				   	rendered="#{signupMealController.signupOperation eq 'doSignup' ||
+				   		signupMealController.signupOperation eq 'doSignupSomeoneElse'}" />
+				
+					<h:selectOneMenu  value="#{signupMealController.numberattending}"
+				 	rendered="#{signupMealController.signupOperation eq 'doSignup' ||
+				 		signupMealController.signupOperation eq 'doSignupSomeoneElse'}">
+						<f:selectItems value="#{signupMealController.attendingCount}"
+							var="onecount" 
+							itemLabel="#{onecount}"
+							itemValue="#{onecount}" />
+					</h:selectOneMenu>
+				</h:panelGroup>
+
+				<h:panelGroup id="maxattendeesquestion" layout="block" rendered="#{not empty signupMealController.mealEventList}" >
+					<h:outputText  value="Choose Maximum Number Attending:" 
+				   	rendered="#{signupMealController.signupOperation eq 'setMaxAttendees' and
+				   		signupMealController.leadCook}" />
+				
+					<h:selectOneMenu  value="#{signupMealController.maxnumberattending}"
+				 	rendered="#{signupMealController.signupOperation eq 'setMaxAttendees' and
+				 		signupMealController.leadCook}">
+						<f:selectItems value="#{signupMealController.maxattendingCount}"
+							var="onecount" 
+							itemLabel="#{onecount}"
+							itemValue="#{onecount}" />
+					</h:selectOneMenu>
+				</h:panelGroup>
+
+			</h:panelGrid>
+				
+			<h:panelGrid columns="1" 
+				headerClass="formheader" styleClass="formstyle" rendered="#{not empty signupMealController.mealEventList}" >
+				<br />
+				<h:panelGroup style="display:block; text-align:center">				
+					<h:commandButton value="Submit Choice" action="#{signupMealController.signupMealView}" >
+                        <f:ajax execute="@form" render="message" />
+					</h:commandButton>
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			<br />
+			<h:panelGroup id="signupnote" style="display:block; text-align:center" rendered="#{not empty signupMealController.mealEventList}" >	
+            		<h:outputText value="Note: setting Choose Number Attending to 0 for signups will delete that signup unless the meal has been closed."
+            		rendered="#{signupMealController.signupOperation eq 'doSignup' ||
+				   		signupMealController.signupOperation eq 'doSignupSomeoneElse'}" />
+            </h:panelGroup>
+
+			<h:messages id="message" layout="table" errorClass="errors" />
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

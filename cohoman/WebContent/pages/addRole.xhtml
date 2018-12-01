@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Add a Role to an Existing User
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" title="Add Role" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please specify a user and associated role to add."/>
+         		</f:facet>
+		
+				<h:selectOneMenu value="#{addRoleController.chosenUserString}">
+					<f:selectItems value="#{addRoleController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.username}"
+						itemValue="#{oneuser.userid}" />
+					<f:ajax render="rolevalue" execute="rolevalue" event="change" />
+				</h:selectOneMenu>
+	
+				<h:selectOneMenu id="rolevalue" value="#{addRoleController.chosenRoleString}">
+					<f:selectItems value="#{addRoleController.rolesAvailableList}"
+						var="onerole" 
+						itemLabel="#{onerole.rolename}"
+						itemValue="#{onerole.roleid}" />
+				</h:selectOneMenu>
+				
+				<h:panelGroup style="display:block; text-align:center">				
+					<h:commandButton value="Submit Choice" action="#{addRoleController.addRoleView}" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

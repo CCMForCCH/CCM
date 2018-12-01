@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Main Menu
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+			<fieldset>
+			<legend>Calendars</legend>
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="Master Calendar" action="masterSchedule"  /> 
+					</td>
+					<td>
+						<h:outputText value="Shows all events for a month."/>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+			<br></br>
+	
+			<fieldset>
+			<legend>Space Management</legend>
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="Display All Reservation Requests" action="displayAllPrivateEventsList"  /> 
+					</td>
+					<td>
+						<h:outputText value="Display all reservation requests for cohousing common space."/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Approve/Reject Requested Reservation Requests" action="displayPendingPrivateEventsList"  /> 
+					</td>
+					<td>
+						<h:outputText value="Display common space reservation requests which need to be approved or rejected."/>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+	
+		</h:form>	
+
+	</ui:define>
+	
+</ui:composition>
+	
+</body>
+</html>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit Pizza/Potluck Meal Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Edit Pizza/Potluck Fields" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Choose what to change in the Pizza/Potluck:"/>
+         		</f:facet>
+				Leader 1:
+				<h:selectOneMenu value="#{editPizzaController.chosenPizzaEvent.leader1}">
+					<f:selectItems value="#{editPizzaController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+				Leader 2:
+				<h:selectOneMenu value="#{editPizzaController.chosenPizzaEvent.leader2}">
+					<f:selectItem itemValue="" itemLabel="Choose Leader 2" />
+					<f:selectItems value="#{editPizzaController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+
+				Occasion (optional):
+				<h:inputText id="EventName" value="#{editPizzaController.chosenPizzaEvent.eventName}" size = "30" maxlength = "40"/>
+											
+				Information (optional):
+				<h:inputText id="EventDescription" value="#{editPizzaController.chosenPizzaEvent.eventinfo}" size = "60" maxlength = "200"/>
+
+			</h:panelGrid>						
+			<br />
+			<h:panelGroup style="display:block; text-align:center">	
+					<h:commandButton value="Submit Pizza/Potluck Meal Changes" action="#{editPizzaController.editPizzaItemsView}" />			
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+					
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

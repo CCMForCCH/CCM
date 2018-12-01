@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Create a New Periodic Maintenance Task
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Please Enter Periodic Maintenance Task Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter Periodic Maintenance Task Information"/>
+            		<br />
+         		</f:facet>
+  
+  				<h:outputText value="Maintenance Item:"  />				
+				<h:inputText id="MaintenanceItemName" value="#{mtaskController.maintenanceItemName}" 
+					 maxlength = "31" disabled="true" />
+        		
+				<h:inputHidden id="junk" value="#{mtaskController.username}" 
+					 maxlength = "31" />
+				<h:inputHidden id="chosenMaintenanceItemId" value="#{mtaskController.chosenMaintenanceItemId}" 
+					 maxlength = "31" required="true" rendered="true"/>
+			
+				<h:outputText value="Vendor:"  />				
+				<h:inputText id="Vendor" value="#{mtaskController.vendorname}" 
+					 maxlength = "31" required="true" />
+				
+				<h:outputText value="Notes:"  />				
+				<h:inputTextarea id="Notes" value="#{mtaskController.notes}" 
+					rows="6" cols="60" maxlength = "2047" />
+								
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center"  >				
+				<h:commandButton value="Submit New Maintenance Task" action="#{mtaskController.addMaintenanceTask}" />
+			</h:panelGroup>
+			
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

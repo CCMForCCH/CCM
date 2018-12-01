@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List CH Security Assignments
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+  
+<h:panelGrid columns="1" title="Common House Security Assignments" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Common House Security Assignments"/>
+        </f:facet>
+
+	<h:link value="Show Common House Security Checklist" outcome="helpChSecurityList.xhtml" style="display:block; text-align:center"/>
+	<br />
+	<h:dataTable value="#{retrieveSecurityListController.chSecurityListWithSubs}" var="onerow" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns">
+ 
+ 		<h:column>
+  			<f:facet name="header">Week Starting Sunday</f:facet> 
+  			#{onerow.startingDateString}           
+		</h:column>
+ 
+		<h:column>
+  			<f:facet name="header">Unit-Person</f:facet> 
+  			#{onerow.unitnumber}  #{onerow.firstname}         
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Substitute</f:facet> 
+  			#{onerow.substitute}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Add Substitute</f:facet> 
+  			<h:link value="add_substitute" outcome="modifySubstituteTable">
+  				<f:param name="securityStartDate" value="#{onerow.startingDateString}"  />
+  				<f:param name="originalSecurityPerson" value="#{onerow.firstname}"  />  				
+  			</h:link> 
+		</h:column>
+
+</h:dataTable>
+
+<br />
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

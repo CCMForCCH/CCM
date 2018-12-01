@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			This week at CCH
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+ <h:panelGrid columns="1" title="Cohousing Events List" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Birthdays Coming Up this Week!"
+           	rendered="#{not empty retrieveThisWeekForIndexController.birthdayList}"/>
+        </f:facet>
+	<ui:repeat var="onebirthday" value="#{retrieveThisWeekForIndexController.birthdayList}" varStatus="status">
+		<h:outputText value="#{onebirthday}" 
+			    	style="display:block; text-align:center; font-weight: large; font-size: 125%;color: blue"/>
+	</ui:repeat>
+	<br />
+</h:panelGrid>
+
+<h:panelGrid columns="1" title="Cohousing Events List" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="This week at Cambridge Cohousing"/>
+           <br />
+           <h:outputText value="#{retrieveThisWeekForIndexController.dateForWeek}"/>
+        </f:facet>
+	
+	<h:outputText value="There are no upcoming cohousing events." 
+		rendered="#{empty retrieveThisWeekForIndexController.weeksEvents}" />
+	
+	<h:dataTable value="#{retrieveThisWeekForIndexController.weeksEvents}" var="oneevent" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns"
+		rendered="#{not empty retrieveThisWeekForIndexController.weeksEvents}">
+ 
+		<h:column>
+  			<f:facet name="header">Day of Event</f:facet> 
+  			#{oneevent.thisweekPrintableDay}           
+		</h:column>
+		
+		<h:column>
+  			<f:facet name="header">Starts At</f:facet> 
+  			#{oneevent.thisweekPrintableTime}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Event Name</f:facet> 
+  			#{oneevent.eventName}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Event Details</f:facet> 
+  			#{oneevent.eventInfo}           
+		</h:column>
+
+</h:dataTable>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

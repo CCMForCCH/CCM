@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Main Menu
+		</ui:define>
+	<ui:define name="content">
+	<br/>
+		<h:form>
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Calendars (read-only)</b></legend>
+			  <div class="column1">
+			  <img src="images/calendar.jpg" style="width: 100%" />
+			  </div>
+			<!--
+				<div class="column2">
+						<h:commandLink value="Master Calendar" action="masterSchedule"  /> 
+					<span style="display: inline-table; text-indent: 20px;">
+						<h:outputText value="Shows all events for a month."/>
+					</span>
+					<br/>
+					
+						<h:commandLink value="This week page" action="oneweekSchedule"  /> 
+					<span style="display: inline-table; text-indent: 20px;">
+						<h:outputText value="Shows all events for the coming week."/>
+					</span>
+					<br/>
+						<h:commandLink value="Meals Calendar" action="mealSchedule"  /> 
+					<span style="display: inline-table; text-indent: 20px;">
+						<h:outputText value="Shows all meals in the current meal cycle."/>
+					</span>
+				</div>
+				-->
+				<div class="column2">
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Master Calendar" action="masterSchedule"  /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Shows all events for a month."/>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="This week page" action="oneweekSchedule"  /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Shows all events for the coming week."/>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Meals Calendar" action="mealSchedule"  />
+						</td>
+						<td> 
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Shows all meals in the current meal cycle."/>
+							</span>
+						</td>
+					</tr>
+				</table>
+				</div>				
+			</fieldset>
+			
+			<br/>
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Meals - Common</b></legend>
+			  <div class="column1">
+			  <img src="images/common_meal.jpg" style="width: 100%" />
+			  </div>
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Attending a common meal" action="signupForMeal" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Add/remove yourself or list all current attendees." />	
+						</span>					
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Create common meal" action="createMeal" /> 
+						</td>
+						<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Create a new common meal (i.e. set the date, menu, and lead cook)." />
+						</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Edit/Delete common meal" action="editMeal" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Add cooks and cleaners for a meal or delete the meal." />
+							</span>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<br/>
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Meals - Pizza/Potluck</b></legend>
+			  <div class="column1">
+			  <img src="images/pizza.jpg" style="width: 120px;" />
+			  </div>
+			
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Attending a pizza/potluck" action="signupForPizza" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Add/remove yourself or list all current attendees." />
+							</span>						
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Create pizza/potluck meal" action="createPizza" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Create a new pizza/potluck meal (i.e. set the date, and leader)." />
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Edit/Delete pizza/potluck meal" action="editPizza" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Add or modify the leaders for a pizza/potluck meal or delete the meal." />
+							</span>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			
+			<br/>
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Meals - Potluck</b></legend>
+			  <div class="column1">
+			  <img src="images/potluck.jpg" style="width: 120px;" />
+			  </div>
+
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Attending a potluck" action="signupForPotluck" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Add/remove yourself or list all current attendees." />
+							</span>						
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Create potluck meal" action="createPotluck" /> 
+						</td>
+						<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Create a new potluck meal (i.e. set the date, and leader)." />
+						</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Edit/Delete potluck meal" action="editPotluck" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Add or modify the leaders for a potluck meal or delete the meal." />
+							</span>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<br/>
+			
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Cohousing Events (For the community - No approval required)</b></legend>
+			  <div class="column1">
+			  <img src="images/events.jpg" style="width: 120px;" />
+			  </div>
+			
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Create coho event" action="createCohoEvent" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Create a new coho event (e.g. committee meetings, cohousing groups, etc.)." />
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="List upcoming coho events" action="displayCohoEventsList" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Display a table containing all upcoming cohousing events (except for meals)." />
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Edit/Delete coho event" action="editCohoEvent" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Modify an existing cohousing event (e.g. change the date, time, location, or delete the event)." />
+							</span>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<br/>
+			
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Reserved Spaces (Sponsored by members - Approval required)</b></legend>
+			  <div class="column1">
+			  <img src="images/reserved.jpg" style="width: 120px;" />
+			  </div>
+			
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Request common space reservation" action="requestReservedEvent" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Request a reservation for an event that uses one or more common spaces." />
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="List my common space reservation requests" action="displayMyPrivateEventsList" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Show my common space reservation requests." />
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="List upcoming common space reservations" action="displayUpcomingPrivateEventsList" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Show all upcoming common space reservations." />
+							</span>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<br/>
+			
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Security Assignments</b></legend>
+			  <div class="column1">
+			  <img src="images/security.jpg" style="width: 120px;" />
+			  </div>
+			
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="CH Security Assignments"  action="displayChSecurityList"/> 
+					</td>
+					<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Display the Common House Security Assignments for CCH residents."/>
+						</span>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="WE Security Assignments" action="displayWeSecurityList"  /> 
+					</td>
+					<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Display the West End Security Assignments for CCH residents."/>
+						</span>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+			<br/>
+			
+		    <fieldset style="border: 4px solid #F00;">
+			<legend><b>Members Information</b></legend>
+			  <div class="column1">
+			  <img src="images/members.png" style="width: 120px;" />
+			  </div>
+			
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Phone and Email List" action="displayPhoneList"  /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Display the phone and email list for CCH residents."/>
+							</span>
+						</td> 
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Children" action="displayChildrenList"  /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Display information about our children."/>
+							</span>
+						</td> 
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Get emergency information" action="getEmergencyInfo" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Get the emergency contact information for a CCH resident." />
+							</span>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<br/>
+			
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>My User Profile</b></legend>
+			  <div class="column1">
+			  <img src="images/profile.jpg" style="width: 120px;" />
+			  </div>
+			
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="Edit my user profile" action="editUserProfile"  /> 
+					</td>
+					<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Edit any of the fields associated with your user profile."/>
+						</span>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Change my user password" action="changeUserPassword"  /> 
+					</td>
+					<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Give your user account a new password."/>
+						</span>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+			<br/>
+			
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Hofeller (Demo only)</b></legend>
+			  <div class="column1">
+			  <img src="images/hofeller.jpg" style="width: 120px;" />
+			  </div>
+			
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="List all maintenance items" action="displayMaintenanceListOnly"  /> 
+					</td>
+					<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="List all periodic maintenance items."/>
+						</span>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+					
+		</h:form>	
+
+	</ui:define>
+	
+</ui:composition>
+	
+</body>
+</html>

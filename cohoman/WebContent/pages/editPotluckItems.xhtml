@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit Potluck Meal Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Edit Potluck Fields" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Choose what to change in the Potluck:"/>
+         		</f:facet>
+				Leader 1:
+				<h:selectOneMenu value="#{editPotluckController.chosenPotluckEvent.leader1}">
+					<f:selectItems value="#{editPotluckController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+				Leader 2:
+				<h:selectOneMenu value="#{editPotluckController.chosenPotluckEvent.leader2}">
+					<f:selectItem itemValue="" itemLabel="Choose Leader 2" />
+					<f:selectItems value="#{editPotluckController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+				Information:
+				<h:inputTextarea id="Info" value="#{editPotluckController.chosenPotluckEvent.eventinfo}"
+					rows="3" cols="60" maxlength = "180" required="true" >
+						<f:validateLength maximum="180" />
+				</h:inputTextarea>
+			</h:panelGrid>						
+			<br />
+			<h:panelGroup style="display:block; text-align:center">	
+					<h:commandButton value="Submit Potluck Meal Changes" action="#{editPotluckController.editPotluckItemsView}" />			
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+					
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

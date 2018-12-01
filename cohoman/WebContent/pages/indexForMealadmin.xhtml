@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Main Menu
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+			<fieldset>
+			<legend><h3>Calendars</h3></legend>
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="Master Calendar" action="masterSchedule"  /> 
+					</td>
+					<td>
+						<h:outputText value="Shows all events for a month."/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Meals Calendar" action="mealSchedule"  /> 
+					</td>
+					<td>
+						<h:outputText value="Shows all meals in the current meal cycle."/>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+			<br></br>
+			
+			<fieldset>
+			<legend><h3>Meals - Common</h3></legend>
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Create common meal" action="createMeal" /> 
+						</td>
+						<td>
+							<h:outputText value="Create a new common meal (i.e. set the date, menu, and lead cook)." />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Edit/Delete common meal" action="editMeal" /> 
+						</td>
+						<td>
+							<h:outputText value="Add cooks and cleaners for a meal or delete the meal" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Signup/Show Signups for a common meal" action="signupForMeal" /> 
+						</td>
+						<td>
+							<h:outputText value="Signup (or remove signup) for a common meal or show all current signups" />
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<br></br>
+
+			<fieldset>
+			<legend><h3>Meals - Pizza/Potluck</h3></legend>
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Create pizza/potluck meal" action="createPizza" /> 
+						</td>
+						<td>
+							<h:outputText value="Create a new pizza/potluck meal (i.e. set the date, and leader)." />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Edit/Delete pizza/potluck meal" action="editPizza" /> 
+						</td>
+						<td>
+							<h:outputText value="Add or modify the leaders for a pizza/potluck meal or delete the meal" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Signup/Show Signups for a pizza/potluck" action="signupForPizza" /> 
+						</td>
+						<td>
+							<h:outputText value="Signup (or remove signup) for a pizza/potluck or show all current signups" />
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<br></br>
+
+			<fieldset>
+			<legend><h3>Meals - Potluck</h3></legend>
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Create potluck meal" action="createPotluck" /> 
+						</td>
+						<td>
+							<h:outputText value="Create a new potluck meal (i.e. set the date, and leader)." />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Edit/Delete potluck meal" action="editPotluck" /> 
+						</td>
+						<td>
+							<h:outputText value="Add or modify the leaders for a potluck meal or delete the meal" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Signup/Show Signups for a potluck" action="signupForPotluck" /> 
+						</td>
+						<td>
+							<h:outputText value="Signup (or remove signup) for a potluck or show all current signups" />
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+
+			<br></br>
+			
+			<fieldset>
+			<legend><h3>Meal Periods/Cycles</h3></legend>
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="Create meal period" action="createMealTimePeriod"  /> 
+					</td>
+					<td>
+						<h:outputText value="Creates the starting and ending dates for a meal period."/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Edit meal period" action="editMealTimePeriod"  /> 
+					</td>
+					<td>
+						<h:outputText value="Edit the starting and/or ending dates of the current meal period."/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Delete meal period" action="deleteMealTimePeriod"  /> 
+					</td>
+					<td>
+						<h:outputText value="Delete a specific meal period."/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Delete specific meal" action="deleteSpecificMeal"  /> 
+					</td>
+					<td>
+						<h:outputText value="Delete a specific meal."/>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+			<br></br>
+	
+		</h:form>	
+
+	</ui:define>
+	
+</ui:composition>
+	
+</body>
+</html>

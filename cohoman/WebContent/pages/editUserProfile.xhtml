@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit My Profile
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Edit My User profile" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please choose what user profile information to change:"/>
+            		<br />
+         		</f:facet>
+
+				Username:
+				<h:inputText id="username" value="#{editUserProfileController.currentUser.username}" size = "33" maxlength = "32" disabled="true" />
+				First Name:
+				<h:inputText id="firstname" value="#{editUserProfileController.currentUser.firstname}" size = "33" maxlength = "32" required="true" />
+				Last Name:
+				<h:inputText id="lastname" value="#{editUserProfileController.currentUser.lastname}"  size = "33" maxlength = "32" required="true" />
+				
+				Unit Number:
+				<h:selectOneMenu value="#{editUserProfileController.chosenUnitString}">
+					<f:selectItems value="#{editUserProfileController.unitBeanList}"
+						var="oneunit"
+						itemLabel="#{oneunit.unitnumber}"
+						itemValue="#{oneunit.unitnumber}" />
+				</h:selectOneMenu>
+					
+				Email address:
+				<h:inputText id="email" value="#{editUserProfileController.currentUser.email}" size = "65" maxlength = "64" required="true" />
+				Home Phone:
+				<h:inputText id="homephone" value="#{editUserProfileController.currentUser.homephone}" size = "13" maxlength = "12" />
+				Cell Phone:
+				<h:inputText id="cellphone" value="#{editUserProfileController.currentUser.cellphone}" size = "13" maxlength = "12" />
+				Work Phone:
+				<h:inputText id="workphone" value="#{editUserProfileController.currentUser.workphone}" size = "13" maxlength = "12" />
+				Food Restrictions:
+				<h:inputText id="foodrestrictions" value="#{editUserProfileController.currentUser.foodrestrictions}" size="50" maxlength = "48" />
+				Emergency Contact Information:
+				<h:inputTextarea value="#{editUserProfileController.currentUser.emergencyinfo}" rows="7" cols="70">
+					<f:validateLength maximum="500" />
+				</h:inputTextarea>
+			
+			</h:panelGrid>	
+			<br />					
+			<h:panelGroup style="display:block; text-align:center">	
+					<h:commandButton value="Submit Changes" action="#{editUserProfileController.editUserProfileView}" />			
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

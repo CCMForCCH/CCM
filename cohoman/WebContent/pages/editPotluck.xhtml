@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit an Existing Potluck Meal
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		
+		<h:outputScript library="javascript" name="checkForMealsCreateDelete.js" />
+		
+		<h:form id="editPotluckFormId">
+
+			<h:panelGrid columns="1" title="Please Choose to either Edit or Delete the Potluck Meal" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Choose to either Edit or Delete the Potluck Meal"/>
+         		</f:facet>
+
+				<h:outputText value="*** No meals thus far in this meal cycle ***"
+					rendered="#{empty editPotluckController.potluckEventList}" />
+
+				<h:selectOneMenu value="#{editPotluckController.chosenPotluckEventString}"
+					rendered="#{not empty editPotluckController.potluckEventList}" >
+					<f:selectItems value="#{editPotluckController.potluckEventList}"
+						var="onemeal" 
+						itemLabel="#{onemeal.choosableEventDate}"
+						itemValue="#{onemeal.usableEventid}" />
+				</h:selectOneMenu>
+		
+				<h:selectOneRadio id="radioButtons" value="#{editPotluckController.potluckOperation}" layout="pageDirection"
+					rendered="#{not empty editPotluckController.potluckEventList}">
+					<f:selectItem itemValue="changePotluck" itemLabel="Change Potluck Meal"/>
+					<f:selectItem itemValue="deletePotluck" itemLabel="Delete Potluck Meal" itemDisabled="false"/>			
+				</h:selectOneRadio>
+		
+				<h:panelGroup style="display:block; text-align:center" 
+					rendered="#{not empty editPotluckController.potluckEventList}">				
+					<h:commandButton value="Submit Choice" action="#{editPotluckController.editPotluckView}" 
+						onclick="return checkForPotluckDelete(this.form)"/>
+				</h:panelGroup>
+			</h:panelGrid>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

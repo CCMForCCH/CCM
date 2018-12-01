@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit an Existing Pizza/Potluck Meal
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		
+		<h:outputScript library="javascript" name="checkForMealsCreateDelete.js" />
+		
+		<h:form id="editPizzaFormId">
+
+			<h:panelGrid columns="1" title="Please Choose to either Edit or Delete the Pizza/Potluck Meal" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Choose to either Edit or Delete the Pizza/Potluck Meal"/>
+         		</f:facet>
+
+				<h:outputText value="*** No meals thus far in this meal cycle ***"
+					rendered="#{empty editPizzaController.pizzaEventList}" />
+
+				<h:selectOneMenu value="#{editPizzaController.chosenPizzaEventString}"
+					rendered="#{not empty editPizzaController.pizzaEventList}" >
+					<f:selectItems value="#{editPizzaController.pizzaEventList}"
+						var="onemeal" 
+						itemLabel="#{onemeal.choosableEventDate}"
+						itemValue="#{onemeal.usableEventid}" />
+				</h:selectOneMenu>
+		
+				<h:selectOneRadio id="radioButtons" value="#{editPizzaController.pizzaOperation}" layout="pageDirection"
+					rendered="#{not empty editPizzaController.pizzaEventList}">
+					<f:selectItem itemValue="changePizza" itemLabel="Change Pizza/Potluck Meal"/>
+					<f:selectItem itemValue="deletePizza" itemLabel="Delete Pizza/Potluck Meal" itemDisabled="false"/>			
+				</h:selectOneRadio>
+		
+				<h:panelGroup style="display:block; text-align:center" 
+					rendered="#{not empty editPizzaController.pizzaEventList}">				
+					<h:commandButton value="Submit Choice" action="#{editPizzaController.editPizzaView}" 
+						onclick="return checkForPizzaDelete(this.form)"/>
+				</h:panelGroup>
+			</h:panelGrid>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

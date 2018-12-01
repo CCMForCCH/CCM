@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Master Event Calendar
+		</ui:define>
+	
+	<ui:define name="content">
+		<h:form>
+
+		<h:panelGrid columns="1" title="Please Enter Common Meal Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	    	<f:facet name="header">
+           		<h:outputText value="Master Event Calendar for #{daysOfMonth.titleMonthString}"/>
+        	</f:facet>
+        </h:panelGrid>
+
+			<h:panelGroup style="display:block; text-align:center">				
+				<h:commandButton value="Last Month" action="#{daysOfMonth.previousMonth}" />
+				<h:commandButton value="Next Month" action="#{daysOfMonth.nextMonth}" />
+			</h:panelGroup>
+			<br />
+			
+<h:dataTable value="#{daysOfMonth.weeks}" var="week" styleClass="weeks" headerClass="namesHeader" 
+	rules="all" frame="border" columnClasses="day,day,day,day,day,day,day" width="98%"
+	border="10" cellpadding="5px" cellspacing="5px" >
+
+<h:column>
+  <f:facet name="header">Sunday</f:facet>          
+		 #{week.mainCalendarDayList[0].dayNumber}
+		<div style="overflow:auto; height:100px;">
+		
+		<h:dataTable value="#{week.mainCalendarDayList[0]}" var="mainCalendarDay" styleClass="events" 
+			frame="none" columnClasses="oneevent" rendered="#{!week.mainCalendarDayList[0].emptyOfEvents}"
+			cellpadding="1px" cellspacing="1px">
+			<h:column>
+				<h:dataTable value="#{mainCalendarDay.eventLinks}" var="oneEventLink" styleClass="events" 
+		           	frame="none" columnClasses="oneevent" 
+		           	cellpadding="1px" cellspacing="1px">
+		           <h:column>
+						<h:link value="#{oneEventLink.eventname}" outcome="#{oneEventLink.eventlink}" />
+					</h:column>
+		    	</h:dataTable>
+			</h:column>
+		</h:dataTable> 
+		</div>
+
+</h:column>
+
+<h:column>
+  <f:facet name="header">Monday</f:facet>            
+			 #{week.mainCalendarDayList[1].dayNumber}
+		<div style="overflow:auto; height:100px;">
+		
+		<h:dataTable value="#{week.mainCalendarDayList[1]}" var="mainCalendarDay" styleClass="events" 
+			frame="none" columnClasses="oneevent" rendered="#{!week.mainCalendarDayList[1].emptyOfEvents}"
+			cellpadding="1px" cellspacing="1px">
+			<h:column>
+				<h:dataTable value="#{mainCalendarDay.eventLinks}" var="oneEventLink" styleClass="events" 
+		           	frame="none" columnClasses="oneevent"
+		           	cellpadding="1px" cellspacing="1px">
+		           <h:column>
+						<h:link value="#{oneEventLink.eventname}" outcome="#{oneEventLink.eventlink}" />
+					</h:column>
+		    	</h:dataTable>
+			</h:column>
+		</h:dataTable> 
+		</div>
+	
+		
+</h:column>
+
+<h:column>
+  <f:facet name="header">Tuesday</f:facet>            
+			 #{week.mainCalendarDayList[2].dayNumber}
+		<div style="overflow:auto; height:100px;">
+		
+		<h:dataTable value="#{week.mainCalendarDayList[2]}" var="mainCalendarDay" styleClass="events" 
+			frame="none" columnClasses="oneevent" rendered="#{!week.mainCalendarDayList[2].emptyOfEvents}"
+			cellpadding="1px" cellspacing="1px">
+			<h:column>
+				<h:dataTable value="#{mainCalendarDay.eventLinks}" var="oneEventLink" styleClass="events" 
+		           	frame="none" columnClasses="oneevent"
+		           	cellpadding="1px" cellspacing="1px">
+		           <h:column>
+						<h:link value="#{oneEventLink.eventname}" outcome="#{oneEventLink.eventlink}" />
+					</h:column>
+		    	</h:dataTable>
+			</h:column>
+		</h:dataTable> 
+		</div>
+           
+</h:column>
+
+<h:column>
+  <f:facet name="header">Wednesday</f:facet>            
+       			 #{week.mainCalendarDayList[3].dayNumber}
+		<div style="overflow:auto; height:100px;">
+		
+		<h:dataTable value="#{week.mainCalendarDayList[3]}" var="mainCalendarDay" styleClass="events" 
+			frame="none" columnClasses="oneevent" rendered="#{!week.mainCalendarDayList[3].emptyOfEvents}"
+			cellpadding="1px" cellspacing="1px">
+			<h:column>
+				<h:dataTable value="#{mainCalendarDay.eventLinks}" var="oneEventLink" styleClass="events" 
+		           	frame="none" columnClasses="oneevent" 
+		           	cellpadding="1px" cellspacing="1px">
+		           <h:column>
+						<h:link value="#{oneEventLink.eventname}" outcome="#{oneEventLink.eventlink}" />
+					</h:column>
+		    	</h:dataTable>
+			</h:column>
+		</h:dataTable> 
+		</div>
+           
+</h:column>
+<h:column>
+  <f:facet name="header">Thursday</f:facet>            
+  			 #{week.mainCalendarDayList[4].dayNumber}
+		<div style="overflow:auto; height:100px;">
+		
+		<h:dataTable value="#{week.mainCalendarDayList[4]}" var="mainCalendarDay" styleClass="events" 
+			frame="none" columnClasses="oneevent" rendered="#{!week.mainCalendarDayList[4].emptyOfEvents}"
+			cellpadding="1px" cellspacing="1px">
+			<h:column>
+				<h:dataTable value="#{mainCalendarDay.eventLinks}" var="oneEventLink" styleClass="events" 
+		           	frame="none" columnClasses="oneevent"
+		           	cellpadding="1px" cellspacing="1px">
+		           <h:column>
+						<h:link value="#{oneEventLink.eventname}" outcome="#{oneEventLink.eventlink}" />
+					</h:column>
+		    	</h:dataTable>
+			</h:column>
+		</h:dataTable> 
+		</div>
+           
+</h:column>
+<h:column>
+  <f:facet name="header">Friday</f:facet>            
+			 #{week.mainCalendarDayList[5].dayNumber}
+		<div style="overflow:auto; height:100px;">
+		
+		<h:dataTable value="#{week.mainCalendarDayList[5]}" var="mainCalendarDay" styleClass="events" 
+			frame="none" columnClasses="oneevent" rendered="#{!week.mainCalendarDayList[5].emptyOfEvents}"
+			cellpadding="1px" cellspacing="1px">
+			<h:column>
+				<h:dataTable value="#{mainCalendarDay.eventLinks}" var="oneEventLink" styleClass="events" 
+		           	frame="none" columnClasses="oneevent"
+		           	cellpadding="1px" cellspacing="1px">
+		           <h:column>
+						<h:link value="#{oneEventLink.eventname}" outcome="#{oneEventLink.eventlink}" />
+					</h:column>
+		    	</h:dataTable>
+			</h:column>
+		</h:dataTable> 
+		</div>
+           
+</h:column>
+<h:column>
+  <f:facet name="header">Saturday</f:facet>            
+ 			 #{week.mainCalendarDayList[6].dayNumber}
+		<div style="overflow:auto; height:100px;">
+		
+		<h:dataTable value="#{week.mainCalendarDayList[6]}" var="mainCalendarDay" styleClass="events" 
+			frame="none" columnClasses="oneevent" rendered="#{!week.mainCalendarDayList[6].emptyOfEvents}"
+			cellpadding="1px" cellspacing="1px">
+			<h:column>
+				<h:dataTable value="#{mainCalendarDay.eventLinks}" var="oneEventLink" styleClass="events" 
+		           	frame="none" columnClasses="oneevent"
+		           	cellpadding="1px" cellspacing="1px">
+		           <h:column>
+						<h:link value="#{oneEventLink.eventname}" outcome="#{oneEventLink.eventlink}" />
+					</h:column>
+		    	</h:dataTable>
+			</h:column>
+		</h:dataTable> 
+		</div>
+            
+</h:column>
+
+
+ 
+</h:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

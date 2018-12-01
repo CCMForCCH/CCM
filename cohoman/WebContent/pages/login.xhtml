@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/loginLayout.xhtml">
+		<ui:define name="windowTitle">
+			CCM Login
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form id="login_page">
+					<br />
+					<br />
+					<h:outputText value="CCM Kiosk Login" style="font-size: xx-large; font-weight: bold" 
+						rendered = "#{authenticateController.theKiosk}"/>
+					<h:outputText value="CCM Login" style="font-size: xx-large; font-weight: bold" 
+						rendered = "#{!authenticateController.theKiosk}"/>
+					<br />
+					<br />
+					
+					<h:outputText value="Please enter user name" style="font-size: large; font-weight: bold"
+						rendered = "#{authenticateController.theKiosk}" />
+					<h:outputText value="Please enter user name and password" style="font-size: large; font-weight: bold"
+						rendered = "#{!authenticateController.theKiosk}" />
+					<br />
+					<br />
+					
+					<h:messages globalOnly="true" />
+					<h:panelGrid width="33%" columns="3">
+						<h:outputLabel value="User Name: " for="UserName" />
+						<h:inputText id="UserName" value="#{authenticateController.username}"
+							required="true" />
+						
+						<br />						
+						<h:outputLabel value="Password: " for="Password" 
+							rendered = "#{!authenticateController.theKiosk}"/>
+						<h:inputSecret id="Password" value="#{authenticateController.password}"
+							required="true" rendered = "#{!authenticateController.theKiosk}" />
+							
+						<br />
+						<br />
+						
+						<h:panelGroup>
+							<h:commandButton value="Login" action="#{authenticateController.authenticate}" />						
+						</h:panelGroup>
+						
+					</h:panelGrid>
+			
+		</h:form>
+		<!-- code to set the default input focus -->
+		<script>
+  			document.getElementById('login_page:UserName').focus();
+		</script>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

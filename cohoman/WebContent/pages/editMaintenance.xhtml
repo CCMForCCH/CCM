@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit an Existing Maintenance Item
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		
+		<h:outputScript library="javascript" name="checkForMealDelete.js" />
+ 
+ 		<h:form>
+
+			<h:panelGrid columns="1" title="Edit or Delete Maintenance Item" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Choose to Edit or Delete Maintenance Item"/>
+         		</f:facet>
+		
+				<h:outputText value="*** No maintenance items defined ***"
+					rendered="#{empty editMaintenanceController.maintenanceItemDTOsList}" />
+				
+				<h:selectOneMenu value="#{editMaintenanceController.chosenMaintenanceItemString}"
+					rendered="#{not empty editMaintenanceController.maintenanceItemDTOsList}">
+					<f:selectItems value="#{editMaintenanceController.maintenanceItemDTOsList}"
+						var="oneitem" 
+						itemLabel="#{oneitem.itemname}"
+						itemValue="#{oneitem.maintenanceitemid}" />
+				</h:selectOneMenu>
+		
+				<h:selectOneRadio value="#{editMaintenanceController.maintenanceOperation}" layout="pageDirection"
+					required="true" rendered="#{not empty editMaintenanceController.maintenanceItemDTOsList}">
+					<f:selectItem itemValue="changeMaintenanceItem" itemLabel="Change Maintenance Item"/>
+					<f:selectItem itemValue="deleteMaintenanceItem" itemLabel="Delete Maintenance Item" />			
+				</h:selectOneRadio>
+		
+				<h:panelGroup style="display:block; text-align:center"
+					rendered="#{not empty editMaintenanceController.maintenanceItemDTOsList}">				
+					<h:commandButton value="Submit Choice" action="#{editMaintenanceController.editMaintenanceView}" 
+					    onclick="return checkForMealDelete(this.form)" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

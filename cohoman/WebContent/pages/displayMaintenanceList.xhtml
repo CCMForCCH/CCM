@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Periodic Maintenance Items
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Periodic Maintenance Items" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Periodic Maintenance Items"/>
+        </f:facet>
+	<br />
+	
+	<h:outputText value="There are no Periodic Maintenance Items." 
+		rendered="#{empty retrieveMaintenanceItemsListController.maintenanceItemList}" />
+	
+	<h:dataTable value="#{retrieveMaintenanceItemsListController.maintenanceItemList}" var="oneitem" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
+		rendered="#{not empty retrieveMaintenanceItemsListController.maintenanceItemList}">
+ 
+		<h:column>
+  			<f:facet name="header">Item Name</f:facet> 
+  			#{oneitem.itemname}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Item Description</f:facet> 
+  			#{oneitem.itemdescription}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Created By</f:facet> 
+  			#{oneitem.username}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Created On</f:facet> 
+  			#{oneitem.printableCreatedDate}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Priority</f:facet> 
+  			#{oneitem.priority}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Freq (Months)</f:facet> 
+  			<div align="center">
+  			#{oneitem.frequencyOfItem} 
+  			</div>          
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Target Time</f:facet> 
+  			#{oneitem.targetTimeOfyear}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Last Performed</f:facet> 
+  			#{oneitem.printableLastperformedDate}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Create Task</f:facet> 
+  			<h:link value="createtask" outcome="createMaintenanceTask.xhtml">
+  				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
+  				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
+  			</h:link>          
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">List Tasks</f:facet> 
+  			<h:link value="listtasks" outcome="listMaintenanceTasks.xhtml">
+  				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
+  				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
+  			</h:link>          
+		</h:column>
+
+</h:dataTable>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

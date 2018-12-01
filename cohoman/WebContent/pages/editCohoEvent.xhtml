@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit an Existing Cohousing Event
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+
+			<h:panelGrid columns="1" title="Edit or Delete Cohousing Event" 
+				headerClass="formheader" styleClass="formstyle" 
+				 >
+				
+	     		<f:facet name="header">
+            		<h:outputText value="Please Choose to Edit or Delete Cohousing Event"/>
+         		</f:facet>
+		
+					<h:outputText value="There are no upcoming cohousing events to edit." 
+				rendered="#{empty editCohoEventController.cohoEventList}" />
+		
+				<h:selectOneMenu value="#{editCohoEventController.chosenCohoEventString}"
+					rendered="#{not empty editCohoEventController.cohoEventList}" >
+					<f:selectItems value="#{editCohoEventController.cohoEventList}"
+						var="onecohoevent" 
+						itemLabel="#{onecohoevent.choosableEventDate}"
+						itemValue="#{onecohoevent.usableEventid}" />
+				</h:selectOneMenu>
+		
+				<h:selectOneRadio value="#{editCohoEventController.cohoOperation}" layout="pageDirection"
+				rendered="#{not empty editCohoEventController.cohoEventList}">
+					<f:selectItem itemValue="changeCohoEvent" itemLabel="Change Cohousing Event"/>
+					<f:selectItem itemValue="deleteCohoEvent" itemLabel="Delete Cohousing Event"/>			
+				</h:selectOneRadio>
+		
+				<h:panelGroup style="display:block; text-align:center"
+				rendered="#{not empty editCohoEventController.cohoEventList}">				
+					<h:commandButton value="Submit Choice" action="#{editCohoEventController.editCohoEventView}" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

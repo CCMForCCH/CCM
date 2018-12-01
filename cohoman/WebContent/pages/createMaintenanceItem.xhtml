@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Create a New Periodic Maintenance Item
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Please Enter Periodic Maintenance Item Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter Periodic Maintenance Item Information"/>
+         		</f:facet>
+         		         				
+				<h:outputText value="Item Name:"  />
+				<h:inputText id="ItemName" value="#{createMaintenanceItemController.itemname}" required="true"/>
+
+				<h:outputText value="Item Description:"  />				
+				<h:inputTextarea id="ItemDescription" value="#{createMaintenanceItemController.itemdescription}" 
+					rows="3" cols="60" maxlength = "510" required="true" />
+				
+				<h:outputText value="Frequency performed (months):"  />						
+				<h:selectOneMenu  value="#{createMaintenanceItemController.frequencyOfItem}" >
+					<f:selectItems value="#{createMaintenanceItemController.numberOfMonths}"
+						var="onecount" 
+						itemLabel="#{onecount}"
+						itemValue="#{onecount}" />
+				</h:selectOneMenu>
+	
+			    <h:outputText value="Target time of year:"  />
+				<h:inputText id="TargetTomeOfYear" value="#{createMaintenanceItemController.targetTimeOfyear}"/>
+				
+			    <h:outputText value="Priority:"  />
+				<h:selectOneMenu value="#{createMaintenanceItemController.chosenpriority}">
+					<f:selectItems value="#{createMaintenanceItemController.itempriorities}"
+						var="onepriority"
+						itemLabel="#{onepriority}"
+						itemValue="#{onepriority}" />
+				</h:selectOneMenu>
+				
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center"  >				
+				<h:commandButton value="Submit New Maintenance Item" action="#{createMaintenanceItemController.addMaintenanceItem}" />
+			</h:panelGroup>
+			
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit User Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Edit User Fields" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Choose what user profile information to change:"/>
+            		<br />
+         		</f:facet>
+
+				Username:
+				<h:inputText id="username" value="#{editUserController.chosenUser.username}" size = "33" maxlength = "32" required="true" disabled="true"/>
+				Password:
+				<h:inputSecret id="password" value="#{editUserController.newpassword}" size = "65" maxlength = "64" />
+				First Name:
+				<h:inputText id="firstname" value="#{editUserController.chosenUser.firstname}" size = "65" maxlength = "64" required="true" />
+				Last Name:
+				<h:inputText id="lastname" value="#{editUserController.chosenUser.lastname}" size = "65" maxlength = "64" required="true" />
+				Unit Number:
+				<h:inputText id="unit" value="#{editUserController.chosenUser.unit}" size="4" maxlength = "4" required="true" />
+				Email address:
+				<h:inputText id="email" value="#{editUserController.chosenUser.email}" size = "65" maxlength = "64"  />
+				Home Phone:
+				<h:inputText id="homephone" value="#{editUserController.chosenUser.homephone}" size = "13" maxlength = "12" />
+				Cell Phone:
+				<h:inputText id="cellphone" value="#{editUserController.chosenUser.cellphone}" size = "13" maxlength = "12" />
+				Work Phone:
+				<h:inputText id="workphone" value="#{editUserController.chosenUser.workphone}" size = "13" maxlength = "12" />
+				Food Restrictions:
+				<h:inputText id="foodrestrictions" value="#{editUserController.chosenUser.foodrestrictions}" size="50" maxlength = "48" />
+				Birth month:
+				<h:selectOneMenu id="selectMonthId" value="#{editUserController.chosenUser.birthmonth}">
+					<f:selectItems value="#{editUserController.monthsOfTheYear}"
+						var="month" 
+						itemLabel="#{month.monthName}"
+						itemValue="#{month.monthNumber}" />
+					<f:ajax render="selectDayId" execute="selectDayId" event="change" />
+				</h:selectOneMenu>
+				Birth day:
+				<h:selectOneMenu id="selectDayId" value="#{editUserController.chosenUser.birthday}">
+					<f:selectItems value="#{editUserController.daysOfTheMonth}"
+						var="day" 
+						itemLabel="#{day}"
+						itemValue="#{day}" />
+				</h:selectOneMenu>
+				Birth year:
+				<h:selectOneMenu value="#{editUserController.chosenUser.birthyear}">
+					<f:selectItems value="#{editUserController.years}"
+						var="year" 
+						itemLabel="#{year}"
+						itemValue="#{year}" />
+					<f:ajax render="selectDayId" execute="selectDayId" event="change" />
+				</h:selectOneMenu>
+				
+				<h:outputText value="User Type:"  />
+				<h:selectOneMenu value="#{editUserController.chosenUser.usertype}">
+					<f:selectItems value="#{editUserController.userTypes}"
+						var="oneusertype"
+						itemLabel="#{oneusertype}"
+						itemValue="#{oneusertype}" />
+				</h:selectOneMenu>
+				
+				Emergency Contact Information:
+				<h:inputTextarea value="#{editUserController.chosenUser.emergencyinfo}" rows="7" cols="70">
+					<f:validateLength maximum="500" />
+				</h:inputTextarea>
+			
+			</h:panelGrid>	
+			<br />					
+			<h:panelGroup style="display:block; text-align:center">	
+					<h:commandButton value="Submit Changes" action="#{editUserController.editUserItemsView}" />			
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

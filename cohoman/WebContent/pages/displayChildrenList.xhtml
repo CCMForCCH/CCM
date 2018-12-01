@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List Users
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Cohousing Children" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Cambridge Cohousing Children"/>
+        </f:facet>
+	<br />
+	
+	<h:dataTable value="#{retrieveUserListController.usersChildrenList}" var="oneuser" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns">
+ 
+		<h:column>
+  			<f:facet name="header">First Name</f:facet> 
+  			#{oneuser.firstname}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Last Name</f:facet> 
+  			#{oneuser.lastname}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Age</f:facet>
+  			<div align="center">
+  			#{oneuser.homephone} 
+  			</div>          
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Birthdate</f:facet> 
+  			#{oneuser.workphone}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Cell Phone</f:facet> 
+  			#{oneuser.cellphone}           
+		</h:column>
+
+
+		<h:column>
+  			<f:facet name="header">Unit</f:facet> 
+  			#{oneuser.unit}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Email Address</f:facet> 
+  			#{oneuser.email}           
+		</h:column>
+
+</h:dataTable>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

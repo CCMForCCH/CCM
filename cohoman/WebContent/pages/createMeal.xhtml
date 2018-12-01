@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Create a New Meal
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		
+		<h:outputScript library="javascript" name="checkForMealsCreateDelete.js" />
+		
+		<h:form id="createMealFormId">
+
+			<h:panelGrid columns="2" title="Please Enter Common Meal Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter Common Meal Information"/>
+         		</f:facet>
+         		
+         		<h:outputText value="*** No meals left to create in this meal cycle ***"
+					rendered="#{empty createMealController.mealDaysForPeriod}" />
+         		
+				<h:outputText value="Date:" 
+					rendered="#{not empty createMealController.mealDaysForPeriod}" />
+				<h:selectOneMenu value="#{createMealController.chosenMealDateTimestamp}"
+					rendered="#{not empty createMealController.mealDaysForPeriod}" >
+					<f:selectItems value="#{createMealController.mealDaysForPeriod}"
+						var="oneMealDate" 
+						itemLabel="#{oneMealDate.printableDate}"
+						itemValue="#{oneMealDate.timestamp}" />
+				</h:selectOneMenu>
+			
+				<h:outputText value="Time:" 
+					rendered="#{not empty createMealController.mealDaysForPeriod}" />
+				<h:selectOneMenu value="#{createMealController.slotNumber}"
+					rendered="#{not empty createMealController.mealDaysForPeriod}">
+					<f:selectItems value="#{createMealController.timeSlotsOfTheDay}"
+						var="slot" 
+						itemLabel="#{slot.slotString}"
+						itemValue="#{slot.slotNumber}" />
+				</h:selectOneMenu>
+		
+				<h:outputText value="Menu:" 
+					rendered="#{not empty createMealController.mealDaysForPeriod}" />
+				<h:inputTextarea id="Menu" value="#{createMealController.menu}" 
+					rows="3" cols="40" maxlength = "80" required="true" 
+					rendered="#{not empty createMealController.mealDaysForPeriod}" />
+		
+				<h:outputText value="Lead Cook:" 
+					rendered="#{not empty createMealController.mealDaysForPeriod}" />
+				<h:selectOneMenu value="#{createMealController.chosenUserString}" 
+					rendered="#{not empty createMealController.mealDaysForPeriod}" >
+					<f:selectItem itemValue="#{null}" itemLabel="Choose the Leader" />
+					<f:selectItems value="#{createMealController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+				
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center" 
+				rendered="#{not empty createMealController.mealDaysForPeriod}" >				
+				<h:commandButton value="Submit Common Meal" action="#{createMealController.addMeal}" 
+					onclick="return checkForMealCreate(this.form)" />
+			</h:panelGroup>
+			
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

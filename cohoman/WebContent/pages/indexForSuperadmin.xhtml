@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Main Menu
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+			<fieldset>
+			<legend><b>Calendars</b></legend>
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="Master Calendar" action="masterSchedule"  /> 
+					</td>
+					<td>
+						<h:outputText value="Shows all events for a month."/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Meals Calendar" action="mealSchedule"  /> 
+					</td>
+					<td>
+						<h:outputText value="Shows all meals in the current meal cycle."/>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+			<br/>
+			<fieldset>
+			<legend><b>User Management</b></legend>
+				<table >
+					<tr>
+						<td>
+							<h:commandLink value="Create user" action="createUser" /> 
+						</td>
+						<td>
+							<h:outputText value="Create a new user and their associated attributes." />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Edit user" action="editUser" /> 
+						</td>
+						<td>
+							<h:outputText value="Edit or delete an existing user's attributes." />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="List all users" action="ListAllUsers" /> 
+						</td>
+						<td>
+							<h:outputText value="List the attributes for all users." />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Add a role" action="addRole" /> 
+						</td>
+						<td>
+							<h:outputText value="Add a role to an existing user." />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Delete a role" action="deleteRole" /> 
+						</td>
+						<td>
+							<h:outputText value="Delete a role from an existing user." />
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<br></br>
+			<fieldset>
+			<legend><b>Lists Management</b></legend>
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="Edit Common House Security Starting Point" action="editedChSecurityStartingPoint"  /> 
+					</td>
+					<td>
+						<h:outputText value="Edit the starting date and unit for the common house security list."/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Edit West End House Security Starting Point" action="editedWeSecurityStartingPoint"  /> 
+					</td>
+					<td>
+						<h:outputText value="Edit the starting date and unit for the west end security list."/>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+			<br/>
+			<fieldset>
+			<legend><b>Hofeller</b></legend>
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="Create maintenance item" action="createMaintenanceItem"  /> 
+					</td>
+					<td>
+						<h:outputText value="Create a new periodic maintenance item"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Edit/Delete periodic maintenance item" action="editMaintenance"  /> 
+					</td>
+					<td>
+						<h:outputText value="Edit/Delete periodic maintenance item"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List all maintenance items" action="displayMaintenanceList"  /> 
+					</td>
+					<td>
+						<h:outputText value="List all periodic maintenance item"/>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+			<br></br>
+	
+		</h:form>	
+
+	</ui:define>
+	
+</ui:composition>
+	
+</body>
+</html>

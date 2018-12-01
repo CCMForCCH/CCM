@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Display Emergency Information for a Community Member 
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" title="Choose User Name" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Choose which person you want emergency contact information for."/>
+         		</f:facet>
+         		
+				<br/>
+				
+				<h:selectOneMenu value="#{displayEmergencyInfoController.chosenUserString}">
+					<f:selectItems value="#{displayEmergencyInfoController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.username}"
+						itemValue="#{oneuser.userid}" />
+					<f:ajax render="emergencyUser emergencyInfo" execute="emergencyUser" event="change" />
+				</h:selectOneMenu>
+				<br/>
+				
+				<h:outputText id="emergencyUser" value="Emergency Contact Information for #{displayEmergencyInfoController.userToPrint}:" style="font-style: italic"/>
+				
+				<h:outputText id="emergencyInfo" escape="false" value="#{displayEmergencyInfoController.emergencyInfoToPrint}"/>
+				
+			</h:panelGrid>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

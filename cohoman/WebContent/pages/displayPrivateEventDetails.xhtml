@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Reserved Space Details
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+         					
+			<h:panelGrid columns="2"  title="Requested Space Reservation Details"
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Reserved Space Details"/>
+         		</f:facet>
+	<h:outputText value="&lt;br/&gt;" escape="false" />
+         	</h:panelGrid>
+         	
+         	<h:panelGrid columns="2"  title="Requested Space Reservation Details"
+				headerClass="formheader" styleClass="formstyle" >
+         	
+				<h:outputText value="Request submitted on:" />
+				<h:outputText value="#{displayPrivateEventController.printableCreateDate}" />
+
+				<h:outputText value="Event Start time:" />
+				<h:outputText value="#{displayPrivateEventController.privateEventDetails.printableEventDate}" />
+	
+				<h:outputText value="Event End time:" />
+				<h:outputText value="#{displayPrivateEventController.privateEventDetails.printableEventDateEnd}" />
+								
+				<h:outputText value="Event Name:" />
+				<h:outputText value="#{displayPrivateEventController.privateEventDetails.eventName}" />
+											
+				<h:outputText value="Event Description:" />
+				<h:outputText value="#{displayPrivateEventController.privateEventDetails.eventinfo}" />
+
+				<h:outputText value="Cohouser responsible:" />
+				<h:outputText value="#{displayPrivateEventController.responsiblePerson}" />
+
+				<h:outputText value="Number of Adults Expected:" />
+				<h:outputText value="#{displayPrivateEventController.privateEventDetails.expectednumberofadults}" />
+
+				<h:outputText value="Number of Children Expected:" />
+				<h:outputText value="#{displayPrivateEventController.privateEventDetails.expectednumberofchildren}" />
+
+				<h:outputText value="Organization (optional):" />
+				<h:outputText value="#{displayPrivateEventController.privateEventDetails.organization}" />
+				
+				<h:outputText value="Reserved Spaces:" />
+				<h:outputText value="#{displayPrivateEventController.reservedSpaces}" />
+
+				<h:outputText value="Event Characteristics:" />
+				<h:outputText value="#{displayPrivateEventController.chosenEventCharacteristics}" />
+
+				<h:outputText value="Income-Producing Characteristics:" rendered="#{displayPrivateEventController.privateEventDetails.isincomeevent}" />
+				<h:outputText value="#{displayPrivateEventController.incomeEventCharacteristics}" 
+					rendered="#{displayPrivateEventController.privateEventDetails.isincomeevent}"/>
+
+				<h:outputText value="Physically-Active Characteristics:" 
+					rendered="#{displayPrivateEventController.privateEventDetails.isphysicallyactiveevent}"/>
+				<h:outputText value="#{displayPrivateEventController.physicalCharacteristics}" 
+					rendered="#{displayPrivateEventController.privateEventDetails.isphysicallyactiveevent}"/>
+
+				<h:outputText value="Status:" />
+				<h:outputText value="#{displayPrivateEventController.privateState}" />
+
+				<h:outputText value="Approved By:" 
+					rendered="#{displayPrivateEventController.privateState eq 'APPROVED'}"/>
+				<h:outputText value="#{displayPrivateEventController.approvedPerson}" 
+					rendered="#{displayPrivateEventController.privateState eq 'APPROVED'}"/>
+
+				<h:outputText value="Rejected By:" 
+					rendered="#{displayPrivateEventController.privateState eq 'REJECTED'}"/>
+				<h:outputText value="#{displayPrivateEventController.approvedPerson}" 
+					rendered="#{displayPrivateEventController.privateState eq 'REJECTED'}"/>
+
+				<h:outputText value="Approved On:" 
+					rendered="#{displayPrivateEventController.privateState eq 'APPROVED'}"/>
+				<h:outputText value="#{displayPrivateEventController.printableApprovedDate}" 
+					rendered="#{displayPrivateEventController.privateState eq 'APPROVED'}"/>
+		
+				<h:outputText value="Rejected On:" 
+					rendered="#{displayPrivateEventController.privateState eq 'REJECTED'}"/>
+				<h:outputText value="#{displayPrivateEventController.printableApprovedDate}" 
+					rendered="#{displayPrivateEventController.privateState eq 'REJECTED'}"/>
+
+				<h:outputText value="Rejection Reason:" 
+					rendered="#{displayPrivateEventController.privateState eq 'REJECTED'}"/>
+				<h:outputText value="#{displayPrivateEventController.privateRejectreason}" 
+					rendered="#{displayPrivateEventController.privateState eq 'REJECTED'}"/>
+
+			</h:panelGrid>
+							
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

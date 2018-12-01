@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit the Current West End Security Starting Period
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Please Edit the Current West End Security Starting Period" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Edit the Current West End Security Starting Period"/>
+         		</f:facet>
+			
+				Starting point month:
+				<h:selectOneMenu id="selectStartMonthId" value="#{editWeSecurityStartingPointController.startMonth}">
+					<f:selectItems value="#{editWeSecurityStartingPointController.monthsOfTheYear}"
+						var="month" 
+						itemLabel="#{month.monthName}"
+						itemValue="#{month.monthNumber}" />
+					<f:ajax render="selectStartDayId" execute="selectStartDayId" event="change" />
+				</h:selectOneMenu>
+				Starting point day:
+				<h:selectOneMenu id="selectStartDayId" value="#{editWeSecurityStartingPointController.startDay}">
+					<f:selectItems value="#{editWeSecurityStartingPointController.saturdaysOfTheMonth}"
+						var="day" 
+						itemLabel="#{day}"
+						itemValue="#{day}" />
+				</h:selectOneMenu>
+				Starting point year:
+				<h:selectOneMenu value="#{editWeSecurityStartingPointController.startYear}">
+					<f:selectItems value="#{editWeSecurityStartingPointController.years}"
+						var="year" 
+						itemLabel="#{year}"
+						itemValue="#{year}" />
+					<f:ajax render="selectStartDayId" execute="selectStartDayId" event="change" />
+				</h:selectOneMenu>
+					
+				Unit Number:
+				<h:selectOneMenu value="#{editWeSecurityStartingPointController.chosenUnitString}">
+					<f:selectItems value="#{editWeSecurityStartingPointController.weUnitBeanList}"
+						var="oneunit"
+						itemLabel="#{oneunit.unitnumber}"
+						itemValue="#{oneunit.unitnumber}" />
+				</h:selectOneMenu>
+						
+			</h:panelGrid>
+			
+			<h:messages style="color:red;display:block; text-align:center"/>
+         	<br />
+         	
+			<h:panelGroup style="display:block; text-align:center">				
+				<h:commandButton value="Submit Updated Security Starting Point" 
+					action="#{editWeSecurityStartingPointController.editWeSecurityStartingPoint}" />
+			</h:panelGroup>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

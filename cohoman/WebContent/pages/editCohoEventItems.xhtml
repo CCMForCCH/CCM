@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit Cohousing Event Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Edit Cohousing Event Fields" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Choose what to change in the cohousing event:"/>
+            		<br />
+         		</f:facet>
+         		
+         		Date:
+				<h:outputText value="#{editCohoEventController.chosenCohoEvent.printableEventDate}" />    
+				     		
+				Start time:
+				<h:selectOneMenu id="starttimeId" value="#{editCohoEventController.slotNumberStart}">
+					<f:selectItems value="#{editCohoEventController.timeSlotsOfTheDay}"
+						var="slot" 
+						itemLabel="#{slot.slotString}"
+						itemValue="#{slot.slotNumber}" />
+					<f:ajax render="endtimeId" execute="endtimeId" event="change" />
+				</h:selectOneMenu>
+								
+				End time:
+				<h:selectOneMenu id="endtimeId" value="#{editCohoEventController.slotNumberEnd}">
+					<f:selectItems value="#{editCohoEventController.timeSlotsOfTheDay}"
+						var="slot" 
+						itemLabel="#{slot.slotString}"
+						itemValue="#{slot.slotNumber}" />
+					<f:ajax render="endtimeId" execute="endtimeId" event="change" />
+				</h:selectOneMenu>
+
+				Event type:
+				<h:selectOneMenu value="#{editCohoEventController.chosenCohoEventTypeString}">
+					<f:selectItems value="#{editCohoEventController.eventTypeChoices}"
+						var="oneeventtype" 
+						itemLabel="#{oneeventtype}"
+						itemValue="#{oneeventtype}" />
+				</h:selectOneMenu>
+				
+				Event Name:
+				<h:inputText id="EventName" value="#{editCohoEventController.cohoEventName}" required="true" disabled="true"/>
+											
+				Event Description:
+				<h:inputText id="EventDescription" value="#{editCohoEventController.cohoEventInfo}" size = "80" maxlength = "200" required="true"/>
+         			
+         		Spaces to use:
+				<h:selectManyCheckbox value="#{editCohoEventController.chosenSpaceListStringInts}">
+					<f:selectItems value="#{editCohoEventController.allSpaces}"
+						var="onespace" 
+						itemLabel="#{onespace.spaceName}"
+						itemValue="#{onespace.spaceId}" />
+				</h:selectManyCheckbox>
+         					
+			</h:panelGrid>	
+			<br />					
+			<h:panelGroup style="display:block; text-align:center">	
+					<h:commandButton value="Submit Cohousing Event Changes" action="#{editCohoEventController.editCohoEventItemsView}" />			
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

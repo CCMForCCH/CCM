@@ -1,0 +1,27 @@
+@CHARSET "ISO-8859-1";
+
+table.outer {
+	margin-left: 20px;
+	margin-right: 20px;
+	border: thin solid black;
+	caption-side: bottom;
+	border-collapse: collapse;
+}
+
+table.inner {
+	caption-side: bottom;
+	border-collapse: collapse;
+}
+
+th {
+	border: thin solid black;
+	padding: 5px;
+}
+
+td.outer {
+	border: thin dotted gray;
+	padding: 5px;
+}
+td.inner {
+
+}
