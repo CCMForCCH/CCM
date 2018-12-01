@@ -1,0 +1,122 @@
+
+<project name="CohoManager" basedir="." default="package">
+
+	<property name="app.name" value="cohoman" />
+	<property name="war.name" value="${app.name}.war" />
+	<property name="webroot.dir" value="WebContent" />
+	<property name="lib.dir" value="lib" />
+	<property name="pages.dir" value="${webroot.dir}/pages" />
+	<property name="src.dir" value="src" />
+	<property name="dest.dir" value="target" />
+	
+	<property name="temp.dir" value="c:\temp" />
+	<property name="temp.dir.web-inf" value="${temp.dir}/WEB-INF" />
+	<property name="temp.dir.lib" value="${temp.dir.web-inf}/lib" />
+	<property name="temp.dir.classes" value="${temp.dir.web-inf}/classes" />
+	<property name="temp.dir.meta-inf" value="${temp.dir}/META-INF" />
+	<property name="jboss.home" value="C:\cohoapp\tools\jboss-5.1.0.GA" />
+	<property name ="jboss.deploy.dir" value="${jboss.home}/server/default/deploy" />
+	
+	<property name="war.file" value="${dest.dir}/${war.name}" />
+	
+	<path id="build.class.path">
+		<fileset dir="${webroot.dir}/WEB-INF/lib">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="C:\cohoapp\tools\glassfish3\glassfish\modules">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir="${dest.dir}" includes="**/*" />
+		</delete>
+		<delete dir="${temp.dir}" />
+		<delete dir="${temp.dir.classes}" />
+		<delete dir="${temp.dir.meta-inf}" />
+		<delete dir="${temp.dir.web-inf}" />
+	</target>
+	
+	<target name="prepare" depends="clean">
+		<mkdir dir="${dest.dir}" />
+		<mkdir dir="${temp.dir}" />
+		<mkdir dir="${temp.dir.lib}" />
+		<mkdir dir="${temp.dir.meta-inf}" />
+		<mkdir dir="${temp.dir.web-inf}" />
+		<mkdir dir="${temp.dir.classes}" />
+	</target>
+	
+	<target name="compile" depends="prepare">
+		<echo>=== COMPILE ===</echo>
+		<echo>Compiling ${src.dir} files ...</echo>
+		<javac debug="on" srcdir="${src.dir}" destdir="${temp.dir.classes}" includes="**/*">
+			<classpath refid="build.class.path" />
+		</javac>
+	</target>
+
+	<target name="package" depends="compile">
+		<echo>=== PACKAGE ===</echo>
+		<copy file="${webroot.dir}/META-INF/MANIFEST.MF"
+			toFile="${temp.dir.meta-inf}/MANIFEST.MF" overwrite="true" />
+		<copy file="${webroot.dir}/WEB-INF/web.xml"
+			toFile="${temp.dir.web-inf}/web.xml" overwrite="true" />
+		<copy file="${webroot.dir}/WEB-INF/faces-config.xml"
+			toFile="${temp.dir.web-inf}/faces-config.xml" overwrite="true" />
+		<copy file="${webroot.dir}/WEB-INF/cohoman-applicationcontext.xml"
+			toFile="${temp.dir.web-inf}/cohoman-applicationcontext.xml" overwrite="true" />
+		<copy file="${webroot.dir}/WEB-INF/cohoman-security.xml"
+			toFile="${temp.dir.web-inf}/cohoman-security.xml" overwrite="true" />
+		<copy file="${webroot.dir}/resources/css/style.css"
+			toFile="${temp.dir}/resources/css/style.css" overwrite="true" />
+		<copy file="${webroot.dir}/resources/css/styles2.css"
+			toFile="${temp.dir}/resources/css/styles2.css" overwrite="true" />
+		<copy file="${webroot.dir}/resources/css/styles3.css"
+			toFile="${temp.dir}/resources/css/styles3.css" overwrite="true" />
+		<copy file="${webroot.dir}/resources/javascript/checkForMealsCreateDelete.js"
+			toFile="${temp.dir}/resources/javascript/checkForMealsCreateDelete.js" overwrite="true" />
+		<copy file="${webroot.dir}/resources/css/meals.css"
+			toFile="${temp.dir}/resources/css/meals.css" overwrite="true" />
+			
+		<copy file="${webroot.dir}/images/common_meal.jpg"
+			toFile="${temp.dir}/images/common_meal.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/pizza.jpg"
+			toFile="${temp.dir}/images/pizza.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/calendar.jpg"
+			toFile="${temp.dir}/images/calendar.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/potluck.jpg"
+			toFile="${temp.dir}/images/potluck.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/events.jpg"
+			toFile="${temp.dir}/images/events.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/reserved.jpg"
+			toFile="${temp.dir}/images/reserved.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/security.jpg"
+			toFile="${temp.dir}/images/security.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/members.png"
+			toFile="${temp.dir}/images/members.png" overwrite="true" />
+		<copy file="${webroot.dir}/images/profile.jpg"
+			toFile="${temp.dir}/images/profile.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/hofeller.jpg"
+			toFile="${temp.dir}/images/hofeller.jpg" overwrite="true" />
+			
+		<copy todir="${temp.dir.classes}">
+			<fileset dir="${src.dir}" includes="**/*hbm.xml">
+				</fileset>
+			<fileset dir="${src.dir}" includes="**/hibernate_wsh.cfg.xml">
+				</fileset>
+			<fileset dir="${src.dir}" includes="log4j.properties">
+				</fileset>
+		</copy>
+			
+		<war destfile="${war.file}" webxml="${temp.dir.web-inf}/web.xml"
+			basedir="${temp.dir}" >
+			<fileset dir="${pages.dir}" />
+			<lib dir="${webroot.dir}/WEB-INF/lib" />
+		</war>	
+	</target>
+	
+	<target name="install" depends="package">
+		<copy file="${war.file}"
+			toFile="${jboss.deploy.dir}/${war.name}" overwrite="true" />
+	</target>
+</project>
