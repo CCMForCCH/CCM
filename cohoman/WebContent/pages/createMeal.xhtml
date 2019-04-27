@@ -37,6 +37,7 @@
 					rendered="#{not empty createMealController.mealDaysForPeriod}" />
 				<h:selectOneMenu value="#{createMealController.chosenMealDateTimestamp}"
 					rendered="#{not empty createMealController.mealDaysForPeriod}" >
+					<f:selectItem itemValue="#{0}" itemLabel="Choose the meal date" />
 					<f:selectItems value="#{createMealController.mealDaysForPeriod}"
 						var="oneMealDate" 
 						itemLabel="#{oneMealDate.printableDate}"
@@ -63,7 +64,7 @@
 					rendered="#{not empty createMealController.mealDaysForPeriod}" />
 				<h:selectOneMenu value="#{createMealController.chosenUserString}" 
 					rendered="#{not empty createMealController.mealDaysForPeriod}" >
-					<f:selectItem itemValue="#{null}" itemLabel="Choose the Leader" />
+					<f:selectItem itemValue="#{null}" itemLabel="Choose the lead cook" />
 					<f:selectItems value="#{createMealController.userList}"
 						var="oneuser" 
 						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"

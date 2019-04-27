@@ -12,6 +12,7 @@ public interface UserManager {
 	//public void deleteMealEvent(MealEvent mealEvent);
 	public User getUser(UserDTO theUser);
 	public User getUser(Long userid);
+	public User getUserByUsername(String username);
 
 	public List<Role>  getRolesForUser(Long userId);
 

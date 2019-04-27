@@ -698,7 +698,7 @@ public class DisplayPrivateEventController implements Serializable {
 
 		Date createDate = theCurrentPrivateEvent.getCreatedate();
 		SimpleDateFormat formatter = new SimpleDateFormat(
-				"EEEE, MMM. d h:mm aa");
+				"EEE, MMM d, yyyy h:mm aa");
 		printableCreateDate = formatter.format(createDate.getTime());
 		return printableCreateDate;
 	}
@@ -708,9 +708,9 @@ public class DisplayPrivateEventController implements Serializable {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(theCurrentPrivateEvent.getApprovaldate());
 		if (cal.get(Calendar.HOUR_OF_DAY) == 0) {
-			formatter = new SimpleDateFormat("EEEE, MMM. d");
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
 		} else {
-			formatter = new SimpleDateFormat("EEEE, MMM. d h:mm aa");
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy h:mm aa");
 		}
 		return formatter.format(theCurrentPrivateEvent.getApprovaldate().getTime());
 	}

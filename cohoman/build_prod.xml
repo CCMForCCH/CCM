@@ -73,10 +73,34 @@
 			toFile="${temp.dir}/resources/css/styles2.css" overwrite="true" />
 		<copy file="${webroot.dir}/resources/css/styles3.css"
 			toFile="${temp.dir}/resources/css/styles3.css" overwrite="true" />
+		<copy file="${webroot.dir}/resources/css/primefacesDefault.css"
+			toFile="${temp.dir}/resources/css/primefacesDefault.css" overwrite="true" />
 		<copy file="${webroot.dir}/resources/javascript/checkForMealsCreateDelete.js"
 			toFile="${temp.dir}/resources/javascript/checkForMealsCreateDelete.js" overwrite="true" />
 		<copy file="${webroot.dir}/resources/css/meals.css"
 			toFile="${temp.dir}/resources/css/meals.css" overwrite="true" />
+			
+		<copy file="${webroot.dir}/images/common_meal.jpg"
+			toFile="${temp.dir}/images/common_meal.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/pizza.jpg"
+			toFile="${temp.dir}/images/pizza.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/calendar.jpg"
+			toFile="${temp.dir}/images/calendar.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/potluck.jpg"
+			toFile="${temp.dir}/images/potluck.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/events.jpg"
+			toFile="${temp.dir}/images/events.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/reserved.jpg"
+			toFile="${temp.dir}/images/reserved.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/security.jpg"
+			toFile="${temp.dir}/images/security.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/members.png"
+			toFile="${temp.dir}/images/members.png" overwrite="true" />
+		<copy file="${webroot.dir}/images/profile.jpg"
+			toFile="${temp.dir}/images/profile.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/hofeller.jpg"
+			toFile="${temp.dir}/images/hofeller.jpg" overwrite="true" />
+			
 		<copy todir="${temp.dir.classes}">
 			<fileset dir="${src.dir}" includes="**/*hbm.xml">
 				</fileset>

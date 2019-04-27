@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.cohoman.model.integration.utils.LoggingUtils;
+import org.cohoman.model.singletons.ConfigScalarValues;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -11,27 +12,29 @@ import com.twilio.type.PhoneNumber;
 
 public class SmsSender {
 
-	private final String ACCOUNT_SID = "ACed28b09501481b9ede347f18787800ac";
-	private final String AUTH_TOKEN = "69e563300f61f5b1f3625024db10d802";
-	private final String MY_TEXT_PHONE_NUMBER = "7812062364";
-	Logger logger = Logger.getLogger(this.getClass().getName());
+	static Logger logger = Logger.getLogger("SmsSender");
 
-	public void sendtextMessage(String phoneNumber, String textMessage) {
+	public synchronized static void sendtextMessage(String phoneNumber, String textMessage) {
 
 		Message message = null;
 
 		try {
-			Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+			Twilio.init(ConfigScalarValues.twilio_account_sid,
+					ConfigScalarValues.twilio_auth_token);
 
 			logger.info("AUDIT: Sending a text message to phone number "
 					+ phoneNumber + " with message \"" + textMessage + "\".");
 
-			message = Message.creator(new PhoneNumber("+1" + phoneNumber), // to
-					new PhoneNumber("+1" + MY_TEXT_PHONE_NUMBER), // from
+			message = Message.creator(
+					new PhoneNumber("+1" + phoneNumber), // to
+					new PhoneNumber("+1"
+							+ ConfigScalarValues.twilio_sms_phone_number), // from
 					textMessage).create();
 			if (message != null && message.getErrorMessage() != null) {
 				logger.log(Level.SEVERE, message.getErrorMessage());
 			}
+			
 		} catch (Exception ex) {
 			logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
 		}

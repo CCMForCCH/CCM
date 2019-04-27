@@ -112,17 +112,25 @@ public class MealSchedule {
 				Calendar weekendDate2 = (Calendar) localStartDate.clone();
 				weekendDate2.add(Calendar.DAY_OF_MONTH, 6);
 
-				if (theMealDate.get(Calendar.DAY_OF_YEAR) == weekdayDate1
-						.get(Calendar.DAY_OF_YEAR)
-						|| theMealDate.get(Calendar.DAY_OF_YEAR) == weekdayDate2
-								.get(Calendar.DAY_OF_YEAR)) {
+				if ((theMealDate.get(Calendar.DAY_OF_YEAR) == weekdayDate1
+						.get(Calendar.DAY_OF_YEAR) && 
+						theMealDate.get(Calendar.YEAR) == weekdayDate1.get(Calendar.YEAR))
+						|| 
+					(theMealDate.get(Calendar.DAY_OF_YEAR) == weekdayDate2
+						.get(Calendar.DAY_OF_YEAR) && 
+					theMealDate.get(Calendar.YEAR) == weekdayDate2.get(Calendar.YEAR))) 
+				{
 					weekdayEvent = oneEvent;
 				}
 
-				if (theMealDate.get(Calendar.DAY_OF_YEAR) == weekendDate1
-						.get(Calendar.DAY_OF_YEAR)
-						|| theMealDate.get(Calendar.DAY_OF_YEAR) == weekendDate2
-								.get(Calendar.DAY_OF_YEAR)) {
+				if ((theMealDate.get(Calendar.DAY_OF_YEAR) == weekendDate1
+						.get(Calendar.DAY_OF_YEAR) && 
+					theMealDate.get(Calendar.YEAR) == weekendDate1.get(Calendar.YEAR))
+						|| 
+					(theMealDate.get(Calendar.DAY_OF_YEAR) == weekendDate2
+						.get(Calendar.DAY_OF_YEAR) &&
+					theMealDate.get(Calendar.YEAR) == weekendDate2.get(Calendar.YEAR)))
+				{
 					weekendEvent = oneEvent;
 				}
 			}
@@ -135,7 +143,10 @@ public class MealSchedule {
 				theMealDate.setTime(oneEvent.getEventDate());
 
 				if (theMealDate.get(Calendar.DAY_OF_YEAR) == localStartDate
-						.get(Calendar.DAY_OF_YEAR)) {
+						.get(Calendar.DAY_OF_YEAR) && 
+					theMealDate.get(Calendar.YEAR) == localStartDate
+						.get(Calendar.YEAR)) 
+				{
 					pizzaEvent = oneEvent;
 					break;
 				}
@@ -154,7 +165,10 @@ public class MealSchedule {
 				// Check all events for the coming week.
 				for (int daycount = 1; daycount < 8; daycount++) {
 					if (theMealDate.get(Calendar.DAY_OF_YEAR) == dayOfWeek
-							.get(Calendar.DAY_OF_YEAR)) {
+							.get(Calendar.DAY_OF_YEAR) &&
+							theMealDate.get(Calendar.YEAR) == dayOfWeek
+							.get(Calendar.YEAR)) 
+					{
 						if (potluckEvent1 == null) {
 							potluckEvent1 = oneEvent;
 						} else if (potluckEvent2 == null) {
@@ -250,12 +264,12 @@ public class MealSchedule {
 				.getPrintableEventDate());
 		mealScheduleText.setMealtype(pizzaEvent.getEventtype());
 		String body = pizzaEvent.getPrintableLeaders();
-		if (pizzaEvent.getEventName() != null && 
-				pizzaEvent.getEventName().length() > 0) {
+		if (pizzaEvent.getEventName() != null
+				&& pizzaEvent.getEventName().length() > 0) {
 			body += "\n" + "Occasion: " + pizzaEvent.getEventName();
 		}
-		if (pizzaEvent.getEventinfo() != null &&
-				pizzaEvent.getEventinfo().length() > 0) {
+		if (pizzaEvent.getEventinfo() != null
+				&& pizzaEvent.getEventinfo().length() > 0) {
 			body += "\n" + "Info: " + pizzaEvent.getEventinfo();
 		}
 		body = String.format(body);

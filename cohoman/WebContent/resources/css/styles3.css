@@ -145,6 +145,12 @@
 	padding: 10px;
 }
 
+.calendar .ui-datepicker-inline{
+  width: 30% !important; 
+  height: 15% !important;
+  font-size: small;
+}
+
 img {
 	border: 1px solid #ddd;
 	border-radius: 4px;

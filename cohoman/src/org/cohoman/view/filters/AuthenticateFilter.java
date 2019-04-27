@@ -177,9 +177,9 @@ public class AuthenticateFilter implements Filter {
 			session = servletRequest.getSession(true);
 			// if (targetUrl == null) {
 			// Only get the original URL once per session ????
-			String requestURI = servletRequest.getRequestURI();
-			logger.log(Level.INFO, "DEBUG: saving targetUrl of "
-					+ servletRequest.getRequestURI());
+			// String requestURI = servletRequest.getRequestURI();
+			//logger.log(Level.INFO, "DEBUG: saving targetUrl of "
+					//+ servletRequest.getRequestURI());
 			session.setAttribute(AuthenticateController.SESSIONVAR_TARGET_URL,
 					servletRequest.getRequestURI());
 			// }

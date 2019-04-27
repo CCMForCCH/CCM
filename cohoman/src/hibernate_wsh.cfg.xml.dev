@@ -30,6 +30,7 @@
       <mapping resource="Substitutes.hbm.xml" />
       <mapping resource="Maintenance.hbm.xml" />
       <mapping resource="Mtask.hbm.xml" />
+      <mapping resource="ConfigScalars.hbm.xml" />
 
 </session-factory>
 </hibernate-configuration>

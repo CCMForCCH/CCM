@@ -73,6 +73,8 @@
 			toFile="${temp.dir}/resources/css/styles2.css" overwrite="true" />
 		<copy file="${webroot.dir}/resources/css/styles3.css"
 			toFile="${temp.dir}/resources/css/styles3.css" overwrite="true" />
+		<copy file="${webroot.dir}/resources/css/primefacesDefault.css"
+			toFile="${temp.dir}/resources/css/primefacesDefault.css" overwrite="true" />
 		<copy file="${webroot.dir}/resources/javascript/checkForMealsCreateDelete.js"
 			toFile="${temp.dir}/resources/javascript/checkForMealsCreateDelete.js" overwrite="true" />
 		<copy file="${webroot.dir}/resources/css/meals.css"

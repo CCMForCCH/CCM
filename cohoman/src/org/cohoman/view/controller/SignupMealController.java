@@ -53,7 +53,7 @@ public class SignupMealController implements Serializable {
 	private String chosenUserString;
 	private UserService userService = null;
 	private ConfigurationService configurationService = null;
-
+	
 	private void clearFormFields() {
 
 		slotNumber = "";
@@ -71,6 +71,9 @@ public class SignupMealController implements Serializable {
 		// if you use a back-button and then try again.
 		// chosenUserString = "";
 		totalPeopleAttending = 0;
+		// Make the user choose again
+		// uh, this fails because somehow this gets called multiple times by JSF???
+		//chosenMealEventString = null;
 	}
 
 	public String getSlotNumber() {
@@ -165,6 +168,12 @@ public class SignupMealController implements Serializable {
 			return false;
 		}
 
+		// Special case hack: 1=> no meal has been set so just
+		// assume this isn't a lead cook so page can be rendered.
+		if (chosenMealEventString.equals("1")) {
+			return false;
+		}
+
 		eventId = Long.valueOf(chosenMealEventString);
 		MealEvent chosenMealEvent = eventService.getMealEvent(eventId);
 
@@ -207,6 +216,7 @@ public class SignupMealController implements Serializable {
 		if (chosenMealEventString == null || chosenMealEventString.isEmpty()) {
 			return "Error: unable to get name of lead cook.";
 		}
+		
 		eventId = Long.valueOf(chosenMealEventString);
 		MealEvent chosenMealEvent = eventService.getMealEvent(eventId);
 		User dbUser = userService.getUser(chosenMealEvent.getCook1());
@@ -217,6 +227,10 @@ public class SignupMealController implements Serializable {
 	public String getMenu() {
 
 		// get lead cook based on chosen meal event
+		if (chosenMealEventString == null || chosenMealEventString.isEmpty()) {
+			return "Error: unable to get menu.";
+		}
+
 		eventId = Long.valueOf(chosenMealEventString);
 		MealEvent chosenMealEvent = eventService.getMealEvent(eventId);
 		return chosenMealEvent.getMenu();
@@ -232,8 +246,9 @@ public class SignupMealController implements Serializable {
 		// displayed.
 		if (mealEventList != null && !mealEventList.isEmpty()
 				&& chosenMealEventString == null) {
-			chosenMealEventString = mealEventList.get(0).getEventid()
-					.toString();
+			chosenMealEventString = "1";
+			//chosenMealEventString = mealEventList.get(0).getEventid()
+					//.toString();
 		}
 		return mealEventList;
 	}
@@ -441,6 +456,12 @@ public class SignupMealController implements Serializable {
 			return true;
 		}
 
+		// Special case hack: 1=> no meal has been set so just
+		// assume this isn't a lead cook so page can be rendered.
+		if (chosenMealEventString.equals("1")) {
+			return false;
+		}
+
 		eventId = Long.valueOf(chosenMealEventString);
 		MealEvent chosenMealEvent = eventService.getMealEvent(eventId);
 
@@ -474,19 +495,34 @@ public class SignupMealController implements Serializable {
 		if (chosenMealEventString == null || chosenMealEventString.length() == 0) {
 			logger.log(Level.SEVERE,
 					"Internal Error: invalid MealEventId parameter");
-			FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage("Internal Error: invalid MealEventId parameter. Click on Main Menu link."));
+			FacesMessage message = new FacesMessage(
+					"Internal Error: invalid MealEventId parameter. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
 		}
+		
+		// Error check that a meal has been chosen
+		if (chosenMealEventString.equalsIgnoreCase("1")) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose a meal to attend.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
 		eventId = Long.valueOf(chosenMealEventString);
+
 
 		MealEvent chosenMealEvent = eventService.getMealEvent(eventId);
 		if (chosenMealEvent == null) {
 			logger.log(Level.SEVERE,
 					"Internal Error: unable to find meal event for mealId " + 
 					eventId);
-			FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage("Internal Error: unable to find meal event. Click on Main Menu link."));
+			FacesMessage message = new FacesMessage(
+					"Internal Error: unable to find meal event. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
 		}
 		eventType = chosenMealEvent.getEventtype();

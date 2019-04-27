@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Errors with Space Reservations
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Errors with Recurring Space Reservations" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Recurring Space Reservations Request Results"/>
+        </f:facet>
+	<br />
+	
+    <h:outputText value=
+    	"Successful requests were created for the following dates:"
+    	style="font-weight:bold"
+    	rendered="#{not empty requestReservedEventController.privateRecurringSuccessList}"/>
+    
+    <style>
+		ul { display:table; margin:0 5%;}
+	</style>
+	<div>
+	<ul>
+		<ui:repeat value="#{requestReservedEventController.privateRecurringSuccessList}" var="errorText">
+			<li>
+				<h:outputText value="#{errorText}" 
+					rendered="#{not empty requestReservedEventController.privateRecurringSuccessList}" />
+				<br />
+			</li>
+		</ui:repeat>
+	</ul>
+	</div>
+    <br />
+    
+	<h:outputText style="color:red;font-weight:bold;" 
+		value="You need to reschedule the following requests as they conflict with existing events:"
+			rendered="#{not empty requestReservedEventController.privateRecurringErrorsList}" />
+	<style>
+		ul { display:table; color:red; margin:0 5%;}
+	</style>
+	<div>
+	<ul>
+		<ui:repeat value="#{requestReservedEventController.privateRecurringErrorsList}" var="errorText">
+			<li>
+				<h:outputText value="#{errorText}" 
+					rendered="#{not empty requestReservedEventController.privateRecurringErrorsList}" />
+				<br />
+			</li>
+		</ui:repeat>
+	</ul>
+	</div>
+    <br />
+	<h:link value="Show my common space reservation requests" outcome="displayMyPrivateEventsList.xhtml" style="display:block; text-align:center"/>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

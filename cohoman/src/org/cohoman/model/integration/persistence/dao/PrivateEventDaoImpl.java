@@ -58,10 +58,16 @@ public class PrivateEventDaoImpl implements PrivateEventDao {
 						dto.getEventDate(), dto.getEventdateend(), spacebeanId,
 						dto.getEventName(), 0L, session);
 				if (conflictingEvent != null) {
+					SimpleDateFormat formatter = new SimpleDateFormat(
+							"EEE, MMM d, yyyy h:mm aa");
+					String eventDateString = formatter.format(dto.getEventDate());
+
 					throw new CohomanException(
 							"Error: Event \""
 									+ conflictingEvent
-									+ "\" conflicts with your new event. Choose another time or reserved common space.");
+									+ " conflicts with your new event on "
+									+ eventDateString
+									+ ". Choose another time or reserved common space on that date.");
 				}
 			}
 			PrivateEventBean privateEventBean = new PrivateEventBean(

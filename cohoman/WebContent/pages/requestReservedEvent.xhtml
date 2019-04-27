@@ -4,13 +4,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core" 
 	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
 	  
 <head>
 	<title>IGNORED</title>
 </head>
 
-<body>
+<h:body>
+
 
 	<ui:composition template="/templates/masterLayout.xhtml">
 		<ui:define name="windowTitle">
@@ -21,12 +23,34 @@
 		<br></br>
 		<h:form>
 
-			<h:panelGrid columns="2" title="Please Enter Private Event Information" 
-				headerClass="formheader" styleClass="formstyle" >
-	     		<f:facet name="header">
+	<h:outputStylesheet name="resources/css/primefacesDefault.css" />
+
+			<h:panelGrid columns="1" headerClass="formheader" styleClass="formstyle" >
+			 	<f:facet name="header">
+ 	     			<h:panelGroup>
             		<h:outputText value="Please Enter the Following Space Reservation Information"/>
+            		<br />
+            		</h:panelGroup>
          		</f:facet>
          		
+         		    <p:messages id="messages" closable="true">
+        				<p:autoUpdate />
+    				</p:messages>
+         		
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" title="Please Enter Private Event Information" 
+				headerClass="formheader" styleClass="formstyle" >
+         		
+         		Event day:
+         		<p:calendar  id="popup" 
+         			value="#{requestReservedEventController.privateChosenDate}" required="true" 
+         			pattern="MMMM d, yyyy" size="15" showOn="both"
+         			inputStyle="font-size: x-small;" readonlyInput="true" >
+         			<p:ajax event="dateSelect" listener="#{requestReservedEventController.dateSelect}" />
+         		</p:calendar>
+         		
+         		<ui:remove> 
 				Event month:
 				<h:selectOneMenu id="selectMonthId" value="#{requestReservedEventController.privateEventMonth}">
 					<f:selectItems value="#{requestReservedEventController.monthsOfTheYear}"
@@ -50,6 +74,8 @@
 						itemValue="#{year}" />
 					<f:ajax render="selectDayId" execute="selectDayId" event="change" />
 				</h:selectOneMenu>
+				</ui:remove>
+				
 				Start time:
 				<h:selectOneMenu id="starttimeId" value="#{requestReservedEventController.slotNumberStart}">
 					<f:selectItems value="#{requestReservedEventController.timeSlotsOfTheDay}"
@@ -67,12 +93,49 @@
 						itemValue="#{slot.slotNumber}" />
 					<f:ajax render="endtimeId" execute="endtimeId" event="change" />
 				</h:selectOneMenu>
-								
+				
+				Recurring Event:
+				<h:panelGroup id="recurringquestion" >
+				<h:panelGrid columns="2" >
+				<h:selectBooleanCheckbox id="isRecurring"
+					value="#{requestReservedEventController.privateIsRecurring}" >
+					<f:ajax event="change" execute="numberofeventsaddedhdr numberofeventsdropdown" 
+						render="numberofeventsaddedhdr numberofeventsdropdown" />
+				</h:selectBooleanCheckbox>
+				<h:outputText value="Check this box to create a series of events" />
+				</h:panelGrid>
+				</h:panelGroup>
+				
+				<h:panelGroup id="numberofeventsaddedhdr">
+					<h:outputText  value="Number of weeks event occurs:" 
+				   		rendered="#{requestReservedEventController.privateIsRecurring}" />
+				</h:panelGroup>
+				
+				<h:panelGroup id="numberofeventsdropdown" >
+					<h:selectOneMenu  value="#{requestReservedEventController.privateRecurringTimes}" 
+						rendered="#{requestReservedEventController.privateIsRecurring}">
+						<f:selectItems value="#{requestReservedEventController.numberOfRecurredEvents}"
+							var="onecount" 
+							itemLabel="#{onecount}"
+							itemValue="#{onecount}" />
+					</h:selectOneMenu>
+				</h:panelGroup>
+				
+				
 				Event Name:
-				<h:inputText id="EventName" value="#{requestReservedEventController.privateEventName}" maxlength = "40" required="true"/>
-											
+				<h:panelGroup>
+				<h:inputText id="EventName" value="#{requestReservedEventController.privateEventName}" 
+					label="EventName" maxlength = "40" required="true"/>
+				<h:message for="EventName" errorClass="errors" />
+				</h:panelGroup>
+					
+									
 				Event Description:
-				<h:inputText id="EventDescription" value="#{requestReservedEventController.privateEventInfo}" size = "80" maxlength = "200" required="true"/>
+				<h:panelGroup>	
+				<h:inputText id="EventDescription" value="#{requestReservedEventController.privateEventInfo}" 
+					label="EventDescription" size = "80" maxlength = "200" required="true"/>
+				<h:message for="EventDescription" errorClass="errors" />
+				</h:panelGroup>
 			
  				Number of Adults Expected:
 				<h:selectOneMenu  value="#{requestReservedEventController.privateExpectednumberofadults}" >
@@ -94,15 +157,21 @@
 				<h:inputText id="Organization" value="#{requestReservedEventController.privateOrganization}" required="false"/>
 
 				Spaces to use:
-				<h:selectManyCheckbox id="SpacesToUse" value="#{requestReservedEventController.chosenSpaceList}" required="true">
+				<h:panelGroup>
+				<h:selectManyCheckbox id="SpacesToUse" value="#{requestReservedEventController.chosenSpaceList}" 
+					label="SpacesToUse" required="true">
 					<f:selectItems value="#{requestReservedEventController.allSpaces}"
 						var="onespace" 
 						itemLabel="#{onespace.spaceName}"
 						itemValue="#{onespace.spaceId}" />
 				</h:selectManyCheckbox>
+				<h:message for="SpacesToUse" errorClass="errors" />
+				</h:panelGroup>
 						
 				Event Characteristics:
-				<h:selectManyCheckbox id="EventCharacteristics" value="#{requestReservedEventController.chosenCharacteristicsList}" required="true">
+				<h:panelGroup>
+				<h:selectManyCheckbox id="EventCharacteristics" value="#{requestReservedEventController.chosenCharacteristicsList}" 
+					label="EventCharacteristics" required="true">
 					<f:selectItems value="#{requestReservedEventController.eventCharacteristicsChoices}"
 						var="onechar" 
 						itemLabel="#{onechar}"
@@ -110,7 +179,9 @@
 					<f:ajax event="change" execute="physicallyactive physicallyactivehdr" render="physicallyactive physicallyactivehdr" />
 					<f:ajax event="change" execute="incomeproducing incomeproducinghdr" render="incomeproducing incomeproducinghdr" />
 				</h:selectManyCheckbox>
-			
+			    <h:message for="EventCharacteristics" errorClass="errors" />
+			    </h:panelGroup>
+			    
 				<h:panelGroup id="incomeproducinghdr">
 					<h:outputText  value="For Income-Producing Events:" 
 				   		rendered="#{requestReservedEventController.privateIsincomeevent}" />
@@ -159,12 +230,11 @@
 				<h:commandButton value="Submit Event" action="#{requestReservedEventController.addRequestReservedEvent}" />
 			</h:panelGroup>
 			<br />
-		    <h:messages layout="table" errorClass="errors" />
 			
 		</h:form>
 	</ui:define>
 </ui:composition>
 
-</body>
+</h:body>
 </html>
 

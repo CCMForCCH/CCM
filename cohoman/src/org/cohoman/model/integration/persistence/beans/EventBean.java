@@ -22,9 +22,9 @@ public abstract class EventBean implements Comparable<EventBean> {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(eventDate);
 		if (cal.get(Calendar.HOUR_OF_DAY) == 0) {
-			formatter = new SimpleDateFormat("EEE, MMM d");
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
 		} else {
-			formatter = new SimpleDateFormat("EEE, MMM d h:mm aa");
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy h:mm aa");
 		}
 		return formatter.format(eventDate.getTime());
 	}
@@ -34,9 +34,9 @@ public abstract class EventBean implements Comparable<EventBean> {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(eventdateend);
 		if (cal.get(Calendar.HOUR_OF_DAY) == 0) {
-			formatter = new SimpleDateFormat("EEE, MMM d");
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
 		} else {
-			formatter = new SimpleDateFormat("EEE, MMM d h:mm aa");
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy h:mm aa");
 		}
 		return formatter.format(eventdateend.getTime());
 	}
@@ -47,9 +47,9 @@ public abstract class EventBean implements Comparable<EventBean> {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(eventDate);
 		if (cal.get(Calendar.HOUR_OF_DAY) == 0) {
-			formatter = new SimpleDateFormat("EEEE, MMM d");
+			formatter = new SimpleDateFormat("EEEE, MMM d, yyyy");
 		} else {
-			formatter = new SimpleDateFormat("EEE, MMM d");
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
 		}
 		return formatter.format(eventDate.getTime());
 	}

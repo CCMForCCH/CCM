@@ -1,6 +1,7 @@
 package org.cohoman.view.controller;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,22 +22,28 @@ import org.cohoman.model.service.EventService;
 import org.cohoman.view.controller.utils.CalendarUtils;
 import org.cohoman.view.controller.utils.EventStateEnums;
 import org.cohoman.view.controller.utils.CalendarUtils.MealDate;
+import org.primefaces.event.SelectEvent;
 
 @ManagedBean
 @SessionScoped
 public class RequestReservedEventController implements Serializable {
 
 	private static final long serialVersionUID = 4960034113499669484L;
+	
+  	private Date privateChosenDate;
+  	private Calendar privateChosenCal;
+  	/*
 	private String privateEventStartYear;
 	private String privateEventStartMonth;
 	private String privateEventStartDay;
+	*/
 	private String privateEventEndYear;
 	private String privateEventEndMonth;
 	private String privateEventEndDay;
 	private String slotNumberStart;
 	private String slotNumberEnd;
 	private List<MealDate> privateEventDaysForPeriod;
-	private int chosenEventDateTimestamp;
+	//private int chosenEventDateTimestamp;
 	private String chosenEventType;
 	private EventService eventService = null;
 	
@@ -61,6 +68,14 @@ public class RequestReservedEventController implements Serializable {
   	private String privateRejectreason;
   	private Long privateApprovedby;
   	private Date privateApprovaldate;
+  	
+  	// New recurring feature values 01/21/2019
+  	private boolean privateIsRecurring = false;
+  	private int privateRecurringTimes;
+  	private int privateRecurringFrequency;
+  	private List<String> privateRecurringErrorsList = new ArrayList<String>();
+  	private List<String> privateRecurringSuccessList = new ArrayList<String>();
+  	
 	
 	private List<String> chosenSpaceList = new ArrayList<String>();
 	private List<String> chosenCharacteristicsList = new ArrayList<String>();
@@ -71,9 +86,11 @@ public class RequestReservedEventController implements Serializable {
 
 	private void initDateFields() {
 		GregorianCalendar now = new GregorianCalendar();
-		privateEventStartYear = new Integer(now.get(Calendar.YEAR)).toString();
-		privateEventStartMonth = new Integer(now.get(Calendar.MONTH)).toString();
-		privateEventStartDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
+		//privateEventStartYear = new Integer(now.get(Calendar.YEAR)).toString();
+		//privateEventStartMonth = new Integer(now.get(Calendar.MONTH)).toString();
+		//privateEventStartDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
+		privateChosenDate = now.getTime();
+		privateChosenCal = new GregorianCalendar();
 		privateEventEndYear = new Integer(now.get(Calendar.YEAR)).toString();
 		privateEventEndMonth = new Integer(now.get(Calendar.MONTH)).toString();
 		privateEventEndDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
@@ -83,6 +100,13 @@ public class RequestReservedEventController implements Serializable {
 		HttpSession session = (HttpSession)ctx.getExternalContext().getSession(true); 
 		User dbUser = (User) session.getAttribute(AuthenticateController.SESSIONVAR_USER_NAME);
 		privateRequester = dbUser.getUserid();
+		
+		slotNumberStart = "0";   // init to 6AM
+		slotNumberEnd = "2";     // init to 7AM
+		privateIsRecurring = false;
+		privateRecurringTimes = 1;
+		//privateRecurringErrorsList = new ArrayList<String>();
+
 	}
 	
 	private void clearFormFields() {
@@ -104,8 +128,10 @@ public class RequestReservedEventController implements Serializable {
 	  	privateIsclassorworkshop = false;
 	  	chosenSpaceList = new ArrayList<String>();
 		chosenCharacteristicsList = new ArrayList<String>();
-		slotNumberStart = "";
-		slotNumberEnd = "";
+		slotNumberStart = "0";   // init to 6AM
+		slotNumberEnd = "2";     // init to 7AM
+		privateIsRecurring = false;
+		privateRecurringTimes = 1;
 	}
 	
 	public EventService getEventService() {
@@ -134,6 +160,24 @@ public class RequestReservedEventController implements Serializable {
 
 	public List<String> getChosenCharacteristicsList() {
 		return chosenCharacteristicsList;
+	}
+
+	public List<String> getPrivateRecurringErrorsList() {
+		return privateRecurringErrorsList;
+	}
+
+	public void setPrivateRecurringErrorsList(
+			List<String> privateRecurringErrorsList) {
+		this.privateRecurringErrorsList = privateRecurringErrorsList;
+	}
+
+	public List<String> getPrivateRecurringSuccessList() {
+		return privateRecurringSuccessList;
+	}
+
+	public void setPrivateRecurringSuccessList(
+			List<String> privateRecurringSuccessList) {
+		this.privateRecurringSuccessList = privateRecurringSuccessList;
 	}
 
 	public void setChosenCharacteristicsList(List<String> chosenCharacteristicsList) {
@@ -171,6 +215,7 @@ public class RequestReservedEventController implements Serializable {
 		this.privateEventInfo = privateEventInfo;
 	}
 
+/*
 	public String getPrivateEventYear() {
 		return privateEventStartYear;
 	}
@@ -197,7 +242,7 @@ public class RequestReservedEventController implements Serializable {
 		this.privateEventStartDay = privateEventDay;
 		this.privateEventEndDay = privateEventDay;
 	}
-
+*/
 	
 	public List<MealDate> getPrivateEventDaysForPeriod() {
 		return privateEventDaysForPeriod;
@@ -358,6 +403,30 @@ public class RequestReservedEventController implements Serializable {
 		return serialVersionUID;
 	}
 
+	public boolean isPrivateIsRecurring() {
+		return privateIsRecurring;
+	}
+
+	public void setPrivateIsRecurring(boolean privateIsRecurring) {
+		this.privateIsRecurring = privateIsRecurring;
+	}
+
+	public int getPrivateRecurringTimes() {
+		return privateRecurringTimes;
+	}
+
+	public void setPrivateRecurringTimes(int privateRecurringTimes) {
+		this.privateRecurringTimes = privateRecurringTimes;
+	}
+
+	public int getPrivateRecurringFrequency() {
+		return privateRecurringFrequency;
+	}
+
+	public void setPrivateRecurringFrequency(int privateRecurringFrequency) {
+		this.privateRecurringFrequency = privateRecurringFrequency;
+	}
+
 	public String getSlotNumberStart() {
 		return slotNumberStart;
 	}
@@ -402,6 +471,7 @@ public class RequestReservedEventController implements Serializable {
 		}
 	}
 
+	/*
 	public int getChosenEventDateTimestamp() {
 		return chosenEventDateTimestamp;
 	}
@@ -418,6 +488,7 @@ public class RequestReservedEventController implements Serializable {
 		}
 		throw new RuntimeException ("Cannot find selected CohoDate object.");
 	}
+	*/
 
 	public String addRequestReservedEvent() throws Exception {
 		Calendar chosenStartDate = calculateTheStartDate();
@@ -434,27 +505,78 @@ public class RequestReservedEventController implements Serializable {
 					new FacesMessage("Invalid dates: must be in the future and start date before end date"));
 			return null;
 		} 
+		
+		// Remove all entries from error and success lists before we attempt to
+		// create the request.
+		privateRecurringErrorsList.clear();
+		privateRecurringSuccessList.clear();
 
-		Date eventDate = calculateTheStartDate().getTime();
-		Date eventdateend = calculateTheEndDate().getTime();
+		//Date eventDate = calculateTheStartDate().getTime();
+		//Date eventdateend = calculateTheEndDate().getTime();
+		for (int times = 0; times < privateRecurringTimes; times++) {
+			Date eventDate = chosenStartDate.getTime();
+			Date eventdateend = chosenEndDate.getTime();
+
+			PrivateEventDTO dto = PrivateEventDTO(eventDate);
+			dto.setEventdateend(eventdateend);
+			dto.setCreatedate(rightNow.getTime());
 	
-		PrivateEventDTO dto = PrivateEventDTO(eventDate);
-		dto.setEventdateend(eventdateend);
-		dto.setCreatedate(rightNow.getTime());
-	
-		try {
-		    eventService.createPrivateEvent(dto);
-		} catch (CohomanException ex) {
-			FacesMessage message = new FacesMessage(ex.getErrorText());
-			message.setSeverity(FacesMessage.SEVERITY_ERROR);
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			return null;
+			try {
+				eventService.createPrivateEvent(dto);
+				// Save date of success strings for printing results
+				SimpleDateFormat formatter = new SimpleDateFormat(
+						"EEE, MMM d, yyyy h:mm aa");
+				String eventDateString = formatter.format(eventDate);
+				privateRecurringSuccessList.add(eventDateString);
+				// advance to next week
+				chosenStartDate.add(Calendar.DAY_OF_YEAR, 7);
+				chosenEndDate.add(Calendar.DAY_OF_YEAR, 7);
+
+			} catch (CohomanException ex) {
+				
+				// Check if this is a recurring event. Handle
+				// errors differently if it is.
+				if (privateRecurringTimes == 1) {
+					// If we're only going through once, just
+					// return the error
+					FacesMessage message = new FacesMessage(ex.getErrorText());
+					message.setSeverity(FacesMessage.SEVERITY_ERROR);
+					FacesContext.getCurrentInstance().addMessage(null, message);
+					return null;
+				} else {
+					// Recurring case. Save the error in an 
+					// error list to be displayed on another page
+					// later on. For now, just continue with the list.
+					// advance to next week
+					chosenStartDate.add(Calendar.DAY_OF_YEAR, 7);
+					chosenEndDate.add(Calendar.DAY_OF_YEAR, 7);
+
+					privateRecurringErrorsList.add(ex.getErrorText());
+				}
+			}
+			
 		}
 	
-		// clear out fields for return to the page in this session
-		clearFormFields();	
-		
-		return "requestReservedEvent";
+
+		// Return a string that will either go to the
+		// "list-my-reserved-events" page or go to
+		// a special error page.
+		if (privateRecurringErrorsList.isEmpty()) {
+			if (privateRecurringTimes == 1) {
+				// clear out fields for return to the page in this session
+				clearFormFields();	
+				return "requestReservedEvent";
+			} else {
+				// clear out fields for return to the page in this session
+				clearFormFields();	
+				return "requestReservedEventsOK";
+			}
+		} else {
+			// Recurring events error case
+			// clear out fields for return to the page in this session
+			clearFormFields();	
+			return "requestReservedEventWithErrors";
+		}
 	}
 	
 	// method to create a PrivateEvent
@@ -498,9 +620,15 @@ public class RequestReservedEventController implements Serializable {
 	private Calendar calculateTheStartDate() {
 		CalendarUtils.TimeSlot[] slots = getTimeSlotsOfTheDay();
 		int slotInt = Integer.parseInt(slotNumberStart);
+		/*
 		Calendar chosenTimeCal = new GregorianCalendar(Integer.parseInt(privateEventStartYear), 
 				Integer.parseInt(privateEventStartMonth), Integer.parseInt(privateEventStartDay), 
 				slots[slotInt].getHour(), slots[slotInt].getMinutes());
+		*/
+		Calendar chosenTimeCal = new GregorianCalendar(privateChosenCal.get(Calendar.YEAR), 
+			privateChosenCal.get(Calendar.MONTH), privateChosenCal.get(Calendar.DAY_OF_MONTH), 
+				slots[slotInt].getHour(), slots[slotInt].getMinutes());
+
 		return chosenTimeCal;
 	}
 	
@@ -514,8 +642,8 @@ public class RequestReservedEventController implements Serializable {
 	}
 
 	public CalendarUtils.TimeSlot[] getTimeSlotsOfTheDay() {
-		return CalendarUtils.getTimeSlotsOfTheDay(Integer.parseInt(privateEventStartYear),
-				Integer.parseInt(privateEventStartMonth));
+		return CalendarUtils.getTimeSlotsOfTheDay(privateChosenCal.get(Calendar.YEAR),
+				privateChosenCal.get(Calendar.MONTH));
 	}
 
 	public CalendarUtils.OneMonth[] getMonthsOfTheYear() {
@@ -523,8 +651,8 @@ public class RequestReservedEventController implements Serializable {
 	}
 
 	public String[] getDaysOfTheMonth() {
-		return CalendarUtils.getDaysOfTheMonth(Integer.parseInt(privateEventStartYear),
-				Integer.parseInt(privateEventStartMonth));
+		return CalendarUtils.getDaysOfTheMonth(privateChosenCal.get(Calendar.YEAR),
+				privateChosenCal.get(Calendar.DAY_OF_MONTH));
 	}
 	
 	public String[] getYears() {
@@ -565,6 +693,34 @@ public class RequestReservedEventController implements Serializable {
 			countList.add(Integer.toString(idx));
 		}
 		return countList;
+	}
+
+	// Method for drop-down of the number of recurred events
+	public List<String> getNumberOfRecurredEvents() {
+
+		List<String> countList = new ArrayList<String>();
+		for (int idx = 1; idx < 26; idx++) {
+			countList.add(Integer.toString(idx));
+		}
+		return countList;
+	}
+
+	// new stuff for recurring support 1/20/2019
+	public Date getPrivateChosenDate() {
+		return privateChosenDate;
+	}
+
+	public void setPrivateChosenDate(Date privateChosenDate) {
+		this.privateChosenDate = privateChosenDate;
+		this.privateChosenCal.setTime(privateChosenDate);
+		// Not very useful at the moment since we don't allow events to span days
+		this.privateEventEndYear = new Integer(privateChosenCal.get(Calendar.YEAR)).toString();
+		this.privateEventEndMonth = new Integer(privateChosenCal.get(Calendar.MONTH)).toString();
+		this.privateEventEndDay = new Integer(privateChosenCal.get(Calendar.DAY_OF_MONTH)).toString();
+	}
+
+	public void dateSelect(SelectEvent event) {
+		setPrivateChosenDate((Date)event.getObject());	
 	}
 
 }

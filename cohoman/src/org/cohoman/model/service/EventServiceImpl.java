@@ -35,6 +35,7 @@ import org.cohoman.model.integration.persistence.beans.SpaceBean;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.CalendarUtils.MealDate;
+import org.cohoman.view.controller.utils.Validators;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class EventServiceImpl implements EventService {
@@ -349,19 +350,57 @@ public class EventServiceImpl implements EventService {
 				+ LoggingUtils.getCurrentUsername() + "\"");
 		eventManager.createPrivateEvent(privateEventDTO);
 		
-		// Send a text message to the space admins
-		SmsSender smsSender = new SmsSender();
+		// determine text to send out to Space Admin's cell phones
+		String textMsg = "CCM: new reserved space requested: \"" + 
+				privateEventDTO.getEventName() + "\" by " + LoggingUtils.getCurrentUsername();
+		
 		// my phone number
-		smsSender.sendtextMessage("6179902631", "CCM: new reserved space requested: \"" + 
-		    privateEventDTO.getEventName() + "\" by " + LoggingUtils.getCurrentUsername());
+		User userSpaceAdmin = userManager.getUserByUsername("bill");
+		if (userSpaceAdmin == null) {
+			logger.info("AUDIT: Unable to find user " + "bill" +
+					" to notify that Space Administrator of request, but request has been made.");
+		} else {
+			String phoneNumber = userSpaceAdmin.getCellphone();
+			if (!phoneNumber.isEmpty() && Validators.isValidPhoneNumber(phoneNumber)) {
+				phoneNumber = phoneNumber.replace("-",  "");  // remove dashes from phone number
+				SmsSender.sendtextMessage(phoneNumber, textMsg);
+			} else {
+				logger.info("AUDIT: phone number for " + "bill" +
+					" is not valid: " + phoneNumber);
+			}
+		}
 		
 		// Joan's phone number
-		smsSender.sendtextMessage("6177103001", "CCM: new reserved space requested: \"" + 
-			privateEventDTO.getEventName() + "\" by " + LoggingUtils.getCurrentUsername());
-		
+		userSpaceAdmin = userManager.getUserByUsername("joan");
+		if (userSpaceAdmin == null) {
+			logger.info("AUDIT: Unable to find user " + "joan" +
+					" to notify that Space Administrator of request, but request has been made.");
+		} else {
+			String phoneNumber = userSpaceAdmin.getCellphone();
+			if (!phoneNumber.isEmpty() && Validators.isValidPhoneNumber(phoneNumber)) {
+				phoneNumber = phoneNumber.replace("-",  "");  // remove dashes from phone number
+				SmsSender.sendtextMessage(phoneNumber, textMsg);
+			} else {
+				logger.info("AUDIT: phone number for " + "joan" +
+					" is not valid: " + phoneNumber);
+			}
+		}
+
 		// Molly's phone number
-		smsSender.sendtextMessage("8579981649", "CCM: new reserved space requested: \"" + 
-			    privateEventDTO.getEventName() + "\" by " + LoggingUtils.getCurrentUsername());
+		userSpaceAdmin = userManager.getUserByUsername("molly");
+		if (userSpaceAdmin == null) {
+			logger.info("AUDIT: Unable to find user " + "molly" +
+					" to notify that Space Administrator of request, but request has been made.");
+		} else {
+			String phoneNumber = userSpaceAdmin.getCellphone();
+			if (!phoneNumber.isEmpty() && Validators.isValidPhoneNumber(phoneNumber)) {
+				phoneNumber = phoneNumber.replace("-",  "");  // remove dashes from phone number
+				SmsSender.sendtextMessage(phoneNumber, textMsg);
+			} else {
+				logger.info("AUDIT: phone number for " + "molly" +
+					" is not valid: " + phoneNumber);
+			}
+		}
 
 	}
 

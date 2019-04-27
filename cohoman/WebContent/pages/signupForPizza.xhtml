@@ -34,6 +34,7 @@
 					rendered="#{empty signupPizzaController.pizzaEventList}"/>
 				<h:selectOneMenu value="#{signupPizzaController.chosenPizzaEventString}"
 					rendered="#{not empty signupPizzaController.pizzaEventList}">
+					<f:selectItem itemValue="#{1}" itemLabel="Choose the pizza/potluck date" />
 					<f:selectItems value="#{signupPizzaController.pizzaEventList}"
 						var="onemeal" 
 						itemLabel="#{onemeal.choosableEventDate}"

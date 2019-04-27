@@ -110,9 +110,16 @@ public class RetrieveThisWeekForIndexController implements Serializable {
 		int day;
 		int month;
 		for (int idx = 1; idx < 8; idx++) {
+
 			day = workingDate.get(Calendar.DAY_OF_MONTH);
 			month = workingDate.get(Calendar.MONTH);
 			for (User oneUser : fullUserList) {
+				// ignore entries that have a year == 1920
+				// a hacky way to ignore people who have been
+				// added without knowing their birthday
+				if (oneUser.getBirthyear() == 1920) {
+					continue;
+				}
 				if (oneUser.getBirthday() == day
 						&& oneUser.getBirthmonth() == month) {
 					String birthdayLine = oneUser.getFirstname() + " "

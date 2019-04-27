@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -33,6 +35,8 @@ public class SignupPotluckController implements Serializable {
 	/**
 	 * 
 	 */
+	Logger logger = Logger.getLogger(this.getClass().getName());
+
 	private static final long serialVersionUID = 4678206276499587830L;
 
 	private List<PotluckEvent> potluckEventList;
@@ -208,6 +212,12 @@ public class SignupPotluckController implements Serializable {
 			return false;
 		}
 
+		// Special case hack: 1=> no meal has been set so just
+		// assume this isn't a leader so page can be rendered.
+		if (chosenPotluckEventString.equals("1")) {
+			return false;
+		}
+
 		// Get the chosen Meal Event so we can display correct information
 		// about the Meal before submittal
 		eventId = Long.valueOf(chosenPotluckEventString);
@@ -271,8 +281,9 @@ public class SignupPotluckController implements Serializable {
 		// displayed.
 		if (potluckEventList != null && !potluckEventList.isEmpty()
 				&& chosenPotluckEventString == null) {
-			chosenPotluckEventString = potluckEventList.get(0).getEventid()
-					.toString();
+			chosenPotluckEventString = "1";  //12/29/18 choose
+			//chosenPotluckEventString = potluckEventList.get(0).getEventid()
+					//.toString();
 		}
 
 		return potluckEventList;
@@ -513,6 +524,39 @@ public class SignupPotluckController implements Serializable {
 	}
 
 	public String signupPotluckView() throws CohomanException {
+
+		// Get the chosen MealEvent
+		if (chosenPotluckEventString == null || chosenPotluckEventString.length() == 0) {
+			logger.log(Level.SEVERE,
+					"Internal Error: invalid PotluckEventId parameter");
+			FacesMessage message = new FacesMessage(
+					"Internal Error: invalid PotluckEventId parameter. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+		
+		// Error check that a potluck has been chosen
+		if (chosenPotluckEventString.equalsIgnoreCase("1")) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose a potluck to attend or list.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
+		// Error check that a potluck item type has been chosen iff
+		// this is a a real signup operation which implies that
+		// an itemtype has been set.
+		if ((signupOperation.equalsIgnoreCase("doSignupSomeoneElse") ||
+				signupOperation.equalsIgnoreCase("doSignup")) && 
+				(itemtype.name().equalsIgnoreCase("CHOOSE"))) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose the category of dish you're bringing.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
 
 		// Get the chosen MealEvent
 		eventId = Long.valueOf(chosenPotluckEventString);

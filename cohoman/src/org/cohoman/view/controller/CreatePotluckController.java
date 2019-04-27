@@ -58,6 +58,8 @@ public class CreatePotluckController implements Serializable {
 		potluckInfo = "";
 		leader1 = null;
 		chosenUserString = "";
+		chosenPotluckDateTimestamp = 0;
+
 	}
 
 	public EventService getEventService() {
@@ -81,6 +83,12 @@ public class CreatePotluckController implements Serializable {
 	}
 
 	public void setChosenPotluckDateTimestamp(int chosenPotluckDateTimestamp) {
+		
+		// Added 12/29/2018 for chosen date/leader support
+		if (chosenPotluckDateTimestamp == 0) {
+			return;
+		}
+
 		this.chosenPotluckDateTimestamp = chosenPotluckDateTimestamp;
 		for (MealDate mealDate : potluckDaysForPeriod) {
 			if (mealDate.getTimestamp() == chosenPotluckDateTimestamp) {
@@ -126,6 +134,25 @@ public class CreatePotluckController implements Serializable {
 	}
 
 	public String addPotluck() throws Exception {
+		
+		// Error check first that a leader has been chosen
+		if (chosenUserString == null || chosenUserString.isEmpty()) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose a leader for the potluck.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
+		// Error check that the date has been specified
+		if (chosenPotluckDateTimestamp == 0) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose the date for the potluck.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+		
 		Date eventDate = calculateTheDate();
 		Calendar endDateCal = Calendar.getInstance();
 		endDateCal.setTime(eventDate);
@@ -161,10 +188,12 @@ public class CreatePotluckController implements Serializable {
 
 	public List<User> getUserList() {
 		List<User> fullUserList = userService.getUsersHereNow();
+		
+		// as of 12/29/18 null => choose user
 		// First time thru, set user to first of list as that's what's displayed.
-		if (chosenUserString == null) {
-			chosenUserString = fullUserList.get(0).getUserid().toString();
-		}
+		//if (chosenUserString == null) {
+			//chosenUserString = fullUserList.get(0).getUserid().toString();
+		//}
 		
 		return fullUserList;
 	}

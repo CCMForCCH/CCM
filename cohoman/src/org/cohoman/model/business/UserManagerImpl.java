@@ -44,6 +44,14 @@ public class UserManagerImpl implements UserManager {
 		return makeUserFromUserBean(userDTO);
 	}
 
+	public User getUserByUsername(String username) {
+		UserDTO userDTO = userDao.getUserByUsername(username);
+		if (userDTO == null) {
+			return null;
+		}
+		return makeUserFromUserBean(userDTO);
+	}
+
 	public List<User> getAllUsers() {
 		List<User> users = new ArrayList<User>();
 		List<UserDTO> userDTOs = userDao.getAllUsers();

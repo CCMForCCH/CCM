@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -34,6 +36,8 @@ public class SignupPizzaController implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 4678206276499587830L;
+	
+	Logger logger = Logger.getLogger(this.getClass().getName());
 
 	private List<PizzaEvent> pizzaEventList;
 	private PizzaEvent chosenPizzaEvent;
@@ -231,6 +235,12 @@ public class SignupPizzaController implements Serializable {
 			return false;
 		}
 
+		// Special case hack: 1=> no meal has been set so just
+		// assume this isn't a leader so page can be rendered.
+		if (chosenPizzaEventString.equals("1")) {
+			return false;
+		}
+		
 		// Get the chosen Meal Event so we can display correct information
 		// about the Meal before submittal
 		eventId = Long.valueOf(chosenPizzaEventString);
@@ -292,10 +302,12 @@ public class SignupPizzaController implements Serializable {
 		// displayed.
 		if (pizzaEventList != null && !pizzaEventList.isEmpty()
 				&& chosenPizzaEventString == null) {
-			chosenPizzaEventString = pizzaEventList.get(0).getEventid()
-					.toString();
+			chosenPizzaEventString = "1";  //12/29/18 choose
+			//chosenPizzaEventString = pizzaEventList.get(0).getEventid()
+					//.toString();
 		}
 		return pizzaEventList;
+		
 	}
 
 	/*
@@ -543,6 +555,12 @@ public class SignupPizzaController implements Serializable {
 			return true;
 		}
 
+		// Special case hack: 1=> no meal has been set so just
+		// assume this isn't a leader so page can be rendered.
+		if (chosenPizzaEventString.equals("1")) {
+			return false;
+		}
+
 		eventId = Long.valueOf(chosenPizzaEventString);
 		PizzaEvent chosenPizzaEvent = eventService.getPizzaEvent(eventId);
 
@@ -558,8 +576,39 @@ public class SignupPizzaController implements Serializable {
 	public String signupPizzaView() throws CohomanException {
 
 		// Get the chosen MealEvent
+		if (chosenPizzaEventString == null || chosenPizzaEventString.length() == 0) {
+			logger.log(Level.SEVERE,
+					"Internal Error: invalid PizzaEventId parameter");
+			FacesMessage message = new FacesMessage(
+					"Internal Error: invalid PizzaEventId parameter. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+		
+		// Error check that a pizza/potluck has been chosen
+		if (chosenPizzaEventString.equalsIgnoreCase("1")) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose a pizza/potluck to attend.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
+		// Get the chosen MealEvent
 		eventId = Long.valueOf(chosenPizzaEventString);
 		PizzaEvent chosenPizzaEvent = eventService.getPizzaEvent(eventId);
+		if (chosenPizzaEvent == null) {
+			logger.log(Level.SEVERE,
+					"Internal Error: unable to find pizza/potluck event for eventId " + 
+					eventId);
+			FacesMessage message = new FacesMessage(
+					"Internal Error: unable to find pizza/potluck event. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
 		eventType = chosenPizzaEvent.getEventtype();
 		printableEventDate = chosenPizzaEvent.getPrintableEventDate();
 

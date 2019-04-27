@@ -57,6 +57,7 @@ public class CreateMealController implements Serializable {
 		menu = "";
 		cook1 = null;
 		chosenUserString = "";
+		chosenMealDateTimestamp = 0;
 	}
 	
 	public EventService getEventService() {
@@ -80,6 +81,14 @@ public class CreateMealController implements Serializable {
 	}
 
 	public void setChosenMealDateTimestamp(int chosenMealDateTimestamp) {
+		
+		// Let this value be 0 (which it will be if the user failed
+		// to select a date). There's a later check in addMeal()
+		// for just this case.
+		if (chosenMealDateTimestamp == 0) {
+			return;
+		}
+		
 		this.chosenMealDateTimestamp = chosenMealDateTimestamp;
 		for (MealDate mealDate : mealDaysForPeriod) {
 			if (mealDate.getTimestamp() == chosenMealDateTimestamp) {
@@ -132,10 +141,11 @@ public class CreateMealController implements Serializable {
 
 	public List<User> getUserList() {
 		List<User> fullUserList = userService.getUsersHereNow();
+		// as of 12/29/18 null => choose user
 		// First time thru, set user to first of list as that's what's displayed.
-		if (chosenUserString == null) {
-			chosenUserString = fullUserList.get(0).getUserid().toString();
-		}
+		//if (chosenUserString == null) {
+			//chosenUserString = fullUserList.get(0).getUserid().toString();
+		//}
 		
 		return fullUserList;
 	}
@@ -144,8 +154,19 @@ public class CreateMealController implements Serializable {
 		
 		// Error check first that a leader has been chosen
 		if (chosenUserString == null || chosenUserString.isEmpty()) {
-			FacesContext.getCurrentInstance().addMessage(null, 
-				new FacesMessage("User Error: you must choose a leader for the meal."));
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose a lead cook for the meal.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
+		// Error checkk that the date has been specified
+		if (chosenMealDateTimestamp == 0) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose the date for the meal.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
 		}
 

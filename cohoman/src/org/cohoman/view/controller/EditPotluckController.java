@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -26,6 +29,8 @@ public class EditPotluckController implements Serializable {
 	/**
 	 * 
 	 */
+	Logger logger = Logger.getLogger(this.getClass().getName());
+
 	private static final long serialVersionUID = 4678206276499587830L;
 
 	private List<PotluckEvent> potluckEventList;
@@ -36,6 +41,12 @@ public class EditPotluckController implements Serializable {
 	private String slotNumber;
 	private String chosenUserString;
 	private UserService userService = null;
+	
+	private void clearFormFields() {
+		// Make the user choose again
+		chosenPotluckEventString = "1";
+	}
+
 
 	public UserService getUserService() {
 		return userService;
@@ -97,6 +108,13 @@ public class EditPotluckController implements Serializable {
 		// filter out meals that have passed for all users
 		// except the meal admin
 		potluckEventList = filterOutPastMeals(potluckEventList);
+		
+		// added 12/28/18 to make users choose the meal
+		if (potluckEventList != null && !potluckEventList.isEmpty()
+				&& chosenPotluckEventString == null) {
+			chosenPotluckEventString = "1";
+		}
+
 		return potluckEventList;
 	}
 
@@ -137,6 +155,28 @@ public class EditPotluckController implements Serializable {
 
 	public String editPotluckView() throws Exception {
 
+		// convert chosenPotluckEventString to an id to find the Eventmeal
+		if (chosenPotluckEventString == null || chosenPotluckEventString.length() == 0) {
+			logger.log(Level.SEVERE,
+					"Internal Error: invalid PotluckEventId parameter");
+
+			FacesMessage message = new FacesMessage(
+					"Internal Error: invalid PotluckEventId parameter. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
+		// Error check that a meal has been chosen
+		if (chosenPotluckEventString.equalsIgnoreCase("1")) {
+
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose the date for the potluck.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
 		// convert chosenMealEventString to an id to find the Eventmeal
 		Long eventId = Long.valueOf(chosenPotluckEventString);
 		chosenPotluckEvent = eventService.getPotluckEvent(eventId);
@@ -145,6 +185,10 @@ public class EditPotluckController implements Serializable {
 		if (potluckOperation.equals("deletePotluck")) {
 			eventService.deletePotluckEvent(chosenPotluckEvent);
 		}
+		
+		// Clear fields for next time.
+		clearFormFields();
+
 		return potluckOperation;
 	}
 

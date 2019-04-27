@@ -43,6 +43,11 @@ public class EditMealController implements Serializable {
 	private String slotNumber;
 	private UserService userService = null;
 
+	private void clearFormFields() {
+		// Make the user choose again
+		chosenMealEventString = "1";
+	}
+	
 	public UserService getUserService() {
 		return userService;
 	}
@@ -97,7 +102,16 @@ public class EditMealController implements Serializable {
 		// if (mealEventList == null) {
 		mealEventList = eventService.getCurrentMealEvents();
 		// }
+		
+		// remove past meals so user can't signup for them
 		mealEventList = filterOutPastMeals(mealEventList);
+
+		// added 12/28/18 to make users choose the meal
+		if (mealEventList != null && !mealEventList.isEmpty()
+				&& chosenMealEventString == null) {
+			chosenMealEventString = "1";
+		}
+		
 		return mealEventList;
 	}
 
@@ -142,8 +156,19 @@ public class EditMealController implements Serializable {
 		if (chosenMealEventString == null || chosenMealEventString.length() == 0) {
 			logger.log(Level.SEVERE,
 					"Internal Error: invalid MealEventId parameter");
-			FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage("Internal Error: invalid MealEventId parameter. Click on Main Menu link."));
+			FacesMessage message = new FacesMessage(
+					"Internal Error: invalid MealEventId parameter. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
+		// Error check that a meal has been chosen
+		if (chosenMealEventString.equalsIgnoreCase("1")) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose a meal to change or delete.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
 		}
 
@@ -155,8 +180,10 @@ public class EditMealController implements Serializable {
 			logger.log(Level.SEVERE,
 					"Internal Error: unable to find meal event for mealId " + 
 					eventId);
-			FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage("Internal Error: unable to find meal event. Click on Main Menu link."));
+			FacesMessage message = new FacesMessage(
+					"Internal Error: unable to find meal event. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
 		}
 
@@ -166,6 +193,10 @@ public class EditMealController implements Serializable {
 		if (mealOperation.equals("deleteMeal")) {
 			eventService.deleteMealEvent(chosenMealEvent);
 		}
+		
+		// Clear fields for next time.
+		clearFormFields();
+		
 		return mealOperation;
 	}
 

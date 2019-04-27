@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.cohoman.model.integration.persistence.beans.ConfigScalarsBean" table="configscalars" >
+  
+  	  <id name="configscalarid">
+		 <generator class="increment" />
+	  </id>
+
+	  <property name="scalarName" >
+	  	  	<column name="scalarname" />
+	  </property>
+	  <property name="scalarValue" >
+	  	  	<column name="scalarvalue" />
+	  </property>
+	    
+  </class>
+  
+</hibernate-mapping>

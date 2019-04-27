@@ -1,18 +1,32 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
 	"-//Hibernate/Hibernate Configuration DTD//EN"
-	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
 <session-factory>
       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-      <property name="hibernate.connection.url">jdbc:mysql://localhost/cohoman</property>
-      <property name="hibernate.connection.username">maureen</property>
-      <property name="hibernate.connection.password"></property>
-            
-      <property name="hibernate.connection.pool_size">10</property>
+      <property name="hibernate.connection.url">jdbc:mysql://localhost/cambri42_cohoman</property>
+      <property name="hibernate.connection.username">cambri42</property>
+      <property name="hibernate.connection.password">Cohoman16!</property>
+
+
+	  <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+
+	  <property name ="hibernate.c3p0.min_size">5</property>
+	  <property name ="hibernate.c3p0.max_size">40</property>
+	  <property name ="hibernate.c3p0.timeout">600</property>
+	  <property name ="hibernate.c3p0.max_statements">50</property>
+	  <!-- following value must be less than timeout -->
+	  <property name="hibernate.c3p0.idle_test_period">300</property>
+	  
+	  <!-- don't keep the timeout??? it will kill connections -->
+	  <property name ="hibernate.c3p0.unreturnedConnectionTimeout">120</property>
+	  <property name ="hibernate.c3p0.debugUnreturnedConnectionStackTraces">true</property>
+
+      <!--  <property name="hibernate.connection.pool_size">10</property>  -->
       <property name="show_sql">false</property>
-      <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+      <property name="dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
       <property name="hibernate.hbm2ddl.auto">update</property>
       <!-- Mapping files -->
       <mapping resource="Event.hbm.xml" />
@@ -30,6 +44,7 @@
       <mapping resource="Substitutes.hbm.xml" />
       <mapping resource="Maintenance.hbm.xml" />
       <mapping resource="Mtask.hbm.xml" />
-
+      <mapping resource="ConfigScalars.hbm.xml" />
+ 
 </session-factory>
 </hibernate-configuration>

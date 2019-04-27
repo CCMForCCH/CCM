@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -28,6 +31,8 @@ public class EditPizzaController implements Serializable {
 	 */
 	private static final long serialVersionUID = 4678206276499587830L;
 	
+	Logger logger = Logger.getLogger(this.getClass().getName());
+	
 	private List<PizzaEvent> pizzaEventList;
 	private PizzaEvent chosenPizzaEvent;
 	private String chosenPizzaEventString;
@@ -39,6 +44,11 @@ public class EditPizzaController implements Serializable {
 	private String chosenUserString;
 	private UserService userService = null;
 	
+	private void clearFormFields() {
+		// Make the user choose again
+		chosenPizzaEventString = "1";
+	}
+
 	public UserService getUserService() {
 		return userService;
 	}
@@ -115,6 +125,13 @@ public class EditPizzaController implements Serializable {
 		// filter out meals that have passed for all users
 		// except the meal admin
 		pizzaEventList = filterOutPastMeals(pizzaEventList);
+		
+		// added 12/28/18 to make users choose the meal
+		if (pizzaEventList != null && !pizzaEventList.isEmpty()
+				&& chosenPizzaEventString == null) {
+			chosenPizzaEventString = "1";
+		}
+
 		return pizzaEventList;
 	}
 
@@ -154,6 +171,26 @@ public class EditPizzaController implements Serializable {
 
 	public String editPizzaView() throws Exception {
 		
+		// convert chosenPizzaEventString to an id to find the Eventmeal
+		if (chosenPizzaEventString == null || chosenPizzaEventString.length() == 0) {
+			logger.log(Level.SEVERE,
+					"Internal Error: invalid PizzaEventId parameter");
+			FacesMessage message = new FacesMessage(
+					"Internal Error: invalid PizzaEventId parameter. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
+		// Error check that a meal has been chosen
+		if (chosenPizzaEventString.equalsIgnoreCase("1")) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose a pizza/potluck to change or delete.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
 		// convert chosenMealEventString to an id to find the Eventmeal
 		Long eventId = Long.valueOf(chosenPizzaEventString);
 		chosenPizzaEvent = eventService.getPizzaEvent(eventId);
@@ -162,6 +199,10 @@ public class EditPizzaController implements Serializable {
 		if (pizzaOperation.equals("deletePizza")) {
 			eventService.deletePizzaEvent(chosenPizzaEvent);
 		}
+		
+		// Clear fields for next time.
+		clearFormFields();
+
 		return pizzaOperation;
 	}
 	

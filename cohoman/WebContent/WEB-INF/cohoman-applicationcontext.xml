@@ -68,6 +68,10 @@
 		<property name="unitsDao" ref="unitsDao" />
 		<property name="securityDao" ref="securityDao" />
 	</bean>
+	<bean id="configScalarValues"
+		class="org.cohoman.model.singletons.ConfigScalarValues">
+		<property name="configScalarsDao" ref="configScalarsDao" />
+	</bean>
 	<bean id="mealEventDao"
 		class="org.cohoman.model.integration.persistence.dao.MealEventDaoImpl">
 		<property name="userDao" ref="userDao" />
@@ -123,6 +127,9 @@
 	</bean>
 	<bean id="mtaskDao"
 		class="org.cohoman.model.integration.persistence.dao.MtaskDaoImpl">
+	</bean>
+	<bean id="configScalarsDao"
+		class="org.cohoman.model.integration.persistence.dao.ConfigScalarsDaoImpl">
 	</bean>
 	
 </beans>

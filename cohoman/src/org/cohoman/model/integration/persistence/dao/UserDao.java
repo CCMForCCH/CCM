@@ -12,6 +12,8 @@ public interface UserDao {
 		
 	public UserDTO getUserForLogin(UserDTO theuser);
 	public UserDTO getUser(Long userid);
+	public UserDTO getUserByUsername(String username);
+	
 
 	// *******  Various flavors of User lists ****************************
 	// First, general one

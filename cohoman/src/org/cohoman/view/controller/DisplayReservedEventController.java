@@ -135,9 +135,9 @@ public class DisplayReservedEventController implements Serializable {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(privateevent.getApprovaldate());
 		if (cal.get(Calendar.HOUR_OF_DAY) == 0) {
-			formatter = new SimpleDateFormat("EEEE, MMM. d");
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
 		} else {
-			formatter = new SimpleDateFormat("EEEE, MMM. d h:mm aa");
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy h:mm aa");
 		}
 		return formatter.format(privateevent.getApprovaldate().getTime());
 	}

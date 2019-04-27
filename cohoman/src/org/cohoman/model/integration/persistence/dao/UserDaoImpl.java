@@ -327,6 +327,30 @@ public class UserDaoImpl implements UserDao {
 		return userDTO;
 	}
 
+	public UserDTO getUserByUsername(String username) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		String queryString = "from UserBean " + "where username = ?";
+		Query query = null;
+		try {
+			query = session.createQuery(queryString).setString(0, username);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		List<UserBean> userCollection = query.list();
+		if (userCollection.size() != 1) {
+			return null;
+		}
+		UserBean oneUser = userCollection.iterator().next();
+		UnitBean unitBean = getUnitBeanGivenUserUnitid(session,
+				oneUser.getUnit());
+		UserDTO userDTO = new UserDTO();
+		userDTO = makeUserDTOFromUserBean(oneUser, unitBean.getUnitnumber());
+		session.flush();
+		session.close();
+		return userDTO;
+	}
+	
 	public void addRole(Long userId, Long roleId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = null;

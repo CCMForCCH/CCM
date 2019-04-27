@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.List;
 
 import org.cohoman.model.dto.SecurityStartingPointDTO;
-import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.TimePeriodBean;
 import org.cohoman.model.integration.persistence.beans.TimePeriodTypeEnum;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
