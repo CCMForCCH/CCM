@@ -45,8 +45,8 @@
          		Event day:
          		<p:calendar  id="popup" 
          			value="#{requestReservedEventController.privateChosenDate}" required="true" 
-         			pattern="MMMM d, yyyy" size="15" showOn="both"
-         			inputStyle="font-size: x-small;" readonlyInput="true" >
+         			pattern="MMMM d, yyyy" size="15" showOn="focus"
+         			inputStyle="font-size: medium;" readonlyInput="true">
          			<p:ajax event="dateSelect" listener="#{requestReservedEventController.dateSelect}" />
          		</p:calendar>
          		
@@ -77,7 +77,7 @@
 				</ui:remove>
 				
 				Start time:
-				<h:selectOneMenu id="starttimeId" value="#{requestReservedEventController.slotNumberStart}">
+				<h:selectOneMenu id="starttimeId" value="#{requestReservedEventController.slotNumberStart}" style="font-size: medium;">
 					<f:selectItems value="#{requestReservedEventController.timeSlotsOfTheDay}"
 						var="slot" 
 						itemLabel="#{slot.slotString}"
@@ -86,7 +86,7 @@
 				</h:selectOneMenu>
 				
 				End time:
-				<h:selectOneMenu id="endtimeId" value="#{requestReservedEventController.slotNumberEnd}">
+				<h:selectOneMenu id="endtimeId" value="#{requestReservedEventController.slotNumberEnd}" style="font-size: medium;">
 					<f:selectItems value="#{requestReservedEventController.timeSlotsOfTheDay}"
 						var="slot" 
 						itemLabel="#{slot.slotString}"
@@ -125,7 +125,7 @@
 				Event Name:
 				<h:panelGroup>
 				<h:inputText id="EventName" value="#{requestReservedEventController.privateEventName}" 
-					label="EventName" maxlength = "40" required="true"/>
+					label="EventName" maxlength = "40" required="true" />
 				<h:message for="EventName" errorClass="errors" />
 				</h:panelGroup>
 					
@@ -138,7 +138,8 @@
 				</h:panelGroup>
 			
  				Number of Adults Expected:
-				<h:selectOneMenu  value="#{requestReservedEventController.privateExpectednumberofadults}" >
+				<h:selectOneMenu  value="#{requestReservedEventController.privateExpectednumberofadults}" 
+					style="font-size: medium;">
 					<f:selectItems value="#{requestReservedEventController.numberOfAdults}"
 						var="onecount" 
 						itemLabel="#{onecount}"
@@ -146,7 +147,8 @@
 				</h:selectOneMenu>
 
 				Number of Children Expected:
-				<h:selectOneMenu  value="#{requestReservedEventController.privateExpectednumberofchildren}" >
+				<h:selectOneMenu  value="#{requestReservedEventController.privateExpectednumberofchildren}"
+					style="font-size: medium;" >
 					<f:selectItems value="#{requestReservedEventController.numberOfChildren}"
 						var="onecount" 
 						itemLabel="#{onecount}"
