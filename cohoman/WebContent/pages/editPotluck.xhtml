@@ -34,7 +34,8 @@
 					rendered="#{empty editPotluckController.potluckEventList}" />
 
 				<h:selectOneMenu value="#{editPotluckController.chosenPotluckEventString}"
-					rendered="#{not empty editPotluckController.potluckEventList}" >
+					rendered="#{not empty editPotluckController.potluckEventList}" 
+					style="font-size: medium;" >
 					<f:selectItem itemValue="#{1}" itemLabel="Choose the potluck date" />
 					<f:selectItems value="#{editPotluckController.potluckEventList}"
 						var="onemeal" 

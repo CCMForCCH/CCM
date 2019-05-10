@@ -253,5 +253,6 @@
 	<classpathentry kind="lib" path="C:/cohoapp/tools/spring-framework-3.0.5.RELEASE/dist/org.springframework.web.struts-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="C:/cohoapp/tools/spring-framework-3.0.5.RELEASE/dist/org.springframework.web-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="C:/cohoapp/tools/jBCrypt-0.4/jbcrypt.jar"/>
+	<classpathentry kind="lib" path="C:/cohoapp/workspace/cohomanworkspaceluna/cohoman/WebContent/WEB-INF/lib/primefaces-6.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

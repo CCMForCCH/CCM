@@ -19,7 +19,7 @@ import org.cohoman.model.integration.persistence.beans.EventTypeDefs;
 import org.cohoman.model.integration.persistence.beans.SpaceBean;
 import org.cohoman.model.service.EventService;
 import org.cohoman.view.controller.utils.CalendarUtils;
-import org.cohoman.view.controller.utils.CalendarUtils.MealDate;
+import org.primefaces.event.SelectEvent;
 
 @ManagedBean
 @SessionScoped
@@ -28,16 +28,21 @@ public class CreateCohoEventController implements Serializable {
 
 	private static final long serialVersionUID = 5716065327257928138L;
 	
+  	private Date cohoChosenDate;
+  	private Calendar cohoChosenCal;
+
+  	/*
 	private String cohoEventStartYear;
 	private String cohoEventStartMonth;
 	private String cohoEventStartDay;
+	*/
 	private String cohoEventEndYear;
 	private String cohoEventEndMonth;
 	private String cohoEventEndDay;
 	private String slotNumberStart;
 	private String slotNumberEnd;
-	private List<MealDate> cohoEventDaysForPeriod;
-	private int chosenEventDateTimestamp;
+	//private List<MealDate> cohoEventDaysForPeriod;
+	//private int chosenEventDateTimestamp;
 	private String chosenEventType;
 	private EventService eventService = null;
 	
@@ -47,9 +52,11 @@ public class CreateCohoEventController implements Serializable {
 		
 	public CreateCohoEventController() {
 		GregorianCalendar now = new GregorianCalendar();
-		cohoEventStartYear = new Integer(now.get(Calendar.YEAR)).toString();
-		cohoEventStartMonth = new Integer(now.get(Calendar.MONTH)).toString();
-		cohoEventStartDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
+		//cohoEventStartYear = new Integer(now.get(Calendar.YEAR)).toString();
+		//cohoEventStartMonth = new Integer(now.get(Calendar.MONTH)).toString();
+		//cohoEventStartDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
+		cohoChosenDate = now.getTime();
+		cohoChosenCal = new GregorianCalendar();
 		cohoEventEndYear = new Integer(now.get(Calendar.YEAR)).toString();
 		cohoEventEndMonth = new Integer(now.get(Calendar.MONTH)).toString();
 		cohoEventEndDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
@@ -58,9 +65,12 @@ public class CreateCohoEventController implements Serializable {
 	private void clearFormFields() {
 	
 		GregorianCalendar now = new GregorianCalendar();
-		cohoEventStartYear = new Integer(now.get(Calendar.YEAR)).toString();
-		cohoEventStartMonth = new Integer(now.get(Calendar.MONTH)).toString();
-		cohoEventStartDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
+		//cohoEventStartYear = new Integer(now.get(Calendar.YEAR)).toString();
+		//cohoEventStartMonth = new Integer(now.get(Calendar.MONTH)).toString();
+		//cohoEventStartDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
+		cohoChosenDate = now.getTime();
+		cohoChosenCal = new GregorianCalendar();
+
 		cohoEventEndYear = new Integer(now.get(Calendar.YEAR)).toString();
 		cohoEventEndMonth = new Integer(now.get(Calendar.MONTH)).toString();
 		cohoEventEndDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
@@ -105,6 +115,7 @@ public class CreateCohoEventController implements Serializable {
 		this.cohoEventInfo = cohoEventInfo;
 	}
 
+	/*
 	public String getCohoEventYear() {
 		return cohoEventStartYear;
 	}
@@ -131,7 +142,7 @@ public class CreateCohoEventController implements Serializable {
 		this.cohoEventStartDay = cohoEventDay;
 		this.cohoEventEndDay = cohoEventDay;
 	}
-
+*/
 /*
 	public String getCohoEventEndYear() {
 		return cohoEventEndYear;
@@ -200,6 +211,7 @@ public class CreateCohoEventController implements Serializable {
 		}
 	}
 
+/*
 	public int getChosenEventDateTimestamp() {
 		return chosenEventDateTimestamp;
 	}
@@ -216,7 +228,8 @@ public class CreateCohoEventController implements Serializable {
 		}
 		throw new RuntimeException ("Cannot find selected CohoDate object.");
 	}
-
+*/
+	
 	public String addCohoEvent() throws Exception {
 		Calendar chosenStartDate = calculateTheStartDate();
 		Calendar chosenEndDate = calculateTheEndDate();
@@ -276,9 +289,15 @@ public class CreateCohoEventController implements Serializable {
 	private Calendar calculateTheStartDate() {
 		CalendarUtils.TimeSlot[] slots = getTimeSlotsOfTheDay();
 		int slotInt = Integer.parseInt(slotNumberStart);
+		/*
 		Calendar chosenTimeCal = new GregorianCalendar(Integer.parseInt(cohoEventStartYear), 
 				Integer.parseInt(cohoEventStartMonth), Integer.parseInt(cohoEventStartDay), 
 				slots[slotInt].getHour(), slots[slotInt].getMinutes());
+		*/
+		Calendar chosenTimeCal = new GregorianCalendar(cohoChosenCal.get(Calendar.YEAR), 
+				cohoChosenCal.get(Calendar.MONTH), cohoChosenCal.get(Calendar.DAY_OF_MONTH), 
+					slots[slotInt].getHour(), slots[slotInt].getMinutes());
+
 		return chosenTimeCal;
 	}
 	
@@ -292,8 +311,13 @@ public class CreateCohoEventController implements Serializable {
 	}
 
 	public CalendarUtils.TimeSlot[] getTimeSlotsOfTheDay() {
+	/*
 		return CalendarUtils.getTimeSlotsOfTheDay(Integer.parseInt(cohoEventStartYear),
 				Integer.parseInt(cohoEventStartMonth));
+	*/
+		return CalendarUtils.getTimeSlotsOfTheDay(cohoChosenCal.get(Calendar.YEAR),
+				cohoChosenCal.get(Calendar.MONTH));
+
 	}
 
 	public CalendarUtils.OneMonth[] getMonthsOfTheYear() {
@@ -301,8 +325,12 @@ public class CreateCohoEventController implements Serializable {
 	}
 
 	public String[] getDaysOfTheMonth() {
+		/*
 		return CalendarUtils.getDaysOfTheMonth(Integer.parseInt(cohoEventStartYear),
 				Integer.parseInt(cohoEventStartMonth));
+		*/
+		return CalendarUtils.getDaysOfTheMonth(cohoChosenCal.get(Calendar.YEAR),
+				cohoChosenCal.get(Calendar.DAY_OF_MONTH));
 	}
 	
 	public String[] getYears() {
@@ -324,4 +352,23 @@ public class CreateCohoEventController implements Serializable {
 	public List<SpaceBean> getAllSpaces() {
 		return 	eventService.getAllSpaces();
 	}
+	
+	// new stuff for primefaces calendar 5/7/2019
+	public Date getCohoChosenDate() {
+		return cohoChosenDate;
+	}
+
+	public void setCohoChosenDate(Date cohoChosenDate) {
+		this.cohoChosenDate = cohoChosenDate;
+		this.cohoChosenCal.setTime(cohoChosenDate);
+		// Not very useful at the moment since we don't allow events to span days
+		this.cohoEventEndYear = new Integer(cohoChosenCal.get(Calendar.YEAR)).toString();
+		this.cohoEventEndMonth = new Integer(cohoChosenCal.get(Calendar.MONTH)).toString();
+		this.cohoEventEndDay = new Integer(cohoChosenCal.get(Calendar.DAY_OF_MONTH)).toString();
+	}
+
+	public void dateSelect(SelectEvent event) {
+		setCohoChosenDate((Date)event.getObject());	
+	}
+
 }

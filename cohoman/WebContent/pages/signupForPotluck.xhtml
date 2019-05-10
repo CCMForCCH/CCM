@@ -34,7 +34,8 @@
 				<h:outputText value="*** No meals thus far in this meal cycle ***"
 					rendered="#{empty signupPotluckController.potluckEventList}"/>
 				<h:selectOneMenu value="#{signupPotluckController.chosenPotluckEventString}"
-					rendered="#{not empty signupPotluckController.potluckEventList}">
+					rendered="#{not empty signupPotluckController.potluckEventList}"
+					style="font-size: medium;" >
 					<f:selectItem itemValue="#{1}" itemLabel="Choose the potluck date" />
 					<f:selectItems value="#{signupPotluckController.potluckEventList}"
 						var="onemeal" 
@@ -77,12 +78,13 @@
 				   	rendered="#{signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" />
 
 					<h:selectOneMenu value="#{signupPotluckController.chosenUserString}"
-					rendered="#{signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" >
+					rendered="#{signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" 
+					style="font-size: medium;" >
 						<f:selectItems value="#{signupPotluckController.userList}"
 							var="oneuser" 
 							itemLabel="#{oneuser.username}"
 							itemValue="#{oneuser.userid}" />
-				</h:selectOneMenu>
+				    </h:selectOneMenu>
 				<br/>
 				</h:panelGroup>
  	
@@ -94,7 +96,8 @@
 				
 					<h:selectOneMenu  value="#{signupPotluckController.numberattending}"
 				 	rendered="#{signupPotluckController.signupOperation eq 'doSignup' ||
-				 		signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}">
+				 		signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}"
+				 		style="font-size: medium;" >
 						<f:selectItems value="#{signupPotluckController.attendingCount}"
 							var="onecount" 
 							itemLabel="#{onecount}"
@@ -110,7 +113,8 @@
 
 					<h:selectOneMenu value="#{signupPotluckController.itemtype}" 
 						rendered="#{signupPotluckController.signupOperation eq 'doSignup' ||
-				   			signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" >
+				   			signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" 
+				   			style="font-size: medium;" >
     					<f:selectItems value="#{signupPotluckController.itemtypes}" />
 					</h:selectOneMenu>
 					<br/>

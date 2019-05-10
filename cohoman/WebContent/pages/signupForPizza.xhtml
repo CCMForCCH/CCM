@@ -33,7 +33,8 @@
 				<h:outputText value="*** No meals thus far in this meal cycle ***"
 					rendered="#{empty signupPizzaController.pizzaEventList}"/>
 				<h:selectOneMenu value="#{signupPizzaController.chosenPizzaEventString}"
-					rendered="#{not empty signupPizzaController.pizzaEventList}">
+					rendered="#{not empty signupPizzaController.pizzaEventList}"
+					style="font-size: medium;" >
 					<f:selectItem itemValue="#{1}" itemLabel="Choose the pizza/potluck date" />
 					<f:selectItems value="#{signupPizzaController.pizzaEventList}"
 						var="onemeal" 
@@ -94,7 +95,8 @@
 				   	rendered="#{signupPizzaController.signupOperation eq 'doSignupSomeoneElse'}" />
 
 					<h:selectOneMenu value="#{signupPizzaController.chosenUserString}"
-					rendered="#{signupPizzaController.signupOperation eq 'doSignupSomeoneElse'}" >
+					rendered="#{signupPizzaController.signupOperation eq 'doSignupSomeoneElse'}"
+					style="font-size: medium;" >
 						<f:selectItems value="#{signupPizzaController.userList}"
 							var="oneuser" 
 							itemLabel="#{oneuser.username}"
@@ -110,7 +112,8 @@
 				
 					<h:selectOneMenu  value="#{signupPizzaController.numberattendingpizza}"
 				 	rendered="#{signupPizzaController.signupOperation eq 'doSignup' ||
-				 		signupPizzaController.signupOperation eq 'doSignupSomeoneElse'}">
+				 		signupPizzaController.signupOperation eq 'doSignupSomeoneElse'}"
+				 		style="font-size: medium;" >
 						<f:selectItems value="#{signupPizzaController.attendingCount}"
 							var="onecount" 
 							itemLabel="#{onecount}"
@@ -125,7 +128,8 @@
 				
 					<h:selectOneMenu  value="#{signupPizzaController.numberattendingpotluck}"
 				 	rendered="#{signupPizzaController.signupOperation eq 'doSignup' ||
-				 		signupPizzaController.signupOperation eq 'doSignupSomeoneElse'}">
+				 		signupPizzaController.signupOperation eq 'doSignupSomeoneElse'}"
+				 		style="font-size: medium;" >
 						<f:selectItems value="#{signupPizzaController.attendingCount}"
 							var="onecount" 
 							itemLabel="#{onecount}"

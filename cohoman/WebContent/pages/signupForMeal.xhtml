@@ -36,7 +36,7 @@
 				<h:outputText value="*** No meals thus far in this meal cycle ***"
 					rendered="#{empty signupMealController.mealEventList}"/>
 				<h:selectOneMenu id="dropdownMealId" value="#{signupMealController.chosenMealEventString}"
-					rendered="#{not empty signupMealController.mealEventList}">
+					rendered="#{not empty signupMealController.mealEventList}" style="font-size: medium;">
 					<f:selectItem itemValue="#{1}" itemLabel="Choose the meal date" />
 					<f:selectItems value="#{signupMealController.mealEventList}"
 						var="onemeal" 
@@ -111,7 +111,8 @@
 				   	rendered="#{signupMealController.signupOperation eq 'doSignupSomeoneElse'}" />
 
 					<h:selectOneMenu value="#{signupMealController.chosenUserString}"
-					rendered="#{signupMealController.signupOperation eq 'doSignupSomeoneElse'}" >
+					rendered="#{signupMealController.signupOperation eq 'doSignupSomeoneElse'}" 
+					style="font-size: medium;">
 						<f:selectItems value="#{signupMealController.userList}"
 							var="oneuser" 
 							itemLabel="#{oneuser.username}"
@@ -127,7 +128,8 @@
 				
 					<h:selectOneMenu  value="#{signupMealController.numberattending}"
 				 	rendered="#{signupMealController.signupOperation eq 'doSignup' ||
-				 		signupMealController.signupOperation eq 'doSignupSomeoneElse'}">
+				 		signupMealController.signupOperation eq 'doSignupSomeoneElse'}"
+				 		style="font-size: medium;">
 						<f:selectItems value="#{signupMealController.attendingCount}"
 							var="onecount" 
 							itemLabel="#{onecount}"
@@ -142,7 +144,7 @@
 				
 					<h:selectOneMenu  value="#{signupMealController.maxnumberattending}"
 				 	rendered="#{signupMealController.signupOperation eq 'setMaxAttendees' and
-				 		signupMealController.leadCook}">
+				 		signupMealController.leadCook}" style="font-size: medium;">
 						<f:selectItems value="#{signupMealController.maxattendingCount}"
 							var="onecount" 
 							itemLabel="#{onecount}"

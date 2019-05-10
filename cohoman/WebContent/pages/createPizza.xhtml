@@ -37,7 +37,8 @@
 					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" />
 				
 				<h:selectOneMenu value="#{createPizzaController.chosenPizzaDateTimestamp}"
-					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" >
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" 
+					style="font-size: medium;" >
 					<f:selectItem itemValue="#{0}" itemLabel="Choose the pizza/potluck date" />
 					<f:selectItems value="#{createPizzaController.pizzaDaysForPeriod}"
 						var="onePizzaDate" 
@@ -48,7 +49,8 @@
 				<h:outputText value="Leader:" 
 					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" />
 				<h:selectOneMenu value="#{createPizzaController.chosenUserString}"
-					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" >
+					rendered="#{not empty createPizzaController.pizzaDaysForPeriod}" 
+					style="font-size: medium;" >
 					<f:selectItem itemValue="#{null}" itemLabel="Choose the Leader" />
 					<f:selectItems value="#{createPizzaController.userList}"
 						var="oneuser" 

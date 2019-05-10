@@ -32,7 +32,8 @@
 				<h:outputText value="#{editCohoEventController.chosenCohoEvent.printableEventDate}" />    
 				     		
 				Start time:
-				<h:selectOneMenu id="starttimeId" value="#{editCohoEventController.slotNumberStart}">
+				<h:selectOneMenu id="starttimeId" value="#{editCohoEventController.slotNumberStart}"
+				style="font-size: medium;" >
 					<f:selectItems value="#{editCohoEventController.timeSlotsOfTheDay}"
 						var="slot" 
 						itemLabel="#{slot.slotString}"
@@ -41,7 +42,8 @@
 				</h:selectOneMenu>
 								
 				End time:
-				<h:selectOneMenu id="endtimeId" value="#{editCohoEventController.slotNumberEnd}">
+				<h:selectOneMenu id="endtimeId" value="#{editCohoEventController.slotNumberEnd}"
+				style="font-size: medium;" >
 					<f:selectItems value="#{editCohoEventController.timeSlotsOfTheDay}"
 						var="slot" 
 						itemLabel="#{slot.slotString}"
@@ -50,7 +52,8 @@
 				</h:selectOneMenu>
 
 				Event type:
-				<h:selectOneMenu value="#{editCohoEventController.chosenCohoEventTypeString}">
+				<h:selectOneMenu value="#{editCohoEventController.chosenCohoEventTypeString}"
+				style="font-size: medium;" >
 					<f:selectItems value="#{editCohoEventController.eventTypeChoices}"
 						var="oneeventtype" 
 						itemLabel="#{oneeventtype}"

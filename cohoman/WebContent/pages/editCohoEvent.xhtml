@@ -34,7 +34,7 @@
 				rendered="#{empty editCohoEventController.cohoEventList}" />
 		
 				<h:selectOneMenu value="#{editCohoEventController.chosenCohoEventString}"
-					rendered="#{not empty editCohoEventController.cohoEventList}" >
+					rendered="#{not empty editCohoEventController.cohoEventList}" style="font-size: medium;">
 					<f:selectItems value="#{editCohoEventController.cohoEventList}"
 						var="onecohoevent" 
 						itemLabel="#{onecohoevent.choosableEventDate}"

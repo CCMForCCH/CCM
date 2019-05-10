@@ -27,14 +27,16 @@
             		<h:outputText value="Choose what to change in the Pizza/Potluck:"/>
          		</f:facet>
 				Leader 1:
-				<h:selectOneMenu value="#{editPizzaController.chosenPizzaEvent.leader1}">
+				<h:selectOneMenu value="#{editPizzaController.chosenPizzaEvent.leader1}"
+				style="font-size: medium;">
 					<f:selectItems value="#{editPizzaController.userList}"
 						var="oneuser" 
 						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
 						itemValue="#{oneuser.userid}" />
 				</h:selectOneMenu>
 				Leader 2:
-				<h:selectOneMenu value="#{editPizzaController.chosenPizzaEvent.leader2}">
+				<h:selectOneMenu value="#{editPizzaController.chosenPizzaEvent.leader2}"
+				style="font-size: medium;">
 					<f:selectItem itemValue="" itemLabel="Choose Leader 2" />
 					<f:selectItems value="#{editPizzaController.userList}"
 						var="oneuser" 

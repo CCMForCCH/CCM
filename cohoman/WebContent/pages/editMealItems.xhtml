@@ -30,7 +30,7 @@
          		Date:
 				<h:outputText value="#{editMealController.chosenMealEvent.printableEventDate}" style="font-size: 18px;"/>         		
 		      	Time:
-				<h:selectOneMenu value="#{editMealController.slotNumber}" style="font-size: 18px;">
+				<h:selectOneMenu value="#{editMealController.slotNumber}" style="font-size: medium;">
 					<f:selectItems value="#{editMealController.timeSlotsOfTheDay}"
 						var="slot" 
 						itemLabel="#{slot.slotString}"
@@ -40,14 +40,14 @@
 				<h:inputTextarea id="Menu" value="#{editMealController.chosenMealEvent.menu}"
 					rows="2" cols="40" required="true" style="font-size: 18px;"/>
 				Lead cook:
-				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cook1}" style="font-size: 18px;">
+				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cook1}" style="font-size: medium;">
 					<f:selectItems value="#{editMealController.userList}"
 						var="oneuser" 
 						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
 						itemValue="#{oneuser.userid}" />
 				</h:selectOneMenu>
 				Cook 2:
-				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cook2}" style="font-size: 18px;">
+				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cook2}" style="font-size: medium;">
 					<f:selectItem itemValue="" itemLabel="Choose Cook 2" />
 					<f:selectItems value="#{editMealController.userList}"
 						var="oneuser" 
@@ -55,7 +55,7 @@
 						itemValue="#{oneuser.userid}" />
 				</h:selectOneMenu>
 				Cook 3:
-				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cook3}" style="font-size: 18px;">
+				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cook3}" style="font-size: medium;">
 					<f:selectItem itemValue="" itemLabel="Choose Cook 3" />
 					<f:selectItems value="#{editMealController.userList}"
 						var="oneuser" 
@@ -63,7 +63,7 @@
 						itemValue="#{oneuser.userid}" />
 				</h:selectOneMenu>
 				Cook 4:
-				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cook4}" style="font-size: 18px;">
+				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cook4}" style="font-size: medium;">
 					<f:selectItem itemValue="" itemLabel="Choose Cook 4" />
 					<f:selectItems value="#{editMealController.userList}"
 						var="oneuser" 
@@ -71,7 +71,7 @@
 						itemValue="#{oneuser.userid}" />
 				</h:selectOneMenu>
 				Lead cleaner:
-				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cleaner1}" style="font-size: 18px;">
+				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cleaner1}" style="font-size: medium;">
 					<f:selectItem itemValue="" itemLabel="Choose Cleaner 1" />
 					<f:selectItems value="#{editMealController.userList}"
 						var="oneuser" 
@@ -79,7 +79,7 @@
 						itemValue="#{oneuser.userid}" />
 				</h:selectOneMenu>
 				Cleaner 2:
-				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cleaner2}" style="font-size: 18px;">
+				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cleaner2}" style="font-size: medium;">
 					<f:selectItem itemValue="" itemLabel="Choose Cleaner 2" />
 					<f:selectItems value="#{editMealController.userList}"
 						var="oneuser" 
@@ -87,7 +87,7 @@
 						itemValue="#{oneuser.userid}" />
 				</h:selectOneMenu>
 				Cleaner 3:
-				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cleaner3}" style="font-size: 18px;">
+				<h:selectOneMenu value="#{editMealController.chosenMealEvent.cleaner3}" style="font-size: medium;">
 					<f:selectItem itemValue="" itemLabel="Choose Cleaner 3" />
 					<f:selectItems value="#{editMealController.userList}"
 						var="oneuser" 

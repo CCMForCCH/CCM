@@ -36,7 +36,8 @@
 				<h:outputText value="Date:" 
 					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" />
 				<h:selectOneMenu value="#{createPotluckController.chosenPotluckDateTimestamp}"
-					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" >
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" 
+					style="font-size: medium;" >
 					<f:selectItem itemValue="#{0}" itemLabel="Choose the potluck date" />
 					<f:selectItems value="#{createPotluckController.potluckDaysForPeriod}"
 						var="oneMealDate" 
@@ -47,7 +48,8 @@
 				<h:outputText value="Time:" 
 					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" />
 				<h:selectOneMenu value="#{createPotluckController.slotNumber}"
-					rendered="#{not empty createPotluckController.potluckDaysForPeriod}">
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}"
+					style="font-size: medium;" >
 					<f:selectItems value="#{createPotluckController.timeSlotsOfTheDay}"
 						var="slot" 
 						itemLabel="#{slot.slotString}"
@@ -57,7 +59,8 @@
 				<h:outputText value="Leader:" 
 					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" />
 				<h:selectOneMenu value="#{createPotluckController.chosenUserString}" 
-					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" >
+					rendered="#{not empty createPotluckController.potluckDaysForPeriod}" 
+					style="font-size: medium;" >
 					<f:selectItem itemValue="#{null}" itemLabel="Choose the Leader" />
 					<f:selectItems value="#{createPotluckController.userList}"
 						var="oneuser" 

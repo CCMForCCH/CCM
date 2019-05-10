@@ -36,7 +36,8 @@
 				<h:outputText value="Date:" 
 					rendered="#{not empty createMealController.mealDaysForPeriod}" />
 				<h:selectOneMenu value="#{createMealController.chosenMealDateTimestamp}"
-					rendered="#{not empty createMealController.mealDaysForPeriod}" >
+					rendered="#{not empty createMealController.mealDaysForPeriod}" 
+					style="font-size: medium;" >
 					<f:selectItem itemValue="#{0}" itemLabel="Choose the meal date" />
 					<f:selectItems value="#{createMealController.mealDaysForPeriod}"
 						var="oneMealDate" 
@@ -47,7 +48,8 @@
 				<h:outputText value="Time:" 
 					rendered="#{not empty createMealController.mealDaysForPeriod}" />
 				<h:selectOneMenu value="#{createMealController.slotNumber}"
-					rendered="#{not empty createMealController.mealDaysForPeriod}">
+					rendered="#{not empty createMealController.mealDaysForPeriod}"
+					style="font-size: medium;" >
 					<f:selectItems value="#{createMealController.timeSlotsOfTheDay}"
 						var="slot" 
 						itemLabel="#{slot.slotString}"
@@ -63,7 +65,8 @@
 				<h:outputText value="Lead Cook:" 
 					rendered="#{not empty createMealController.mealDaysForPeriod}" />
 				<h:selectOneMenu value="#{createMealController.chosenUserString}" 
-					rendered="#{not empty createMealController.mealDaysForPeriod}" >
+					rendered="#{not empty createMealController.mealDaysForPeriod}" 
+					style="font-size: medium;" >
 					<f:selectItem itemValue="#{null}" itemLabel="Choose the lead cook" />
 					<f:selectItems value="#{createMealController.userList}"
 						var="oneuser" 

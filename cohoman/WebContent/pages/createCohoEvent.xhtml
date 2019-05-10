@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core" 
 	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
   
 <head>
 	<title>IGNORED</title>
@@ -21,12 +22,23 @@
 		<br></br>
 		<h:form>
 
+		<h:outputStylesheet name="resources/css/primefacesDefault.css" />
+
 			<h:panelGrid columns="2" title="Please Enter Cohousing Event Information" 
 				headerClass="formheader" styleClass="formstyle" >
 	     		<f:facet name="header">
             		<h:outputText value="Please Enter Cohousing Event Information"/>
          		</f:facet>
          		
+         		Event day:
+         		<p:calendar  id="popup" 
+         			value="#{createCohoEventController.cohoChosenDate}" required="true" 
+         			pattern="MMMM d, yyyy" size="15" showOn="focus"
+         			inputStyle="font-size: medium;" readonlyInput="true">
+         			<p:ajax event="dateSelect" listener="#{createCohoEventController.dateSelect}" />
+         		</p:calendar>
+         		
+         		<ui:remove> 
 				Event month:
 				<h:selectOneMenu id="selectMonthId" value="#{createCohoEventController.cohoEventMonth}">
 					<f:selectItems value="#{createCohoEventController.monthsOfTheYear}"
@@ -50,8 +62,11 @@
 						itemValue="#{year}" />
 					<f:ajax render="selectDayId" execute="selectDayId" event="change" />
 				</h:selectOneMenu>
+			    </ui:remove>
+				
 				Start time:
-				<h:selectOneMenu id="starttimeId" value="#{createCohoEventController.slotNumberStart}">
+				<h:selectOneMenu id="starttimeId" value="#{createCohoEventController.slotNumberStart}"
+				style="font-size: medium;">
 					<f:selectItems value="#{createCohoEventController.timeSlotsOfTheDay}"
 						var="slot" 
 						itemLabel="#{slot.slotString}"
@@ -60,7 +75,8 @@
 				</h:selectOneMenu>
 				
 				End time:
-				<h:selectOneMenu id="endtimeId" value="#{createCohoEventController.slotNumberEnd}">
+				<h:selectOneMenu id="endtimeId" value="#{createCohoEventController.slotNumberEnd}"
+				style="font-size: medium;">
 					<f:selectItems value="#{createCohoEventController.timeSlotsOfTheDay}"
 						var="slot" 
 						itemLabel="#{slot.slotString}"
@@ -69,7 +85,8 @@
 				</h:selectOneMenu>
 
 				Event type:
-				<h:selectOneMenu value="#{createCohoEventController.chosenEventType}">
+				<h:selectOneMenu value="#{createCohoEventController.chosenEventType}"
+				style="font-size: medium;">
 					<f:selectItems value="#{createCohoEventController.eventTypeChoices}"
 						var="oneeventtype" 
 						itemLabel="#{oneeventtype}"
