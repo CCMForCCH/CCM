@@ -65,8 +65,6 @@
 			toFile="${temp.dir.web-inf}/faces-config.xml" overwrite="true" />
 		<copy file="${webroot.dir}/WEB-INF/cohoman-applicationcontext.xml"
 			toFile="${temp.dir.web-inf}/cohoman-applicationcontext.xml" overwrite="true" />
-		<copy file="${webroot.dir}/WEB-INF/cohoman-security.xml"
-			toFile="${temp.dir.web-inf}/cohoman-security.xml" overwrite="true" />
 		<copy file="${webroot.dir}/resources/css/style.css"
 			toFile="${temp.dir}/resources/css/style.css" overwrite="true" />
 		<copy file="${webroot.dir}/resources/css/styles2.css"
@@ -100,7 +98,7 @@
 			toFile="${temp.dir}/images/profile.jpg" overwrite="true" />
 		<copy file="${webroot.dir}/images/hofeller.jpg"
 			toFile="${temp.dir}/images/hofeller.jpg" overwrite="true" />
-			
+
 		<copy todir="${temp.dir.classes}">
 			<fileset dir="${src.dir}" includes="**/*hbm.xml">
 				</fileset>
