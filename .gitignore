@@ -1,0 +1,5 @@
+.gitattributes
+.metadata/
+RemoteSystemsTempFiles/
+cohoman/build/
+cohoman/target/
