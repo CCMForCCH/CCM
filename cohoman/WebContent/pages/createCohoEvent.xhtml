@@ -22,7 +22,7 @@
 		<br></br>
 		<h:form>
 
-		<h:outputStylesheet name="resources/css/primefacesDefault.css" />
+	<h:outputStylesheet library="css" name="primefacesDefault.css" />
 
 			<h:panelGrid columns="2" title="Please Enter Cohousing Event Information" 
 				headerClass="formheader" styleClass="formstyle" >
@@ -33,8 +33,8 @@
          		Event day:
          		<p:calendar  id="popup" 
          			value="#{createCohoEventController.cohoChosenDate}" required="true" 
-         			pattern="MMMM d, yyyy" size="15" showOn="focus"
-         			inputStyle="font-size: medium;" readonlyInput="true">
+         			pattern="MMM d, yyyy" size="10" showOn="focus"
+         		    readonlyInput="true">
          			<p:ajax event="dateSelect" listener="#{createCohoEventController.dateSelect}" />
          		</p:calendar>
          		
