@@ -91,7 +91,9 @@
 
 .errors {
 	font-style: italic;
+	font-weight: bold;
 	color: red;
+	font-size: x-large;
 	text-align: center;
 }
 
@@ -129,8 +131,20 @@
 }
 
 .subheading {
-	font-size: medium;
+	font-size: large;
 	font-weight: bold;
+}
+
+.dropdowns {
+	font-size: large;
+}
+
+.dropdowntext {
+	font-size: xxx-large;
+}
+
+.buttons {
+	font-size: x-large;
 }
 
 .column1 {

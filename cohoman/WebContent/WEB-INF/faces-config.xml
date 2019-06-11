@@ -689,6 +689,11 @@
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>listCommonMealAttendees</from-outcome>
+			<to-view-id>/listCommonMealAttendees.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>signupForMeal</from-outcome>
 			<to-view-id>/signupForMeal.xhtml</to-view-id>
 			<redirect/>
@@ -1135,11 +1140,6 @@
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>listSignups</from-outcome>
-			<to-view-id>/displayMealSignupList.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>closeMealNow</from-outcome>
 			<to-view-id>/displayMealSignupList.xhtml</to-view-id>
 			<redirect/>
@@ -1161,6 +1161,15 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>doDelete</from-outcome>
+			<to-view-id>/displayMealSignupList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/listCommonMealAttendees.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listSignups</from-outcome>
 			<to-view-id>/displayMealSignupList.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>

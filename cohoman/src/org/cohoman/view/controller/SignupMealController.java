@@ -57,11 +57,9 @@ public class SignupMealController implements Serializable {
 	private void clearFormFields() {
 
 		slotNumber = "";
-		if (getMealClosed()) {
-			signupOperation = "listSignups";
-		} else {
-			signupOperation = "doSignup";
-		}
+		signupOperation = "doSignup";
+		numberattending = 1;
+		
 		// Commented this out on 4/28/2017 because if a back-button
 		// was used, chosenUserString gets cleared and in the case
 		// of adding a user other than myself, we would get a
@@ -105,6 +103,8 @@ public class SignupMealController implements Serializable {
 	}
 
 	public void setChosenMealEventString(String chosenMealEventString) {
+		// 06/05/2019 resetting the meal always starts with a signup
+		signupOperation = "doSignup";
 		this.chosenMealEventString = chosenMealEventString;
 	}
 
@@ -482,6 +482,16 @@ public class SignupMealController implements Serializable {
 		} catch (CohomanException ce) {
 			return true; // / uh, make it show a problem for now (3/23/17)
 		}
+		
+		// Make sure we've got the max number if there is one set
+		// in the DB event entry before we check against it (06/10/2019)
+		if (maxnumberattending == 0 && chosenMealEventString != null &&
+				!chosenMealEventString.equals("1")) {				
+			eventId = Long.valueOf(chosenMealEventString);
+			chosenMealEvent = eventService.getMealEvent(eventId);
+			maxnumberattending = chosenMealEvent.getMaxattendees();
+		}
+
 		if (maxnumberattending != 0
 				&& totalPeopleAttending >= maxnumberattending) {
 			return true;
@@ -529,22 +539,31 @@ public class SignupMealController implements Serializable {
 		printableEventDate = chosenMealEvent.getPrintableEventDate();
 
 		// Another hack added when we seem to lose the checked radio button
+		// Special case 06/10/2019: if max attendees hit, set the operation
+		// to max
 		if (signupOperation == null || signupOperation.isEmpty()) {
-			signupOperation = "listSignups";
+			if (totalPeopleAttending == maxnumberattending) {
+				// If already hit max, this is the only valid operation
+				signupOperation = "setMaxAttendees";
+			} else {
+				signupOperation = "doSignup";
+			}
 		}
 
-		// Get max attendees from MealEvent in DB unless we're about to set it.
-		if (!signupOperation.equalsIgnoreCase("setMaxAttendees")) {
+		// If the UI didn't just set the maxnumberattending (and it can't set it to
+		// 0), read it from the DB for the event (where it may or may not
+		// have been previously set).
+		if (maxnumberattending == 0) {
 			maxnumberattending = chosenMealEvent.getMaxattendees();
 		}
 
 		// Special hack to keep from doing a signup if all the radio buttons
 		// are disabled except for list (because the meal has been marked
 		// as closed), yet the signup is still checked.
-		// So, all we can do is list, despite the signup being selected.
+		// So, all we can do is set to open, despite the signup being selected.
 		if (getMealClosed() && !signupOperation.equalsIgnoreCase("openMealNow")) {
 
-			return "listSignups";
+			return "openMealNow";
 		}
 
 		// Start making the DTO for use in doing a signup
@@ -629,10 +648,65 @@ public class SignupMealController implements Serializable {
 			return null;
 		}
 
+		// Save operation before clearing so can return the right operation
+		String currentOperation = signupOperation;
+		
 		// clear out fields for return to the page in this session
 		clearFormFields();
 
-		return signupOperation;
+		return currentOperation;
+	}
+
+	public String listMealView() throws CohomanException {
+
+		// Get the chosen MealEvent
+		if (chosenMealEventString == null || chosenMealEventString.length() == 0) {
+			logger.log(Level.SEVERE,
+					"Internal Error: invalid MealEventId parameter");
+			FacesMessage message = new FacesMessage(
+					"Internal Error: invalid MealEventId parameter. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+		
+		// Error check that a meal has been chosen
+		if (chosenMealEventString.equalsIgnoreCase("1")) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose a meal to attend.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
+		eventId = Long.valueOf(chosenMealEventString);
+
+
+		MealEvent chosenMealEvent = eventService.getMealEvent(eventId);
+		if (chosenMealEvent == null) {
+			logger.log(Level.SEVERE,
+					"Internal Error: unable to find meal event for mealId " + 
+					eventId);
+			FacesMessage message = new FacesMessage(
+					"Internal Error: unable to find meal event. Click on Main Menu link.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+		eventType = chosenMealEvent.getEventtype();
+		printableEventDate = chosenMealEvent.getPrintableEventDate();
+
+
+
+		// clear out fields for return to the page in this session
+		clearFormFields();
+		
+		
+		// Reset operation to signup.
+		signupOperation = "doSignup";
+
+		// But, return the string to display the table
+		return "listSignups";
 	}
 
 	// Private method to remove meal events that shouldn't be displayed

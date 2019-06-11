@@ -3,3 +3,5 @@
 RemoteSystemsTempFiles/
 cohoman/build/
 cohoman/target/
+cohoman/.classpath
+cohoman/.settings/
