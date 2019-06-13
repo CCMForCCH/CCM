@@ -668,6 +668,7 @@
 			<to-view-id>/mealSchedule2.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>createMeal</from-outcome>
 			<to-view-id>/createMeal.xhtml</to-view-id>
@@ -679,6 +680,12 @@
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>createPotluck</from-outcome>
+			<to-view-id>/createPotluck.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>editMeal</from-outcome>
 			<to-view-id>/editMeal.xhtml</to-view-id>
 			<redirect/>
@@ -689,10 +696,27 @@
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>editPotluck</from-outcome>
+			<to-view-id>/editPotluck.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+
+		<navigation-case>
 			<from-outcome>listCommonMealAttendees</from-outcome>
 			<to-view-id>/listCommonMealAttendees.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>listPotluckAttendees</from-outcome>
+			<to-view-id>/listPotluckAttendees.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>listPotluckDishes</from-outcome>
+			<to-view-id>/listPotluckDishes.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>signupForMeal</from-outcome>
 			<to-view-id>/signupForMeal.xhtml</to-view-id>
@@ -1217,22 +1241,30 @@
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>listSignups</from-outcome>
-			<to-view-id>/displayPotluckSignupList.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>listDishes</from-outcome>
-			<to-view-id>/displayPotluckSignupList2.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>doSignupSomeoneElse</from-outcome>
 			<to-view-id>/displayPotluckSignupList2.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>doDelete</from-outcome>
+			<to-view-id>/displayPotluckSignupList2.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/listPotluckAttendees.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listSignups</from-outcome>
+			<to-view-id>/displayPotluckSignupList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/listPotluckDishes.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listDishes</from-outcome>
 			<to-view-id>/displayPotluckSignupList2.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>

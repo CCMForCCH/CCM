@@ -96,6 +96,8 @@ public class SignupPotluckController implements Serializable {
 	}
 
 	public void setChosenPotluckEventString(String chosenPotluckEventString) {
+		// 06/05/2019 resetting the meal always starts with a signup
+		signupOperation = "doSignup";
 		this.chosenPotluckEventString = chosenPotluckEventString;
 	}
 
@@ -521,6 +523,18 @@ public class SignupPotluckController implements Serializable {
 		}
 
 		return fullUserList;
+	}
+
+	public String listPotluckAttendeesView() throws CohomanException {
+		
+		signupOperation = "listSignups";
+		return signupPotluckView();
+	}
+
+	public String listPotluckDishesView() throws CohomanException {
+		
+		signupOperation = "listDishes";
+		return signupPotluckView();
 	}
 
 	public String signupPotluckView() throws CohomanException {

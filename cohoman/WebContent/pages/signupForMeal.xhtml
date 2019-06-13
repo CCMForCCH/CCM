@@ -43,9 +43,10 @@
 						var="onemeal" 
 						itemLabel="#{onemeal.choosableEventDate}"
 						itemValue="#{onemeal.usableEventid}" />
-					<f:ajax render="chooseoptions numberquestion maxattendeesquestion signupforwhom sorryClosedLead sorryMaxLead" 
-						execute="chooseoptions numberquestion maxattendeesquestion signupforwhom sorryClosedLead sorryMaxLead" event="change" />
+					<f:ajax render="chooseoptions numberquestion maxattendeesquestion signupforwhom sorryClosedLead sorryMaxLead submitbutton" 
+						execute="chooseoptions numberquestion maxattendeesquestion signupforwhom sorryClosedLead sorryMaxLead submitbutton" event="change" />
 				</h:selectOneMenu>
+		
 				
 				<h:panelGroup id="chooseoptions" layout="block" rendered="#{not empty signupMealController.mealEventList}">
 					<br />
@@ -153,18 +154,22 @@
 					</h:selectOneMenu>
 				</h:panelGroup>
 
-			</h:panelGrid>
-				
-			<h:panelGrid columns="1" 
-				headerClass="formheader" styleClass="formstyle" rendered="#{not empty signupMealController.mealEventList}" >
-				<h:panelGroup style="display:block; text-align:center">				
-					<h:commandButton value="Submit Choice" action="#{signupMealController.signupMealView}" 
-						styleClass="buttons">
+				<h:panelGroup id="submitbutton" style="display:block; text-align:center" 
+					layout="block" rendered="#{not empty signupMealController.mealEventList}" >					
+					<br />
+					<h:commandButton value="Submit Your Signup" action="#{signupMealController.signupMealView}" 
+						styleClass="buttons" 
+						rendered="#{(signupMealController.chosenMealEventString ne '1') and 
+							  (signupMealController.leadCook ||
+							  ( !signupMealController.mealClosed and !signupMealController.maxReached))}">
                         <f:ajax execute="@form" render="@form" />
 					</h:commandButton>
+					
 				</h:panelGroup>
+
+
 			</h:panelGrid>
-			
+							
 			<br />
 
 			<h:messages id="message" layout="table" errorClass="errors" />

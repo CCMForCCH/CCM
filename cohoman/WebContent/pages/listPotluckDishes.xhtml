@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List dishes for a scheduled Potluck
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" title="List Dishes for a Scheduled Potluck" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="List Dishes for a Scheduled Potluck"/>
+         		</f:facet>
+				
+				<br />
+				<h:outputText value = "Choose the potluck to see who's bringing what: " styleClass="subheading" /> 			
+				<h:outputText value="*** No potlucks thus far in this meal cycle ***"
+					rendered="#{empty signupPotluckController.potluckEventList}" styleClass="subheading" />
+					
+				<h:selectOneMenu id="dropdownMealId" value="#{signupPotluckController.chosenPotluckEventString}"
+					rendered="#{not empty signupPotluckController.potluckEventList}" styleClass="dropdowns">
+					<f:selectItem itemValue="#{1}" itemLabel="Choose the potluck date" />
+					<f:selectItems value="#{signupPotluckController.potluckEventList}"
+						var="onemeal" 
+						itemLabel="#{onemeal.choosableEventDate}"
+						itemValue="#{onemeal.usableEventid}" />
+				</h:selectOneMenu>
+								
+			</h:panelGrid>
+				
+			<br />
+			<h:panelGrid columns="1" 
+				headerClass="formheader" styleClass="formstyle" rendered="#{not empty signupPotluckController.potluckEventList}" >
+				<h:panelGroup style="display:block; text-align:center">				
+					<h:commandButton value="Submit" action="#{signupPotluckController.listPotluckDishesView}" 
+						styleClass="buttons">
+                        <f:ajax execute="@form" render="@form" />
+					</h:commandButton>
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			<br />
+
+			<h:messages id="message" layout="table" errorClass="errors" />
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
