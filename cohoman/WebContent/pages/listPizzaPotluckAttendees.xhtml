@@ -17,7 +17,7 @@
 
 	<ui:composition template="/templates/masterLayout.xhtml">
 		<ui:define name="windowTitle">
-			List Attendees for a Scheduled Common Meal
+			List Attendees for a Scheduled Pizza/Potluck
 		</ui:define>
 	
 	<ui:define name="content">
@@ -25,21 +25,21 @@
 				
 		<h:form>
 
-			<h:panelGrid columns="1" title="List Attendees for a Scheduled Common Meal" 
+			<h:panelGrid columns="1" title="List Attendees for a Scheduled Pizza/Potluck" 
 				headerClass="formheader" styleClass="formstyle" >
 	     		<f:facet name="header">
-            		<h:outputText value="List Attendees for a Scheduled Common Meal"/>
+            		<h:outputText value="List Attendees for a Scheduled Pizza/Potluck"/>
          		</f:facet>
          		
 				<br />
-				<h:outputText value = "Choose the common meal to see who's coming: " styleClass="subheading" /> 			
-				<h:outputText value="*** No meals thus far in this meal cycle ***"
-					rendered="#{empty signupMealController.mealEventList}" styleClass="subheading" />
+				<h:outputText value = "Choose the pizza/potluck to see who's coming: " styleClass="subheading" /> 			
+				<h:outputText value="*** No pizza/potlucks thus far in this meal cycle ***"
+					rendered="#{empty signupPizzaController.pizzaEventList}" styleClass="subheading" />
 					
-				<h:selectOneMenu id="dropdownMealId" value="#{signupMealController.chosenMealEventString}"
-					rendered="#{not empty signupMealController.mealEventList}" styleClass="dropdowns">
-					<f:selectItem itemValue="#{1}" itemLabel="Choose the meal date" />
-					<f:selectItems value="#{signupMealController.mealEventList}"
+				<h:selectOneMenu id="dropdownMealId" value="#{signupPizzaController.chosenPizzaEventString}"
+					rendered="#{not empty signupPizzaController.pizzaEventList}" styleClass="dropdowns">
+					<f:selectItem itemValue="#{1}" itemLabel="Choose the pizza/potluck date" />
+					<f:selectItems value="#{signupPizzaController.pizzaEventList}"
 						var="onemeal" 
 						itemLabel="#{onemeal.choosableEventDate}"
 						itemValue="#{onemeal.usableEventid}" />
@@ -50,11 +50,11 @@
 				
 			<br />
 			<h:panelGrid columns="1" 
-				headerClass="formheader" styleClass="formstyle" rendered="#{not empty signupMealController.mealEventList}" >
+				headerClass="formheader" styleClass="formstyle" rendered="#{not empty signupPizzaController.pizzaEventList}" >
 				<h:panelGroup id="submitbutton" style="display:block; text-align:center" 
 					layout="block" >												
-					<h:commandButton value="Submit" action="#{signupMealController.listMealView}" 
-						rendered="#{signupMealController.chosenMealEventString ne '1'}" styleClass="buttons" >
+					<h:commandButton value="Submit" action="#{signupPizzaController.listPizzaAttendeesView}" 
+						rendered="#{signupPizzaController.chosenPizzaEventString ne '1'}" styleClass="buttons" >
                         <f:ajax execute="@form" render="@form" />
 					</h:commandButton>
 				</h:panelGroup>

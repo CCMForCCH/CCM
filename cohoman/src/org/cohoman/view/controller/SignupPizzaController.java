@@ -65,11 +65,8 @@ public class SignupPizzaController implements Serializable {
 	private void clearFormFields() {
 
 		slotNumber = "";
-		if (getMealClosed()) {
-			signupOperation = "listSignups";
-		} else {
-			signupOperation = "doSignup";
-		}
+		signupOperation = "doSignup";
+
 		numberattendingpizza = 1; // set default to 0
 		numberattendingpotluck = 0; // set default to 0
 		pizzatopping1 = "";
@@ -117,6 +114,8 @@ public class SignupPizzaController implements Serializable {
 	}
 
 	public void setChosenPizzaEventString(String chosenPizzaEventString) {
+		// 06/05/2019 resetting the meal always starts with a signup
+		signupOperation = "doSignup";
 		this.chosenPizzaEventString = chosenPizzaEventString;
 	}
 
@@ -573,6 +572,12 @@ public class SignupPizzaController implements Serializable {
 		return chosenPizzaEvent.isIsmealclosed();
 	}
 
+	public String listPizzaAttendeesView() throws CohomanException {
+		
+		signupOperation = "listSignups";
+		return signupPizzaView();
+	}
+
 	public String signupPizzaView() throws CohomanException {
 
 		// Get the chosen MealEvent
@@ -614,7 +619,7 @@ public class SignupPizzaController implements Serializable {
 
 		// Another hack added when we seem to lose the checked radio button
 		if (signupOperation == null || signupOperation.isEmpty()) {
-			signupOperation = "listSignups";
+			signupOperation = "doSignup";
 		}
 
 		// Special hack to keep from doing a signup if all the radio buttons
@@ -623,7 +628,7 @@ public class SignupPizzaController implements Serializable {
 		// So, all we can do is list, despite the signup being selected.
 		if (getMealClosed()
 				&& !signupOperation.equalsIgnoreCase("openPizzaNow")) {
-			return "listSignups";
+			return "openPizzaNow";
 		}
 
 		// Start making the DTO for use in doing a signup
@@ -688,10 +693,14 @@ public class SignupPizzaController implements Serializable {
 			return null;
 		}
 
+		// clearFormFields() resets signupOperation so save it to return here
+		String signupOperationTmp = signupOperation; // clearFormFields resets
+														// signupOperation
+
 		// clear out fields for return to the page in this session
 		clearFormFields();
 
-		return signupOperation;
+		return signupOperationTmp;
 	}
 
 	// Private method to remove meal events that shouldn't be displayed

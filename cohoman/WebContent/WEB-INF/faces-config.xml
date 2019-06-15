@@ -707,6 +707,11 @@
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>listPizzaPotluckAttendees</from-outcome>
+			<to-view-id>/listPizzaPotluckAttendees.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>listPotluckAttendees</from-outcome>
 			<to-view-id>/listPotluckAttendees.xhtml</to-view-id>
 			<redirect/>
@@ -1228,6 +1233,20 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>doDelete</from-outcome>
+			<to-view-id>/displayPizzaSignupList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/listPizzaPotluckAttendees.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listSignups</from-outcome>
+			<to-view-id>/displayPizzaSignupList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>openPizzaNow</from-outcome>
 			<to-view-id>/displayPizzaSignupList.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>

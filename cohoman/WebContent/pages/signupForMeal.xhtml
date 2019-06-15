@@ -25,7 +25,7 @@
 				
 		<h:form>
 
-			<h:panelGrid columns="1" title="Signup for an Existing Meal" 
+			<h:panelGrid columns="1" title="Signup for a Scheduled Meal" 
 				headerClass="formheader" styleClass="formstyle" >
 	     		<f:facet name="header">
             		<h:outputText value="Signup to Attend a Scheduled Meal"/>
@@ -163,8 +163,7 @@
 							  (signupMealController.leadCook ||
 							  ( !signupMealController.mealClosed and !signupMealController.maxReached))}">
                         <f:ajax execute="@form" render="@form" />
-					</h:commandButton>
-					
+					</h:commandButton>	
 				</h:panelGroup>
 
 

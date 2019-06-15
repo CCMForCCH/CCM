@@ -23,7 +23,7 @@
 		<fileset dir="${webroot.dir}/WEB-INF/lib">
 			<include name="**/*.jar" />
 		</fileset>
-		<fileset dir="C:\cohoapp\tools\glassfish3\glassfish\modules">
+		<fileset dir="C:\cohoapp\tools\glassfish-4.1.2\glassfish4\glassfish\modules">
 			<include name="**/*.jar" />
 		</fileset>
 	</path>

@@ -40,6 +40,7 @@
 						var="onemeal" 
 						itemLabel="#{onemeal.choosableEventDate}"
 						itemValue="#{onemeal.usableEventid}" />
+					<f:ajax render="submitbutton" execute="submitbutton" event="change" />
 				</h:selectOneMenu>
 								
 			</h:panelGrid>
@@ -47,9 +48,10 @@
 			<br />
 			<h:panelGrid columns="1" 
 				headerClass="formheader" styleClass="formstyle" rendered="#{not empty signupPotluckController.potluckEventList}" >
-				<h:panelGroup style="display:block; text-align:center">				
+				<h:panelGroup id="submitbutton" style="display:block; text-align:center" 
+					layout="block" >					
 					<h:commandButton value="Submit" action="#{signupPotluckController.listPotluckAttendeesView}" 
-						styleClass="buttons">
+						rendered="#{signupPotluckController.chosenPotluckEventString ne '1'}" styleClass="buttons">
                         <f:ajax execute="@form" render="@form" />
 					</h:commandButton>
 				</h:panelGroup>
