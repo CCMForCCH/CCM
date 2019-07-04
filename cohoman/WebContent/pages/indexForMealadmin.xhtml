@@ -46,10 +46,34 @@
 				<table >
 					<tr>
 						<td>
+							<h:commandLink value="List common meal attendees" action="listCommonMealAttendees" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Show all the attendees for a common meal" />	
+						</span>					
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Attending a common meal" action="signupForMeal" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Add/remove yourself as an attendee at this common meal." />	
+						</span>					
+						</td>
+					</tr>
+					<tr>
+						<td>
 							<h:commandLink value="Create common meal" action="createMeal" /> 
 						</td>
 						<td>
+						<span style="display: inline-table; text-indent: 20px;">
 							<h:outputText value="Create a new common meal (i.e. set the date, menu, and lead cook)." />
+						</span>
 						</td>
 					</tr>
 					<tr>
@@ -57,15 +81,9 @@
 							<h:commandLink value="Edit/Delete common meal" action="editMeal" /> 
 						</td>
 						<td>
-							<h:outputText value="Add cooks and cleaners for a meal or delete the meal" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h:commandLink value="Signup/Show Signups for a common meal" action="signupForMeal" /> 
-						</td>
-						<td>
-							<h:outputText value="Signup (or remove signup) for a common meal or show all current signups" />
+							<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Add cooks and cleaners for a meal or delete the meal." />
+							</span>
 						</td>
 					</tr>
 				</table>
@@ -77,10 +95,34 @@
 				<table >
 					<tr>
 						<td>
+							<h:commandLink value="List pizza/potluck attendees" action="listPizzaPotluckAttendees" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Show all the attendees for a pizza/potluck." />
+							</span>						
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="Attending a pizza/potluck" action="signupForPizza" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Add/remove yourself as an attendee at this pizza/potluck." />
+							</span>						
+						</td>
+					</tr>
+					<tr>
+						<td>
 							<h:commandLink value="Create pizza/potluck meal" action="createPizza" /> 
 						</td>
 						<td>
+							<span style="display: inline-table; text-indent: 20px;">
 							<h:outputText value="Create a new pizza/potluck meal (i.e. set the date, and leader)." />
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -88,15 +130,19 @@
 							<h:commandLink value="Edit/Delete pizza/potluck meal" action="editPizza" /> 
 						</td>
 						<td>
-							<h:outputText value="Add or modify the leaders for a pizza/potluck meal or delete the meal" />
+							<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Add or modify the leaders for a pizza/potluck meal or delete the meal." />
+							</span>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<h:commandLink value="Signup/Show Signups for a pizza/potluck" action="signupForPizza" /> 
+							<h:commandLink value="Display pizza/potluck directions" action="helpPizzaPotluck" /> 
 						</td>
 						<td>
-							<h:outputText value="Signup (or remove signup) for a pizza/potluck or show all current signups" />
+							<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="Display directions for leading a Pizza/Potluck" />
+							</span>
 						</td>
 					</tr>
 				</table>
@@ -105,13 +151,49 @@
 
 			<fieldset>
 			<legend><h3>Meals - Potluck</h3></legend>
-				<table >
+				<table >	
+					<tr>
+						<td>
+							<h:commandLink value="List potluck dishes" action="listPotluckDishes" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Show the dishes that attendees to the potluck are planning to bring" />
+							</span>						
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:commandLink value="List potluck attendees" action="listPotluckAttendees" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Show all the attendees for a potluck" />
+							</span>						
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<h:commandLink value="Attending a potluck" action="signupForPotluck" 
+								style="font-weight:bold" /> 
+						</td>
+						<td>
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Add/remove yourself as an attendee at this potluck." />
+							</span>						
+						</td>
+					</tr>
 					<tr>
 						<td>
 							<h:commandLink value="Create potluck meal" action="createPotluck" /> 
 						</td>
 						<td>
+						<span style="display: inline-table; text-indent: 20px;">
 							<h:outputText value="Create a new potluck meal (i.e. set the date, and leader)." />
+						</span>
 						</td>
 					</tr>
 					<tr>
@@ -119,15 +201,9 @@
 							<h:commandLink value="Edit/Delete potluck meal" action="editPotluck" /> 
 						</td>
 						<td>
-							<h:outputText value="Add or modify the leaders for a potluck meal or delete the meal" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h:commandLink value="Signup/Show Signups for a potluck" action="signupForPotluck" /> 
-						</td>
-						<td>
-							<h:outputText value="Signup (or remove signup) for a potluck or show all current signups" />
+							<span style="display: inline-table; text-indent: 20px;">
+								<h:outputText value="Add or modify the leaders for a potluck meal or delete the meal." />
+							</span>
 						</td>
 					</tr>
 				</table>
