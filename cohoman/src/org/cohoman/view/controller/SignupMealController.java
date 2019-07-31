@@ -163,7 +163,7 @@ public class SignupMealController implements Serializable {
 
 		// Robustness check
 		if (chosenMealEventString == null) {
-			logger.log(Level.SEVERE,
+			logger.log(Level.WARNING,
 					"Internal Error: unable to find chosen meal event");
 			return false;
 		}
