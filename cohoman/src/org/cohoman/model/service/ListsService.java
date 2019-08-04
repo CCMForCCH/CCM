@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.cohoman.model.business.ListsManagerImpl.SecurityDataForRow;
 import org.cohoman.model.business.ListsManagerImpl.SecurityRow;
+import org.cohoman.model.business.trash.TrashRow;
+import org.cohoman.model.business.trash.TrashSchedule;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
@@ -36,5 +38,8 @@ public interface ListsService {
 	public MtaskDTO getMtask(Long mtaskItemId);
 	public void updateMtask(MtaskDTO mtaskDTO);
 	public void deleteMtask(Long mtaskitemid);
+
+	// Trash
+	public List<TrashRow> getTrashSchedule();
 
 }

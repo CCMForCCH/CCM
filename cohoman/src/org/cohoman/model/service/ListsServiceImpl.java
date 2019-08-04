@@ -11,6 +11,8 @@ import org.cohoman.model.business.User;
 import org.cohoman.model.business.UserManager;
 import org.cohoman.model.business.ListsManagerImpl.SecurityDataForRow;
 import org.cohoman.model.business.ListsManagerImpl.SecurityRow;
+import org.cohoman.model.business.trash.TrashRow;
+import org.cohoman.model.business.trash.TrashSchedule;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
@@ -202,6 +204,11 @@ public class ListsServiceImpl implements ListsService {
 		listsManager.deleteMtask(mtaskitemid);
 		
 		//TODO Add in the auditing!!!!!!!!!!!!
+	}
+
+	// Trash
+	public List<TrashRow> getTrashSchedule() {
+		return listsManager.getTrashSchedule();
 	}
 
 }

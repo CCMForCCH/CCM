@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Display Trash Schedule
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+  
+<h:panelGrid columns="1" title="Common House/West End Trash Assignments" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Common House/West End Trash Assignments"/>
+        </f:facet>
+
+	<br />
+	<h:dataTable value="#{retrieveTrashListController.trashList}" var="onerow" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns">
+ 
+ 		<h:column>
+  			<f:facet name="header">Week</f:facet> 
+  			#{onerow.sundayDate}           
+		</h:column>
+ 
+		<h:column>
+  			<f:facet name="header">Organizer</f:facet> 
+  			#{onerow.caller}       
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Strong Person</f:facet> 
+   			#{onerow.strong}         
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Team Member #2</f:facet> 
+   			#{onerow.worker1}         
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Team Member #3</f:facet> 
+   			#{onerow.worker2}         
+		</h:column>
+
+</h:dataTable>
+
+<br />
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

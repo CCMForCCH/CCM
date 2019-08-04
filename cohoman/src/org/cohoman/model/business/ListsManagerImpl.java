@@ -8,12 +8,16 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.cohoman.model.business.trash.TrashCycle;
+import org.cohoman.model.business.trash.TrashPerson;
+import org.cohoman.model.business.trash.TrashRow;
+import org.cohoman.model.business.trash.TrashSchedule;
+import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.dto.SecurityStartingPointDTO;
 import org.cohoman.model.dto.UserDTO;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
-import org.cohoman.model.integration.persistence.beans.MealEvent;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
 import org.cohoman.model.integration.persistence.dao.MaintenanceDao;
@@ -788,6 +792,42 @@ public class ListsManagerImpl implements ListsManager {
 
 	public void deleteMtask(Long mtaskitemid) {
 		mtaskDao.deleteMtask(mtaskitemid);
+	}
+
+	/*
+	 * Build Trash Schedule
+	 */
+	public List<TrashRow> getTrashSchedule() {
+		// Build TrashPerson list for all CH and WE residents
+		
+		// Create brand new list of TrashPeople
+		List<TrashPerson> trashPersonList = new ArrayList<TrashPerson>();
+		
+		// Start with units in Common House and then add in West End and sort.
+		List<UnitBean> chweUnits = unitsDao.getCommonhouseUnits();
+		chweUnits.addAll(unitsDao.getWestendUnits());
+		Collections.sort(chweUnits);
+			
+		// For every unit, create TrashPerson(s)
+		for (UnitBean thisUnitBean : chweUnits) {
+			List<String> firstNamesInUnit = userDao.getUserFirstNamesAtUnit(thisUnitBean.getUnitnumber());
+
+			for (String thisFirstName : firstNamesInUnit) {
+				
+				// Now for all people in this unit, create a TrashPerson object
+				// and add it to the list of TrashPeople
+				TrashPerson trashPerson = new TrashPerson();
+				trashPerson.setUnitnumber(thisUnitBean.getUnitnumber());
+				trashPerson.setFirstname(thisFirstName);
+				trashPersonList.add(trashPerson);		
+			}
+		}
+				
+		// Pass cycle to new TrashSchedule to
+		// compute the printable rows.
+		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList);
+		return trashSchedule.getTrashRows();
+					
 	}
 
 }
