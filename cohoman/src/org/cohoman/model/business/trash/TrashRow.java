@@ -3,11 +3,10 @@ package org.cohoman.model.business.trash;
 public class TrashRow {
 
 	private String sundayDate;
-	private String caller;
-	private String strong;
-	private String worker1;
-	private String worker2;
-	
+	private String organizer;
+	private String strongPerson;
+	private String teamMember1;
+	private String teamMember2;
 	
 	public String getSundayDate() {
 		return sundayDate;
@@ -15,30 +14,32 @@ public class TrashRow {
 	public void setSundayDate(String sundayDate) {
 		this.sundayDate = sundayDate;
 	}
-	public String getCaller() {
-		return caller;
+	public String getOrganizer() {
+		return organizer;
 	}
-	public void setCaller(String caller) {
-		this.caller = caller;
+	public void setOrganizer(String organizer) {
+		this.organizer = organizer;
 	}
-	public String getStrong() {
-		return strong;
+	public String getStrongPerson() {
+		return strongPerson;
 	}
-	public void setStrong(String strong) {
-		this.strong = strong;
+	public void setStrongPerson(String strongPerson) {
+		this.strongPerson = strongPerson;
 	}
-	public String getWorker1() {
-		return worker1;
+	public String getTeamMember1() {
+		return teamMember1;
 	}
-	public void setWorker1(String worker1) {
-		this.worker1 = worker1;
+	public void setTeamMember1(String teamMember1) {
+		this.teamMember1 = teamMember1;
 	}
-	public String getWorker2() {
-		return worker2;
+	public String getTeamMember2() {
+		return teamMember2;
 	}
-	public void setWorker2(String worker2) {
-		this.worker2 = worker2;
+	public void setTeamMember2(String teamMember2) {
+		this.teamMember2 = teamMember2;
 	}
+
+	
 	
 
 }

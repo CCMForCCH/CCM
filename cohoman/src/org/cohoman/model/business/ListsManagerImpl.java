@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.cohoman.model.business.trash.TrashCycle;
 import org.cohoman.model.business.trash.TrashPerson;
+import org.cohoman.model.business.trash.TrashRolesEnums;
 import org.cohoman.model.business.trash.TrashRow;
 import org.cohoman.model.business.trash.TrashSchedule;
 import org.cohoman.model.business.trash.TrashTeam;
@@ -810,15 +811,35 @@ public class ListsManagerImpl implements ListsManager {
 			
 		// For every unit, create TrashPerson(s)
 		for (UnitBean thisUnitBean : chweUnits) {
+			// replace this call with new method: getUsersAtUnit() and then extract whatever name
+			// we want along with the trash role in the for loop below
 			List<String> firstNamesInUnit = userDao.getUserFirstNamesAtUnit(thisUnitBean.getUnitnumber());
 
 			for (String thisFirstName : firstNamesInUnit) {
 				
+				// Temporarily use method to map FirstName to get Role
+				String trashRole;
+				if (thisFirstName.equals("Bonnie") || thisFirstName.equals("Carol") ||
+						thisFirstName.equals("Marianne") || thisFirstName.equals("Molly") ||
+						thisFirstName.equals("Elaine")) {
+						trashRole = TrashRolesEnums.ORGANIZER.name();
+				} else {
+					if (thisFirstName.equals("Anne") || thisFirstName.equals("Joan") ||
+							thisFirstName.equals("Maddy") || thisFirstName.equals("Lindsey") ||
+							thisFirstName.equals("Robin") || thisFirstName.equals("Peg") ||
+							thisFirstName.equals("Diane")){
+						trashRole = TrashRolesEnums.TEAMMEMEBER.name();
+					} else {
+						trashRole = TrashRolesEnums.STRONGPERSON.name();
+					}
+				}
+
 				// Now for all people in this unit, create a TrashPerson object
 				// and add it to the list of TrashPeople
 				TrashPerson trashPerson = new TrashPerson();
 				trashPerson.setUnitnumber(thisUnitBean.getUnitnumber());
 				trashPerson.setFirstname(thisFirstName);
+				trashPerson.setTrashRole(trashRole);
 				trashPersonList.add(trashPerson);		
 			}
 		}

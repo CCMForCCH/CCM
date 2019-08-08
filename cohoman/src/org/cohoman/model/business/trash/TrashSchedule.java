@@ -32,14 +32,30 @@ public class TrashSchedule {
 		for (TrashTeam oneTeam : trashTeams) {
 			TrashRow trashRow = new TrashRow();
 			trashRow.setSundayDate(formatter.format(oneTeam.getSundayDate().getTime()));
-			trashRow.setCaller(oneTeam.getCaller().getUnitnumber()
-					+ " " + oneTeam.getCaller().getFirstname());
-			trashRow.setStrong(oneTeam.getStrongPerson().getUnitnumber()
-					+ " " + oneTeam.getStrongPerson().getFirstname());
-			trashRow.setWorker1(oneTeam.getWorker1().getUnitnumber()
-					+ " " + oneTeam.getWorker1().getFirstname());
-			trashRow.setWorker2(oneTeam.getWorker2().getUnitnumber()
-					+ " " + oneTeam.getWorker2().getFirstname());
+			if (oneTeam.getOrganizer() == null) {
+				trashRow.setOrganizer("");
+			} else {
+				trashRow.setOrganizer(oneTeam.getOrganizer().getUnitnumber()
+						+ " " + oneTeam.getOrganizer().getFirstname());
+			}
+			if (oneTeam.getStrongPerson() == null) {
+				trashRow.setStrongPerson("");
+			} else {
+				trashRow.setStrongPerson(oneTeam.getStrongPerson().getUnitnumber()
+						+ " " + oneTeam.getStrongPerson().getFirstname());
+			}
+			if (oneTeam.getTeamMember1() == null) {
+				trashRow.setTeamMember1("");
+			} else {
+				trashRow.setTeamMember1(oneTeam.getTeamMember1().getUnitnumber()
+					+ " " + oneTeam.getTeamMember1().getFirstname());
+			}
+			if (oneTeam.getTeamMember2() == null) {
+				trashRow.setTeamMember2("");
+			} else {
+				trashRow.setTeamMember2(oneTeam.getTeamMember2().getUnitnumber()
+					+ " " + oneTeam.getTeamMember2().getFirstname());
+			}
 			trashRows.add(trashRow);
 		}
 		return trashRows;

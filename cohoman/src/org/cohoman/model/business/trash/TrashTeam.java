@@ -5,10 +5,10 @@ import java.util.Date;
 public class TrashTeam {
 
 	private Date sundayDate;
-	private TrashPerson caller;
+	private TrashPerson organizer;
 	private TrashPerson strongPerson;
-	private TrashPerson worker1;
-	private TrashPerson worker2;
+	private TrashPerson teamMember1;
+	private TrashPerson teamMember2;
 	
 	
 	public Date getSundayDate() {
@@ -17,11 +17,11 @@ public class TrashTeam {
 	public void setSundayDate(Date sundayDate) {
 		this.sundayDate = sundayDate;
 	}
-	public TrashPerson getCaller() {
-		return caller;
+	public TrashPerson getOrganizer() {
+		return organizer;
 	}
-	public void setCaller(TrashPerson caller) {
-		this.caller = caller;
+	public void setOrganizer(TrashPerson orgnizer) {
+		this.organizer = orgnizer;
 	}
 	public TrashPerson getStrongPerson() {
 		return strongPerson;
@@ -29,18 +29,17 @@ public class TrashTeam {
 	public void setStrongPerson(TrashPerson strongPerson) {
 		this.strongPerson = strongPerson;
 	}
-	public TrashPerson getWorker1() {
-		return worker1;
+	public TrashPerson getTeamMember1() {
+		return teamMember1;
 	}
-	public void setWorker1(TrashPerson worker1) {
-		this.worker1 = worker1;
+	public void setTeamMember1(TrashPerson teamMember1) {
+		this.teamMember1 = teamMember1;
 	}
-	public TrashPerson getWorker2() {
-		return worker2;
+	public TrashPerson getTeamMember2() {
+		return teamMember2;
 	}
-	public void setWorker2(TrashPerson worker2) {
-		this.worker2 = worker2;
-	}
-	
+	public void setTeamMember2(TrashPerson teamMember2) {
+		this.teamMember2 = teamMember2;
+	}	
 	
 }

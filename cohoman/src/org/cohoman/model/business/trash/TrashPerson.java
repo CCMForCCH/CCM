@@ -5,6 +5,7 @@ public class TrashPerson {
 	private String unitnumber;
 	private String firstname;
 	private Long userid;
+	private String trashRole;
 	
 	public TrashPerson() {}
 	
@@ -27,5 +28,12 @@ public class TrashPerson {
 		this.userid = userid;
 	}
 
+	public String getTrashRole() {
+		return trashRole;
+	}
+
+	public void setTrashRole(String trashRole) {
+		this.trashRole = trashRole;
+	}
 
 }
