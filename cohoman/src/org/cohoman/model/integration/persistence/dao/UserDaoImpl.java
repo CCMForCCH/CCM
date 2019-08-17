@@ -274,6 +274,23 @@ public class UserDaoImpl implements UserDao {
 		return lastNameList;
 	}
 
+	public List<String> getUserUsernamesAtUnit(String unitnumber) {
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		String queryString = "SELECT users.username "
+				+ "FROM users JOIN units " + "WHERE users.unit = units.unitid "
+				+ "AND units.unitnumber = ? AND (users.usertype = 'OWNER' OR users.usertype = 'RENTING')";
+		Query query = session.createSQLQuery(queryString).setString(0,
+				unitnumber);
+
+		List<String> usernameList = query.list();
+
+		session.flush();
+		session.close();
+		return usernameList;
+	}
+
 	public UserDTO getUserForLogin(UserDTO theUser) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		String queryString = "from UserBean " + "where USERNAME = ? " +

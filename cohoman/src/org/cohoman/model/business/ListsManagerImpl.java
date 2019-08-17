@@ -799,6 +799,9 @@ public class ListsManagerImpl implements ListsManager {
 	 * Build Trash Schedule
 	 */
 	public List<TrashRow> getTrashSchedule() {
+		// Temporary code to persist next person to skip
+		String nextPersonToSkip = "";
+		
 		// Build TrashPerson list for all CH and WE residents
 		
 		// Create brand new list of TrashPeople
@@ -813,21 +816,21 @@ public class ListsManagerImpl implements ListsManager {
 		for (UnitBean thisUnitBean : chweUnits) {
 			// replace this call with new method: getUsersAtUnit() and then extract whatever name
 			// we want along with the trash role in the for loop below
-			List<String> firstNamesInUnit = userDao.getUserFirstNamesAtUnit(thisUnitBean.getUnitnumber());
+			List<String> usernamesInUnit = userDao.getUserUsernamesAtUnit(thisUnitBean.getUnitnumber());
 
-			for (String thisFirstName : firstNamesInUnit) {
+			for (String thisUserUsername : usernamesInUnit) {
 				
 				// Temporarily use method to map FirstName to get Role
 				String trashRole;
-				if (thisFirstName.equals("Bonnie") || thisFirstName.equals("Carol") ||
-						thisFirstName.equals("Marianne") || thisFirstName.equals("Molly") ||
-						thisFirstName.equals("Elaine")) {
+				if (thisUserUsername.equals("bonnie") || thisUserUsername.equals("carol") ||
+						thisUserUsername.equals("marianne") || thisUserUsername.equals("molly") ||
+						thisUserUsername.equals("elaine")) {
 						trashRole = TrashRolesEnums.ORGANIZER.name();
 				} else {
-					if (thisFirstName.equals("Anne") || thisFirstName.equals("Joan") ||
-							thisFirstName.equals("Maddy") || thisFirstName.equals("Lindsey") ||
-							thisFirstName.equals("Robin") || thisFirstName.equals("Peg") ||
-							thisFirstName.equals("Diane")){
+					if (thisUserUsername.equals("anne") || thisUserUsername.equals("joan") ||
+							thisUserUsername.equals("maddy") || thisUserUsername.equals("lindsey") ||
+							thisUserUsername.equals("robin") || thisUserUsername.equals("peg") ||
+							thisUserUsername.equals("diane") || thisUserUsername.equals("annie")){
 						trashRole = TrashRolesEnums.TEAMMEMEBER.name();
 					} else {
 						trashRole = TrashRolesEnums.STRONGPERSON.name();
@@ -838,7 +841,7 @@ public class ListsManagerImpl implements ListsManager {
 				// and add it to the list of TrashPeople
 				TrashPerson trashPerson = new TrashPerson();
 				trashPerson.setUnitnumber(thisUnitBean.getUnitnumber());
-				trashPerson.setFirstname(thisFirstName);
+				trashPerson.setUsername(thisUserUsername);
 				trashPerson.setTrashRole(trashRole);
 				trashPersonList.add(trashPerson);		
 			}
@@ -846,7 +849,7 @@ public class ListsManagerImpl implements ListsManager {
 				
 		// Pass cycle to new TrashSchedule to
 		// compute the printable rows.
-		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList);
+		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, "101", nextPersonToSkip);
 		return trashSchedule.getTrashRows();
 					
 	}

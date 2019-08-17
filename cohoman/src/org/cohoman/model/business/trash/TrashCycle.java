@@ -3,6 +3,7 @@ package org.cohoman.model.business.trash;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import org.cohoman.view.controller.utils.CalendarUtils;
@@ -12,25 +13,39 @@ public class TrashCycle {
 	Logger logger = Logger.getLogger(this.getClass().getName());
 
 	private List<TrashTeam> trashTeams;
+	private List<TrashPerson> trashPersonListOrig;
 	private List<TrashPerson> trashPersonList;
 	private List<TrashPerson> trashOrganizers;
 	private List<TrashPerson> trashStrongPersons;
 	private List<TrashPerson> trashTeamMembers;
 	private List<String> multiplePersonUnits;
 	private List<Integer> multiplePersonUnitsCounts;
+	private String startingUnit;
 
-	public TrashCycle(List<TrashPerson> trashPersonList) {
+	public TrashCycle(List<TrashPerson> trashPersonListOrig, String startingUnit) {
 		trashTeams = new ArrayList<TrashTeam>();
 		trashOrganizers = new ArrayList<TrashPerson>();
 		trashStrongPersons = new ArrayList<TrashPerson>();
 		trashTeamMembers = new ArrayList<TrashPerson>();
 		multiplePersonUnits = new ArrayList<String>();
 		multiplePersonUnitsCounts = new ArrayList<Integer>();
-		this.trashPersonList = trashPersonList;
+		this.trashPersonListOrig = trashPersonListOrig;
+		this.startingUnit = startingUnit;
 	}
 
 	public List<TrashTeam> getTrashTeams() {
 
+		// temp
+		trashPersonList = new ArrayList<TrashPerson>();
+		
+		// Find the index of the first startingUnit in the sorted
+		// TrashPerson "original" list.
+		for (int idx = 0; idx < trashPersonListOrig.size(); idx++) {
+			trashPersonList.add(trashPersonListOrig.get(idx));
+		}
+
+		//cloneAndAdjustTrashPersonList(startingUnit);
+		
 		// Compute number of teams in one cycle
 		int teamsInOneCycle = trashPersonList.size();
 		teamsInOneCycle = teamsInOneCycle / 4;
@@ -129,8 +144,12 @@ public class TrashCycle {
 
 			// Sequence through the TrashPerson list adding all people to the
 			// selected team that happen to be in the same unit.
+			// Note: have to disallow 4 people in same unit (e.g. unit 107)
+			int peopleInUnit = 0;
 			for (TrashPerson trashPerson : trashPersonList) {
-				if (trashPerson.getUnitnumber().equals(multipleUnitnumber)) {
+				
+				if (trashPerson.getUnitnumber().equals(multipleUnitnumber) &&
+						peopleInUnit < 3) {
 
 					// Add this TrashPerson as either strong or member
 					addTrashPersonToSameTeam(trashTeams.get(teamIndexToUse),
@@ -145,22 +164,25 @@ public class TrashCycle {
 							.name()) {
 						trashTeamMembers.remove(trashPerson);
 					}
-
+					peopleInUnit++;
 				}
 
 			}
 
 		}
 
+		
 		// Next, finish out the strong person for all teams by walking through
 		// the
 		// strong people.
+		int entryIndex;
 		for (TrashTeam thisTrashTeam : trashTeams) {
 			if (thisTrashTeam.getStrongPerson() == null) {
 				// Get the next strong person
 				if (!trashStrongPersons.isEmpty()) {
-					thisTrashTeam.setStrongPerson(trashStrongPersons.get(0));
-					trashStrongPersons.remove(0);
+					entryIndex = randomEntry(trashStrongPersons.size());
+					thisTrashTeam.setStrongPerson(trashStrongPersons.get(entryIndex));
+					trashStrongPersons.remove(entryIndex);
 				} else {
 					logger.severe("Too few strong people identified for Trash Schedule");
 				}
@@ -173,8 +195,9 @@ public class TrashCycle {
 				if (thisTrashTeam.getTeamMember1() == null) {
 					// Get the next strong person
 					if (!trashStrongPersons.isEmpty()) {
-						thisTrashTeam.setTeamMember1(trashStrongPersons.get(0));
-						trashStrongPersons.remove(0);
+						entryIndex = randomEntry(trashStrongPersons.size());
+						thisTrashTeam.setTeamMember1(trashStrongPersons.get(entryIndex));
+						trashStrongPersons.remove(entryIndex);
 					} else {
 						break; // give up when list is depleted
 					}
@@ -186,8 +209,9 @@ public class TrashCycle {
 				if (thisTrashTeam.getTeamMember2() == null) {
 					// Get the next strong person
 					if (!trashStrongPersons.isEmpty()) {
-						thisTrashTeam.setTeamMember2(trashStrongPersons.get(0));
-						trashStrongPersons.remove(0);
+						entryIndex = randomEntry(trashStrongPersons.size());
+						thisTrashTeam.setTeamMember2(trashStrongPersons.get(entryIndex));
+						trashStrongPersons.remove(entryIndex);
 					} else {
 						break; // give up when list is depleted
 					}
@@ -202,8 +226,9 @@ public class TrashCycle {
 				if (thisTrashTeam.getOrganizer() == null) {
 					// Get the next strong person
 					if (!trashStrongPersons.isEmpty()) {
-						thisTrashTeam.setOrganizer(trashStrongPersons.get(0));
-						trashStrongPersons.remove(0);
+						entryIndex = randomEntry(trashStrongPersons.size());
+						thisTrashTeam.setOrganizer(trashStrongPersons.get(entryIndex));
+						trashStrongPersons.remove(entryIndex);
 					} else {
 						break; // give up when list is depleted
 					}
@@ -217,8 +242,9 @@ public class TrashCycle {
 				if (thisTrashTeam.getTeamMember1() == null) {
 					// Get the next team member
 					if (!trashTeamMembers.isEmpty()) {
-						thisTrashTeam.setTeamMember1(trashTeamMembers.get(0));
-						trashTeamMembers.remove(0);
+						entryIndex = randomEntry(trashTeamMembers.size());
+						thisTrashTeam.setTeamMember1(trashTeamMembers.get(entryIndex));
+						trashTeamMembers.remove(entryIndex);
 					} else {
 						break; // give up when list is depleted
 					}
@@ -230,8 +256,9 @@ public class TrashCycle {
 				if (thisTrashTeam.getTeamMember2() == null) {
 					// Get the next team member
 					if (!trashTeamMembers.isEmpty()) {
-						thisTrashTeam.setTeamMember2(trashTeamMembers.get(0));
-						trashTeamMembers.remove(0);
+						entryIndex = randomEntry(trashTeamMembers.size());
+						thisTrashTeam.setTeamMember2(trashTeamMembers.get(entryIndex));
+						trashTeamMembers.remove(entryIndex);
 					} else {
 						break; // give up when list is depleted
 					}
@@ -243,18 +270,20 @@ public class TrashCycle {
 				if (thisTrashTeam.getOrganizer() == null) {
 					// Get the next team member
 					if (!trashTeamMembers.isEmpty()) {
-						thisTrashTeam.setOrganizer(trashTeamMembers.get(0));
-						trashTeamMembers.remove(0);
+						entryIndex = randomEntry(trashTeamMembers.size());
+						thisTrashTeam.setOrganizer(trashTeamMembers.get(entryIndex));
+						trashTeamMembers.remove(entryIndex);
 					} else {
 						break; // give up when list is depleted
 					}
 				}
 			}
 		}
-
+		
 		return trashTeams;
 	}
 
+	
 	private void computeMultiplePersonUnits() {
 
 		// Figure out which units have multiple TrashPersons in them
@@ -274,7 +303,13 @@ public class TrashCycle {
 			if (oneTrashPerson.getUnitnumber().equals(currentUnit)) {
 				// Yes, another one in the sequence. Increment count
 				// and keep going.
-				currentCount++;
+				// However, max number per unit per team is 3 (107 case)
+				if (currentCount == 3) {
+					// 107 case. Don't allow 4th person in this unit.
+					continue;
+				} else {
+					currentCount++;
+				}
 			} else {
 				// No.
 				if (currentCount > 1) {
@@ -309,9 +344,9 @@ public class TrashCycle {
 			// Compute number of team slots available
 			actualCount = 0;
 			TrashTeam trashTeam = trashTeams.get(teamIndex);
-			// if (trashTeam.getOrganizer()== null) {
-			// actualCount++;
-			// }
+			if (trashTeam.getOrganizer()== null) {
+				actualCount++;
+			}
 			if (trashTeam.getStrongPerson() == null) {
 				actualCount++;
 			}
@@ -332,7 +367,7 @@ public class TrashCycle {
 	private boolean addTrashPersonToSameTeam(TrashTeam trashTeam,
 			TrashPerson trashPerson) {
 
-		// Assume Organizer is already filled. So start with StrongPerson
+		// Start with StrongPerson
 		if (trashPerson.getTrashRole().equalsIgnoreCase(
 				TrashRolesEnums.STRONGPERSON.name())) {
 
@@ -362,11 +397,27 @@ public class TrashCycle {
 				return true;
 			}
 
+			// Last try: an organizer
+			if (trashTeam.getOrganizer() == null) {
+				trashTeam.setOrganizer(trashPerson);
+				trashStrongPersons.remove(trashPerson);
+				return true;
+			}
+
 		}
 
 		// Not a Strong slot. Try member1 and then member2.
 		if (trashPerson.getTrashRole().equalsIgnoreCase(
 				TrashRolesEnums.TEAMMEMEBER.name())) {
+
+			// Try an organizer first to lessen the
+			// likelihood that a subsequent strong person
+			// will end up as the organizer.
+			if (trashTeam.getOrganizer() == null) {
+				trashTeam.setOrganizer(trashPerson);
+				trashTeamMembers.remove(trashPerson);
+				return true;
+			}
 
 			// Try member slot 1
 			if (trashTeam.getTeamMember1() == null) {
@@ -381,10 +432,50 @@ public class TrashCycle {
 				trashTeamMembers.remove(trashPerson);
 				return true;
 			}
+			
+			
+			
 		}
 
 		return false;
 
+	}
+
+	private void cloneAndAdjustTrashPersonList(String startingUnit) {
+		
+		// Start by making a new TrashPerson list local to this class.
+		trashPersonList = new ArrayList<TrashPerson>();
+		
+		// Find the index of the first startingUnit in the sorted
+		// TrashPerson "original" list.
+		int startingUnitIndex = -1;
+		for (int idx = 0; idx < trashPersonListOrig.size(); idx++) {
+			if (trashPersonListOrig.get(idx).getUnitnumber().equals(startingUnit)) {
+				startingUnitIndex = idx;
+				break;
+			}
+		}
+		if (startingUnitIndex == -1) {
+			logger.severe("Unit is not found in the TrashPerson list: " + startingUnit);
+
+		}
+		
+		// Now add the TrashPersons from the starting unit to the end, to
+		// the adjusted TrashPerson list.
+		for (int idx = startingUnitIndex; idx < trashPersonListOrig.size(); idx++) {
+			trashPersonList.add(trashPersonListOrig.get(idx));
+		}
+		
+		// Lastly, add the TrashPersons from 0 to the starting unit, to the
+		// adjusted TrashPerson list.
+		for (int idx = 0; idx < startingUnitIndex; idx++) {
+			trashPersonList.add(trashPersonListOrig.get(idx));
+		}
+	}
+	
+	private int randomEntry(int listSize) {
+		Random rand = new Random();
+		return rand.nextInt(listSize);
 	}
 
 }

@@ -52,4 +52,6 @@ public interface UserDao {
 	public List<String> getUserLastNamesAtUnit(String unitnumber);
 
 	public List<String> getUserFirstNamesAtUnit(String unitnumber);
+	
+	public List<String> getUserUsernamesAtUnit(String unitnumber);
 }
