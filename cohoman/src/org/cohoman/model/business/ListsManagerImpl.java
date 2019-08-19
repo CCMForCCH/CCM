@@ -849,7 +849,8 @@ public class ListsManagerImpl implements ListsManager {
 				
 		// Pass cycle to new TrashSchedule to
 		// compute the printable rows.
-		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, "101", nextPersonToSkip);
+		// temp until the date for the 
+		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, nextPersonToSkip);
 		return trashSchedule.getTrashRows();
 					
 	}

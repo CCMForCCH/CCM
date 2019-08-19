@@ -2,6 +2,7 @@ package org.cohoman.model.business.trash;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -20,9 +21,9 @@ public class TrashCycle {
 	private List<TrashPerson> trashTeamMembers;
 	private List<String> multiplePersonUnits;
 	private List<Integer> multiplePersonUnitsCounts;
-	private String startingUnit;
+	private Date startingDate;
 
-	public TrashCycle(List<TrashPerson> trashPersonListOrig, String startingUnit) {
+	public TrashCycle(List<TrashPerson> trashPersonListOrig, Date startingDate) {
 		trashTeams = new ArrayList<TrashTeam>();
 		trashOrganizers = new ArrayList<TrashPerson>();
 		trashStrongPersons = new ArrayList<TrashPerson>();
@@ -30,7 +31,7 @@ public class TrashCycle {
 		multiplePersonUnits = new ArrayList<String>();
 		multiplePersonUnitsCounts = new ArrayList<Integer>();
 		this.trashPersonListOrig = trashPersonListOrig;
-		this.startingUnit = startingUnit;
+		this.startingDate = startingDate;
 	}
 
 	public List<TrashTeam> getTrashTeams() {
@@ -75,8 +76,7 @@ public class TrashCycle {
 
 		// Create all teams with starting dates
 		Calendar workingDate = Calendar.getInstance();
-		CalendarUtils.adjustToStartingSunday(workingDate);
-		workingDate.add(Calendar.DAY_OF_YEAR, 7); // uh, show NEXT Sunday
+		workingDate.setTime(startingDate);
 		for (int teamIndex = 0; teamIndex < teamsInOneCycle; teamIndex++) {
 			TrashTeam trashTeam = new TrashTeam();
 			trashTeam.setSundayDate(workingDate.getTime());
@@ -171,33 +171,63 @@ public class TrashCycle {
 
 		}
 
-		
-		// Next, finish out the strong person for all teams by walking through
-		// the
-		// strong people.
-		int entryIndex;
+		int randomizedIndex; 
+		// Next RANDOMLY, finish out the strong person for all teams by walking through
+		// the strong people.
 		for (TrashTeam thisTrashTeam : trashTeams) {
 			if (thisTrashTeam.getStrongPerson() == null) {
 				// Get the next strong person
 				if (!trashStrongPersons.isEmpty()) {
-					entryIndex = randomEntry(trashStrongPersons.size());
-					thisTrashTeam.setStrongPerson(trashStrongPersons.get(entryIndex));
-					trashStrongPersons.remove(entryIndex);
+					randomizedIndex = randomEntry(trashStrongPersons.size());
+					thisTrashTeam.setStrongPerson(trashStrongPersons.get(randomizedIndex));
+					trashStrongPersons.remove(randomizedIndex);
 				} else {
 					logger.severe("Too few strong people identified for Trash Schedule");
 				}
 			}
 		}
 
-		// Then, use strong people as team members, if any left
+		// RANDOMLY, use Team members to fill any Organizer spots left
+		if (!trashTeamMembers.isEmpty()) {
+			for (TrashTeam thisTrashTeam : trashTeams) {
+				if (thisTrashTeam.getOrganizer() == null) {
+					// Get the next team member
+					if (!trashTeamMembers.isEmpty()) {
+						randomizedIndex = randomEntry(trashTeamMembers.size());
+						thisTrashTeam.setOrganizer(trashTeamMembers.get(randomizedIndex));
+						trashTeamMembers.remove(randomizedIndex);
+					} else {
+						break; // give up when list is depleted
+					}
+				}
+			}
+		}
+
+		// RANDOMLY, use Strong members to fill any Organizer spots if any left
+		if (!trashStrongPersons.isEmpty()) {
+			for (TrashTeam thisTrashTeam : trashTeams) {
+				if (thisTrashTeam.getOrganizer() == null) {
+					// Get the next strong person
+					if (!trashStrongPersons.isEmpty()) {
+						randomizedIndex = randomEntry(trashStrongPersons.size());
+						thisTrashTeam.setOrganizer(trashStrongPersons.get(randomizedIndex));
+						trashStrongPersons.remove(randomizedIndex);
+					} else {
+						break; // give up when list is depleted
+					}
+				}
+			}
+		}
+
+		// Next RANDOMLY, use strong people as team members, if any left
 		if (!trashStrongPersons.isEmpty()) {
 			for (TrashTeam thisTrashTeam : trashTeams) {
 				if (thisTrashTeam.getTeamMember1() == null) {
 					// Get the next strong person
 					if (!trashStrongPersons.isEmpty()) {
-						entryIndex = randomEntry(trashStrongPersons.size());
-						thisTrashTeam.setTeamMember1(trashStrongPersons.get(entryIndex));
-						trashStrongPersons.remove(entryIndex);
+						randomizedIndex = randomEntry(trashStrongPersons.size());
+						thisTrashTeam.setTeamMember1(trashStrongPersons.get(randomizedIndex));
+						trashStrongPersons.remove(randomizedIndex);
 					} else {
 						break; // give up when list is depleted
 					}
@@ -209,9 +239,9 @@ public class TrashCycle {
 				if (thisTrashTeam.getTeamMember2() == null) {
 					// Get the next strong person
 					if (!trashStrongPersons.isEmpty()) {
-						entryIndex = randomEntry(trashStrongPersons.size());
-						thisTrashTeam.setTeamMember2(trashStrongPersons.get(entryIndex));
-						trashStrongPersons.remove(entryIndex);
+						randomizedIndex = randomEntry(trashStrongPersons.size());
+						thisTrashTeam.setTeamMember2(trashStrongPersons.get(randomizedIndex));
+						trashStrongPersons.remove(randomizedIndex);
 					} else {
 						break; // give up when list is depleted
 					}
@@ -219,32 +249,15 @@ public class TrashCycle {
 			}
 		}
 
-		// Last try to get rid of strong persons. If any are still left,
-		// Use them for organizers.
-		if (!trashStrongPersons.isEmpty()) {
-			for (TrashTeam thisTrashTeam : trashTeams) {
-				if (thisTrashTeam.getOrganizer() == null) {
-					// Get the next strong person
-					if (!trashStrongPersons.isEmpty()) {
-						entryIndex = randomEntry(trashStrongPersons.size());
-						thisTrashTeam.setOrganizer(trashStrongPersons.get(entryIndex));
-						trashStrongPersons.remove(entryIndex);
-					} else {
-						break; // give up when list is depleted
-					}
-				}
-			}
-		}
-
-		// Now fill up team members and organizer team slots with team members
+		// Lastly, RANDOMLY fill up team members slots with team members
 		if (!trashTeamMembers.isEmpty()) {
 			for (TrashTeam thisTrashTeam : trashTeams) {
 				if (thisTrashTeam.getTeamMember1() == null) {
 					// Get the next team member
 					if (!trashTeamMembers.isEmpty()) {
-						entryIndex = randomEntry(trashTeamMembers.size());
-						thisTrashTeam.setTeamMember1(trashTeamMembers.get(entryIndex));
-						trashTeamMembers.remove(entryIndex);
+						randomizedIndex = randomEntry(trashTeamMembers.size());
+						thisTrashTeam.setTeamMember1(trashTeamMembers.get(randomizedIndex));
+						trashTeamMembers.remove(randomizedIndex);
 					} else {
 						break; // give up when list is depleted
 					}
@@ -256,23 +269,9 @@ public class TrashCycle {
 				if (thisTrashTeam.getTeamMember2() == null) {
 					// Get the next team member
 					if (!trashTeamMembers.isEmpty()) {
-						entryIndex = randomEntry(trashTeamMembers.size());
-						thisTrashTeam.setTeamMember2(trashTeamMembers.get(entryIndex));
-						trashTeamMembers.remove(entryIndex);
-					} else {
-						break; // give up when list is depleted
-					}
-				}
-			}
-		}
-		if (!trashTeamMembers.isEmpty()) {
-			for (TrashTeam thisTrashTeam : trashTeams) {
-				if (thisTrashTeam.getOrganizer() == null) {
-					// Get the next team member
-					if (!trashTeamMembers.isEmpty()) {
-						entryIndex = randomEntry(trashTeamMembers.size());
-						thisTrashTeam.setOrganizer(trashTeamMembers.get(entryIndex));
-						trashTeamMembers.remove(entryIndex);
+						randomizedIndex = randomEntry(trashTeamMembers.size());
+						thisTrashTeam.setTeamMember2(trashTeamMembers.get(randomizedIndex));
+						trashTeamMembers.remove(randomizedIndex);
 					} else {
 						break; // give up when list is depleted
 					}
@@ -472,10 +471,16 @@ public class TrashCycle {
 			trashPersonList.add(trashPersonListOrig.get(idx));
 		}
 	}
-	
+/*
 	private int randomEntry(int listSize) {
 		Random rand = new Random();
 		return rand.nextInt(listSize);
 	}
+	*/
 
+	private int randomEntry(int listSize) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(startingDate);
+		return cal.get(Calendar.DAY_OF_YEAR) % listSize;
+	}
 }
