@@ -39,7 +39,7 @@ public class TrashSchedule {
 
 		// Loop through the desired number of cycles.
 		List<TrashTeam> trashTeams = null;
-		for (int cycleIdx = 0; cycleIdx < 12; cycleIdx++) {
+		for (int cycleIdx = 0; cycleIdx < 4; cycleIdx++) {
 			
 			// Start by creating TrashPerson list with skipped people removed.
 			trashPersonList = removeSkippedPeopleFromList(trashPersonListOrig, nextPersonToSkip);
@@ -209,31 +209,18 @@ public class TrashSchedule {
 		}
 		
 		// If finished loop without having skipped all the entries in the
-		// first pass, must start the list again since the entries to skip
-		// have wrapped around to the beginning of the list.
+		// first pass, must wraparound and remove those entries from the beginning
+		// of the TrashPersonList that we're creating.
 		if (skippingMode) {
-			//for (TrashPerson trashPerson : trashPersonListOrig) {
-			for (int tpIdx = 0; tpIdx < trashPersonListOrig.size(); tpIdx++) {
-				if (skippingMode) {
-					if (peopleToSkip != 0) {
-						peopleToSkip--;
-						continue;
-					} else {
-						skippingMode = false;
-						this.nextPersonToSkip = trashPersonListOrig.get(tpIdx).getUsername();
-					}
-				}
-				if (peopleToSkip != 0) {
-					if (trashPersonListOrig.get(tpIdx).getUsername().equalsIgnoreCase(nextPersonToSkip)) {
-						peopleToSkip--;
-						skippingMode = true;
-					} else {
-						trashPersonList.add(trashPersonListOrig.get(tpIdx));					
-					}
-				} else {
-					trashPersonList.add(trashPersonListOrig.get(tpIdx));
-				}
+			
+			int tpIdx = 0;
+			while (peopleToSkip > 0) {
+				trashPersonList.remove(tpIdx);
+				tpIdx++;
+				peopleToSkip--;
 			}
+			this.nextPersonToSkip = trashPersonListOrig.get(tpIdx).getUsername();
+
 		}
 		
 		return trashPersonList;

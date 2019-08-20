@@ -824,19 +824,34 @@ public class ListsManagerImpl implements ListsManager {
 				String trashRole;
 				if (thisUserUsername.equals("bonnie") || thisUserUsername.equals("carol") ||
 						thisUserUsername.equals("marianne") || thisUserUsername.equals("molly") ||
-						thisUserUsername.equals("elaine")) {
+						thisUserUsername.equals("elaine") || thisUserUsername.equals("francie")) {
 						trashRole = TrashRolesEnums.ORGANIZER.name();
 				} else {
 					if (thisUserUsername.equals("anne") || thisUserUsername.equals("joan") ||
 							thisUserUsername.equals("maddy") || thisUserUsername.equals("lindsey") ||
-							thisUserUsername.equals("robin") || thisUserUsername.equals("peg") ||
-							thisUserUsername.equals("diane") || thisUserUsername.equals("annie")){
-						trashRole = TrashRolesEnums.TEAMMEMEBER.name();
+						    thisUserUsername.equals("annie") || thisUserUsername.equals("johnm") ||
+						    thisUserUsername.equals("johnn")){
+						trashRole = TrashRolesEnums.TEAMMEMBER.name();
 					} else {
 						trashRole = TrashRolesEnums.STRONGPERSON.name();
 					}
 				}
-
+				if (thisUserUsername.equals("peg") ||  thisUserUsername.equals("diane") ||
+					thisUserUsername.equals("brian") || thisUserUsername.equals("peter") ||
+					thisUserUsername.equals("kerry") || thisUserUsername.equals("neal") ||
+					thisUserUsername.equals("sara") || thisUserUsername.equals("felix"))
+				{
+					trashRole = TrashRolesEnums.NOROLE.name();
+				}
+				if (thisUserUsername.equals("diane")) {
+					trashRole = TrashRolesEnums.NOROLE.name();
+				}
+				
+				// Skip over people who have no role
+				if (trashRole.equals(TrashRolesEnums.NOROLE.name())) {
+					continue;
+				}
+				
 				// Now for all people in this unit, create a TrashPerson object
 				// and add it to the list of TrashPeople
 				TrashPerson trashPerson = new TrashPerson();

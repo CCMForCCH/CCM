@@ -160,7 +160,7 @@ public class TrashCycle {
 							.name()) {
 						trashStrongPersons.remove(trashPerson);
 					}
-					if (trashPerson.getTrashRole() == TrashRolesEnums.TEAMMEMEBER
+					if (trashPerson.getTrashRole() == TrashRolesEnums.TEAMMEMBER
 							.name()) {
 						trashTeamMembers.remove(trashPerson);
 					}
@@ -407,7 +407,7 @@ public class TrashCycle {
 
 		// Not a Strong slot. Try member1 and then member2.
 		if (trashPerson.getTrashRole().equalsIgnoreCase(
-				TrashRolesEnums.TEAMMEMEBER.name())) {
+				TrashRolesEnums.TEAMMEMBER.name())) {
 
 			// Try an organizer first to lessen the
 			// likelihood that a subsequent strong person

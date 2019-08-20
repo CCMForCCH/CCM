@@ -2,7 +2,7 @@ package org.cohoman.model.business.trash;
 
 public enum TrashRolesEnums {
 	
-	CHOOSE("Choose the role for your Trash duties"), ORGANIZER("Organizer"), STRONGPERSON("StrongPerson"), TEAMMEMEBER("TeamMember");
+	CHOOSE("Choose the role for your Trash duties"), ORGANIZER("Organizer"), STRONGPERSON("StrongPerson"), TEAMMEMBER("TeamMember"), NOROLE("NoRole");
 	
     private final String text;
 
