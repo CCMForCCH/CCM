@@ -20,6 +20,8 @@ import org.cohoman.model.dto.SecurityStartingPointDTO;
 import org.cohoman.model.dto.UserDTO;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
+import org.cohoman.model.integration.persistence.beans.TrashCycleBean;
+import org.cohoman.model.integration.persistence.beans.TrashCycleRow;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
 import org.cohoman.model.integration.persistence.dao.MaintenanceDao;
 import org.cohoman.model.integration.persistence.dao.MtaskDao;
@@ -799,8 +801,6 @@ public class ListsManagerImpl implements ListsManager {
 	 * Build Trash Schedule
 	 */
 	public List<TrashRow> getTrashSchedule() {
-		// Temporary code to persist next person to skip
-		String nextPersonToSkip = "";
 		
 		// Build TrashPerson list for all CH and WE residents
 		
@@ -865,7 +865,36 @@ public class ListsManagerImpl implements ListsManager {
 		// Pass cycle to new TrashSchedule to
 		// compute the printable rows.
 		// temp until the date for the 
-		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, nextPersonToSkip);
+		// temporarily create a bean and fill it in. Later on will read this
+		// from the database. And when done, will update all 4 rows
+		List<TrashCycleRow> trashCycleRows = new ArrayList<TrashCycleRow>();
+		TrashCycleRow trashCycleRow = new TrashCycleRow();
+		trashCycleRow.setNextuseridtoskip(trashPersonList.get(0).getUsername());
+		Calendar calToIncrement = Calendar.getInstance();
+		calToIncrement.add(Calendar.DAY_OF_YEAR, -3);
+	/* temporarily commented out so I see every day; will need to put back
+		int todaysDayOfWeek = calToIncrement.get(Calendar.DAY_OF_WEEK);
+		calToIncrement = CalendarUtils.adjustToStartingSunday(calToIncrement);
+		if (todaysDayOfWeek != Calendar.SUNDAY) {
+			// Add a week so it's next week's team, unless it's Sunday
+			calToIncrement.add(Calendar.DAY_OF_YEAR, 7);  
+		}
+	*/
+
+		//rightnow.add(Calendar.DAY_OF_YEAR, 10);  // temp to have a date within the cycle
+		trashCycleRow.setTrashcyclestartdate(calToIncrement.getTime());
+		
+		trashCycleRows.add(trashCycleRow);
+		
+		//<<<<<<<<
+		TrashCycleRow trashCycleRow2 = new TrashCycleRow();
+		trashCycleRow2.setNextuseridtoskip(trashPersonList.get(1).getUsername());
+		calToIncrement.add(Calendar.DAY_OF_YEAR, 8);  
+		trashCycleRow2.setTrashcyclestartdate(calToIncrement.getTime());
+		trashCycleRows.add(trashCycleRow2);
+		// >>>>>>>>>>>
+		
+		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, trashCycleRows);
 		return trashSchedule.getTrashRows();
 					
 	}

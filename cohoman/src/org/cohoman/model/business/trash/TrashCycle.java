@@ -81,7 +81,8 @@ public class TrashCycle {
 			TrashTeam trashTeam = new TrashTeam();
 			trashTeam.setSundayDate(workingDate.getTime());
 			trashTeams.add(trashTeam);
-			workingDate.add(Calendar.DAY_OF_YEAR, 7); // advance to next date
+			//workingDate.add(Calendar.DAY_OF_YEAR, 7); // advance to next date
+			workingDate.add(Calendar.DAY_OF_YEAR, 1); // advance to next date
 		}
 
 		// First rule: add organizers with others in same household to same team
@@ -440,6 +441,7 @@ public class TrashCycle {
 
 	}
 
+	/*
 	private void cloneAndAdjustTrashPersonList(String startingUnit) {
 		
 		// Start by making a new TrashPerson list local to this class.
@@ -471,13 +473,8 @@ public class TrashCycle {
 			trashPersonList.add(trashPersonListOrig.get(idx));
 		}
 	}
-/*
-	private int randomEntry(int listSize) {
-		Random rand = new Random();
-		return rand.nextInt(listSize);
-	}
-	*/
-
+*/
+	
 	private int randomEntry(int listSize) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(startingDate);
