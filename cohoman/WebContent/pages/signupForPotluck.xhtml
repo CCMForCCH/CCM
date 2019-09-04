@@ -76,7 +76,7 @@
 				</h:panelGroup>
  	
 				<h:panelGroup id="numberquestionpotluck" layout="block" rendered="#{not empty signupPotluckController.potluckEventList}" >
-					<h:outputText  value="&lt;br/&gt;Number attending the potluck:&lt;br/&gt; " 
+					<h:outputText  value="&lt;br/&gt;Choose number attending the potluck (enter 0 to delete signup):&lt;br/&gt; " 
 				   	rendered="#{signupPotluckController.chosenPotluckEventString ne '1' and
 				   		signupPotluckController.signupOperation eq 'doSignup' ||
 				   		signupPotluckController.signupOperation eq 'doSignupSomeoneElse'}" 

@@ -386,22 +386,6 @@ public class EventServiceImpl implements EventService {
 			}
 		}
 
-		// Molly's phone number
-		userSpaceAdmin = userManager.getUserByUsername("molly");
-		if (userSpaceAdmin == null) {
-			logger.info("AUDIT: Unable to find user " + "molly" +
-					" to notify that Space Administrator of request, but request has been made.");
-		} else {
-			String phoneNumber = userSpaceAdmin.getCellphone();
-			if (!phoneNumber.isEmpty() && Validators.isValidPhoneNumber(phoneNumber)) {
-				phoneNumber = phoneNumber.replace("-",  "");  // remove dashes from phone number
-				SmsSender.sendtextMessage(phoneNumber, textMsg);
-			} else {
-				logger.info("AUDIT: phone number for " + "molly" +
-					" is not valid: " + phoneNumber);
-			}
-		}
-
 	}
 
 	public void editPrivateEvent(PrivateEvent privateEvent)

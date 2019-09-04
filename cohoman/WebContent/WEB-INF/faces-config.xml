@@ -931,6 +931,11 @@
 			<to-view-id>/editWeSecurityStartingPoint.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayTrashList</from-outcome>
+			<to-view-id>/displayTrashList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
 	</navigation-rule>
 <!--  end of pages for super admin -->
 

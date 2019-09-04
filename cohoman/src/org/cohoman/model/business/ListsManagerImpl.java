@@ -871,7 +871,7 @@ public class ListsManagerImpl implements ListsManager {
 		TrashCycleRow trashCycleRow = new TrashCycleRow();
 		trashCycleRow.setNextuseridtoskip(trashPersonList.get(0).getUsername());
 		Calendar calToIncrement = Calendar.getInstance();
-		calToIncrement.add(Calendar.DAY_OF_YEAR, -3);
+		calToIncrement.set(2019, Calendar.SEPTEMBER, 3);
 	/* temporarily commented out so I see every day; will need to put back
 		int todaysDayOfWeek = calToIncrement.get(Calendar.DAY_OF_WEEK);
 		calToIncrement = CalendarUtils.adjustToStartingSunday(calToIncrement);
