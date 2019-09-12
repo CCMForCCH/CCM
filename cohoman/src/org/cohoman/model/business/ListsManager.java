@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.cohoman.model.business.ListsManagerImpl.SecurityDataForRow;
 import org.cohoman.model.business.ListsManagerImpl.SecurityRow;
+import org.cohoman.model.business.trash.TrashPerson;
 import org.cohoman.model.business.trash.TrashRow;
-import org.cohoman.model.business.trash.TrashSchedule;
+import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
+import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
 import org.cohoman.view.controller.CohomanException;
 
 public interface ListsManager {
@@ -41,4 +43,12 @@ public interface ListsManager {
 
 	// Trash
 	public List<TrashRow> getTrashSchedule();
+	public List<TrashTeam> getTrashTeams(int numberOfCycles);
+	public List<TrashPerson> getTrashPersonListOrig();
+	public void setTrashSubstitute(Date startingDate, String originalUsername, String substituteUsername) throws CohomanException;
+	public void deleteTrashSubstitute(Long substitutesId);
+	public List<TrashSubstitutesBean> getTrashSubstitutes();
+	public TrashSubstitutesBean getTrashSubstitute(String startingDate, String origUsername);
+
+
 }

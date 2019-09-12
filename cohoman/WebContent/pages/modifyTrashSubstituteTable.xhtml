@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Add/Modify a Trash Substitute
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" title="Add/Modify a Trash Substitute" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Choose person to substitute for your trash task:"/>
+            		<br />
+         		</f:facet>
+         		
+         		<b>Date:</b>
+				<h:outputText value="#{retrieveTrashListController.trashTeamStartDate}" />    
+				<br/>
+				
+				<b>Person to Substitute for:</b>
+        		<h:selectOneMenu value="#{retrieveTrashListController.chosenTeamMember}">
+					<f:selectItem itemValue="" itemLabel="Choose person to substitute for" />
+					<f:selectItems value="#{retrieveTrashListController.teamMembers}"
+						var="oneuser" 
+						itemLabel="#{oneuser}"
+						itemValue="#{oneuser}" />
+					<f:ajax render="choosesubstitute" execute="choosesubstitute" event="change"/>
+				</h:selectOneMenu>
+				<br/>
+				
+				<b>Select the person to be your substitute:</b>	
+				<br/>
+				<h:selectOneMenu id="choosesubstitute" value="#{retrieveTrashListController.chosenSubstitute}">
+				<f:selectItem itemValue="" itemLabel="No Substitute" />
+					<f:selectItems value="#{retrieveTrashListController.trashPeopleForSubstitutes}"
+						var="oneuser" 
+						itemLabel="#{oneuser}"
+						itemValue="#{oneuser}" />
+				</h:selectOneMenu>						
+				<br/>
+        				
+			</h:panelGrid>	
+			<br />					
+			<h:panelGroup style="display:block; text-align:center">	
+					<h:commandButton value="Submit" action="#{retrieveTrashListController.modifyTrashSubstituteTableView}" />			
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

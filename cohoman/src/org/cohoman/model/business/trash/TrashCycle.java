@@ -1,5 +1,6 @@
 package org.cohoman.model.business.trash;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -75,11 +76,13 @@ public class TrashCycle {
 		}
 
 		// Create all teams with starting dates
+		SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
 		Calendar workingDate = Calendar.getInstance();
 		workingDate.setTime(startingDate);
 		for (int teamIndex = 0; teamIndex < teamsInOneCycle; teamIndex++) {
 			TrashTeam trashTeam = new TrashTeam();
 			trashTeam.setSundayDate(workingDate.getTime());
+			trashTeam.setPrintableDate(formatter.format(workingDate.getTime()));
 			trashTeams.add(trashTeam);
 			//workingDate.add(Calendar.DAY_OF_YEAR, 7); // advance to next date
 			workingDate.add(Calendar.DAY_OF_YEAR, 1); // advance to next date

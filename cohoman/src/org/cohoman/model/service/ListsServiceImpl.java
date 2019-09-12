@@ -11,12 +11,15 @@ import org.cohoman.model.business.User;
 import org.cohoman.model.business.UserManager;
 import org.cohoman.model.business.ListsManagerImpl.SecurityDataForRow;
 import org.cohoman.model.business.ListsManagerImpl.SecurityRow;
+import org.cohoman.model.business.trash.TrashPerson;
 import org.cohoman.model.business.trash.TrashRow;
 import org.cohoman.model.business.trash.TrashSchedule;
+import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
+import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
 
@@ -62,6 +65,19 @@ public class ListsServiceImpl implements ListsService {
 				+ getUserFullname(userid) + ", being set by "
 				+ LoggingUtils.getCurrentUsername());
 		listsManager.setSubstitute(startingDate, userid);
+	}
+
+	public void setTrashSubstitute(Date startingDate, String originalUsername, String substituteUsername) 
+			throws CohomanException {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
+
+		logger.info("AUDIT: Setting trash substitute for date "
+				+ formatter.format(startingDate.getTime()) + " and original user "
+				+ originalUsername + " with substitute user "
+				+ substituteUsername + ", being set by "
+				+ LoggingUtils.getCurrentUsername());
+		listsManager.setTrashSubstitute(startingDate, originalUsername, substituteUsername);
 	}
 
 	private String getUserFullname(Long userid) throws CohomanException {
@@ -209,6 +225,26 @@ public class ListsServiceImpl implements ListsService {
 	// Trash
 	public List<TrashRow> getTrashSchedule() {
 		return listsManager.getTrashSchedule();
+	}
+
+	public List<TrashTeam> getTrashTeams(int numberOfCycles) {
+		return listsManager.getTrashTeams(numberOfCycles);
+	}
+
+	public List<TrashPerson> getTrashPersonListOrig() {
+		return listsManager.getTrashPersonListOrig();
+	}
+	
+	public void deleteTrashSubstitute(Long substitutesId) {
+		listsManager.deleteTrashSubstitute(substitutesId);
+	}
+
+	public List<TrashSubstitutesBean> getTrashSubstitutes() {
+		return listsManager.getTrashSubstitutes();
+	}
+	
+	public TrashSubstitutesBean getTrashSubstitute(String startingDate, String origUsername) {
+		return listsManager.getTrashSubstitute(startingDate, origUsername);
 	}
 
 }

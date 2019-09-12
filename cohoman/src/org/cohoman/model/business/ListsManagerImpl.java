@@ -22,11 +22,14 @@ import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashCycleBean;
 import org.cohoman.model.integration.persistence.beans.TrashCycleRow;
+import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
 import org.cohoman.model.integration.persistence.dao.MaintenanceDao;
 import org.cohoman.model.integration.persistence.dao.MtaskDao;
 import org.cohoman.model.integration.persistence.dao.SecurityDao;
 import org.cohoman.model.integration.persistence.dao.SubstitutesDao;
+import org.cohoman.model.integration.persistence.dao.TrashSubstitutesDao;
+import org.cohoman.model.integration.persistence.dao.TrashSubstitutesDaoImpl;
 import org.cohoman.model.integration.persistence.dao.UnitsDao;
 import org.cohoman.model.integration.persistence.dao.UserDao;
 import org.cohoman.view.controller.CohomanException;
@@ -39,6 +42,7 @@ public class ListsManagerImpl implements ListsManager {
 	private UserDao userDao = null;
 	private SecurityDao securityDao = null;
 	private SubstitutesDao substitutesDao = null;
+	private TrashSubstitutesDao trashSubstitutesDao= null;
 	private MaintenanceDao maintenanceDao = null;
 	private MtaskDao mtaskDao = null;
 
@@ -72,6 +76,14 @@ public class ListsManagerImpl implements ListsManager {
 
 	public void setSubstitutesDao(SubstitutesDao substitutesDao) {
 		this.substitutesDao = substitutesDao;
+	}
+
+	public TrashSubstitutesDao getTrashSubstitutesDao() {
+		return trashSubstitutesDao;
+	}
+
+	public void setTrashSubstitutesDao(TrashSubstitutesDao trashSubstitutesDao) {
+		this.trashSubstitutesDao = trashSubstitutesDao;
 	}
 
 	public MaintenanceDao getMaintenanceDao() {
@@ -269,6 +281,7 @@ public class ListsManagerImpl implements ListsManager {
 		}
 	}
 
+	// For CH security
 	public void setSubstitute(Date startingDate, Long userid)
 			throws CohomanException {
 
@@ -283,6 +296,13 @@ public class ListsManagerImpl implements ListsManager {
 		
 		// Now, add in the substitute
 		substitutesDao.setSubstitute(startingDate, userid);
+	}
+
+	
+	public void setTrashSubstitute(Date startingDate, String originalUsername, String substituteUsername) 
+			throws CohomanException {
+
+		trashSubstitutesDao.setTrashSubstitute(startingDate, originalUsername, substituteUsername);
 	}
 
 	public List<SecurityDataForRow> getSecurityListWithSubs(
@@ -800,7 +820,7 @@ public class ListsManagerImpl implements ListsManager {
 	/*
 	 * Build Trash Schedule
 	 */
-	public List<TrashRow> getTrashSchedule() {
+	private TrashSchedule getTrashScheduleObject() {
 		
 		// Build TrashPerson list for all CH and WE residents
 		
@@ -888,15 +908,50 @@ public class ListsManagerImpl implements ListsManager {
 		
 		//<<<<<<<<
 		TrashCycleRow trashCycleRow2 = new TrashCycleRow();
-		trashCycleRow2.setNextuseridtoskip(trashPersonList.get(1).getUsername());
-		calToIncrement.add(Calendar.DAY_OF_YEAR, 8);  
+		trashCycleRow2.setNextuseridtoskip(trashPersonList.get(1).getUsername());		// Compute number of teams in one cycle
+		int teamsInOneCycle = trashPersonList.size();
+		teamsInOneCycle = teamsInOneCycle / 4;
+
+		
+		calToIncrement.add(Calendar.DAY_OF_YEAR, teamsInOneCycle);  
 		trashCycleRow2.setTrashcyclestartdate(calToIncrement.getTime());
 		trashCycleRows.add(trashCycleRow2);
 		// >>>>>>>>>>>
 		
-		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, trashCycleRows);
-		return trashSchedule.getTrashRows();
+		// Get Substitutes for Trash teams
+		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao.getTrashSubstitutes();
+		
+		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, trashCycleRows, trashSubstituteBeans);
+		//return trashSchedule.getTrashRows();
+		return trashSchedule;
 					
+	}
+
+	public List<TrashRow> getTrashSchedule() {
+		TrashSchedule trashSchedule = getTrashScheduleObject();
+		return trashSchedule.getTrashRows();	
+	}
+	
+	public List<TrashTeam> getTrashTeams(int numberOfCycles) {
+		TrashSchedule trashSchedule = getTrashScheduleObject();
+		return trashSchedule.getTrashTeams(4);
+	}
+
+	public List<TrashPerson> getTrashPersonListOrig() {
+		TrashSchedule trashSchedule = getTrashScheduleObject();
+		return trashSchedule.getTrashPersonListOrig();
+	}
+	
+	public void deleteTrashSubstitute(Long substitutesId) {
+		trashSubstitutesDao.deleteTrashSubstitute(substitutesId);
+	}
+
+	public List<TrashSubstitutesBean> getTrashSubstitutes() {
+		return trashSubstitutesDao.getTrashSubstitutes();
+	}
+
+	public TrashSubstitutesBean getTrashSubstitute(String startingDate, String origUsername) {
+		return trashSubstitutesDao.getTrashSubstitute(startingDate, origUsername);
 	}
 
 }
