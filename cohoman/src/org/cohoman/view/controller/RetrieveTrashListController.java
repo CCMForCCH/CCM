@@ -26,6 +26,7 @@ import org.cohoman.model.service.UserService;
 public class RetrieveTrashListController implements Serializable {
 
 	private static final long serialVersionUID = 4678206276499587830L;
+	private static final int NUMBER_OF_TRASH_CYCLES = 6;
 
 	private ListsService listsService = null;
 	private UserService userService = null;
@@ -50,7 +51,7 @@ public class RetrieveTrashListController implements Serializable {
 	}
 
 	public List<TrashRow> getTrashList() {
-		return listsService.getTrashSchedule();
+		return listsService.getTrashSchedule(NUMBER_OF_TRASH_CYCLES);
 	}
 
 	public String getChosenTeamMember() {
@@ -76,7 +77,7 @@ public class RetrieveTrashListController implements Serializable {
 
 		// If we just set the team member, also set the associated
 		// substitute for that team member (if there is one).
-		List<TrashTeam> trashTeams = listsService.getTrashTeams(4);
+		List<TrashTeam> trashTeams = listsService.getTrashTeams(NUMBER_OF_TRASH_CYCLES);
 		for (int idx = 0; idx < trashTeams.size(); idx++) {
 			if (trashTeamStartDate.equals(trashTeams.get(idx)
 					.getPrintableDate())) {
@@ -150,7 +151,7 @@ public class RetrieveTrashListController implements Serializable {
 	// Assumes team set in trashTeamStartDate
 	public List<String> getTeamMembers() {
 
-		List<TrashTeam> trashTeams = listsService.getTrashTeams(4);
+		List<TrashTeam> trashTeams = listsService.getTrashTeams(NUMBER_OF_TRASH_CYCLES);
 		List<String> teamMembersList = new ArrayList<String>();
 		for (int idx = 0; idx < trashTeams.size(); idx++) {
 			if (trashTeamStartDate.equals(trashTeams.get(idx)

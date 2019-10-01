@@ -223,8 +223,8 @@ public class ListsServiceImpl implements ListsService {
 	}
 
 	// Trash
-	public List<TrashRow> getTrashSchedule() {
-		return listsManager.getTrashSchedule();
+	public List<TrashRow> getTrashSchedule(int numberOfCycles) {
+		return listsManager.getTrashSchedule(numberOfCycles);
 	}
 
 	public List<TrashTeam> getTrashTeams(int numberOfCycles) {

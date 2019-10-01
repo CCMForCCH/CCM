@@ -891,7 +891,7 @@ public class ListsManagerImpl implements ListsManager {
 		TrashCycleRow trashCycleRow = new TrashCycleRow();
 		trashCycleRow.setNextuseridtoskip(trashPersonList.get(0).getUsername());
 		Calendar calToIncrement = Calendar.getInstance();
-		calToIncrement.set(2019, Calendar.SEPTEMBER, 3);
+		calToIncrement.set(2019, Calendar.OCTOBER, 2);
 	/* temporarily commented out so I see every day; will need to put back
 		int todaysDayOfWeek = calToIncrement.get(Calendar.DAY_OF_WEEK);
 		calToIncrement = CalendarUtils.adjustToStartingSunday(calToIncrement);
@@ -907,15 +907,23 @@ public class ListsManagerImpl implements ListsManager {
 		trashCycleRows.add(trashCycleRow);
 		
 		//<<<<<<<<
-		TrashCycleRow trashCycleRow2 = new TrashCycleRow();
-		trashCycleRow2.setNextuseridtoskip(trashPersonList.get(1).getUsername());		// Compute number of teams in one cycle
 		int teamsInOneCycle = trashPersonList.size();
 		teamsInOneCycle = teamsInOneCycle / 4;
-
 		
+		int leftoverPeople = trashPersonList.size() % 4;
+
+		TrashCycleRow trashCycleRow2 = new TrashCycleRow();
+		trashCycleRow2.setNextuseridtoskip(trashPersonList.get(leftoverPeople).getUsername());		// Compute number of teams in one cycle
 		calToIncrement.add(Calendar.DAY_OF_YEAR, teamsInOneCycle);  
 		trashCycleRow2.setTrashcyclestartdate(calToIncrement.getTime());
 		trashCycleRows.add(trashCycleRow2);
+		
+		TrashCycleRow trashCycleRow3 = new TrashCycleRow();
+		trashCycleRow3.setNextuseridtoskip(trashPersonList.get(leftoverPeople * 2).getUsername());		// Compute number of teams in one cycle
+		calToIncrement.add(Calendar.DAY_OF_YEAR, teamsInOneCycle);  
+		trashCycleRow3.setTrashcyclestartdate(calToIncrement.getTime());
+		trashCycleRows.add(trashCycleRow3);
+	
 		// >>>>>>>>>>>
 		
 		// Get Substitutes for Trash teams
@@ -927,14 +935,14 @@ public class ListsManagerImpl implements ListsManager {
 					
 	}
 
-	public List<TrashRow> getTrashSchedule() {
+	public List<TrashRow> getTrashSchedule(int numberOfCycles) {
 		TrashSchedule trashSchedule = getTrashScheduleObject();
-		return trashSchedule.getTrashRows();	
+		return trashSchedule.getTrashRows(numberOfCycles);	
 	}
 	
 	public List<TrashTeam> getTrashTeams(int numberOfCycles) {
 		TrashSchedule trashSchedule = getTrashScheduleObject();
-		return trashSchedule.getTrashTeams(4);
+		return trashSchedule.getTrashTeams(numberOfCycles);
 	}
 
 	public List<TrashPerson> getTrashPersonListOrig() {

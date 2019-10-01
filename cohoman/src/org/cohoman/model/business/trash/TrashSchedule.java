@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import org.cohoman.model.integration.persistence.beans.TrashCycleRow;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
+import org.cohoman.model.integration.utils.LoggingUtils;
 
 public class TrashSchedule {
 
@@ -167,14 +168,14 @@ public class TrashSchedule {
 
 	}
 
-	public List<TrashRow> getTrashRows() {
+	public List<TrashRow> getTrashRows(int numberOfCycles) {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
 		Calendar calDateNow = Calendar.getInstance();
 		int rowsRemovedFromFirstCycle = 0;
 
 		// Now make a list of printable rows
-		for (TrashTeam oneTeam : getTrashTeams(4)) {
+		for (TrashTeam oneTeam : getTrashTeams(numberOfCycles)) {
 
 			// skip over dates that have already past.
 			Calendar calTeamDate = Calendar.getInstance();
@@ -229,15 +230,23 @@ public class TrashSchedule {
 							+ " for " + oneTeam.getTeamMember1().getUsername());
 				}
 			}
+			
 			if (oneTeam.getTeamMember2() == null) {
 				trashRow.setTeamMember2("");
 			} else {
+				String member2Username = oneTeam.getTeamMember2().getUsername();
+				if (member2Username.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
+					member2Username = member2Username.toUpperCase();
+				}
 				if (oneTeam.getTeamMember2Sub() == null) {
-					trashRow.setTeamMember2(oneTeam.getTeamMember2()
-							.getUsername());
+					trashRow.setTeamMember2(member2Username);
 				} else {
-					trashRow.setTeamMember2(oneTeam.getTeamMember2Sub()
-							+ " for " + oneTeam.getTeamMember2().getUsername());
+					String member2Sub = oneTeam.getTeamMember2Sub();
+					if (member2Sub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
+						member2Sub = member2Sub.toUpperCase();
+					}
+					trashRow.setTeamMember2(member2Sub
+							+ " for " + member2Username);
 				}
 			}
 			trashRows.add(trashRow);
