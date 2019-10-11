@@ -200,34 +200,56 @@ public class TrashSchedule {
 			if (oneTeam.getOrganizer() == null) {
 				trashRow.setOrganizer("");
 			} else {
+				String organizerUsername = oneTeam.getOrganizer().getUsername();
+				if (organizerUsername.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
+					organizerUsername = organizerUsername.toUpperCase();
+				}
 				if (oneTeam.getOrganizerSub() == null) {
-					trashRow.setOrganizer(oneTeam.getOrganizer().getUsername());
+					trashRow.setOrganizer(organizerUsername);
 				} else {
-					trashRow.setOrganizer(oneTeam.getOrganizerSub() + " for "
-							+ oneTeam.getOrganizer().getUsername());
+					String organizerSub = oneTeam.getOrganizerSub();
+					if (organizerSub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
+						organizerSub = organizerSub.toUpperCase();
+					}
+					trashRow.setOrganizer(organizerSub + " for "
+							+ organizerUsername);
 				}
 			}
 			if (oneTeam.getStrongPerson() == null) {
 				trashRow.setStrongPerson("");
 			} else {
+				String strongUsername = oneTeam.getStrongPerson().getUsername();
+				if (strongUsername.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
+					strongUsername = strongUsername.toUpperCase();
+				}
 				if (oneTeam.getStrongPersonSub() == null) {
-					trashRow.setStrongPerson(oneTeam.getStrongPerson()
-							.getUsername());
+					trashRow.setStrongPerson(strongUsername);
 				} else {
-					trashRow.setStrongPerson(oneTeam.getStrongPersonSub()
-							+ " for " + oneTeam.getStrongPerson().getUsername());
+					String strongSub = oneTeam.getStrongPersonSub();
+					if (strongSub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
+						strongSub = strongSub.toUpperCase();
+					}
+					trashRow.setStrongPerson(strongSub
+							+ " for " + strongUsername);
 
 				}
 			}
 			if (oneTeam.getTeamMember1() == null) {
 				trashRow.setTeamMember1("");
 			} else {
+				String member1Username = oneTeam.getTeamMember1().getUsername();
+				if (member1Username.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
+					member1Username = member1Username.toUpperCase();
+				}
 				if (oneTeam.getTeamMember1Sub() == null) {
-					trashRow.setTeamMember1(oneTeam.getTeamMember1()
-							.getUsername());
+					trashRow.setTeamMember1(member1Username);
 				} else {
-					trashRow.setTeamMember1(oneTeam.getTeamMember1Sub()
-							+ " for " + oneTeam.getTeamMember1().getUsername());
+					String member1Sub = oneTeam.getTeamMember1Sub();
+					if (member1Sub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
+						member1Sub = member1Sub.toUpperCase();
+					}
+					trashRow.setTeamMember1(member1Sub
+							+ " for " + member1Username);
 				}
 			}
 			

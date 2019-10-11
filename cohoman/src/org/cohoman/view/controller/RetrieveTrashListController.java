@@ -26,7 +26,7 @@ import org.cohoman.model.service.UserService;
 public class RetrieveTrashListController implements Serializable {
 
 	private static final long serialVersionUID = 4678206276499587830L;
-	private static final int NUMBER_OF_TRASH_CYCLES = 6;
+	private static final int NUMBER_OF_TRASH_CYCLES = 7;
 
 	private ListsService listsService = null;
 	private UserService userService = null;
