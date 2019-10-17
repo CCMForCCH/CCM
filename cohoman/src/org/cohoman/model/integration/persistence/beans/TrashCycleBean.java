@@ -1,14 +1,18 @@
 package org.cohoman.model.integration.persistence.beans;
 
-import java.sql.Date;
+import java.util.Date;
+
+//import java.sql.Date;
 
 
 public class TrashCycleBean {
 
 	private Long trashcycleid;
 	private Date trashcyclestartdate;
-	private Date trashcyclelastdate;
-	private String nextuseridtoskip;
+	private Date trashcycleenddate;
+	private String lastuserskipped;
+	private String lastunitskipped;
+	private String nextusertoskip;
 	
 	
 	public Long getTrashcycleid() {
@@ -23,17 +27,29 @@ public class TrashCycleBean {
 	public void setTrashcyclestartdate(Date trashcyclestartdate) {
 		this.trashcyclestartdate = trashcyclestartdate;
 	}
-	public Date getTrashcyclelastdate() {
-		return trashcyclelastdate;
+	public Date getTrashcycleenddate() {
+		return trashcycleenddate;
 	}
-	public void setTrashcyclelastdate(Date trashcyclelastdate) {
-		this.trashcyclelastdate = trashcyclelastdate;
+	public void setTrashcycleenddate(Date trashcycleenddate) {
+		this.trashcycleenddate = trashcycleenddate;
 	}
-	public String getNextuseridtoskip() {
-		return nextuseridtoskip;
+	public String getLastuserskipped() {
+		return lastuserskipped;
 	}
-	public void setNextuseridtoskip(String nextuseridtoskip) {
-		this.nextuseridtoskip = nextuseridtoskip;
-	}	
-	
+	public void setLastuserskipped(String lastuserskipped) {
+		this.lastuserskipped = lastuserskipped;
+	}
+	public String getLastunitskipped() {
+		return lastunitskipped;
+	}
+	public void setLastunitskipped(String lastunitskipped) {
+		this.lastunitskipped = lastunitskipped;
+	}
+	public String getNextusertoskip() {
+		return nextusertoskip;
+	}
+	public void setNextusertoskip(String nextusertoskip) {
+		this.nextusertoskip = nextusertoskip;
+	}
+		
 }

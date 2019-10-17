@@ -59,6 +59,8 @@
 		<property name="userDao" ref="userDao" />
 		<property name="securityDao" ref="securityDao" />
 		<property name="substitutesDao" ref="substitutesDao" />
+		<property name="trashCyclesDao" ref="trashCyclesDao" />
+		<property name="trashTeamRowDao" ref="trashTeamRowDao" />
 		<property name="trashSubstitutesDao" ref="trashSubstitutesDao" />
 		<property name="maintenanceDao" ref="maintenanceDao" />
 		<property name="mtaskDao" ref="mtaskDao" />
@@ -122,6 +124,12 @@
 	</bean>
 	<bean id="substitutesDao"
 		class="org.cohoman.model.integration.persistence.dao.SubstitutesDaoImpl">
+	</bean>
+	<bean id="trashCyclesDao"
+		class="org.cohoman.model.integration.persistence.dao.TrashCyclesDaoImpl">
+	</bean>
+	<bean id="trashTeamRowDao"
+		class="org.cohoman.model.integration.persistence.dao.TrashTeamRowDaoImpl">
 	</bean>
 	<bean id="trashSubstitutesDao"
 		class="org.cohoman.model.integration.persistence.dao.TrashSubstitutesDaoImpl">

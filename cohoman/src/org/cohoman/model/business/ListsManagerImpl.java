@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.cohoman.model.business.trash.TrashCycle;
 import org.cohoman.model.business.trash.TrashPerson;
 import org.cohoman.model.business.trash.TrashRolesEnums;
 import org.cohoman.model.business.trash.TrashRow;
@@ -23,15 +22,18 @@ import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashCycleBean;
 import org.cohoman.model.integration.persistence.beans.TrashCycleRow;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
+import org.cohoman.model.integration.persistence.beans.TrashTeamRowBean;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
 import org.cohoman.model.integration.persistence.dao.MaintenanceDao;
 import org.cohoman.model.integration.persistence.dao.MtaskDao;
 import org.cohoman.model.integration.persistence.dao.SecurityDao;
 import org.cohoman.model.integration.persistence.dao.SubstitutesDao;
+import org.cohoman.model.integration.persistence.dao.TrashCyclesDao;
 import org.cohoman.model.integration.persistence.dao.TrashSubstitutesDao;
-import org.cohoman.model.integration.persistence.dao.TrashSubstitutesDaoImpl;
+import org.cohoman.model.integration.persistence.dao.TrashTeamRowDao;
 import org.cohoman.model.integration.persistence.dao.UnitsDao;
 import org.cohoman.model.integration.persistence.dao.UserDao;
+import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.CalendarUtils;
 import org.cohoman.view.controller.utils.TaskPriorityEnums;
@@ -43,6 +45,8 @@ public class ListsManagerImpl implements ListsManager {
 	private SecurityDao securityDao = null;
 	private SubstitutesDao substitutesDao = null;
 	private TrashSubstitutesDao trashSubstitutesDao= null;
+	private TrashCyclesDao trashCyclesDao = null;
+	private TrashTeamRowDao trashTeamRowDao = null;
 	private MaintenanceDao maintenanceDao = null;
 	private MtaskDao mtaskDao = null;
 
@@ -76,6 +80,22 @@ public class ListsManagerImpl implements ListsManager {
 
 	public void setSubstitutesDao(SubstitutesDao substitutesDao) {
 		this.substitutesDao = substitutesDao;
+	}
+
+	public TrashCyclesDao getTrashCyclesDao() {
+		return trashCyclesDao;
+	}
+
+	public void setTrashCyclesDao(TrashCyclesDao trashCyclesDao) {
+		this.trashCyclesDao = trashCyclesDao;
+	}
+
+	public TrashTeamRowDao getTrashTeamRowDao() {
+		return trashTeamRowDao;
+	}
+
+	public void setTrashTeamRowDao(TrashTeamRowDao trashTeamRowDao) {
+		this.trashTeamRowDao = trashTeamRowDao;
 	}
 
 	public TrashSubstitutesDao getTrashSubstitutesDao() {
@@ -820,7 +840,9 @@ public class ListsManagerImpl implements ListsManager {
 	/*
 	 * Build Trash Schedule
 	 */
+/*
 	private TrashSchedule getTrashScheduleObject() {
+		
 		
 		// Build TrashPerson list for all CH and WE residents
 		
@@ -892,14 +914,14 @@ public class ListsManagerImpl implements ListsManager {
 		trashCycleRow.setNextuseridtoskip(trashPersonList.get(0).getUsername());
 		Calendar calToIncrement = Calendar.getInstance();
 		calToIncrement.set(2019, Calendar.OCTOBER, 2);
-	/* temporarily commented out so I see every day; will need to put back
+	//temporarily commented out so I see every day; will need to put back
 		int todaysDayOfWeek = calToIncrement.get(Calendar.DAY_OF_WEEK);
 		calToIncrement = CalendarUtils.adjustToStartingSunday(calToIncrement);
 		if (todaysDayOfWeek != Calendar.SUNDAY) {
 			// Add a week so it's next week's team, unless it's Sunday
 			calToIncrement.add(Calendar.DAY_OF_YEAR, 7);  
 		}
-	*/
+	
 
 		//rightnow.add(Calendar.DAY_OF_YEAR, 10);  // temp to have a date within the cycle
 		trashCycleRow.setTrashcyclestartdate(calToIncrement.getTime());
@@ -934,20 +956,326 @@ public class ListsManagerImpl implements ListsManager {
 		return trashSchedule;
 					
 	}
+*/
 
-	public List<TrashRow> getTrashSchedule(int numberOfCycles) {
+	public List<TrashRow> getTrashSchedule(int numberOfCycles)  {
+		
+		// Read in TrashCycles and TrashSchedules from DB
+		
+		// Remove any expired TrashCycles and TrashSchedule rows
+		
+		// Create TrashPerson List
+
+		List<TrashPerson> trashPersonList = buildTrashPersonList();
+		List<TrashRow> trashRowsToPrintTotal = new ArrayList<TrashRow>();
+		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao.getTrashSubstitutes();	
+
+		// If not enough Cycles, LOOP over the following code until all cycles are filled in.
+		
+		List<TrashCycleBean> trashCycleBeanList = trashCyclesDao.getAllTrashCycles();
+		if (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < 4) {
+
+		for (int idx = 0; idx < 4; idx++) {
+						// replace the following line for setting up the TrashSchedule
+			//TrashSchedule trashSchedule = getTrashScheduleObject();
+			TrashSchedule trashSchedule = 
+					new TrashSchedule(trashPersonList, trashCycleBeanList, trashSubstituteBeans);
+			// If no TrashCycles in DB
+			if (trashCycleBeanList.isEmpty()) {
+				// 
+				TrashCycleBean trashCycleBean = new TrashCycleBean();
+				trashCycleBean.setNextusertoskip(trashPersonList.get(0).getUsername());
+				Calendar calToIncrement = Calendar.getInstance();
+				calToIncrement.set(2019, Calendar.OCTOBER, 2);
+				trashCycleBean.setTrashcyclestartdate(calToIncrement.getTime());
+				trashCycleBean.setTrashcycleenddate(calToIncrement.getTime());  // fix!!!!!!
+				try {
+					trashCyclesDao.createTrashCycle(trashCycleBean);
+				} catch (Exception ex) {
+					throw new RuntimeException("problem creating TrashCycle row0");
+				}
+				
+				//List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao.getTrashSubstitutes();	
+				// TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, trashCycleRows, trashSubstituteBeans);
+			} else {
+				if (trashCycleBeanList.size() < 4) {
+					// Need to create another cycle row
+					TrashCycleBean lastTrashCycleBean = trashCycleBeanList.get(trashCycleBeanList.size() - 1);
+					TrashCycleBean newTrashCycleBean = trashSchedule.getNextTrashCycleDBRow(lastTrashCycleBean);
+					try {
+						trashCyclesDao.createTrashCycle(newTrashCycleBean);
+					} catch (Exception ex) {
+						throw new RuntimeException("problem creating TrashCycle row1");
+					}
+				}
+			}
+			
+			// Build a cycle based on the last bean in the list.
+			trashCycleBeanList = trashCyclesDao.getAllTrashCycles();
+			TrashCycleBean lastTrashCycleBean = trashCycleBeanList.get(trashCycleBeanList.size() - 1);
+			List<TrashRow> trashRowsToPrint = trashSchedule.getTrashRowsNew(lastTrashCycleBean);
+			trashRowsToPrintTotal.addAll(trashRowsToPrint);
+			
+			// Persist the newly created cycle in the DB
+			for (TrashRow oneRow : trashRowsToPrint) {
+				TrashTeamRowBean trashTeamRowBean = new TrashTeamRowBean();
+				trashTeamRowBean.setTrashteamrowdate(oneRow.getSundayDate());
+				trashTeamRowBean.setTrashteamroworganizer(oneRow.getOrganizer());
+				trashTeamRowBean.setTrashteamrowstrong(oneRow.getStrongPerson());
+				trashTeamRowBean.setTrashteamrowmember1(oneRow.getTeamMember1());
+				trashTeamRowBean.setTrashteamrowmember2(oneRow.getTeamMember2());
+				try {
+					trashTeamRowDao.createTrashTeamRow(trashTeamRowBean);
+				} catch (Exception ex) {
+					throw new RuntimeException("problem creating TrashTeamRow row1");
+				}
+				
+			}
+			
+		}
+		// End of LOOP!!!
+
+		// OK, have all the cycles we need in both the TrashCycle and the TrashSchedule in the DB
+		// Next step is to read in the TrashSchedule rows.
+		List<TrashRow> rowsToReturn = modifyRowsToShowMe(trashRowsToPrintTotal);
+		rowsToReturn = addSubstitutesIntoRows(rowsToReturn);
+		return rowsToReturn;
+		
+			//return addSubstitutesIntoRows(trashRowsToPrintTotal);
+			
+		} else {
+			// already has all 4 rows; just read in the rows from the DB
+			List<TrashTeamRowBean> trashTeamRowBeans = trashTeamRowDao.getAllTrashRows();
+			List<TrashRow> trashRows = new ArrayList<TrashRow>();
+			for (TrashTeamRowBean oneRowBean : trashTeamRowBeans) {
+				TrashRow oneTrashRow = new TrashRow();
+				oneTrashRow.setSundayDate(oneRowBean.getTrashteamrowdate());
+				oneTrashRow.setOrganizer(oneRowBean.getTrashteamroworganizer());
+				oneTrashRow.setStrongPerson(oneRowBean.getTrashteamrowstrong());
+				oneTrashRow.setTeamMember1(oneRowBean.getTrashteamrowmember1());
+				oneTrashRow.setTeamMember2(oneRowBean.getTrashteamrowmember2());
+				trashRows.add(oneTrashRow);	
+			}
+			List<TrashRow> rowsToReturn = modifyRowsToShowMe(trashRows);
+			rowsToReturn = addSubstitutesIntoRows(rowsToReturn);
+			return rowsToReturn;
+
+			//return addSubstitutesIntoRows(trashRows);
+		}
+		
+		//Existing "good" code:
+/*
 		TrashSchedule trashSchedule = getTrashScheduleObject();
+			 trashSchedule = getTrashScheduleObject();
 		return trashSchedule.getTrashRows(numberOfCycles);	
+*/
 	}
 	
+	
+	private List<TrashRow> addSubstitutesIntoRows(List<TrashRow> trashRows) {
+
+		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao
+				.getTrashSubstitutes();
+
+		for (TrashRow oneRow : trashRows) {
+			if (trashSubstituteBeans != null) {
+				for (TrashSubstitutesBean oneSubBean : trashSubstituteBeans) {
+
+					SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
+					if (oneRow.getSundayDate().equals(
+							sdf.format(oneSubBean.getStartingdate()))) {
+
+						// Have a substitute for this row. Find the role on the
+						// team who's
+						// name matches the original name in the substitute
+						// entry.
+						String origTrashUser = oneSubBean.getOrigusername();
+						String subTrashUser = oneSubBean
+								.getSubstituteusername();
+
+						// If organizer matches the substitute, replace on the
+						// row line
+						// including uppercasing the substitute if need be.
+						if (oneRow.getOrganizer().equalsIgnoreCase(
+								origTrashUser)) {
+							if (subTrashUser.equalsIgnoreCase(LoggingUtils
+									.getCurrentUsername())) {
+								subTrashUser = subTrashUser.toUpperCase();
+							}
+							oneRow.setOrganizer(subTrashUser + " for "
+									+ oneRow.getOrganizer());
+						}
+
+						// If strong person matches the substitute, replace on
+						// the row line
+						// including uppercasing the substitute if need be.
+						if (oneRow.getStrongPerson().equalsIgnoreCase(
+								origTrashUser)) {
+							if (subTrashUser.equalsIgnoreCase(LoggingUtils
+									.getCurrentUsername())) {
+								subTrashUser = subTrashUser.toUpperCase();
+							}
+							oneRow.setStrongPerson(subTrashUser + " for "
+									+ oneRow.getStrongPerson());
+						}
+
+						// If team member 1 matches the substitute, replace on
+						// the row line
+						// including uppercasing the substitute if need be.
+						if (oneRow.getTeamMember1().equalsIgnoreCase(
+								origTrashUser)) {
+							if (subTrashUser.equalsIgnoreCase(LoggingUtils
+									.getCurrentUsername())) {
+								subTrashUser = subTrashUser.toUpperCase();
+							}
+							oneRow.setTeamMember1(subTrashUser + " for "
+									+ oneRow.getTeamMember1());
+						}
+
+						// If team member 2 matches the substitute, replace on
+						// the row line
+						// including uppercasing the substitute if need be.
+						if (oneRow.getTeamMember2().equalsIgnoreCase(
+								origTrashUser)) {
+							if (subTrashUser.equalsIgnoreCase(LoggingUtils
+									.getCurrentUsername())) {
+								subTrashUser = subTrashUser.toUpperCase();
+							}
+							oneRow.setTeamMember2(subTrashUser + " for "
+									+ oneRow.getTeamMember2());
+						}
+					}
+				}
+			}
+		}
+		return trashRows;
+
+	}
+
+	private List<TrashRow> modifyRowsToShowMe(List<TrashRow> trashRows) {
+
+		for (TrashRow oneRow : trashRows) {
+
+			// Capitalize entry if it's me.
+			String organizerUsername = oneRow.getOrganizer();
+			if (organizerUsername.equalsIgnoreCase(LoggingUtils
+					.getCurrentUsername())) {
+				organizerUsername = organizerUsername.toUpperCase();
+				oneRow.setOrganizer(organizerUsername);
+			}
+
+			// Capitalize entry if it's me.
+			String strongUsername = oneRow.getStrongPerson();
+			if (strongUsername.equalsIgnoreCase(LoggingUtils
+					.getCurrentUsername())) {
+				strongUsername = strongUsername.toUpperCase();
+				oneRow.setStrongPerson(strongUsername);
+			}
+
+			// Capitalize entry if it's me.
+			String member1Username = oneRow.getTeamMember1();
+			if (member1Username.equalsIgnoreCase(LoggingUtils
+					.getCurrentUsername())) {
+				member1Username = member1Username.toUpperCase();
+				oneRow.setTeamMember1(member1Username);
+			}
+
+			// Capitalize entry if it's me.
+			String member2Username = oneRow.getTeamMember2();
+			if (member2Username.equalsIgnoreCase(LoggingUtils
+					.getCurrentUsername())) {
+				member2Username = member2Username.toUpperCase();
+				oneRow.setTeamMember2(member2Username);
+			}
+
+		}
+		return trashRows;
+
+	}
+
+
+	
+private List<TrashPerson> buildTrashPersonList() {
+	
+	// Build TrashPerson list for all CH and WE residents
+	
+	// Create brand new list of TrashPeople
+	List<TrashPerson> trashPersonList = new ArrayList<TrashPerson>();
+	
+	// Start with units in Common House and then add in West End and sort.
+	List<UnitBean> chweUnits = unitsDao.getCommonhouseUnits();
+	chweUnits.addAll(unitsDao.getWestendUnits());
+	Collections.sort(chweUnits);
+		
+	// For every unit, create TrashPerson(s)
+	for (UnitBean thisUnitBean : chweUnits) {
+		// replace this call with new method: getUsersAtUnit() and then extract whatever name
+		// we want along with the trash role in the for loop below
+		List<String> usernamesInUnit = userDao.getUserUsernamesAtUnit(thisUnitBean.getUnitnumber());
+
+		for (String thisUserUsername : usernamesInUnit) {
+			
+			// Temporarily use method to map FirstName to get Role
+			String trashRole;
+			if (thisUserUsername.equals("bonnie") || thisUserUsername.equals("carol") ||
+					thisUserUsername.equals("marianne") || thisUserUsername.equals("molly") ||
+					thisUserUsername.equals("elaine") || thisUserUsername.equals("francie")) {
+					trashRole = TrashRolesEnums.ORGANIZER.name();
+			} else {
+				if (thisUserUsername.equals("anne") || thisUserUsername.equals("joan") ||
+						thisUserUsername.equals("maddy") || thisUserUsername.equals("lindsey") ||
+					    thisUserUsername.equals("annie") || thisUserUsername.equals("johnm") ||
+					    thisUserUsername.equals("johnn")){
+					trashRole = TrashRolesEnums.TEAMMEMBER.name();
+				} else {
+					trashRole = TrashRolesEnums.STRONGPERSON.name();
+				}
+			}
+			if (thisUserUsername.equals("peg") ||  thisUserUsername.equals("diane") ||
+				thisUserUsername.equals("brian") || thisUserUsername.equals("peter") ||
+				thisUserUsername.equals("kerry") || thisUserUsername.equals("neal") ||
+				thisUserUsername.equals("sara") || thisUserUsername.equals("felix"))
+			{
+				trashRole = TrashRolesEnums.NOROLE.name();
+			}
+			if (thisUserUsername.equals("diane")) {
+				trashRole = TrashRolesEnums.NOROLE.name();
+			}
+			
+			// Skip over people who have no role
+			if (trashRole.equals(TrashRolesEnums.NOROLE.name())) {
+				continue;
+			}
+			
+			// Now for all people in this unit, create a TrashPerson object
+			// and add it to the list of TrashPeople
+			TrashPerson trashPerson = new TrashPerson();
+			trashPerson.setUnitnumber(thisUnitBean.getUnitnumber());
+			trashPerson.setUsername(thisUserUsername);
+			trashPerson.setTrashRole(trashRole);
+			trashPersonList.add(trashPerson);		
+		}
+		}
+		return trashPersonList;
+	}
+
+	
+	
 	public List<TrashTeam> getTrashTeams(int numberOfCycles) {
-		TrashSchedule trashSchedule = getTrashScheduleObject();
+		//TrashSchedule trashSchedule = getTrashScheduleObject();
+		// trashSchedule.getTrashTeams(numberOfCycles);
+		
+		List<TrashCycleBean> trashCycleBeanList = trashCyclesDao.getAllTrashCycles();
+		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao.getTrashSubstitutes();	
+		TrashSchedule trashSchedule = 
+				new TrashSchedule(buildTrashPersonList(), trashCycleBeanList, trashSubstituteBeans);
 		return trashSchedule.getTrashTeams(numberOfCycles);
 	}
 
 	public List<TrashPerson> getTrashPersonListOrig() {
-		TrashSchedule trashSchedule = getTrashScheduleObject();
-		return trashSchedule.getTrashPersonListOrig();
+		//TrashSchedule trashSchedule = getTrashScheduleObject();
+		//return trashSchedule.getTrashPersonListOrig();
+		return buildTrashPersonList();
 	}
 	
 	public void deleteTrashSubstitute(Long substitutesId) {
