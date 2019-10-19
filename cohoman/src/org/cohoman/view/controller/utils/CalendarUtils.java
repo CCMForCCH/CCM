@@ -280,4 +280,26 @@ public class CalendarUtils implements Serializable {
 		return caldate.getTime();
 	}
 
+	public static Boolean dayEarlier(Date date1, Date date2) {
+		
+		Date date1Day = truncateTimeFromDate(date1);
+		Date date2Day = truncateTimeFromDate(date2);
+		if (date1Day.compareTo(date2Day) < 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static Boolean sameDay(Date date1, Date date2) {
+		
+		Date date1Day = truncateTimeFromDate(date1);
+		Date date2Day = truncateTimeFromDate(date2);
+		if (date1Day.compareTo(date2Day) == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

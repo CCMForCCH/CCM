@@ -53,8 +53,8 @@ public class TrashCyclesDaoImpl implements TrashCyclesDao {
 	}
 
 
-/*
-	public void deleteMtask(Long mtaskitemid) {
+
+	public void deleteCycle(Long trashCycleId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		Transaction tx = null;
@@ -62,9 +62,9 @@ public class TrashCyclesDaoImpl implements TrashCyclesDao {
 		try {
 			tx = session.beginTransaction();
 
-			MtaskBean mtaskBean = (MtaskBean) session.load(MtaskBean.class,
-					mtaskitemid);
-			session.delete(mtaskBean);
+			TrashCycleBean trashCycleBean = (TrashCycleBean) session.load(TrashCycleBean.class,
+					trashCycleId);
+			session.delete(trashCycleBean);
 
 			tx.commit();
 		} catch (Exception ex) {
@@ -78,6 +78,6 @@ public class TrashCyclesDaoImpl implements TrashCyclesDao {
 		}
 
 	}
-*/
+
 	
 }

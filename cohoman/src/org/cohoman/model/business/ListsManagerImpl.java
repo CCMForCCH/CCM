@@ -1,5 +1,6 @@
 package org.cohoman.model.business;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -837,216 +838,21 @@ public class ListsManagerImpl implements ListsManager {
 		mtaskDao.deleteMtask(mtaskitemid);
 	}
 
+	
 	/*
 	 * Build Trash Schedule
 	 */
-/*
-	private TrashSchedule getTrashScheduleObject() {
-		
-		
-		// Build TrashPerson list for all CH and WE residents
-		
-		// Create brand new list of TrashPeople
-		List<TrashPerson> trashPersonList = new ArrayList<TrashPerson>();
-		
-		// Start with units in Common House and then add in West End and sort.
-		List<UnitBean> chweUnits = unitsDao.getCommonhouseUnits();
-		chweUnits.addAll(unitsDao.getWestendUnits());
-		Collections.sort(chweUnits);
-			
-		// For every unit, create TrashPerson(s)
-		for (UnitBean thisUnitBean : chweUnits) {
-			// replace this call with new method: getUsersAtUnit() and then extract whatever name
-			// we want along with the trash role in the for loop below
-			List<String> usernamesInUnit = userDao.getUserUsernamesAtUnit(thisUnitBean.getUnitnumber());
+	public List<TrashRow> getTrashSchedule(int numberOfCycles) {
 
-			for (String thisUserUsername : usernamesInUnit) {
-				
-				// Temporarily use method to map FirstName to get Role
-				String trashRole;
-				if (thisUserUsername.equals("bonnie") || thisUserUsername.equals("carol") ||
-						thisUserUsername.equals("marianne") || thisUserUsername.equals("molly") ||
-						thisUserUsername.equals("elaine") || thisUserUsername.equals("francie")) {
-						trashRole = TrashRolesEnums.ORGANIZER.name();
-				} else {
-					if (thisUserUsername.equals("anne") || thisUserUsername.equals("joan") ||
-							thisUserUsername.equals("maddy") || thisUserUsername.equals("lindsey") ||
-						    thisUserUsername.equals("annie") || thisUserUsername.equals("johnm") ||
-						    thisUserUsername.equals("johnn")){
-						trashRole = TrashRolesEnums.TEAMMEMBER.name();
-					} else {
-						trashRole = TrashRolesEnums.STRONGPERSON.name();
-					}
-				}
-				if (thisUserUsername.equals("peg") ||  thisUserUsername.equals("diane") ||
-					thisUserUsername.equals("brian") || thisUserUsername.equals("peter") ||
-					thisUserUsername.equals("kerry") || thisUserUsername.equals("neal") ||
-					thisUserUsername.equals("sara") || thisUserUsername.equals("felix"))
-				{
-					trashRole = TrashRolesEnums.NOROLE.name();
-				}
-				if (thisUserUsername.equals("diane")) {
-					trashRole = TrashRolesEnums.NOROLE.name();
-				}
-				
-				// Skip over people who have no role
-				if (trashRole.equals(TrashRolesEnums.NOROLE.name())) {
-					continue;
-				}
-				
-				// Now for all people in this unit, create a TrashPerson object
-				// and add it to the list of TrashPeople
-				TrashPerson trashPerson = new TrashPerson();
-				trashPerson.setUnitnumber(thisUnitBean.getUnitnumber());
-				trashPerson.setUsername(thisUserUsername);
-				trashPerson.setTrashRole(trashRole);
-				trashPersonList.add(trashPerson);		
-			}
-		}
-				
-		// Pass cycle to new TrashSchedule to
-		// compute the printable rows.
-		// temp until the date for the 
-		// temporarily create a bean and fill it in. Later on will read this
-		// from the database. And when done, will update all 4 rows
-		List<TrashCycleRow> trashCycleRows = new ArrayList<TrashCycleRow>();
-		TrashCycleRow trashCycleRow = new TrashCycleRow();
-		trashCycleRow.setNextuseridtoskip(trashPersonList.get(0).getUsername());
-		Calendar calToIncrement = Calendar.getInstance();
-		calToIncrement.set(2019, Calendar.OCTOBER, 2);
-	//temporarily commented out so I see every day; will need to put back
-		int todaysDayOfWeek = calToIncrement.get(Calendar.DAY_OF_WEEK);
-		calToIncrement = CalendarUtils.adjustToStartingSunday(calToIncrement);
-		if (todaysDayOfWeek != Calendar.SUNDAY) {
-			// Add a week so it's next week's team, unless it's Sunday
-			calToIncrement.add(Calendar.DAY_OF_YEAR, 7);  
-		}
-	
-
-		//rightnow.add(Calendar.DAY_OF_YEAR, 10);  // temp to have a date within the cycle
-		trashCycleRow.setTrashcyclestartdate(calToIncrement.getTime());
-		
-		trashCycleRows.add(trashCycleRow);
-		
-		//<<<<<<<<
-		int teamsInOneCycle = trashPersonList.size();
-		teamsInOneCycle = teamsInOneCycle / 4;
-		
-		int leftoverPeople = trashPersonList.size() % 4;
-
-		TrashCycleRow trashCycleRow2 = new TrashCycleRow();
-		trashCycleRow2.setNextuseridtoskip(trashPersonList.get(leftoverPeople).getUsername());		// Compute number of teams in one cycle
-		calToIncrement.add(Calendar.DAY_OF_YEAR, teamsInOneCycle);  
-		trashCycleRow2.setTrashcyclestartdate(calToIncrement.getTime());
-		trashCycleRows.add(trashCycleRow2);
-		
-		TrashCycleRow trashCycleRow3 = new TrashCycleRow();
-		trashCycleRow3.setNextuseridtoskip(trashPersonList.get(leftoverPeople * 2).getUsername());		// Compute number of teams in one cycle
-		calToIncrement.add(Calendar.DAY_OF_YEAR, teamsInOneCycle);  
-		trashCycleRow3.setTrashcyclestartdate(calToIncrement.getTime());
-		trashCycleRows.add(trashCycleRow3);
-	
-		// >>>>>>>>>>>
-		
-		// Get Substitutes for Trash teams
-		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao.getTrashSubstitutes();
-		
-		TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, trashCycleRows, trashSubstituteBeans);
-		//return trashSchedule.getTrashRows();
-		return trashSchedule;
-					
-	}
-*/
-
-	public List<TrashRow> getTrashSchedule(int numberOfCycles)  {
-		
-		// Read in TrashCycles and TrashSchedules from DB
-		
-		// Remove any expired TrashCycles and TrashSchedule rows
-		
-		// Create TrashPerson List
-
-		List<TrashPerson> trashPersonList = buildTrashPersonList();
 		List<TrashRow> trashRowsToPrintTotal = new ArrayList<TrashRow>();
-		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao.getTrashSubstitutes();	
 
-		// If not enough Cycles, LOOP over the following code until all cycles are filled in.
+		// Delete stale entries from all trash DB tables.
+		deleteStaleCyclesFromTrashDBs();
 		
-		List<TrashCycleBean> trashCycleBeanList = trashCyclesDao.getAllTrashCycles();
-		if (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < 4) {
-
-		for (int idx = 0; idx < 4; idx++) {
-						// replace the following line for setting up the TrashSchedule
-			//TrashSchedule trashSchedule = getTrashScheduleObject();
-			TrashSchedule trashSchedule = 
-					new TrashSchedule(trashPersonList, trashCycleBeanList, trashSubstituteBeans);
-			// If no TrashCycles in DB
-			if (trashCycleBeanList.isEmpty()) {
-				// 
-				TrashCycleBean trashCycleBean = new TrashCycleBean();
-				trashCycleBean.setNextusertoskip(trashPersonList.get(0).getUsername());
-				Calendar calToIncrement = Calendar.getInstance();
-				calToIncrement.set(2019, Calendar.OCTOBER, 2);
-				trashCycleBean.setTrashcyclestartdate(calToIncrement.getTime());
-				trashCycleBean.setTrashcycleenddate(calToIncrement.getTime());  // fix!!!!!!
-				try {
-					trashCyclesDao.createTrashCycle(trashCycleBean);
-				} catch (Exception ex) {
-					throw new RuntimeException("problem creating TrashCycle row0");
-				}
-				
-				//List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao.getTrashSubstitutes();	
-				// TrashSchedule trashSchedule = new TrashSchedule(trashPersonList, trashCycleRows, trashSubstituteBeans);
-			} else {
-				if (trashCycleBeanList.size() < 4) {
-					// Need to create another cycle row
-					TrashCycleBean lastTrashCycleBean = trashCycleBeanList.get(trashCycleBeanList.size() - 1);
-					TrashCycleBean newTrashCycleBean = trashSchedule.getNextTrashCycleDBRow(lastTrashCycleBean);
-					try {
-						trashCyclesDao.createTrashCycle(newTrashCycleBean);
-					} catch (Exception ex) {
-						throw new RuntimeException("problem creating TrashCycle row1");
-					}
-				}
-			}
-			
-			// Build a cycle based on the last bean in the list.
-			trashCycleBeanList = trashCyclesDao.getAllTrashCycles();
-			TrashCycleBean lastTrashCycleBean = trashCycleBeanList.get(trashCycleBeanList.size() - 1);
-			List<TrashRow> trashRowsToPrint = trashSchedule.getTrashRowsNew(lastTrashCycleBean);
-			trashRowsToPrintTotal.addAll(trashRowsToPrint);
-			
-			// Persist the newly created cycle in the DB
-			for (TrashRow oneRow : trashRowsToPrint) {
-				TrashTeamRowBean trashTeamRowBean = new TrashTeamRowBean();
-				trashTeamRowBean.setTrashteamrowdate(oneRow.getSundayDate());
-				trashTeamRowBean.setTrashteamroworganizer(oneRow.getOrganizer());
-				trashTeamRowBean.setTrashteamrowstrong(oneRow.getStrongPerson());
-				trashTeamRowBean.setTrashteamrowmember1(oneRow.getTeamMember1());
-				trashTeamRowBean.setTrashteamrowmember2(oneRow.getTeamMember2());
-				try {
-					trashTeamRowDao.createTrashTeamRow(trashTeamRowBean);
-				} catch (Exception ex) {
-					throw new RuntimeException("problem creating TrashTeamRow row1");
-				}
-				
-			}
-			
-		}
-		// End of LOOP!!!
-
-		// OK, have all the cycles we need in both the TrashCycle and the TrashSchedule in the DB
-		// Next step is to read in the TrashSchedule rows.
-		List<TrashRow> rowsToReturn = modifyRowsToShowMe(trashRowsToPrintTotal);
-		rowsToReturn = addSubstitutesIntoRows(rowsToReturn);
-		return rowsToReturn;
-		
-			//return addSubstitutesIntoRows(trashRowsToPrintTotal);
-			
-		} else {
-			// already has all 4 rows; just read in the rows from the DB
-			List<TrashTeamRowBean> trashTeamRowBeans = trashTeamRowDao.getAllTrashRows();
-			List<TrashRow> trashRows = new ArrayList<TrashRow>();
+		// Preload rows already in the DB (Could be 1 to 4)
+		List<TrashTeamRowBean> trashTeamRowBeans = trashTeamRowDao
+				.getAllTrashRows();
+		if (!trashTeamRowBeans.isEmpty()) {
 			for (TrashTeamRowBean oneRowBean : trashTeamRowBeans) {
 				TrashRow oneTrashRow = new TrashRow();
 				oneTrashRow.setSundayDate(oneRowBean.getTrashteamrowdate());
@@ -1054,24 +860,180 @@ public class ListsManagerImpl implements ListsManager {
 				oneTrashRow.setStrongPerson(oneRowBean.getTrashteamrowstrong());
 				oneTrashRow.setTeamMember1(oneRowBean.getTrashteamrowmember1());
 				oneTrashRow.setTeamMember2(oneRowBean.getTrashteamrowmember2());
-				trashRows.add(oneTrashRow);	
+				trashRowsToPrintTotal.add(oneTrashRow);
 			}
-			List<TrashRow> rowsToReturn = modifyRowsToShowMe(trashRows);
-			rowsToReturn = addSubstitutesIntoRows(rowsToReturn);
-			return rowsToReturn;
-
-			//return addSubstitutesIntoRows(trashRows);
 		}
+
+		// Create TrashPerson List (For TrashSchedule)
+		List<TrashPerson> trashPersonList = buildTrashPersonList();
 		
-		//Existing "good" code:
-/*
-		TrashSchedule trashSchedule = getTrashScheduleObject();
-			 trashSchedule = getTrashScheduleObject();
-		return trashSchedule.getTrashRows(numberOfCycles);	
-*/
+		// Get Substitute beans (For TrashSchedule)
+		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao
+				.getTrashSubstitutes();
+
+		// Now, get all Trash Cycle beans in preparation for adding new trash
+		// cycles if there are not enough (e.g. 4)
+		List<TrashCycleBean> trashCycleBeanList = trashCyclesDao
+				.getAllTrashCycles();
+		
+		// Now let's see if there are cycles to create. If there are, drop
+		// into this code. Otherwise, ignore the loop below.
+		if (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < numberOfCycles) {
+
+			// OK, we definitely need to create at least one cycle. Loop on
+			// the following code until we have the desired amount of cycles.
+			while (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < numberOfCycles) {
+
+				// Create a TrashSchedule object that will hold 3 important 
+				// lists needed to make the schedule: TrashPersons, 
+				// TrashCycle Beans, and TrashSubstitute beans.
+				TrashSchedule trashSchedule = new TrashSchedule(
+						trashPersonList, trashCycleBeanList,
+						trashSubstituteBeans);
+				
+				// Are there any Trash Cycles right now in the DB?
+				if (trashCycleBeanList.isEmpty()) {
+					
+					// No, no trash cycles in the DB. Make the first cycle
+					// using default values.
+					TrashCycleBean trashCycleBean = new TrashCycleBean();
+					trashCycleBean.setNextusertoskip(trashPersonList.get(0)
+							.getUsername());
+					Calendar calToIncrement = Calendar.getInstance();
+					calToIncrement.set(2019, Calendar.OCTOBER, 6);
+					trashCycleBean.setTrashcyclestartdate(calToIncrement
+							.getTime());
+					
+					int teamsInOneCycle = trashPersonList.size();
+					teamsInOneCycle = teamsInOneCycle / 4;
+					int daysInCycle = teamsInOneCycle * 1;
+					calToIncrement.add(Calendar.DAY_OF_YEAR, daysInCycle - 1);
+					trashCycleBean.setTrashcycleenddate(calToIncrement
+							.getTime()); 
+					try {
+						trashCyclesDao.createTrashCycle(trashCycleBean);
+					} catch (Exception ex) {
+						throw new RuntimeException(
+								"problem creating TrashCycle row0");
+					}
+					
+				} else {
+					
+					// Already have some cycles. Do we need to create more?
+					if (trashCycleBeanList.size() < numberOfCycles) {
+						
+						// Yes, need to create another cycle row. Use the last 
+						// bean in the table as a basis for creating a new
+						// Trash Cycle Bean (which will be used to generate a new cycle).
+						// Then persist that new trash cycle bean.
+						TrashCycleBean lastTrashCycleBean = trashCycleBeanList
+								.get(trashCycleBeanList.size() - 1);
+						TrashCycleBean newTrashCycleBean = trashSchedule
+								.getNextTrashCycleDBRow(lastTrashCycleBean);
+						try {
+							trashCyclesDao.createTrashCycle(newTrashCycleBean);
+						} catch (Exception ex) {
+							throw new RuntimeException(
+									"problem creating TrashCycle row1");
+						}
+					}
+				}
+
+				// Build a new trash cycle based on the last bean in the list.
+				trashCycleBeanList = trashCyclesDao.getAllTrashCycles();
+				TrashCycleBean lastTrashCycleBean = trashCycleBeanList
+						.get(trashCycleBeanList.size() - 1);
+				List<TrashRow> trashRowsToPrint = trashSchedule
+						.getTrashRowsNew(lastTrashCycleBean);
+				trashRowsToPrintTotal.addAll(trashRowsToPrint);
+
+				// Persist the newly created cycle in the DB
+				for (TrashRow oneRow : trashRowsToPrint) {
+					TrashTeamRowBean trashTeamRowBean = new TrashTeamRowBean();
+					trashTeamRowBean
+							.setTrashteamrowdate(oneRow.getSundayDate());
+					trashTeamRowBean.setTrashteamroworganizer(oneRow
+							.getOrganizer());
+					trashTeamRowBean.setTrashteamrowstrong(oneRow
+							.getStrongPerson());
+					trashTeamRowBean.setTrashteamrowmember1(oneRow
+							.getTeamMember1());
+					trashTeamRowBean.setTrashteamrowmember2(oneRow
+							.getTeamMember2());
+					try {
+						trashTeamRowDao.createTrashTeamRow(trashTeamRowBean);
+					} catch (Exception ex) {
+						throw new RuntimeException(
+								"problem creating TrashTeamRow row1");
+					}
+
+				}
+			}
+			// End of Loop to add new cycles.
+
+		} 
+		
+		// Rows need some final adjustments. First capitalize "my" entries.
+		List<TrashRow> rowsToReturn = modifyRowsToShowMe(trashRowsToPrintTotal);
+		
+		// Next, modify the rows to include substitutions.
+		rowsToReturn = addSubstitutesIntoRows(rowsToReturn);
+		return rowsToReturn;
+
+	}	
+	
+	private void deleteStaleCyclesFromTrashDBs() {
+		
+		List<TrashCycleBean> trashCycleBeanList = trashCyclesDao
+				.getAllTrashCycles();
+		List<TrashTeamRowBean> trashTeamRowBeans = trashTeamRowDao
+				.getAllTrashRows();
+		Calendar calNow = Calendar.getInstance();
+		
+		// Determine whether there are any stale cycles by looking at the
+		// TrashCycle entries. Stale => end date of Cycle < today
+		for (TrashCycleBean oneCycleBean : trashCycleBeanList) {
+			if (CalendarUtils.dayEarlier(oneCycleBean.getTrashcycleenddate(), calNow.getTime())) {
+				// Delete Cycle
+				try {
+					trashCyclesDao.deleteCycle(oneCycleBean.getTrashcycleid());
+				} catch (Exception ex) {
+					throw new RuntimeException(
+							"problem deleting TrashCycle row1");
+				}
+				
+				// Next remove associated entries from the TeamRows table.
+				for (TrashTeamRowBean oneRowBean : trashTeamRowBeans) {
+					
+					// Parse the row date into a Date object.
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy");
+					Date rowDate = null; 
+					try {
+						rowDate = simpleDateFormat.parse(oneRowBean.getTrashteamrowdate());
+					} catch (ParseException pe) {
+						throw new RuntimeException(
+								"problem parsing date string " + 
+										oneRowBean.getTrashteamrowdate());
+					}
+
+					// Remove the row entry if the row date is "bounded" by the start
+					// and end date of the obsolete cycle being deleted.
+					if (CalendarUtils.sameDay(rowDate, oneCycleBean.getTrashcyclestartdate()) ||
+						CalendarUtils.sameDay(rowDate, oneCycleBean.getTrashcycleenddate()) ||
+						(CalendarUtils.dayEarlier(oneCycleBean.getTrashcyclestartdate(), rowDate) &&
+								CalendarUtils.dayEarlier(rowDate, oneCycleBean.getTrashcycleenddate()))) {
+						try {
+							trashTeamRowDao.deleteTrashRow(oneRowBean.getTrashteamrowid());
+						} catch (Exception ex) {
+							throw new RuntimeException(
+									"problem deleting TrashRow " + oneRowBean.getTrashteamrowid());
+						}
+					}
+				}
+			}	
+		}
 	}
-	
-	
+
 	private List<TrashRow> addSubstitutesIntoRows(List<TrashRow> trashRows) {
 
 		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao
@@ -1187,7 +1149,6 @@ public class ListsManagerImpl implements ListsManager {
 				member2Username = member2Username.toUpperCase();
 				oneRow.setTeamMember2(member2Username);
 			}
-
 		}
 		return trashRows;
 
@@ -1258,12 +1219,8 @@ private List<TrashPerson> buildTrashPersonList() {
 		}
 		return trashPersonList;
 	}
-
-	
 	
 	public List<TrashTeam> getTrashTeams(int numberOfCycles) {
-		//TrashSchedule trashSchedule = getTrashScheduleObject();
-		// trashSchedule.getTrashTeams(numberOfCycles);
 		
 		List<TrashCycleBean> trashCycleBeanList = trashCyclesDao.getAllTrashCycles();
 		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao.getTrashSubstitutes();	
@@ -1273,8 +1230,6 @@ private List<TrashPerson> buildTrashPersonList() {
 	}
 
 	public List<TrashPerson> getTrashPersonListOrig() {
-		//TrashSchedule trashSchedule = getTrashScheduleObject();
-		//return trashSchedule.getTrashPersonListOrig();
 		return buildTrashPersonList();
 	}
 	

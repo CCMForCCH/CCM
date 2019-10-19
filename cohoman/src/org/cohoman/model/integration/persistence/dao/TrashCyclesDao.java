@@ -10,6 +10,6 @@ public interface TrashCyclesDao {
 
 	public List<TrashCycleBean> getAllTrashCycles();
 
-	//public void deleteMtask(Long mtaskitemid);
+	public void deleteCycle(Long trashCycleId);
 
 }

@@ -10,6 +10,6 @@ public interface TrashTeamRowDao {
 
 	public List<TrashTeamRowBean> getAllTrashRows();
 
-	//public void deleteMtask(Long mtaskitemid);
+	public void deleteTrashRow(Long trashTeamRowId);
 
 }

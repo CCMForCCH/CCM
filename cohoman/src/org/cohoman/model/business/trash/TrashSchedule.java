@@ -297,6 +297,7 @@ public class TrashSchedule {
 
 			trashTeams = trashCycle.getTrashTeams();
 
+/*
 			// Before finishing up with teams, add any substitutions
 			for (TrashTeam oneTeam : trashTeams) {
 				if (trashSubstitutions != null) {
@@ -332,6 +333,7 @@ public class TrashSchedule {
 					}
 				}
 			}
+*/
 
 			// Remove skipped people from list
 			trashPersonList.clear();
@@ -342,7 +344,7 @@ public class TrashSchedule {
 
 	
 	public TrashCycleBean getNextTrashCycleDBRow(TrashCycleBean trashCycleBeanIn) {
-		
+
 		// Find first valid cycle based on the current date. Delete
 		// each row that's expired along the way. Then once a good cycle
 		// is found, use the startDate and nextPersonToSkip for that
@@ -356,36 +358,36 @@ public class TrashSchedule {
 		int daysInCycle = teamsInOneCycle * 1;
 		// int daysInCycle = teamsInOneCycle * 1;
 
-
 		// Set these for first time thru; assume there is at least one entry in
 		// the table
-		Date localCycleStartingDate = trashCycleBeanIn.getTrashcyclestartdate();
-		String localNextUseridToSkip = trashCycleBeanIn.getNextusertoskip();
+		Date currentCycleStartingDate = trashCycleBeanIn.getTrashcyclestartdate();
+		String currentNextUseridToSkip = trashCycleBeanIn.getNextusertoskip();
 
-			// Start by creating TrashPerson list with skipped people removed.
-			// (Note: this method sets the nextUseridToSkip value for the next
-			// cycle.)
-			trashPersonList = removeSkippedPeopleFromList(trashPersonListOrig,
-					localNextUseridToSkip);
+		// Start by creating TrashPerson list with skipped people removed.
+		// (Note: this method sets the nextUseridToSkip value for the next
+		// cycle.)
+		trashPersonList = removeSkippedPeopleFromList(trashPersonListOrig,
+				currentNextUseridToSkip);
 
-			// Check if there are already other defined rows and that they still
-			// match. If not, create another trashCycleRow.
-			// Start by computing the startDate for the next cycle.
-			Calendar calCycleStartingDate = Calendar.getInstance();
-			calCycleStartingDate.setTime(localCycleStartingDate);
-			calCycleStartingDate.add(Calendar.DAY_OF_YEAR, daysInCycle);
-			Date newCycleStartingDate = calCycleStartingDate.getTime();
+		// Create a new TrashCycle bean for another cycle.
+		Calendar calCycleStartingDate = Calendar.getInstance();
+		calCycleStartingDate.setTime(currentCycleStartingDate);
+		calCycleStartingDate.add(Calendar.DAY_OF_YEAR, daysInCycle);
+		Date newCycleStartingDate = calCycleStartingDate.getTime();
 
-			TrashCycleBean trashCycleBeanOut = new TrashCycleBean();
-			trashCycleBeanOut.setTrashcyclestartdate(newCycleStartingDate);
-			trashCycleBeanOut.setTrashcycleenddate(newCycleStartingDate);
-			trashCycleBeanOut.setNextusertoskip(this.newNextUseridToSkip);
-
+		TrashCycleBean trashCycleBeanOut = new TrashCycleBean();
+		trashCycleBeanOut.setTrashcyclestartdate(newCycleStartingDate);
+		trashCycleBeanOut.setTrashcycleenddate(newCycleStartingDate);
+		trashCycleBeanOut.setNextusertoskip(this.newNextUseridToSkip);
+		
+		// Advance date to show the last row in the cycle
+		calCycleStartingDate.add(Calendar.DAY_OF_YEAR, daysInCycle - 1);
+		trashCycleBeanOut.setTrashcycleenddate(calCycleStartingDate.getTime());
 		return trashCycleBeanOut;
 
 	}
 
-	
+/*
 	public List<TrashRow> getTrashRows(int numberOfCycles) {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
@@ -394,6 +396,7 @@ public class TrashSchedule {
 
 		// Now make a list of printable rows
 		for (TrashTeam oneTeam : getTrashTeams(numberOfCycles)) {
+
 
 			// skip over dates that have already past.
 			Calendar calTeamDate = Calendar.getInstance();
@@ -505,7 +508,8 @@ public class TrashSchedule {
 		}
 		return trashRows;
 	}
-
+*/
+	
 	
 	public List<TrashRow> getTrashRowsNew(TrashCycleBean trashCycleBean) {
 
@@ -523,75 +527,28 @@ public class TrashSchedule {
 				trashRow.setOrganizer("");
 			} else {
 				String organizerUsername = oneTeam.getOrganizer().getUsername();
-				//if (organizerUsername.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-					//organizerUsername = organizerUsername.toUpperCase();
-				//}
-				if (oneTeam.getOrganizerSub() == null) {
-					trashRow.setOrganizer(organizerUsername);
-				} else {
-					//String organizerSub = oneTeam.getOrganizerSub();
-					//if (organizerSub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-						//organizerSub = organizerSub.toUpperCase();
-					//}
-					//trashRow.setOrganizer(organizerSub + " for "
-							//+ organizerUsername);
-				}
+				trashRow.setOrganizer(organizerUsername);
 			}
+			
 			if (oneTeam.getStrongPerson() == null) {
 				trashRow.setStrongPerson("");
 			} else {
 				String strongUsername = oneTeam.getStrongPerson().getUsername();
-				//if (strongUsername.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-					//strongUsername = strongUsername.toUpperCase();
-				//}
-				if (oneTeam.getStrongPersonSub() == null) {
-					trashRow.setStrongPerson(strongUsername);
-				} else {
-					//String strongSub = oneTeam.getStrongPersonSub();
-					//if (strongSub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-						//strongSub = strongSub.toUpperCase();
-					//}
-					//trashRow.setStrongPerson(strongSub
-							//+ " for " + strongUsername);
-
-				}
+				trashRow.setStrongPerson(strongUsername);
 			}
+			
 			if (oneTeam.getTeamMember1() == null) {
 				trashRow.setTeamMember1("");
 			} else {
 				String member1Username = oneTeam.getTeamMember1().getUsername();
-				//if (member1Username.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-					//member1Username = member1Username.toUpperCase();
-				//}
-				if (oneTeam.getTeamMember1Sub() == null) {
-					trashRow.setTeamMember1(member1Username);
-				} else {
-					//String member1Sub = oneTeam.getTeamMember1Sub();
-					//if (member1Sub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-						//member1Sub = member1Sub.toUpperCase();
-					//}
-					//trashRow.setTeamMember1(member1Sub
-							//+ " for " + member1Username);
-				}
+				trashRow.setTeamMember1(member1Username);
 			}
 			
 			if (oneTeam.getTeamMember2() == null) {
 				trashRow.setTeamMember2("");
 			} else {
 				String member2Username = oneTeam.getTeamMember2().getUsername();
-				//if (member2Username.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-					//member2Username = member2Username.toUpperCase();
-				//}
-				if (oneTeam.getTeamMember2Sub() == null) {
-					trashRow.setTeamMember2(member2Username);
-				} else {
-					//String member2Sub = oneTeam.getTeamMember2Sub();
-					//if (member2Sub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-						//member2Sub = member2Sub.toUpperCase();
-					//}
-					//trashRow.setTeamMember2(member2Sub
-							//+ " for " + member2Username);
-				}
+				trashRow.setTeamMember2(member2Username);
 			}
 			trashRows.add(trashRow);
 		}
@@ -599,17 +556,10 @@ public class TrashSchedule {
 		return trashRows;
 	}
 
-	
-	
+		
 	public void addTrashRow(TrashRow trashRow) {
 		trashRows.add(trashRow);
 	}
-
-/*
-	public List<TrashCycleRow> getTrashCycleDBRows() {
-		return trashCycleDBRows;
-	}
-*/
 	
 	private List<TrashPerson> removeSkippedPeopleFromList(
 			List<TrashPerson> trashPersonListOrig, String nextPersonToSkip) {

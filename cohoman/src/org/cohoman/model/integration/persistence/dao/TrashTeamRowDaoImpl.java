@@ -53,8 +53,7 @@ public class TrashTeamRowDaoImpl implements TrashTeamRowDao {
 	}
 
 
-/*
-	public void deleteMtask(Long mtaskitemid) {
+	public void deleteTrashRow(Long trashTeamRowId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		Transaction tx = null;
@@ -62,9 +61,9 @@ public class TrashTeamRowDaoImpl implements TrashTeamRowDao {
 		try {
 			tx = session.beginTransaction();
 
-			MtaskBean mtaskBean = (MtaskBean) session.load(MtaskBean.class,
-					mtaskitemid);
-			session.delete(mtaskBean);
+			TrashTeamRowBean trashTeamRowBean = (TrashTeamRowBean) session.load(TrashTeamRowBean.class,
+					trashTeamRowId);
+			session.delete(trashTeamRowBean);
 
 			tx.commit();
 		} catch (Exception ex) {
@@ -78,6 +77,6 @@ public class TrashTeamRowDaoImpl implements TrashTeamRowDao {
 		}
 
 	}
-*/
+
 	
 }
