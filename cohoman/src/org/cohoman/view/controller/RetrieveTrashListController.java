@@ -75,6 +75,23 @@ public class RetrieveTrashListController implements Serializable {
 
 		this.chosenTeamMember = chosenTeamMember;
 
+		// new stuff: however not sure if this code does anything 10/23/2019
+		List<TrashRow> trashRows = listsService.getTrashTeamsFromDB();
+		for (int idx = 0; idx < trashRows.size(); idx++) {
+			if (trashTeamStartDate.equals(trashRows.get(idx).getSundayDate())) {
+				// found team. 
+				TrashSubstitutesBean theTrashSubstituteBean = listsService
+						.getTrashSubstitute(trashTeamStartDate, chosenTeamMember);
+
+				// Check if any substitutions exist. If so, access the DB to set
+				// the value of the associated substitute.
+				if (theTrashSubstituteBean != null) {
+					chosenSubstitute = theTrashSubstituteBean.getSubstituteusername();
+				}
+				break;
+			}
+		}
+/*
 		// If we just set the team member, also set the associated
 		// substitute for that team member (if there is one).
 		List<TrashTeam> trashTeams = listsService.getTrashTeams(NUMBER_OF_TRASH_CYCLES);
@@ -102,6 +119,7 @@ public class RetrieveTrashListController implements Serializable {
 				break;
 			}
 		}
+*/
 	}
 
 	public String getChosenSubstitute() {
@@ -151,6 +169,25 @@ public class RetrieveTrashListController implements Serializable {
 	// Assumes team set in trashTeamStartDate
 	public List<String> getTeamMembers() {
 
+		List<TrashRow> trashRows = listsService.getTrashTeamsFromDB();
+		List<String> teamMembersList = new ArrayList<String>();
+		for (int idx = 0; idx < trashRows.size(); idx++) {
+			if (trashTeamStartDate.equals(trashRows.get(idx).getSundayDate())) {
+				teamMembersList.add(trashRows.get(idx).getOrganizer());
+				teamMembersList.add(trashRows.get(idx).getStrongPerson());
+				teamMembersList.add(trashRows.get(idx).getTeamMember1());
+				teamMembersList.add(trashRows.get(idx).getTeamMember2());
+				break;
+			}
+		}
+		// sanity check
+		if (teamMembersList.isEmpty()) {
+			throw new RuntimeException("No trash team found for date "
+					+ trashTeamStartDate);
+		}
+		return teamMembersList;
+
+/*
 		List<TrashTeam> trashTeams = listsService.getTrashTeams(NUMBER_OF_TRASH_CYCLES);
 		List<String> teamMembersList = new ArrayList<String>();
 		for (int idx = 0; idx < trashTeams.size(); idx++) {
@@ -174,7 +211,8 @@ public class RetrieveTrashListController implements Serializable {
 					+ trashTeamStartDate);
 		}
 		return teamMembersList;
-
+*/
+		
 	}
 
 	public List<String> getTrashPeopleForSubstitutes() {

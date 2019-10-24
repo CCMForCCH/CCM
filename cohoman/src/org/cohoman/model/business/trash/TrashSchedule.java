@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.cohoman.model.integration.persistence.beans.TrashCycleBean;
-import org.cohoman.model.integration.persistence.beans.TrashCycleRow;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
-import org.cohoman.model.integration.utils.LoggingUtils;
 
 public class TrashSchedule {
 
@@ -19,11 +17,9 @@ public class TrashSchedule {
 	private List<TrashRow> trashRows;
 	private List<TrashPerson> trashPersonListOrig;
 	private List<TrashPerson> trashPersonList;
-	//private List<TrashCycleRow> trashCycleDBRows;
 	private List<TrashCycleBean> trashCycleBeans;
 	private List<TrashSubstitutesBean> trashSubstitutions;
 	private String newNextUseridToSkip;
-	private Date newCycleStartingDate;
 
 	public TrashSchedule(List<TrashPerson> trashPersonListOrig,
 			List<TrashCycleBean> trashCycleBeans,
@@ -42,137 +38,7 @@ public class TrashSchedule {
 	public void setTrashPersonListOrig(List<TrashPerson> trashPersonListOrig) {
 		this.trashPersonListOrig = trashPersonListOrig;
 	}
-
-/*
-	public List<TrashTeam> getTrashTeamsOrig(int numberOfCycles) {
-		// Find first valid cycle based on the current date. Delete
-		// each row that's expired along the way. Then once a good cycle
-		// is found, use the startDate and nextPersonToSkip for that
-		// cycle. When cycle is complete, need to get the next
-		// startDate and nextPersonToSkip for subsequent cycle.
-		// If no cycle exist, create it. Do this until we have 4 cycles.
-
-		// Compute number of teams in one cycle
-		int teamsInOneCycle = trashPersonListOrig.size();
-		teamsInOneCycle = teamsInOneCycle / 4;
-		int daysInCycle = teamsInOneCycle * 1;
-		// int daysInCycle = teamsInOneCycle * 1;
-
-		// Loop through the desired number of cycles.
-		List<TrashTeam> trashTeams = null;
-		List<TrashCycleRow> trashCycleRowsToAdd = new ArrayList<TrashCycleRow>();
-
-		// Set these for first time thru; assume there is at least one entry in
-		// the table
-		this.newCycleStartingDate = trashCycleBeans.get(0)
-				.getTrashcyclestartdate();
-		this.newNextUseridToSkip = trashCycleBeans.get(0)
-				.getNextusertoskip();
-
-		for (int cycleIdx = 0; cycleIdx < numberOfCycles; cycleIdx++) {
-			// for (int cycleIdx = 0; cycleIdx < 36; cycleIdx++) {
-
-			Date localCycleStartingDate;
-			String localNextUseridToSkip;
-
-			if (trashCycleBeans.size() > cycleIdx) {
-				// If there's an entry in the table
-				localCycleStartingDate = trashCycleBeans.get(cycleIdx)
-						.getTrashcyclestartdate();
-				localNextUseridToSkip = trashCycleBeans.get(cycleIdx)
-						.getNextusertoskip();
-			} else {
-				// No entry in the table; use just previously computed values
-				localCycleStartingDate = this.newCycleStartingDate;
-				localNextUseridToSkip = this.newNextUseridToSkip;	
-			}
-			// Start by creating TrashPerson list with skipped people removed.
-			// (Note: this method sets the nextUseridToSkip value for the next
-			// cycle.)
-			trashPersonList = removeSkippedPeopleFromList(trashPersonListOrig,
-					localNextUseridToSkip);
-
-			// Get all the printable rows, unformatted
-			TrashCycle trashCycle = new TrashCycle(trashPersonList,
-					localCycleStartingDate);
-
-			if (trashTeams == null) {
-				trashTeams = trashCycle.getTrashTeams();
-			} else {
-				trashTeams.addAll(trashCycle.getTrashTeams());
-			}
-
-			// Before finishing up with teams, add any substitutions
-			for (TrashTeam oneTeam : trashTeams) {
-				if (trashSubstitutions != null) {
-					for (TrashSubstitutesBean oneSubBean : trashSubstitutions) {
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-						if (sdf.format(oneTeam.getSundayDate()).equals(
-								sdf.format(oneSubBean.getStartingdate()))) {
-							// if (oneTeam.getSundayDate().getTime() ==
-							// oneSubBean.getStartingdate().getTime()) {
-							// dates match; place in correct field
-							if (oneTeam.getOrganizer().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for organizer
-								oneTeam.setOrganizerSub(oneSubBean
-										.getSubstituteusername());
-							}
-							if (oneTeam.getStrongPerson().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for strong person
-								oneTeam.setStrongPersonSub(oneSubBean
-										.getSubstituteusername());
-							}
-							if (oneTeam.getTeamMember1().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for member 1
-								oneTeam.setTeamMember1Sub(oneSubBean
-										.getSubstituteusername());
-							}
-							if (oneTeam.getTeamMember2().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for member 2
-								oneTeam.setTeamMember2Sub(oneSubBean
-										.getSubstituteusername());
-							}
-						}
-					}
-				}
-			}
-
-			// Remove skipped people from list
-			trashPersonList.clear();
-
-			// Check if there are already other defined rows and that they still
-			// match. If not, create another trashCycleRow.
-			// Start by computing the startDate for the next cycle.
-			Calendar calCycleStartingDate = Calendar.getInstance();
-			calCycleStartingDate.setTime(localCycleStartingDate);
-			calCycleStartingDate.add(Calendar.DAY_OF_YEAR, daysInCycle);
-			this.newCycleStartingDate = calCycleStartingDate.getTime();
-
-			if (cycleIdx >= trashCycleBeans.size() - 1 && cycleIdx < 3) {
-				// if (cycleIdx >= trashCycleDBRows.size() - 1 && cycleIdx < 35)
-				// {
-				// No more rows. Add the next one to the "to-add" table
-				TrashCycleRow trashCycleRow = new TrashCycleRow();
-				trashCycleRow.setNextuseridtoskip(this.newNextUseridToSkip);
-				trashCycleRow.setTrashcyclestartdate(this.newCycleStartingDate);
-				trashCycleRowsToAdd.add(trashCycleRow);
-			}
-
-		}
-
-		// Add any rows that might have been added.
-		//trashCycleDBRows.addAll(trashCycleRowsToAdd);
-
-		return trashTeams;
-
-	}
-*/
-	
-	
+		
 
 	public List<TrashTeam> getTrashTeams(int numberOfCycles) {
 		// Find first valid cycle based on the current date. Delete
@@ -211,47 +77,6 @@ public class TrashSchedule {
 			} else {
 				trashTeams.addAll(trashCycle.getTrashTeams());
 			}
-
-			// Before finishing up with teams, add any substitutions
-/*
-			for (TrashTeam oneTeam : trashTeams) {
-				if (trashSubstitutions != null) {
-					for (TrashSubstitutesBean oneSubBean : trashSubstitutions) {
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-						if (sdf.format(oneTeam.getSundayDate()).equals(
-								sdf.format(oneSubBean.getStartingdate()))) {
-							// if (oneTeam.getSundayDate().getTime() ==
-							// oneSubBean.getStartingdate().getTime()) {
-							// dates match; place in correct field
-							if (oneTeam.getOrganizer().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for organizer
-								oneTeam.setOrganizerSub(oneSubBean
-										.getSubstituteusername());
-							}
-							if (oneTeam.getStrongPerson().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for strong person
-								oneTeam.setStrongPersonSub(oneSubBean
-										.getSubstituteusername());
-							}
-							if (oneTeam.getTeamMember1().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for member 1
-								oneTeam.setTeamMember1Sub(oneSubBean
-										.getSubstituteusername());
-							}
-							if (oneTeam.getTeamMember2().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for member 2
-								oneTeam.setTeamMember2Sub(oneSubBean
-										.getSubstituteusername());
-							}
-						}
-					}
-				}
-			}
-*/
 
 			// Remove skipped people from list
 			trashPersonList.clear();
@@ -297,44 +122,6 @@ public class TrashSchedule {
 
 			trashTeams = trashCycle.getTrashTeams();
 
-/*
-			// Before finishing up with teams, add any substitutions
-			for (TrashTeam oneTeam : trashTeams) {
-				if (trashSubstitutions != null) {
-					for (TrashSubstitutesBean oneSubBean : trashSubstitutions) {
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-						if (sdf.format(oneTeam.getSundayDate()).equals(
-								sdf.format(oneSubBean.getStartingdate()))) {
-							if (oneTeam.getOrganizer().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for organizer
-								oneTeam.setOrganizerSub(oneSubBean
-										.getSubstituteusername());
-							}
-							if (oneTeam.getStrongPerson().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for strong person
-								oneTeam.setStrongPersonSub(oneSubBean
-										.getSubstituteusername());
-							}
-							if (oneTeam.getTeamMember1().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for member 1
-								oneTeam.setTeamMember1Sub(oneSubBean
-										.getSubstituteusername());
-							}
-							if (oneTeam.getTeamMember2().getUsername()
-									.equals(oneSubBean.getOrigusername())) {
-								// subbing for member 2
-								oneTeam.setTeamMember2Sub(oneSubBean
-										.getSubstituteusername());
-							}
-						}
-					}
-				}
-			}
-*/
-
 			// Remove skipped people from list
 			trashPersonList.clear();
 
@@ -354,15 +141,31 @@ public class TrashSchedule {
 
 		// Compute number of teams in one cycle
 		int teamsInOneCycle = trashPersonListOrig.size();
+		int peopleToSkip = trashPersonListOrig.size() % 4;
+
 		teamsInOneCycle = teamsInOneCycle / 4;
 		int daysInCycle = teamsInOneCycle * 1;
 		// int daysInCycle = teamsInOneCycle * 1;
 
-		// Set these for first time thru; assume there is at least one entry in
-		// the table
+		// See if there "ever" was a nextPersonToSkip so we can continue 
+		// with that user.
+		String oldNextUserToSkip = null;
+		if (trashCycleBeanIn.getNextusertoskip() == null && peopleToSkip > 0) {
+			oldNextUserToSkip = retrieveOldNextUserToSkip(trashCycleBeanIn.getTrashcycleid());
+		}
+
+		// Base next cycle on values from the last/current cycle
 		Date currentCycleStartingDate = trashCycleBeanIn.getTrashcyclestartdate();
 		String currentNextUseridToSkip = trashCycleBeanIn.getNextusertoskip();
+		if (currentNextUseridToSkip == null) {
+			currentNextUseridToSkip = oldNextUserToSkip;
+		}
 
+		// Make sure the prospective NextUseridToSkip actually exists in the
+		// list of TrashPeople. Do this by calling a method to guess the
+		// next TrashPerson based on the unit number of the "gone" user.
+		currentNextUseridToSkip = chooseAnotherUserIfGone(trashCycleBeanIn);
+		
 		// Start by creating TrashPerson list with skipped people removed.
 		// (Note: this method sets the nextUseridToSkip value for the next
 		// cycle.)
@@ -379,6 +182,10 @@ public class TrashSchedule {
 		trashCycleBeanOut.setTrashcyclestartdate(newCycleStartingDate);
 		trashCycleBeanOut.setTrashcycleenddate(newCycleStartingDate);
 		trashCycleBeanOut.setNextusertoskip(this.newNextUseridToSkip);
+		trashCycleBeanOut.setLastuserskipped(currentNextUseridToSkip);
+		String unitNumber = 
+				lookupUsersUnitNumber(trashPersonListOrig, currentNextUseridToSkip);
+		trashCycleBeanOut.setLastunitskipped(unitNumber);
 		
 		// Advance date to show the last row in the cycle
 		calCycleStartingDate.add(Calendar.DAY_OF_YEAR, daysInCycle - 1);
@@ -387,130 +194,80 @@ public class TrashSchedule {
 
 	}
 
-/*
-	public List<TrashRow> getTrashRows(int numberOfCycles) {
-
-		SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
-		Calendar calDateNow = Calendar.getInstance();
-		int rowsRemovedFromFirstCycle = 0;
-
-		// Now make a list of printable rows
-		for (TrashTeam oneTeam : getTrashTeams(numberOfCycles)) {
-
-
-			// skip over dates that have already past.
-			Calendar calTeamDate = Calendar.getInstance();
-			calTeamDate.setTime(oneTeam.getSundayDate());
-			// If current year exceeds team year, skip it
-			if (calDateNow.get(Calendar.YEAR) > calTeamDate.get(Calendar.YEAR)) {
-				rowsRemovedFromFirstCycle++;
-				continue;
-			}
-			// If the same year but the team day is in the past, skip it
-			if (calTeamDate.get(Calendar.YEAR) == calDateNow.get(Calendar.YEAR)
-					&& calDateNow.get(Calendar.DAY_OF_YEAR) > calTeamDate
-							.get(Calendar.DAY_OF_YEAR)) {
-				rowsRemovedFromFirstCycle++;
-				continue;
-			}
-
-			// Make each row for printing
-			TrashRow trashRow = new TrashRow();
-			trashRow.setSundayDate(formatter.format(oneTeam.getSundayDate()
-					.getTime()));
-			if (oneTeam.getOrganizer() == null) {
-				trashRow.setOrganizer("");
-			} else {
-				String organizerUsername = oneTeam.getOrganizer().getUsername();
-				if (organizerUsername.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-					organizerUsername = organizerUsername.toUpperCase();
+	/*
+	 * The purpose of this method is to handle the case where we don't know
+	 * the nextUserToSkip for a CycleBean that we're about to create because
+	 * the previous one(s) have a null value for nextUserToSkip. This isn't
+	 * an error case. A null value simply indicates that there are no users
+	 * to skip since the number of users fits perfectly into a certain number
+	 * of teams (i.e. are mod 4).
+	 */
+	private String retrieveOldNextUserToSkip(long currentCycleid) {
+		
+		// Search the list of beans in reverse until we find the one we're
+		// starting with in our quest to find the earlier bean that might
+		// have had an earlier user to skip. If none is found, just start
+		// with the first person on the list.
+		boolean beanFound = false;
+		for (int beanIdx = (trashCycleBeans.size() - 1); beanIdx >= 0; beanIdx--) {
+			
+			if (!beanFound) {
+				if (trashCycleBeans.get(beanIdx).getTrashcycleid() == currentCycleid) {
+					beanFound = true;
 				}
-				if (oneTeam.getOrganizerSub() == null) {
-					trashRow.setOrganizer(organizerUsername);
-				} else {
-					String organizerSub = oneTeam.getOrganizerSub();
-					if (organizerSub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-						organizerSub = organizerSub.toUpperCase();
-					}
-					trashRow.setOrganizer(organizerSub + " for "
-							+ organizerUsername);
-				}
-			}
-			if (oneTeam.getStrongPerson() == null) {
-				trashRow.setStrongPerson("");
-			} else {
-				String strongUsername = oneTeam.getStrongPerson().getUsername();
-				if (strongUsername.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-					strongUsername = strongUsername.toUpperCase();
-				}
-				if (oneTeam.getStrongPersonSub() == null) {
-					trashRow.setStrongPerson(strongUsername);
-				} else {
-					String strongSub = oneTeam.getStrongPersonSub();
-					if (strongSub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-						strongSub = strongSub.toUpperCase();
-					}
-					trashRow.setStrongPerson(strongSub
-							+ " for " + strongUsername);
-
-				}
-			}
-			if (oneTeam.getTeamMember1() == null) {
-				trashRow.setTeamMember1("");
-			} else {
-				String member1Username = oneTeam.getTeamMember1().getUsername();
-				if (member1Username.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-					member1Username = member1Username.toUpperCase();
-				}
-				if (oneTeam.getTeamMember1Sub() == null) {
-					trashRow.setTeamMember1(member1Username);
-				} else {
-					String member1Sub = oneTeam.getTeamMember1Sub();
-					if (member1Sub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-						member1Sub = member1Sub.toUpperCase();
-					}
-					trashRow.setTeamMember1(member1Sub
-							+ " for " + member1Username);
-				}
+				continue;		
 			}
 			
-			if (oneTeam.getTeamMember2() == null) {
-				trashRow.setTeamMember2("");
-			} else {
-				String member2Username = oneTeam.getTeamMember2().getUsername();
-				if (member2Username.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-					member2Username = member2Username.toUpperCase();
-				}
-				if (oneTeam.getTeamMember2Sub() == null) {
-					trashRow.setTeamMember2(member2Username);
-				} else {
-					String member2Sub = oneTeam.getTeamMember2Sub();
-					if (member2Sub.equalsIgnoreCase(LoggingUtils.getCurrentUsername())) {
-						member2Sub = member2Sub.toUpperCase();
-					}
-					trashRow.setTeamMember2(member2Sub
-							+ " for " + member2Username);
-				}
+			// Found the bean. Now keep going to see if we can find a valid
+			// nextUseridToSkip.
+			if (trashCycleBeans.get(beanIdx).getNextusertoskip() != null) {
+				return trashCycleBeans.get(beanIdx).getNextusertoskip();
 			}
-			trashRows.add(trashRow);
 		}
-
-		// Compute number of teams in one cycle
-		int teamsInOneCycle = trashPersonListOrig.size();
-		teamsInOneCycle = teamsInOneCycle / 4;
-
-		// OK, now remove entries from the last cycle based on those removed
-		// from
-		// the first cycle. It will be the inverse.
-		int teamsToRemoveFromEnd = teamsInOneCycle - rowsRemovedFromFirstCycle;
-		for (int idx = 1; idx <= teamsToRemoveFromEnd; idx++) {
-			trashRows.remove(trashRows.size() - 1);
-		}
-		return trashRows;
+		return trashPersonListOrig.get(0).getUsername();
 	}
-*/
 	
-	
+	private String chooseAnotherUserIfGone(TrashCycleBean trashCycleBeanIn) {
+		
+		// If that user already exists in the list, then just return it
+		for (TrashPerson onePerson : trashPersonListOrig) {
+			if (onePerson.getUsername().equalsIgnoreCase(
+					trashCycleBeanIn.getNextusertoskip())) {
+				return trashCycleBeanIn.getNextusertoskip();
+			}
+		}
+		
+		// Can't find the user. Use the last user unit to sequence through
+		// the TrashPerson list and choose the next person.
+		boolean foundIt = false;
+		for (TrashPerson onePerson : trashPersonListOrig) {
+			if (foundIt) {
+				// Now we've advanced since we found the entry so
+				// return that entry's username.
+				logger.info("Next TrashPerson not found. Looked for " + 
+						trashCycleBeanIn.getNextusertoskip() +
+						", but will use the following instead " +
+						onePerson.getUsername());
+				return onePerson.getUsername();
+			}
+			
+			// Check for a match on unit number
+			if (onePerson.getUnitnumber().equals(
+					trashCycleBeanIn.getLastunitskipped())) {
+				// Found an entry with matching unit. Advance to the next
+				// TrashPerson entry.
+				foundIt = true;
+			}
+			
+		}
+		
+		// Nothing found. Give-up and start again.
+		logger.info("Giving up on finding a TrashPerson entry for " + 
+				trashCycleBeanIn.getNextusertoskip());
+		return trashPersonListOrig.get(0).getUsername();
+		
+	}
+
 	public List<TrashRow> getTrashRowsNew(TrashCycleBean trashCycleBean) {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
@@ -573,27 +330,43 @@ public class TrashSchedule {
 
 		// Copy TrashPerson list to local copy removing any people to skip.
 		boolean skippingMode = false;
-		// for (TrashPerson trashPerson : trashPersonListOrig) {
 		for (int tpIdx = 0; tpIdx < trashPersonListOrig.size(); tpIdx++) {
 			if (skippingMode) {
+				// Already in skipping mode. Count them down until 0.
 				if (peopleToSkip != 0) {
 					peopleToSkip--;
 					continue;
 				} else {
+					// Have now skipped them all. We can now know who will
+					// be the next person to skip.
 					skippingMode = false;
 					this.newNextUseridToSkip = trashPersonListOrig.get(tpIdx)
 							.getUsername();
 				}
 			}
+			
+			
 			if (peopleToSkip != 0) {
+				// We have people to skip and we next check if we've hit
+				// the exact person that we need to skip.
 				if (trashPersonListOrig.get(tpIdx).getUsername()
 						.equalsIgnoreCase(nextPersonToSkip)) {
+					// OK, we hit the person that marks the start of
+					// skipping people. Indicate that we are in 
+					// skipping mode and proceed to the next entry
+					// thereby skipping our first (and maybe only)
+					// person.
 					peopleToSkip--;
 					skippingMode = true;
 				} else {
+					// This is not a person to skip. Just copy to the
+					// list.
 					trashPersonList.add(trashPersonListOrig.get(tpIdx));
 				}
 			} else {
+				// No people to skip at all. This is either because
+				// there aren't any or because they've already been
+				// skipped.
 				trashPersonList.add(trashPersonListOrig.get(tpIdx));
 			}
 		}
@@ -614,5 +387,15 @@ public class TrashSchedule {
 		}
 
 		return trashPersonList;
+	}
+	
+	private String lookupUsersUnitNumber(List<TrashPerson> trashPersonList, String username) {
+		
+		for (TrashPerson trashPerson : trashPersonList) {
+			if (trashPerson.getUsername().equalsIgnoreCase(username)) {
+				return trashPerson.getUnitnumber();
+			}
+		}
+		return "";
 	}
 }

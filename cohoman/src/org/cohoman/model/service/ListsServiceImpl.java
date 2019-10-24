@@ -247,4 +247,8 @@ public class ListsServiceImpl implements ListsService {
 		return listsManager.getTrashSubstitute(startingDate, origUsername);
 	}
 
+	public List<TrashRow> getTrashTeamsFromDB() {
+		return listsManager.getTrashTeamsFromDB();
+	}
+
 }

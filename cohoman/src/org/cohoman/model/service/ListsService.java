@@ -49,5 +49,6 @@ public interface ListsService {
 	public void deleteTrashSubstitute(Long substitutesId);
 	public List<TrashSubstitutesBean> getTrashSubstitutes();
 	public TrashSubstitutesBean getTrashSubstitute(String startingDate, String origUsername);
+	public List<TrashRow> getTrashTeamsFromDB();
 
 }

@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.cohoman.model.business.trash.TrashPerson;
 import org.cohoman.model.business.trash.TrashRolesEnums;
@@ -21,7 +22,6 @@ import org.cohoman.model.dto.UserDTO;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashCycleBean;
-import org.cohoman.model.integration.persistence.beans.TrashCycleRow;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashTeamRowBean;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
@@ -40,7 +40,7 @@ import org.cohoman.view.controller.utils.CalendarUtils;
 import org.cohoman.view.controller.utils.TaskPriorityEnums;
 
 public class ListsManagerImpl implements ListsManager {
-
+	
 	private UnitsDao unitsDao = null;
 	private UserDao userDao = null;
 	private SecurityDao securityDao = null;
@@ -50,6 +50,8 @@ public class ListsManagerImpl implements ListsManager {
 	private TrashTeamRowDao trashTeamRowDao = null;
 	private MaintenanceDao maintenanceDao = null;
 	private MtaskDao mtaskDao = null;
+
+	Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public UnitsDao getUnitsDao() {
 		return unitsDao;
@@ -884,6 +886,9 @@ public class ListsManagerImpl implements ListsManager {
 			// the following code until we have the desired amount of cycles.
 			while (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < numberOfCycles) {
 
+				logger.info(">>>> Creating new Trash Cycle: trashPerson list size = " + 
+						trashPersonList.size());
+
 				// Create a TrashSchedule object that will hold 3 important 
 				// lists needed to make the schedule: TrashPersons, 
 				// TrashCycle Beans, and TrashSubstitute beans.
@@ -910,6 +915,8 @@ public class ListsManagerImpl implements ListsManager {
 					calToIncrement.add(Calendar.DAY_OF_YEAR, daysInCycle - 1);
 					trashCycleBean.setTrashcycleenddate(calToIncrement
 							.getTime()); 
+					logger.info("Creating first Trash Cycle); date is " + 
+							trashCycleBean.getTrashcyclestartdate());
 					try {
 						trashCyclesDao.createTrashCycle(trashCycleBean);
 					} catch (Exception ex) {
@@ -930,6 +937,10 @@ public class ListsManagerImpl implements ListsManager {
 								.get(trashCycleBeanList.size() - 1);
 						TrashCycleBean newTrashCycleBean = trashSchedule
 								.getNextTrashCycleDBRow(lastTrashCycleBean);
+						logger.info("Creating new Trash Cycle beginning on " +
+								newTrashCycleBean.getTrashcyclestartdate() +
+								" and last team date is " +
+								newTrashCycleBean.getTrashcycleenddate());
 						try {
 							trashCyclesDao.createTrashCycle(newTrashCycleBean);
 						} catch (Exception ex) {
@@ -995,6 +1006,8 @@ public class ListsManagerImpl implements ListsManager {
 		for (TrashCycleBean oneCycleBean : trashCycleBeanList) {
 			if (CalendarUtils.dayEarlier(oneCycleBean.getTrashcycleenddate(), calNow.getTime())) {
 				// Delete Cycle
+				logger.info("<<<<<<< Deleting Trash Cycle with starting date of " +
+						oneCycleBean.getTrashcyclestartdate());
 				try {
 					trashCyclesDao.deleteCycle(oneCycleBean.getTrashcycleid());
 				} catch (Exception ex) {
@@ -1026,10 +1039,34 @@ public class ListsManagerImpl implements ListsManager {
 							trashTeamRowDao.deleteTrashRow(oneRowBean.getTrashteamrowid());
 						} catch (Exception ex) {
 							throw new RuntimeException(
-									"problem deleting TrashRow " + oneRowBean.getTrashteamrowid());
+									"problem deleting TrashRow for date " + oneRowBean.getTrashteamrowdate());
 						}
 					}
 				}
+				
+				// Lastly remove associated entries from the TrashSubstitutes table.
+				List<TrashSubstitutesBean> trashSubstitutesBeans = getTrashSubstitutes();
+				if (trashSubstitutesBeans == null || trashSubstitutesBeans.isEmpty()) {
+					return;
+				}
+				for (TrashSubstitutesBean oneSubstituteBean : trashSubstitutesBeans) {
+					
+					// Remove the substitute entry if the starting date is "bounded" by the start
+					// and end date of the obsolete cycle being deleted.
+					Date substituteDate = oneSubstituteBean.getStartingdate();
+					if (CalendarUtils.sameDay(substituteDate, oneCycleBean.getTrashcyclestartdate()) ||
+						CalendarUtils.sameDay(substituteDate, oneCycleBean.getTrashcycleenddate()) ||
+						(CalendarUtils.dayEarlier(oneCycleBean.getTrashcyclestartdate(), substituteDate) &&
+								CalendarUtils.dayEarlier(substituteDate, oneCycleBean.getTrashcycleenddate()))) {
+						try {
+							trashSubstitutesDao.deleteTrashSubstitute(oneSubstituteBean.getSubstitutesid());
+						} catch (Exception ex) {
+							throw new RuntimeException(
+									"problem deleting TrashRow " + oneSubstituteBean.getStartingdate());
+						}
+					}
+				}
+
 			}	
 		}
 	}
@@ -1229,6 +1266,27 @@ private List<TrashPerson> buildTrashPersonList() {
 		return trashSchedule.getTrashTeams(numberOfCycles);
 	}
 
+	public List<TrashRow> getTrashTeamsFromDB() {
+		
+		List<TrashRow> allTrashRows = new ArrayList<TrashRow>();
+		
+		// Preload rows already in the DB (Could be 1 to 4)
+		List<TrashTeamRowBean> trashTeamRowBeans = trashTeamRowDao
+				.getAllTrashRows();
+		if (!trashTeamRowBeans.isEmpty()) {
+			for (TrashTeamRowBean oneRowBean : trashTeamRowBeans) {
+				TrashRow oneTrashRow = new TrashRow();
+				oneTrashRow.setSundayDate(oneRowBean.getTrashteamrowdate());
+				oneTrashRow.setOrganizer(oneRowBean.getTrashteamroworganizer());
+				oneTrashRow.setStrongPerson(oneRowBean.getTrashteamrowstrong());
+				oneTrashRow.setTeamMember1(oneRowBean.getTrashteamrowmember1());
+				oneTrashRow.setTeamMember2(oneRowBean.getTrashteamrowmember2());
+				allTrashRows.add(oneTrashRow);
+			}
+		}
+		return allTrashRows;
+	}
+	
 	public List<TrashPerson> getTrashPersonListOrig() {
 		return buildTrashPersonList();
 	}
