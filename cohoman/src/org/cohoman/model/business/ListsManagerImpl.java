@@ -904,8 +904,10 @@ public class ListsManagerImpl implements ListsManager {
 					TrashCycleBean trashCycleBean = new TrashCycleBean();
 					trashCycleBean.setNextusertoskip(trashPersonList.get(0)
 							.getUsername());
+					
+					// Date for brand new first cycle!!!!
 					Calendar calToIncrement = Calendar.getInstance();
-					calToIncrement.set(2019, Calendar.OCTOBER, 6);
+					calToIncrement.set(2019, Calendar.OCTOBER, 20);
 					trashCycleBean.setTrashcyclestartdate(calToIncrement
 							.getTime());
 					
@@ -989,7 +991,32 @@ public class ListsManagerImpl implements ListsManager {
 		
 		// Next, modify the rows to include substitutions.
 		rowsToReturn = addSubstitutesIntoRows(rowsToReturn);
-		return rowsToReturn;
+		
+		// Lastly, only print out 26 teams
+		List<TrashRow> rowsToReturnFinally = new ArrayList<TrashRow>();
+		Calendar calNow = Calendar.getInstance();
+		for (TrashRow oneRow : rowsToReturn) {
+			if (rowsToReturnFinally.size() >= 26) {
+				break;
+			}
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy");
+			Date printableDateAsDate = null; 
+			try {
+				printableDateAsDate = simpleDateFormat.parse(oneRow.getSundayDate());
+			} catch (ParseException pe) {
+				throw new RuntimeException(
+						"problem parsing date string " + 
+								oneRow.getSundayDate());
+			}
+
+			if (CalendarUtils.dayEarlier(printableDateAsDate, calNow.getTime())) {
+				// date has passed for this team; skip over it
+				continue;
+			}
+			rowsToReturnFinally.add(oneRow);
+		}
+		
+		return rowsToReturnFinally;
 
 	}	
 	
