@@ -2,10 +2,14 @@ package org.cohoman.model.business.trash;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.cohoman.view.controller.utils.CalendarUtils;
@@ -37,6 +41,8 @@ public class TrashCycle {
 
 	public List<TrashTeam> getTrashTeams() {
 
+		int randomizedIndex; 
+
 		// temp
 		trashPersonList = new ArrayList<TrashPerson>();
 		
@@ -45,8 +51,6 @@ public class TrashCycle {
 		for (int idx = 0; idx < trashPersonListOrig.size(); idx++) {
 			trashPersonList.add(trashPersonListOrig.get(idx));
 		}
-
-		//cloneAndAdjustTrashPersonList(startingUnit);
 		
 		// Compute number of teams in one cycle
 		int teamsInOneCycle = trashPersonList.size();
@@ -88,8 +92,6 @@ public class TrashCycle {
 			workingDate.add(Calendar.DAY_OF_YEAR, 1); // advance to next date
 		}
 
-		// First rule: add organizers with others in same household to same team
-
 		// Start by simply adding the organizers to each team in sequence
 		for (TrashPerson oneTrashPerson : trashOrganizers) {
 			for (TrashTeam thisTrashTeam : trashTeams) {
@@ -103,6 +105,56 @@ public class TrashCycle {
 		// Empty the list of Organizers since they've all been added to teams.
 		trashOrganizers.clear();
 
+		// RANDOMLY fill remainder of Trash Teams with an organizer who has the role 
+		// of Team Member. 10/25/2019
+		for (TrashTeam thisTrashTeam : trashTeams) {
+			if (thisTrashTeam.getOrganizer() == null) {
+				// Get the next team member
+				if (!trashTeamMembers.isEmpty()) {
+					randomizedIndex = randomEntry(trashTeamMembers.size());
+					// Special case: don't use jean as an organizer
+					if (trashTeamMembers.get(randomizedIndex).getUsername().equals("jean")) {
+						// User is jean. See if there's another teammember we can use.
+						if (trashTeamMembers.size() >= 2 && randomizedIndex != 0) {
+							// if there's another entry and we can use 0, use it
+							thisTrashTeam.setOrganizer(trashTeamMembers.get(0));
+							trashTeamMembers.remove(0);							
+						} else {
+							// Give up and use a strong person below.
+							break;
+						}
+					} else {
+						// user isn't jean. Just set the organizer.
+						thisTrashTeam.setOrganizer(trashTeamMembers.get(randomizedIndex));
+						trashTeamMembers.remove(randomizedIndex);
+					}
+				} else {
+					break; // give up when list is depleted (highly unlikely)
+				}
+			}
+		}		
+		
+		// In the most unlikely case, have to resort to strong people to finish 
+		// filling the organizers for all teams:
+		// Next RANDOMLY, finish out the strong person for all teams by walking through
+		// the strong people. (10/29/2019)
+		for (TrashTeam thisTrashTeam : trashTeams) {
+			if (thisTrashTeam.getOrganizer() == null) {
+				// Get the next strong person
+				if (!trashStrongPersons.isEmpty()) {
+					randomizedIndex = randomEntry(trashStrongPersons.size());
+					thisTrashTeam.setOrganizer(trashStrongPersons.get(randomizedIndex));
+					trashStrongPersons.remove(randomizedIndex);
+				} else {
+					logger.severe("Too few strong people identified for Trash Schedule");
+				}
+			}
+		}
+
+		// Make sure there aren't multiple people from the same unit
+		// that are organizers
+		checkForMultipleOrganizersInSameUnit();
+		
 		// Walk thru list of organizers checking if unit is multiperson.
 		// If so, add other person(s) from same unit.
 		String organizerUnit = "";
@@ -119,8 +171,10 @@ public class TrashCycle {
 				// team
 				for (TrashPerson trashPerson : trashPersonList) {
 					if (trashPerson.getUnitnumber().equals(organizerUnit)
-							&& trashPerson.getTrashRole() != TrashRolesEnums.ORGANIZER
-									.name()) {
+							// Not the organizer we already have on a team
+							&& !(trashPerson.getUsername()
+									.equalsIgnoreCase(thisTrashTeam
+											.getOrganizer().getUsername()))) {
 
 						// Add this TrashPerson as either strong or member for
 						// organizer's team
@@ -145,6 +199,12 @@ public class TrashCycle {
 			String multipleUnitnumber = multiplePersonUnits.get(mupIndex);
 			int teamIndexToUse = findFirstTeamIndexWithEnoughOpenings(multiplePersonUnitsCounts
 					.get(mupIndex));
+			if (teamIndexToUse == -1) {
+				// No room for multiple people in the current teams. So, break
+				// out of this loop, assuming that the people will be added
+				// to different teams.
+				break;
+			}
 
 			// Sequence through the TrashPerson list adding all people to the
 			// selected team that happen to be in the same unit.
@@ -175,7 +235,6 @@ public class TrashCycle {
 
 		}
 
-		int randomizedIndex; 
 		// Next RANDOMLY, finish out the strong person for all teams by walking through
 		// the strong people.
 		for (TrashTeam thisTrashTeam : trashTeams) {
@@ -198,8 +257,14 @@ public class TrashCycle {
 					// Get the next team member
 					if (!trashTeamMembers.isEmpty()) {
 						randomizedIndex = randomEntry(trashTeamMembers.size());
-						thisTrashTeam.setOrganizer(trashTeamMembers.get(randomizedIndex));
-						trashTeamMembers.remove(randomizedIndex);
+						
+						// Special case: don't use jean as an organizer
+						if (trashTeamMembers.get(randomizedIndex).getUsername().equals("jean")) {
+							break;
+						} else {
+							thisTrashTeam.setOrganizer(trashTeamMembers.get(randomizedIndex));
+							trashTeamMembers.remove(randomizedIndex);
+						}
 					} else {
 						break; // give up when list is depleted
 					}
@@ -282,7 +347,28 @@ public class TrashCycle {
 				}
 			}
 		}
-		
+	
+		// Perform a robustness check that all role lists have been used.
+		if (!trashOrganizers.isEmpty()) {
+			throw new RuntimeException("TrashCycle error: leftover Organizers including " + 
+					trashOrganizers.get(0).getUsername());
+		}
+		if (!trashStrongPersons.isEmpty()) {
+			throw new RuntimeException("TrashCycle error: leftover Strong Persons including " + 
+					trashStrongPersons.get(0).getUsername());
+		}
+		if (!trashTeamMembers.isEmpty()) {
+			throw new RuntimeException("TrashCycle error: leftover Team members including " + 
+					trashTeamMembers.get(0).getUsername());
+		}
+
+		// Also for robustness, make sure all the usernames in the trash teams
+		// for this cycle are unique.
+		String duplicateUsername = checkForTeamMembersAllUnique();
+		if (duplicateUsername != null) {
+			throw new RuntimeException("TrashCycle error: duplicate name found: " + 
+					duplicateUsername);
+		}
 		return trashTeams;
 	}
 
@@ -413,14 +499,6 @@ public class TrashCycle {
 		if (trashPerson.getTrashRole().equalsIgnoreCase(
 				TrashRolesEnums.TEAMMEMBER.name())) {
 
-			// Try an organizer first to lessen the
-			// likelihood that a subsequent strong person
-			// will end up as the organizer.
-			if (trashTeam.getOrganizer() == null) {
-				trashTeam.setOrganizer(trashPerson);
-				trashTeamMembers.remove(trashPerson);
-				return true;
-			}
 
 			// Try member slot 1
 			if (trashTeam.getTeamMember1() == null) {
@@ -436,47 +514,74 @@ public class TrashCycle {
 				return true;
 			}
 			
-			
+			// Try an organizer first to lessen the??????????
+			// likelihood that a subsequent strong person
+			// will end up as the organizer.
+			if (trashTeam.getOrganizer() == null) {
+				trashTeam.setOrganizer(trashPerson);
+				trashTeamMembers.remove(trashPerson);
+				return true;
+			}
+
 			
 		}
 
 		return false;
 
 	}
-
-	/*
-	private void cloneAndAdjustTrashPersonList(String startingUnit) {
+	
+	private void checkForMultipleOrganizersInSameUnit() {
 		
-		// Start by making a new TrashPerson list local to this class.
-		trashPersonList = new ArrayList<TrashPerson>();
+		// Build a sorted list of units for all organizers
+		// (this may include people serving as organizers who
+		// don't have a role as organizer.
+		List<String> localOrgsList = new ArrayList<String>();
+		for (TrashTeam thisTrashTeam : trashTeams) {
+			localOrgsList.add(thisTrashTeam.getOrganizer().getUnitnumber());
+		}
+		Collections.sort(localOrgsList);
 		
-		// Find the index of the first startingUnit in the sorted
-		// TrashPerson "original" list.
-		int startingUnitIndex = -1;
-		for (int idx = 0; idx < trashPersonListOrig.size(); idx++) {
-			if (trashPersonListOrig.get(idx).getUnitnumber().equals(startingUnit)) {
-				startingUnitIndex = idx;
-				break;
+		// Search list of unit numbers to see if duplicates. If
+		// so, will have to remove them from the multiperson units
+		// so they won't be added again.
+		for (int idx = 0; idx < localOrgsList.size(); idx++) {
+			if (idx < (localOrgsList.size() - 1)) {
+				if (localOrgsList.get(idx).equals(localOrgsList.get(idx + 1))) {
+					// Found a duplicate. Find it in the multiperson unit 
+					// array and delete it.
+					for (int mupIndex = 0; mupIndex < multiplePersonUnits.size(); mupIndex++) {
+						if (multiplePersonUnits.get(mupIndex).equals(localOrgsList.get(idx))) {
+							multiplePersonUnits.remove(mupIndex);
+							multiplePersonUnitsCounts.remove(mupIndex);
+							break;
+						}
+					}
+				}
 			}
 		}
-		if (startingUnitIndex == -1) {
-			logger.severe("Unit is not found in the TrashPerson list: " + startingUnit);
-
-		}
-		
-		// Now add the TrashPersons from the starting unit to the end, to
-		// the adjusted TrashPerson list.
-		for (int idx = startingUnitIndex; idx < trashPersonListOrig.size(); idx++) {
-			trashPersonList.add(trashPersonListOrig.get(idx));
-		}
-		
-		// Lastly, add the TrashPersons from 0 to the starting unit, to the
-		// adjusted TrashPerson list.
-		for (int idx = 0; idx < startingUnitIndex; idx++) {
-			trashPersonList.add(trashPersonListOrig.get(idx));
-		}
 	}
-*/
+	
+	private String checkForTeamMembersAllUnique() {
+		
+		// Put all the members of the trash team in a set to see if
+		// any are not unique
+		Set<String> usernamesSet = new HashSet<String>();
+		for (TrashTeam thisTrashTeam : trashTeams) {
+			if (!usernamesSet.add(thisTrashTeam.getOrganizer().getUsername())) {
+				return thisTrashTeam.getOrganizer().getUsername();
+			}
+			if (!usernamesSet.add(thisTrashTeam.getStrongPerson().getUsername())) {
+				return thisTrashTeam.getStrongPerson().getUsername();
+			}
+			if (!usernamesSet.add(thisTrashTeam.getTeamMember1().getUsername())) {
+				return thisTrashTeam.getTeamMember1().getUsername();
+			}
+			if (!usernamesSet.add(thisTrashTeam.getTeamMember2().getUsername())) {
+				return thisTrashTeam.getTeamMember2().getUsername();
+			}
+		}
+		return null;
+	}
 	
 	private int randomEntry(int listSize) {
 		Calendar cal = Calendar.getInstance();

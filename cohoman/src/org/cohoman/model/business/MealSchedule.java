@@ -107,19 +107,27 @@ public class MealSchedule {
 				weekdayDate1.add(Calendar.DAY_OF_MONTH, 2);
 				Calendar weekdayDate2 = (Calendar) localStartDate.clone();
 				weekdayDate2.add(Calendar.DAY_OF_MONTH, 3);
+				
+				// Hack to handle Fridays, e.g. Pie breakfast (10/27/2019)
+				Calendar weekdayDate3 = (Calendar) localStartDate.clone();
+				weekdayDate3.add(Calendar.DAY_OF_MONTH, 4);
+
 				Calendar weekendDate1 = (Calendar) localStartDate.clone();
 				weekendDate1.add(Calendar.DAY_OF_MONTH, 5);
 				Calendar weekendDate2 = (Calendar) localStartDate.clone();
 				weekendDate2.add(Calendar.DAY_OF_MONTH, 6);
 
 				if ((theMealDate.get(Calendar.DAY_OF_YEAR) == weekdayDate1
-						.get(Calendar.DAY_OF_YEAR) && 
-						theMealDate.get(Calendar.YEAR) == weekdayDate1.get(Calendar.YEAR))
-						|| 
-					(theMealDate.get(Calendar.DAY_OF_YEAR) == weekdayDate2
-						.get(Calendar.DAY_OF_YEAR) && 
-					theMealDate.get(Calendar.YEAR) == weekdayDate2.get(Calendar.YEAR))) 
-				{
+						.get(Calendar.DAY_OF_YEAR) && theMealDate
+						.get(Calendar.YEAR) == weekdayDate1.get(Calendar.YEAR))
+						|| (theMealDate.get(Calendar.DAY_OF_YEAR) == weekdayDate2
+								.get(Calendar.DAY_OF_YEAR) && theMealDate
+								.get(Calendar.YEAR) == weekdayDate2
+								.get(Calendar.YEAR))
+						|| (theMealDate.get(Calendar.DAY_OF_YEAR) == weekdayDate3
+								.get(Calendar.DAY_OF_YEAR) && theMealDate
+								.get(Calendar.YEAR) == weekdayDate3
+								.get(Calendar.YEAR)))				{
 					weekdayEvent = oneEvent;
 				}
 

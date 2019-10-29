@@ -1250,7 +1250,8 @@ private List<TrashPerson> buildTrashPersonList() {
 				if (thisUserUsername.equals("anne") || thisUserUsername.equals("joan") ||
 						thisUserUsername.equals("maddy") || thisUserUsername.equals("lindsey") ||
 					    thisUserUsername.equals("annie") || thisUserUsername.equals("johnm") ||
-					    thisUserUsername.equals("johnn")){
+					    thisUserUsername.equals("johnn") || thisUserUsername.equals("jean") ||
+					    thisUserUsername.equals("meredith") ){
 					trashRole = TrashRolesEnums.TEAMMEMBER.name();
 				} else {
 					trashRole = TrashRolesEnums.STRONGPERSON.name();
@@ -1259,7 +1260,8 @@ private List<TrashPerson> buildTrashPersonList() {
 			if (thisUserUsername.equals("peg") ||  thisUserUsername.equals("diane") ||
 				thisUserUsername.equals("brian") || thisUserUsername.equals("peter") ||
 				thisUserUsername.equals("kerry") || thisUserUsername.equals("neal") ||
-				thisUserUsername.equals("sara") || thisUserUsername.equals("felix"))
+				thisUserUsername.equals("sara") || thisUserUsername.equals("felix") ||
+				thisUserUsername.equals("jen") )
 			{
 				trashRole = TrashRolesEnums.NOROLE.name();
 			}
