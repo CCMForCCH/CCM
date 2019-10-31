@@ -1173,7 +1173,21 @@ public class ListsManagerImpl implements ListsManager {
 					}
 				}
 			}
+			
+			// One last thing. Hack to change "jean" to "brian for jean"
+			if (oneRow.getStrongPerson().equalsIgnoreCase("jean")) {
+				oneRow.setStrongPerson("brian for jean");
+			}
+			if (oneRow.getTeamMember1().equalsIgnoreCase("jean")) {
+				oneRow.setTeamMember1("brian for jean");
+			}
+			if (oneRow.getTeamMember2().equalsIgnoreCase("jean")) {
+				oneRow.setTeamMember2("brian for jean");
+			}
+			
 		}
+		
+		
 		return trashRows;
 
 	}
