@@ -28,6 +28,12 @@
 		<property name="userManager" ref="userManager" />	
 	</bean>		
 
+	<bean id="textTeamMembers" 
+		class="org.cohoman.model.business.trash.TextTeamMembers">
+		<property name="listsService" ref="listsService" />	
+		<property name="userService" ref="userService" />	
+	</bean>		
+
 	<bean id="eventManager"
 		class="org.cohoman.model.business.EventManagerImpl">
 		<property name="mealEventDao" ref="mealEventDao" />
@@ -48,7 +54,7 @@
 		<property name="pizzaEventDao" ref="pizzaEventDao" />
 		<property name="potluckEventDao" ref="potluckEventDao" />
 	</bean>
-	
+		
 	<bean id="userManager"
 		class="org.cohoman.model.business.UserManagerImpl">
 		<property name="userDao" ref="userDao" />
@@ -144,4 +150,7 @@
 		class="org.cohoman.model.integration.persistence.dao.ConfigScalarsDaoImpl">
 	</bean>
 	
+	<bean id="applicationContextProvider"
+		class="org.cohoman.model.springcontext.ApplicationContextProvider">
+	</bean>
 </beans>

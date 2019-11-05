@@ -42,7 +42,7 @@ public interface ListsManager {
 	public void deleteMtask(Long mtaskitemid);
 
 	// Trash
-	public List<TrashRow> getTrashSchedule(int numberOfCycles);
+	public List<TrashRow> getTrashSchedule();
 	public List<TrashTeam> getTrashTeams(int numberOfCycles);
 	public List<TrashPerson> getTrashPersonListOrig();
 	public void setTrashSubstitute(Date startingDate, String originalUsername, String substituteUsername) throws CohomanException;

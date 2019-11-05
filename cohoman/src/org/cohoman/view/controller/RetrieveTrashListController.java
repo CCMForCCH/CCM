@@ -26,7 +26,6 @@ import org.cohoman.model.service.UserService;
 public class RetrieveTrashListController implements Serializable {
 
 	private static final long serialVersionUID = 4678206276499587830L;
-	private static final int NUMBER_OF_TRASH_CYCLES = 4;
 
 	private ListsService listsService = null;
 	private UserService userService = null;
@@ -51,7 +50,7 @@ public class RetrieveTrashListController implements Serializable {
 	}
 
 	public List<TrashRow> getTrashList() {
-		return listsService.getTrashSchedule(NUMBER_OF_TRASH_CYCLES);
+		return listsService.getTrashSchedule();
 	}
 
 	public String getChosenTeamMember() {

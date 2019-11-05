@@ -41,6 +41,8 @@ import org.cohoman.view.controller.utils.TaskPriorityEnums;
 
 public class ListsManagerImpl implements ListsManager {
 	
+	public static final int NUMBER_OF_TRASH_CYCLES = 4;
+
 	private UnitsDao unitsDao = null;
 	private UserDao userDao = null;
 	private SecurityDao securityDao = null;
@@ -844,7 +846,7 @@ public class ListsManagerImpl implements ListsManager {
 	/*
 	 * Build Trash Schedule
 	 */
-	public List<TrashRow> getTrashSchedule(int numberOfCycles) {
+	public List<TrashRow> getTrashSchedule() {
 
 		List<TrashRow> trashRowsToPrintTotal = new ArrayList<TrashRow>();
 
@@ -880,11 +882,11 @@ public class ListsManagerImpl implements ListsManager {
 		
 		// Now let's see if there are cycles to create. If there are, drop
 		// into this code. Otherwise, ignore the loop below.
-		if (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < numberOfCycles) {
+		if (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < NUMBER_OF_TRASH_CYCLES) {
 
 			// OK, we definitely need to create at least one cycle. Loop on
 			// the following code until we have the desired amount of cycles.
-			while (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < numberOfCycles) {
+			while (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < NUMBER_OF_TRASH_CYCLES) {
 
 				logger.info(">>>> Creating new Trash Cycle: trashPerson list size = " + 
 						trashPersonList.size());
@@ -929,7 +931,7 @@ public class ListsManagerImpl implements ListsManager {
 				} else {
 					
 					// Already have some cycles. Do we need to create more?
-					if (trashCycleBeanList.size() < numberOfCycles) {
+					if (trashCycleBeanList.size() < NUMBER_OF_TRASH_CYCLES) {
 						
 						// Yes, need to create another cycle row. Use the last 
 						// bean in the table as a basis for creating a new
@@ -985,7 +987,7 @@ public class ListsManagerImpl implements ListsManager {
 			// End of Loop to add new cycles.
 
 		} 
-		
+
 		// Rows need some final adjustments. First capitalize "my" entries.
 		List<TrashRow> rowsToReturn = modifyRowsToShowMe(trashRowsToPrintTotal);
 		
@@ -993,6 +995,7 @@ public class ListsManagerImpl implements ListsManager {
 		rowsToReturn = addSubstitutesIntoRows(rowsToReturn);
 		
 		// Lastly, only print out 26 teams
+
 		List<TrashRow> rowsToReturnFinally = new ArrayList<TrashRow>();
 		Calendar calNow = Calendar.getInstance();
 		for (TrashRow oneRow : rowsToReturn) {
@@ -1102,6 +1105,16 @@ public class ListsManagerImpl implements ListsManager {
 
 		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao
 				.getTrashSubstitutes();
+		boolean doShowMe = true;
+		// If there's no "current" user because we're not in a session (i.e. we're
+		// running a separate task), give up on the "ShowMe" idea and
+		// just return the rows as-is.
+		try {
+			String foo = LoggingUtils.getCurrentUsername();
+		} catch (Exception ex) {
+			logger.info(">>> ListsManager/getTrashSchedule/addSubstitutesIntoRows: hit exception");
+			doShowMe = false;;
+		}
 
 		for (TrashRow oneRow : trashRows) {
 			if (trashSubstituteBeans != null) {
@@ -1124,7 +1137,7 @@ public class ListsManagerImpl implements ListsManager {
 						// including uppercasing the substitute if need be.
 						if (oneRow.getOrganizer().equalsIgnoreCase(
 								origTrashUser)) {
-							if (subTrashUser.equalsIgnoreCase(LoggingUtils
+							if (doShowMe && subTrashUser.equalsIgnoreCase(LoggingUtils
 									.getCurrentUsername())) {
 								subTrashUser = subTrashUser.toUpperCase();
 							}
@@ -1137,7 +1150,7 @@ public class ListsManagerImpl implements ListsManager {
 						// including uppercasing the substitute if need be.
 						if (oneRow.getStrongPerson().equalsIgnoreCase(
 								origTrashUser)) {
-							if (subTrashUser.equalsIgnoreCase(LoggingUtils
+							if (doShowMe && subTrashUser.equalsIgnoreCase(LoggingUtils
 									.getCurrentUsername())) {
 								subTrashUser = subTrashUser.toUpperCase();
 							}
@@ -1150,7 +1163,7 @@ public class ListsManagerImpl implements ListsManager {
 						// including uppercasing the substitute if need be.
 						if (oneRow.getTeamMember1().equalsIgnoreCase(
 								origTrashUser)) {
-							if (subTrashUser.equalsIgnoreCase(LoggingUtils
+							if (doShowMe && subTrashUser.equalsIgnoreCase(LoggingUtils
 									.getCurrentUsername())) {
 								subTrashUser = subTrashUser.toUpperCase();
 							}
@@ -1163,7 +1176,7 @@ public class ListsManagerImpl implements ListsManager {
 						// including uppercasing the substitute if need be.
 						if (oneRow.getTeamMember2().equalsIgnoreCase(
 								origTrashUser)) {
-							if (subTrashUser.equalsIgnoreCase(LoggingUtils
+							if (doShowMe && subTrashUser.equalsIgnoreCase(LoggingUtils
 									.getCurrentUsername())) {
 								subTrashUser = subTrashUser.toUpperCase();
 							}
@@ -1186,14 +1199,25 @@ public class ListsManagerImpl implements ListsManager {
 			}
 			
 		}
-		
-		
+			
 		return trashRows;
 
 	}
 
 	private List<TrashRow> modifyRowsToShowMe(List<TrashRow> trashRows) {
-
+		
+		// If there's no "current" user because we're not in a session (i.e. we're
+		// running a separate task), give up on the "ShowMe" idea and
+		// just return the rows as-is.
+		try {
+		if (LoggingUtils.getCurrentUsername() == null) {
+			return trashRows;
+		}
+		} catch (Exception ex) {
+			logger.info(">>> ListsManager/getTrashSchedule/modifyRowsToShowMe: hit exception");
+			return trashRows;
+		}
+		
 		for (TrashRow oneRow : trashRows) {
 
 			// Capitalize entry if it's me.
