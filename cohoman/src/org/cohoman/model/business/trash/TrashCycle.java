@@ -386,7 +386,7 @@ public class TrashCycle {
 				currentCount++;
 				continue;
 			}
-
+			
 			// Not first in sequence. Does this one match the
 			// previous unit number?
 			if (oneTrashPerson.getUnitnumber().equals(currentUnit)) {
@@ -400,8 +400,8 @@ public class TrashCycle {
 					currentCount++;
 				}
 			} else {
-				// No.
-				if (currentCount > 1) {
+				// No. Special case unit 103 so not together
+				if (currentCount > 1 && !currentUnit.equals("103")) {
 					// If count > 1, then save new entry in multiplePersonUnits
 					// to indicate that we have a multiple person unit.
 					multiplePersonUnits.add(currentUnit);

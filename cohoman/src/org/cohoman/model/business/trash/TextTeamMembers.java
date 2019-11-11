@@ -2,6 +2,7 @@ package org.cohoman.model.business.trash;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -43,29 +44,78 @@ public class TextTeamMembers implements Runnable, Serializable {
 
 	public void run() {
 
-		// Get beans for Lists and User services from the ApplicationContext.
-		// Have to do this so we can access them from another task.
-		ApplicationContext ctx = AppContext.getApplicationContext();
-		listsService = (ListsService) ctx.getBean("listsService");
-		userService = (UserService) ctx.getBean("userService");
-
 		try {
 
+			// Get beans for Lists and User services from the
+			// ApplicationContext.
+			// Have to do this so we can access them from another task.
+			ApplicationContext ctx = AppContext.getApplicationContext();
+			listsService = (ListsService) ctx.getBean("listsService");
+			userService = (UserService) ctx.getBean("userService");
+
 			//
-			List<TrashRow> trashRows = listsService.getTrashSchedule();
-			List<User> usersHereNow = userService.getUsersHereNow();
-			List<String> teamMembers0 = getUsernamesForTeam(trashRows.get(0));
-			logger.info("Team members are: " + teamMembers0);
-			List<String> teamMembers1 = getUsernamesForTeam(trashRows.get(1));
-			logger.info("Team members are: " + teamMembers1);
-			sendTextMessageToTeam(teamMembers0, "trash message");
-			sendTextMessageToTeam(teamMembers1, "trash message");
-		} catch (Exception ex) {
-			logger.severe(ex.toString());
+			Calendar cal = Calendar.getInstance();
+			// calToIncrement.set(2019, Calendar.OCTOBER, 20);
+			logger.info("timer woke up at: " + cal.getTime());
+
+			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 23, 0)) {
+				List<TrashRow> trashRows = listsService.getTrashSchedule();
+				List<User> usersHereNow = userService.getUsersHereNow();
+				List<String> teamMembers0 = getUsernamesForTeam(trashRows
+						.get(0));
+				logger.info("Team members are: " + teamMembers0);
+				List<String> teamMembers1 =
+						getUsernamesForTeam(trashRows.get(1));
+				logger.info("Team members are: " + teamMembers1);
+				// sendTextMessageToTeam(teamMembers0, "trash message");
+				sendTextMessageToTeam(teamMembers1, "next Sunday trash");
+			}
+
+			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 9, 0)) {
+				List<TrashRow> trashRows = listsService.getTrashSchedule();
+				List<User> usersHereNow = userService.getUsersHereNow();
+				List<String> teamMembers0 = getUsernamesForTeam(trashRows
+						.get(0));
+				logger.info("Team members are: " + teamMembers0);
+				sendTextMessageToTeam(teamMembers0, "trash tonight");
+			}
+
+			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 17, 0)) {
+				List<TrashRow> trashRows = listsService.getTrashSchedule();
+				List<User> usersHereNow = userService.getUsersHereNow();
+				List<String> teamMembers0 = getUsernamesForTeam(trashRows
+						.get(0));
+				logger.info("Team members are: " + teamMembers0);
+				sendTextMessageToTeam(teamMembers0, "trash now");
+			}
+
+		} catch (Throwable th) {
+			logger.severe(th.toString());
+			th.printStackTrace();
 		}
 
 	}
 
+	private boolean isNowTheSelectedDayAndTime(int dayOfWeek, int hour, int minutes) {
+		
+		// Start with Current time as a Calendar
+		Calendar calNow = Calendar.getInstance();
+		
+		// Create desired time as a Calendar
+		Calendar calDesired = Calendar.getInstance();
+		calDesired.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+		calDesired.set(Calendar.HOUR_OF_DAY, hour);
+		calDesired.set(Calendar.MINUTE, minutes);
+		
+		// Now see if the 2 times are within 10 min (600 sec.).
+		int timeDiff = (int) (calNow.getTimeInMillis() - calDesired
+				.getTimeInMillis());
+		timeDiff = java.lang.Math.abs(timeDiff);
+		if (timeDiff/1000 < 60) {
+			return true;
+		}
+		return false;
+	}
 	private List<String> getUsernamesForTeam(TrashRow oneTrashRow) {
 
 		// Build list from each role

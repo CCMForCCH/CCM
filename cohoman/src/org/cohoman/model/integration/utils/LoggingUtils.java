@@ -36,10 +36,19 @@ public class LoggingUtils {
 	public static String getCurrentUsername() {
 		// get the userid of the current user to set the requester.
 		FacesContext ctx = FacesContext.getCurrentInstance();
+		if (ctx == null) {
+			return null;
+		}
 		HttpSession session = (HttpSession) ctx.getExternalContext()
 				.getSession(true);
+		if (session == null) {
+			return null;
+		}
 		User dbUser = (User) session
 				.getAttribute(AuthenticateController.SESSIONVAR_USER_NAME);
+		if (dbUser == null) {
+			return null;
+		}
 		return dbUser.getUsername();
 	}
 }

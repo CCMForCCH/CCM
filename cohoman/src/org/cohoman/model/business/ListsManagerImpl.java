@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.faces.context.FacesContext;
+
 import org.cohoman.model.business.trash.TrashPerson;
 import org.cohoman.model.business.trash.TrashRolesEnums;
 import org.cohoman.model.business.trash.TrashRow;
@@ -1109,11 +1111,8 @@ public class ListsManagerImpl implements ListsManager {
 		// If there's no "current" user because we're not in a session (i.e. we're
 		// running a separate task), give up on the "ShowMe" idea and
 		// just return the rows as-is.
-		try {
-			String foo = LoggingUtils.getCurrentUsername();
-		} catch (Exception ex) {
-			logger.info(">>> ListsManager/getTrashSchedule/addSubstitutesIntoRows: hit exception");
-			doShowMe = false;;
+		if (LoggingUtils.getCurrentUsername() == null) {
+			doShowMe = false;
 		}
 
 		for (TrashRow oneRow : trashRows) {
@@ -1209,12 +1208,7 @@ public class ListsManagerImpl implements ListsManager {
 		// If there's no "current" user because we're not in a session (i.e. we're
 		// running a separate task), give up on the "ShowMe" idea and
 		// just return the rows as-is.
-		try {
 		if (LoggingUtils.getCurrentUsername() == null) {
-			return trashRows;
-		}
-		} catch (Exception ex) {
-			logger.info(">>> ListsManager/getTrashSchedule/modifyRowsToShowMe: hit exception");
 			return trashRows;
 		}
 		
@@ -1286,7 +1280,7 @@ private List<TrashPerson> buildTrashPersonList() {
 					trashRole = TrashRolesEnums.ORGANIZER.name();
 			} else {
 				if (thisUserUsername.equals("anne") || thisUserUsername.equals("joan") ||
-						thisUserUsername.equals("maddy") || thisUserUsername.equals("lindsey") ||
+						thisUserUsername.equals("maddy")  ||
 					    thisUserUsername.equals("annie") || thisUserUsername.equals("johnm") ||
 					    thisUserUsername.equals("johnn") || thisUserUsername.equals("jean") ||
 					    thisUserUsername.equals("meredith") ){
@@ -1299,11 +1293,9 @@ private List<TrashPerson> buildTrashPersonList() {
 				thisUserUsername.equals("brian") || thisUserUsername.equals("peter") ||
 				thisUserUsername.equals("kerry") || thisUserUsername.equals("neal") ||
 				thisUserUsername.equals("sara") || thisUserUsername.equals("felix") ||
-				thisUserUsername.equals("jen") )
+				thisUserUsername.equals("jen") || thisUserUsername.equals("lindsey") ||
+				thisUserUsername.equals("carolyn"))
 			{
-				trashRole = TrashRolesEnums.NOROLE.name();
-			}
-			if (thisUserUsername.equals("diane")) {
 				trashRole = TrashRolesEnums.NOROLE.name();
 			}
 			
