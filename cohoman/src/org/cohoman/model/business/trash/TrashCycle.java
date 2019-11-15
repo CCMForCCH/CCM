@@ -2,17 +2,13 @@ package org.cohoman.model.business.trash;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import org.cohoman.view.controller.utils.CalendarUtils;
 
 public class TrashCycle {
 
@@ -26,7 +22,7 @@ public class TrashCycle {
 	private List<TrashPerson> trashTeamMembers;
 	private List<String> multiplePersonUnits;
 	private List<Integer> multiplePersonUnitsCounts;
-	private Date startingDate;
+	private Date startingDate;   // starting date for the cycle
 
 	public TrashCycle(List<TrashPerson> trashPersonListOrig, Date startingDate) {
 		trashTeams = new ArrayList<TrashTeam>();
@@ -43,18 +39,17 @@ public class TrashCycle {
 
 		int randomizedIndex; 
 
-		// temp
+		// Initialize an empty working list of TrashPersons
 		trashPersonList = new ArrayList<TrashPerson>();
 		
-		// Find the index of the first startingUnit in the sorted
-		// TrashPerson "original" list.
+		// Fill in the TrashPerson list from the original list.
 		for (int idx = 0; idx < trashPersonListOrig.size(); idx++) {
 			trashPersonList.add(trashPersonListOrig.get(idx));
 		}
 		
 		// Compute number of teams in one cycle
 		int teamsInOneCycle = trashPersonList.size();
-		teamsInOneCycle = teamsInOneCycle / 4;
+		teamsInOneCycle = teamsInOneCycle / 4;  // 4 people on each team
 
 		// Figure out which units have multiple people in them.
 		computeMultiplePersonUnits();
@@ -88,7 +83,8 @@ public class TrashCycle {
 			trashTeam.setSundayDate(workingDate.getTime());
 			trashTeam.setPrintableDate(formatter.format(workingDate.getTime()));
 			trashTeams.add(trashTeam);
-			//workingDate.add(Calendar.DAY_OF_YEAR, 7); // advance to next date
+			// TODO
+			//workingDate.add(Calendar.DAY_OF_YEAR, 7); // advance to next date##########
 			workingDate.add(Calendar.DAY_OF_YEAR, 1); // advance to next date
 		}
 
@@ -250,7 +246,7 @@ public class TrashCycle {
 			}
 		}
 
-		// RANDOMLY, use Team members to fill any Organizer spots left
+		// RANDOMLY, use Team members to fill any Organizer spots left <- still need????
 		if (!trashTeamMembers.isEmpty()) {
 			for (TrashTeam thisTrashTeam : trashTeams) {
 				if (thisTrashTeam.getOrganizer() == null) {
@@ -513,7 +509,8 @@ public class TrashCycle {
 				trashTeamMembers.remove(trashPerson);
 				return true;
 			}
-			
+	
+			// TODO
 			// Try an organizer first to lessen the??????????
 			// likelihood that a subsequent strong person
 			// will end up as the organizer.

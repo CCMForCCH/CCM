@@ -22,12 +22,10 @@ public class TextTeamMembers implements Runnable, Serializable {
 	private UserService userService = null;
 
 	public ListsService getListsService() {
-		logger.info("getListsService called");
 		return listsService;
 	}
 
 	public void setListsService(ListsService listsService) {
-		logger.info("setListsService called, value = " + listsService);
 		this.listsService = listsService;
 	}
 
@@ -36,7 +34,6 @@ public class TextTeamMembers implements Runnable, Serializable {
 	}
 
 	public void setUserService(UserService userService) {
-		logger.info("setUserService called, value = " + userService);
 		this.userService = userService;
 	}
 
@@ -55,36 +52,34 @@ public class TextTeamMembers implements Runnable, Serializable {
 
 			//
 			Calendar cal = Calendar.getInstance();
-			// calToIncrement.set(2019, Calendar.OCTOBER, 20);
 			logger.info("timer woke up at: " + cal.getTime());
 
-			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 23, 0)) {
-				List<TrashRow> trashRows = listsService.getTrashSchedule();
-				List<User> usersHereNow = userService.getUsersHereNow();
-				List<String> teamMembers0 = getUsernamesForTeam(trashRows
-						.get(0));
+			List<TrashRow> trashRows = listsService.getTrashSchedule();
+			List<User> usersHereNow = userService.getUsersHereNow();
+			List<String> teamMembers0 = getUsernamesForTeam(trashRows
+					.get(0));
+			logger.info("Team members are: " + teamMembers0);
+			List<String> teamMembers1 =
+					getUsernamesForTeam(trashRows.get(1));
+
+			if (isNowTheSelectedDayAndTime(Calendar.MONDAY, 20, 0)) {
 				logger.info("Team members are: " + teamMembers0);
-				List<String> teamMembers1 =
-						getUsernamesForTeam(trashRows.get(1));
 				logger.info("Team members are: " + teamMembers1);
 				// sendTextMessageToTeam(teamMembers0, "trash message");
 				sendTextMessageToTeam(teamMembers1, "next Sunday trash");
 			}
 
+			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 20, 30)) {
+				logger.info("Team members are: " + teamMembers0);
+				sendTextMessageToTeam(teamMembers1, "next Sunday trash2");
+			}
+
 			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 9, 0)) {
-				List<TrashRow> trashRows = listsService.getTrashSchedule();
-				List<User> usersHereNow = userService.getUsersHereNow();
-				List<String> teamMembers0 = getUsernamesForTeam(trashRows
-						.get(0));
 				logger.info("Team members are: " + teamMembers0);
 				sendTextMessageToTeam(teamMembers0, "trash tonight");
 			}
 
-			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 17, 0)) {
-				List<TrashRow> trashRows = listsService.getTrashSchedule();
-				List<User> usersHereNow = userService.getUsersHereNow();
-				List<String> teamMembers0 = getUsernamesForTeam(trashRows
-						.get(0));
+			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 17, 30)) {
 				logger.info("Team members are: " + teamMembers0);
 				sendTextMessageToTeam(teamMembers0, "trash now");
 			}
@@ -103,7 +98,7 @@ public class TextTeamMembers implements Runnable, Serializable {
 		
 		// Create desired time as a Calendar
 		Calendar calDesired = Calendar.getInstance();
-		calDesired.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+		//calDesired.set(Calendar.DAY_OF_WEEK, dayOfWeek);
 		calDesired.set(Calendar.HOUR_OF_DAY, hour);
 		calDesired.set(Calendar.MINUTE, minutes);
 		
@@ -111,7 +106,7 @@ public class TextTeamMembers implements Runnable, Serializable {
 		int timeDiff = (int) (calNow.getTimeInMillis() - calDesired
 				.getTimeInMillis());
 		timeDiff = java.lang.Math.abs(timeDiff);
-		if (timeDiff/1000 < 60) {
+		if (timeDiff/1000 < 600) {
 			return true;
 		}
 		return false;
