@@ -10,8 +10,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.faces.context.FacesContext;
-
 import org.cohoman.model.business.trash.TrashPerson;
 import org.cohoman.model.business.trash.TrashRolesEnums;
 import org.cohoman.model.business.trash.TrashRow;
@@ -911,13 +909,13 @@ public class ListsManagerImpl implements ListsManager {
 					
 					// Date for brand new first cycle!!!!
 					Calendar calToIncrement = Calendar.getInstance();
-					calToIncrement.set(2019, Calendar.OCTOBER, 20);
+					calToIncrement.set(2019, Calendar.DECEMBER, 1);
 					trashCycleBean.setTrashcyclestartdate(calToIncrement
 							.getTime());
 					
 					int teamsInOneCycle = trashPersonList.size();
 					teamsInOneCycle = teamsInOneCycle / 4;
-					int daysInCycle = teamsInOneCycle * 1;
+					int daysInCycle = teamsInOneCycle * 7;
 					calToIncrement.add(Calendar.DAY_OF_YEAR, daysInCycle - 1);
 					trashCycleBean.setTrashcycleenddate(calToIncrement
 							.getTime()); 
@@ -1276,24 +1274,25 @@ private List<TrashPerson> buildTrashPersonList() {
 			String trashRole;
 			if (thisUserUsername.equals("bonnie") || thisUserUsername.equals("carol") ||
 					thisUserUsername.equals("marianne") || thisUserUsername.equals("molly") ||
-					thisUserUsername.equals("elaine") || thisUserUsername.equals("francie")) {
+					thisUserUsername.equals("elaine") || thisUserUsername.equals("francie") || 
+					thisUserUsername.equals("diane") ) {
 					trashRole = TrashRolesEnums.ORGANIZER.name();
 			} else {
 				if (thisUserUsername.equals("anne") || thisUserUsername.equals("joan") ||
 						thisUserUsername.equals("maddy")  ||
 					    thisUserUsername.equals("annie") || thisUserUsername.equals("johnm") ||
 					    thisUserUsername.equals("johnn") || thisUserUsername.equals("jean") ||
-					    thisUserUsername.equals("meredith") ){
+					    thisUserUsername.equals("meredith") || thisUserUsername.equals("lindsey") ||
+					    thisUserUsername.equals("nasim")){
 					trashRole = TrashRolesEnums.TEAMMEMBER.name();
 				} else {
 					trashRole = TrashRolesEnums.STRONGPERSON.name();
 				}
 			}
-			if (thisUserUsername.equals("peg") ||  thisUserUsername.equals("diane") ||
+			if (thisUserUsername.equals("peg") ||  
 				thisUserUsername.equals("brian") || thisUserUsername.equals("peter") ||
 				thisUserUsername.equals("kerry") || thisUserUsername.equals("neal") ||
 				thisUserUsername.equals("sara") || thisUserUsername.equals("felix") ||
-				thisUserUsername.equals("jen") || thisUserUsername.equals("lindsey") ||
 				thisUserUsername.equals("carolyn"))
 			{
 				trashRole = TrashRolesEnums.NOROLE.name();

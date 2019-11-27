@@ -48,12 +48,6 @@ public class TrashSchedule {
 		// startDate and nextPersonToSkip for subsequent cycle.
 		// If no cycle exist, create it. Do this until we have 4 cycles.
 
-		// Compute number of teams in one cycle
-		int teamsInOneCycle = trashPersonListOrig.size();
-		teamsInOneCycle = teamsInOneCycle / 4;
-		int daysInCycle = teamsInOneCycle * 1;
-		// int daysInCycle = teamsInOneCycle * 1;
-
 		// Loop through the desired number of cycles.
 		List<TrashTeam> trashTeams = null;
 
@@ -95,12 +89,6 @@ public class TrashSchedule {
 		// cycle. When cycle is complete, need to get the next
 		// startDate and nextPersonToSkip for subsequent cycle.
 		// If no cycle exist, create it. Do this until we have 4 cycles.
-
-		// Compute number of teams in one cycle
-		int teamsInOneCycle = trashPersonListOrig.size();
-		teamsInOneCycle = teamsInOneCycle / 4;
-		int daysInCycle = teamsInOneCycle * 1;
-		// int daysInCycle = teamsInOneCycle * 1;
 
 		// Loop through the desired number of cycles.
 		List<TrashTeam> trashTeams = null;
@@ -144,8 +132,7 @@ public class TrashSchedule {
 		int peopleToSkip = trashPersonListOrig.size() % 4;
 
 		teamsInOneCycle = teamsInOneCycle / 4;
-		int daysInCycle = teamsInOneCycle * 1;
-		// int daysInCycle = teamsInOneCycle * 1;
+		int daysInCycle = teamsInOneCycle * 7;
 
 		// See if there "ever" was a nextPersonToSkip so we can continue 
 		// with that user.

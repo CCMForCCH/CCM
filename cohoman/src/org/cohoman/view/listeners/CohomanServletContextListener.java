@@ -42,7 +42,7 @@ public class CohomanServletContextListener implements ServletContextListener {
 		calRounded.set(Calendar.MILLISECOND, 0);
 
 		// Now round up to the nearest x_minutes minutes.
-		int x_minutes = 5;
+		int x_minutes = 30;
 		int minutes_interval = calRounded.get(Calendar.MINUTE);
 		minutes_interval = minutes_interval
 				+ (x_minutes - (minutes_interval % x_minutes));

@@ -1,8 +1,10 @@
 package org.cohoman.model.business.trash;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -50,40 +52,42 @@ public class TextTeamMembers implements Runnable, Serializable {
 			listsService = (ListsService) ctx.getBean("listsService");
 			userService = (UserService) ctx.getBean("userService");
 
-			//
-			Calendar cal = Calendar.getInstance();
-			logger.info("timer woke up at: " + cal.getTime());
+			//Calendar cal = Calendar.getInstance();
+			//logger.info("timer woke up at: " + cal.getTime());
 
 			List<TrashRow> trashRows = listsService.getTrashSchedule();
 			List<User> usersHereNow = userService.getUsersHereNow();
 			List<String> teamMembers0 = getUsernamesForTeam(trashRows
 					.get(0));
-			logger.info("Team members are: " + teamMembers0);
 			List<String> teamMembers1 =
 					getUsernamesForTeam(trashRows.get(1));
 
-			if (isNowTheSelectedDayAndTime(Calendar.MONDAY, 20, 0)) {
-				logger.info("Team members are: " + teamMembers0);
-				logger.info("Team members are: " + teamMembers1);
-				// sendTextMessageToTeam(teamMembers0, "trash message");
-				sendTextMessageToTeam(teamMembers1, "next Sunday trash");
+			// Convert date to figure out what date to send the messages
+			String startDateString = trashRows.get(0).getSundayDate();
+			Date startDate = new SimpleDateFormat("MMM d, yyyy")
+					.parse(startDateString);
+			
+			// Send messages 1 week in advance to the team(1). Note
+			// that using start date for team(0) is fine. We want to send it now.
+			if (isNowTheSelectedDayAndTime(startDate, 20, 0)) {
+				logger.info("Team0 members are: " + teamMembers0);
+				logger.info("Team1 members are: " + teamMembers1);
+				sendTextMessageToTeam(teamMembers1, "You are on the trash team next weekend.");
 			}
 
-			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 20, 30)) {
+			// Next, send messages that today is the day for trash. But
+			// the day may be Sunday or Monday. Need to check which it is
+			// check for the appropriate day and time.
+			if (isNowTheSelectedDayAndTime(startDate, 9, 0)) {
 				logger.info("Team members are: " + teamMembers0);
-				sendTextMessageToTeam(teamMembers1, "next Sunday trash2");
+				sendTextMessageToTeam(teamMembers0, "You are on the trash team this evening.");				
 			}
 
-			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 9, 0)) {
+			if (isNowTheSelectedDayAndTime(startDate, 17, 0)) {
 				logger.info("Team members are: " + teamMembers0);
-				sendTextMessageToTeam(teamMembers0, "trash tonight");
+				sendTextMessageToTeam(teamMembers0, "You are scheduled to do trash soon or now!");				
 			}
-
-			if (isNowTheSelectedDayAndTime(Calendar.SUNDAY, 17, 30)) {
-				logger.info("Team members are: " + teamMembers0);
-				sendTextMessageToTeam(teamMembers0, "trash now");
-			}
-
+			
 		} catch (Throwable th) {
 			logger.severe(th.toString());
 			th.printStackTrace();
@@ -91,16 +95,25 @@ public class TextTeamMembers implements Runnable, Serializable {
 
 	}
 
-	private boolean isNowTheSelectedDayAndTime(int dayOfWeek, int hour, int minutes) {
+	private boolean isNowTheSelectedDayAndTime(Date dateOnly, int hour, int minutes) {
 		
 		// Start with Current time as a Calendar
 		Calendar calNow = Calendar.getInstance();
 		
 		// Create desired time as a Calendar
 		Calendar calDesired = Calendar.getInstance();
-		//calDesired.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+		calDesired.setTime(dateOnly);
+	
+		// Check if we are on the desired day. If not, return false.
+		if (!(calDesired.get(Calendar.YEAR) == calNow.get(Calendar.YEAR) &&
+				calDesired.get(Calendar.DAY_OF_YEAR) == calNow.get(Calendar.DAY_OF_YEAR))) {
+			return false;
+		} 
+		
+		// Date is right. Set the desired time.
 		calDesired.set(Calendar.HOUR_OF_DAY, hour);
 		calDesired.set(Calendar.MINUTE, minutes);
+		calDesired.set(Calendar.SECOND, 0);
 		
 		// Now see if the 2 times are within 10 min (600 sec.).
 		int timeDiff = (int) (calNow.getTimeInMillis() - calDesired
@@ -111,6 +124,7 @@ public class TextTeamMembers implements Runnable, Serializable {
 		}
 		return false;
 	}
+	
 	private List<String> getUsernamesForTeam(TrashRow oneTrashRow) {
 
 		// Build list from each role
@@ -179,7 +193,7 @@ public class TextTeamMembers implements Runnable, Serializable {
 				// SmsSender.sendtextMessage(phoneNumber, textMsg);
 				SmsSender.sendtextMessage("6179902631",
 						"CCM: sending msg for " + oneMember
-								+ " to phone number " + theUser.getCellphone());
+								+ " to phone number " + theUser.getCellphone() + " " + textMsg);
 			} else {
 				logger.info("AUDIT: phone number for " + theUser.getUsername()
 						+ " is not valid: " + phoneNumber);

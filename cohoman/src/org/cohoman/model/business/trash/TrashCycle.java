@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.cohoman.model.integration.utils.FederalHolidays;
+
 public class TrashCycle {
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
@@ -76,16 +78,23 @@ public class TrashCycle {
 
 		// Create all teams with starting dates
 		SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
-		Calendar workingDate = Calendar.getInstance();
-		workingDate.setTime(startingDate);
+		Calendar workingCal = Calendar.getInstance();
+		workingCal.setTime(startingDate);
 		for (int teamIndex = 0; teamIndex < teamsInOneCycle; teamIndex++) {
+			
+			// Adjust start date for team iff holiday
+			workingCal = adjustToHoliday(workingCal);
+			
+			// Add team.
 			TrashTeam trashTeam = new TrashTeam();
-			trashTeam.setSundayDate(workingDate.getTime());
-			trashTeam.setPrintableDate(formatter.format(workingDate.getTime()));
+			trashTeam.setSundayDate(workingCal.getTime());
+			trashTeam.setPrintableDate(formatter.format(workingCal.getTime()));
 			trashTeams.add(trashTeam);
-			// TODO
-			//workingDate.add(Calendar.DAY_OF_YEAR, 7); // advance to next date##########
-			workingDate.add(Calendar.DAY_OF_YEAR, 1); // advance to next date
+			
+			// Advance to next trash day, typically 7 days but will be
+			// 6 if current date is Monday.
+			workingCal.add(Calendar.DAY_OF_YEAR,
+					incrementForNextTrashDay(workingCal)); 
 		}
 
 		// Start by simply adding the organizers to each team in sequence
@@ -578,6 +587,29 @@ public class TrashCycle {
 			}
 		}
 		return null;
+	}
+	
+	private int incrementForNextTrashDay(Calendar currentDate) {
+				
+		// Advance by 6 or 7 depending on whether current date is Monday
+		if (currentDate.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+			return 6;
+		} else {
+			return 7;
+		}
+	}
+	
+	private Calendar adjustToHoliday(Calendar workingCal) {
+		
+		// Check if Date is Holiday. If so, increment day to show that
+		// the trash is to be taken out on Monday.
+		FederalHolidays holidaysClass = new FederalHolidays();
+		if (holidaysClass.isDateAHoliday(workingCal.getTime()) ||
+				holidaysClass.isNextDayAHoliday(workingCal.getTime())) {
+			workingCal.add(Calendar.DAY_OF_YEAR, 1);
+		} 
+		
+		return workingCal;
 	}
 	
 	private int randomEntry(int listSize) {
