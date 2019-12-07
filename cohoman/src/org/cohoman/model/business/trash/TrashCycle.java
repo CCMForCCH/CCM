@@ -255,45 +255,8 @@ public class TrashCycle {
 			}
 		}
 
-		// RANDOMLY, use Team members to fill any Organizer spots left <- still need????
-		if (!trashTeamMembers.isEmpty()) {
-			for (TrashTeam thisTrashTeam : trashTeams) {
-				if (thisTrashTeam.getOrganizer() == null) {
-					// Get the next team member
-					if (!trashTeamMembers.isEmpty()) {
-						randomizedIndex = randomEntry(trashTeamMembers.size());
-						
-						// Special case: don't use jean as an organizer
-						if (trashTeamMembers.get(randomizedIndex).getUsername().equals("jean")) {
-							break;
-						} else {
-							thisTrashTeam.setOrganizer(trashTeamMembers.get(randomizedIndex));
-							trashTeamMembers.remove(randomizedIndex);
-						}
-					} else {
-						break; // give up when list is depleted
-					}
-				}
-			}
-		}
-
-		// RANDOMLY, use Strong members to fill any Organizer spots if any left
-		if (!trashStrongPersons.isEmpty()) {
-			for (TrashTeam thisTrashTeam : trashTeams) {
-				if (thisTrashTeam.getOrganizer() == null) {
-					// Get the next strong person
-					if (!trashStrongPersons.isEmpty()) {
-						randomizedIndex = randomEntry(trashStrongPersons.size());
-						thisTrashTeam.setOrganizer(trashStrongPersons.get(randomizedIndex));
-						trashStrongPersons.remove(randomizedIndex);
-					} else {
-						break; // give up when list is depleted
-					}
-				}
-			}
-		}
-
 		// Next RANDOMLY, use strong people as team members, if any left
+		// Start with TeamMember1
 		if (!trashStrongPersons.isEmpty()) {
 			for (TrashTeam thisTrashTeam : trashTeams) {
 				if (thisTrashTeam.getTeamMember1() == null) {
@@ -308,6 +271,7 @@ public class TrashCycle {
 				}
 			}
 		}
+		// Then do TeamMember2
 		if (!trashStrongPersons.isEmpty()) {
 			for (TrashTeam thisTrashTeam : trashTeams) {
 				if (thisTrashTeam.getTeamMember2() == null) {

@@ -185,32 +185,6 @@ public class RetrieveTrashListController implements Serializable {
 					+ trashTeamStartDate);
 		}
 		return teamMembersList;
-
-/*
-		List<TrashTeam> trashTeams = listsService.getTrashTeams(NUMBER_OF_TRASH_CYCLES);
-		List<String> teamMembersList = new ArrayList<String>();
-		for (int idx = 0; idx < trashTeams.size(); idx++) {
-			if (trashTeamStartDate.equals(trashTeams.get(idx)
-					.getPrintableDate())) {
-				// Found team. Populate the list of 4 people?? must be me???
-				teamMembersList.add(trashTeams.get(idx).getOrganizer()
-						.getUsername());
-				teamMembersList.add(trashTeams.get(idx).getStrongPerson()
-						.getUsername());
-				teamMembersList.add(trashTeams.get(idx).getTeamMember1()
-						.getUsername());
-				teamMembersList.add(trashTeams.get(idx).getTeamMember2()
-						.getUsername());
-			}
-		}
-
-		// sanity check
-		if (teamMembersList.isEmpty()) {
-			throw new RuntimeException("No trash team found for date "
-					+ trashTeamStartDate);
-		}
-		return teamMembersList;
-*/
 		
 	}
 

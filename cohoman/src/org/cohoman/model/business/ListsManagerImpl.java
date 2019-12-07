@@ -909,7 +909,7 @@ public class ListsManagerImpl implements ListsManager {
 					
 					// Date for brand new first cycle!!!!
 					Calendar calToIncrement = Calendar.getInstance();
-					calToIncrement.set(2019, Calendar.DECEMBER, 1);
+					calToIncrement.set(2019, Calendar.DECEMBER, 15);
 					trashCycleBean.setTrashcyclestartdate(calToIncrement
 							.getTime());
 					
@@ -1283,7 +1283,8 @@ private List<TrashPerson> buildTrashPersonList() {
 					    thisUserUsername.equals("annie") || thisUserUsername.equals("johnm") ||
 					    thisUserUsername.equals("johnn") || thisUserUsername.equals("jean") ||
 					    thisUserUsername.equals("meredith") || thisUserUsername.equals("lindsey") ||
-					    thisUserUsername.equals("nasim")){
+					    thisUserUsername.equals("nasim") || thisUserUsername.equals("katier")|| 
+					    thisUserUsername.equals("nick")){
 					trashRole = TrashRolesEnums.TEAMMEMBER.name();
 				} else {
 					trashRole = TrashRolesEnums.STRONGPERSON.name();
