@@ -67,17 +67,18 @@ public class ListsServiceImpl implements ListsService {
 		listsManager.setSubstitute(startingDate, userid);
 	}
 
-	public void setTrashSubstitute(Date startingDate, String originalUsername, String substituteUsername) 
-			throws CohomanException {
+	public void setTrashSubstitute(Date startingDate, String originalUsername,
+			String substituteUsername) throws CohomanException {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
 
 		logger.info("AUDIT: Setting trash substitute for date "
-				+ formatter.format(startingDate.getTime()) + " and original user "
-				+ originalUsername + " with substitute user "
-				+ substituteUsername + ", being set by "
-				+ LoggingUtils.getCurrentUsername());
-		listsManager.setTrashSubstitute(startingDate, originalUsername, substituteUsername);
+				+ formatter.format(startingDate.getTime())
+				+ " and original user " + originalUsername
+				+ " with substitute user " + substituteUsername
+				+ ", being set by " + LoggingUtils.getCurrentUsername());
+		listsManager.setTrashSubstitute(startingDate, originalUsername,
+				substituteUsername);
 	}
 
 	private String getUserFullname(Long userid) throws CohomanException {
@@ -122,7 +123,8 @@ public class ListsServiceImpl implements ListsService {
 		return listsManager.getMaintenanceItem(maintenanceItemId);
 	}
 
-	public void updateMaintenanceItem(MaintenanceItemDTO maintenanceItemDTO) throws CohomanException {
+	public void updateMaintenanceItem(MaintenanceItemDTO maintenanceItemDTO)
+			throws CohomanException {
 		logger.info("AUDIT: Create maintenance for "
 				+ maintenanceItemDTO.getItemname() + ", by "
 				+ getUserFullname(maintenanceItemDTO.getItemCreatedBy())
@@ -186,19 +188,18 @@ public class ListsServiceImpl implements ListsService {
 	}
 
 	// Maintenance Item services
-	public void createMtask(MtaskDTO mtaskDTO)
-			throws CohomanException {
+	public void createMtask(MtaskDTO mtaskDTO) throws CohomanException {
 		/*
-		logger.info("AUDIT: Create maintenance task for "
-				+ maintenanceItemDTO.getItemname() + ", by "
-				+ getUserFullname(maintenanceItemDTO.getItemCreatedBy())
-				+ ", description =\"" + maintenanceItemDTO.getItemdescription()
-				+ "\", frequency = " + maintenanceItemDTO.getFrequencyOfItem()
-				+ "\", priority = " + maintenanceItemDTO.getPriority()
-				+ "\", target time of year = "
-				+ maintenanceItemDTO.getTargetTimeOfyear());
-		*/
-		
+		 * logger.info("AUDIT: Create maintenance task for " +
+		 * maintenanceItemDTO.getItemname() + ", by " +
+		 * getUserFullname(maintenanceItemDTO.getItemCreatedBy()) +
+		 * ", description =\"" + maintenanceItemDTO.getItemdescription() +
+		 * "\", frequency = " + maintenanceItemDTO.getFrequencyOfItem() +
+		 * "\", priority = " + maintenanceItemDTO.getPriority() +
+		 * "\", target time of year = " +
+		 * maintenanceItemDTO.getTargetTimeOfyear());
+		 */
+
 		listsManager.createMtask(mtaskDTO);
 	}
 
@@ -212,29 +213,30 @@ public class ListsServiceImpl implements ListsService {
 
 	public void updateMtask(MtaskDTO mtaskDTO) {
 		listsManager.updateMtask(mtaskDTO);
-		
-		//TODO Add in the auditing!!!!!!!!!!
+
+		// TODO Add in the auditing!!!!!!!!!!
 	}
 
 	public void deleteMtask(Long mtaskitemid) {
 		listsManager.deleteMtask(mtaskitemid);
-		
-		//TODO Add in the auditing!!!!!!!!!!!!
+
+		// TODO Add in the auditing!!!!!!!!!!!!
 	}
 
 	// Trash
-	public List<TrashRow> getTrashSchedule() {
+	public List<TrashRow> getTrashSchedule() throws CohomanException {
 		return listsManager.getTrashSchedule();
 	}
 
-	public List<TrashTeam> getTrashTeams(int numberOfCycles) {
+	public List<TrashTeam> getTrashTeams(int numberOfCycles)
+			throws CohomanException {
 		return listsManager.getTrashTeams(numberOfCycles);
 	}
 
 	public List<TrashPerson> getTrashPersonListOrig() {
 		return listsManager.getTrashPersonListOrig();
 	}
-	
+
 	public void deleteTrashSubstitute(Long substitutesId) {
 		listsManager.deleteTrashSubstitute(substitutesId);
 	}
@@ -242,8 +244,9 @@ public class ListsServiceImpl implements ListsService {
 	public List<TrashSubstitutesBean> getTrashSubstitutes() {
 		return listsManager.getTrashSubstitutes();
 	}
-	
-	public TrashSubstitutesBean getTrashSubstitute(String startingDate, String origUsername) {
+
+	public TrashSubstitutesBean getTrashSubstitute(String startingDate,
+			String origUsername) {
 		return listsManager.getTrashSubstitute(startingDate, origUsername);
 	}
 

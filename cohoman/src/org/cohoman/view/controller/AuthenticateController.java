@@ -159,7 +159,11 @@ public class AuthenticateController implements Serializable {
 	}
 
 	public String getUsername() {
-		return username;
+		if (!(username == null || username.isEmpty())) {
+			return username.trim();
+		} else {
+			return username;
+		}
 	}
 
 	public void setUsername(String username) {

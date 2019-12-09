@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -16,7 +17,6 @@ import javax.faces.context.FacesContext;
 import org.cohoman.model.business.trash.TrashPerson;
 import org.cohoman.model.business.trash.TrashRolesEnums;
 import org.cohoman.model.business.trash.TrashRow;
-import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
@@ -24,6 +24,8 @@ import org.cohoman.model.service.UserService;
 @ManagedBean
 @SessionScoped
 public class RetrieveTrashListController implements Serializable {
+
+	Logger logger = Logger.getLogger(this.getClass().getName());
 
 	private static final long serialVersionUID = 4678206276499587830L;
 
@@ -50,7 +52,16 @@ public class RetrieveTrashListController implements Serializable {
 	}
 
 	public List<TrashRow> getTrashList() {
-		return listsService.getTrashSchedule();
+		
+		List<TrashRow> trashRows = null;
+		try {
+			trashRows = listsService.getTrashSchedule();
+
+		} catch (CohomanException ex) {
+			logger.severe("CohomanException from getTrashSchedule: " + ex.getCause());
+		}
+
+		return trashRows;
 	}
 
 	public String getChosenTeamMember() {
@@ -154,7 +165,9 @@ public class RetrieveTrashListController implements Serializable {
 		}
 
 		if (trashTeamStartDate == null || trashTeamStartDate.isEmpty()) {
-			throw new RuntimeException("trashTeamStartDate isn't set");
+			String errorMsg = "RetrieveTrashListController: trashTeamStartDate isn't set";
+			logger.severe(errorMsg);
+			throw new RuntimeException(errorMsg);
 		}
 
 		return trashTeamStartDate;
@@ -181,8 +194,10 @@ public class RetrieveTrashListController implements Serializable {
 		}
 		// sanity check
 		if (teamMembersList.isEmpty()) {
-			throw new RuntimeException("No trash team found for date "
-					+ trashTeamStartDate);
+			String errorMsg = "RetrieveTrashListController: No trash team found for date "
+					+ trashTeamStartDate;
+			logger.severe(errorMsg);
+			throw new RuntimeException(errorMsg);
 		}
 		return teamMembersList;
 		

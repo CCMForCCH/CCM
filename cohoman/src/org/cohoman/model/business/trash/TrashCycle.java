@@ -8,9 +8,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.cohoman.model.integration.utils.FederalHolidays;
+import org.cohoman.view.controller.CohomanException;
 
 public class TrashCycle {
 
@@ -37,7 +39,7 @@ public class TrashCycle {
 		this.startingDate = startingDate;
 	}
 
-	public List<TrashTeam> getTrashTeams() {
+	public List<TrashTeam> getTrashTeams() throws CohomanException {
 
 		int randomizedIndex; 
 
@@ -319,24 +321,32 @@ public class TrashCycle {
 	
 		// Perform a robustness check that all role lists have been used.
 		if (!trashOrganizers.isEmpty()) {
-			throw new RuntimeException("TrashCycle error: leftover Organizers including " + 
-					trashOrganizers.get(0).getUsername());
+			String errorMsg = "TrashCycle error: leftover Organizers including " + 
+					trashOrganizers.get(0).getUsername();
+			logger.log(Level.SEVERE, errorMsg);
+			throw new RuntimeException(errorMsg);
 		}
 		if (!trashStrongPersons.isEmpty()) {
-			throw new RuntimeException("TrashCycle error: leftover Strong Persons including " + 
-					trashStrongPersons.get(0).getUsername());
+			String errorMsg = "TrashCycle error: leftover Strong Persons including " + 
+					trashStrongPersons.get(0).getUsername();
+			logger.log(Level.SEVERE, errorMsg);
+			throw new RuntimeException(errorMsg);
 		}
 		if (!trashTeamMembers.isEmpty()) {
-			throw new RuntimeException("TrashCycle error: leftover Team members including " + 
-					trashTeamMembers.get(0).getUsername());
+			String errorMsg = "TrashCycle error: leftover Team members including " + 
+					trashTeamMembers.get(0).getUsername();
+			logger.log(Level.SEVERE, errorMsg);
+			throw new RuntimeException(errorMsg);
 		}
 
 		// Also for robustness, make sure all the usernames in the trash teams
 		// for this cycle are unique.
 		String duplicateUsername = checkForTeamMembersAllUnique();
 		if (duplicateUsername != null) {
-			throw new RuntimeException("TrashCycle error: duplicate name found: " + 
-					duplicateUsername);
+			String errorMsg = "TrashCycle error: duplicate name found: " + 
+					duplicateUsername;
+			logger.log(Level.SEVERE, errorMsg);
+			throw new RuntimeException(errorMsg);
 		}
 		return trashTeams;
 	}

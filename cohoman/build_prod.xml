@@ -98,6 +98,8 @@
 			toFile="${temp.dir}/images/profile.jpg" overwrite="true" />
 		<copy file="${webroot.dir}/images/hofeller.jpg"
 			toFile="${temp.dir}/images/hofeller.jpg" overwrite="true" />
+		<copy file="${webroot.dir}/images/trash.jpg"
+			toFile="${temp.dir}/images/trash.jpg" overwrite="true" />
 
 		<copy todir="${temp.dir.classes}">
 			<fileset dir="${src.dir}" includes="**/*hbm.xml">

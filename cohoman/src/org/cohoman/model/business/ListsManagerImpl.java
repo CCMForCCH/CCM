@@ -846,7 +846,7 @@ public class ListsManagerImpl implements ListsManager {
 	/*
 	 * Build Trash Schedule
 	 */
-	public List<TrashRow> getTrashSchedule() {
+	public List<TrashRow> getTrashSchedule() throws CohomanException {
 
 		List<TrashRow> trashRowsToPrintTotal = new ArrayList<TrashRow>();
 
@@ -924,8 +924,9 @@ public class ListsManagerImpl implements ListsManager {
 					try {
 						trashCyclesDao.createTrashCycle(trashCycleBean);
 					} catch (Exception ex) {
+						logger.severe("problem persisting TrashCycle for row0: " + ex.toString());
 						throw new RuntimeException(
-								"problem creating TrashCycle row0");
+								"problem persisting TrashCycle for row0: " + ex.toString());
 					}
 					
 				} else {
@@ -948,8 +949,9 @@ public class ListsManagerImpl implements ListsManager {
 						try {
 							trashCyclesDao.createTrashCycle(newTrashCycleBean);
 						} catch (Exception ex) {
+							logger.severe("problem persisting TrashCycle for row1: " + ex.toString());
 							throw new RuntimeException(
-									"problem creating TrashCycle row1");
+									"problem persisting TrashCycle for row1");
 						}
 					}
 				}
@@ -978,8 +980,9 @@ public class ListsManagerImpl implements ListsManager {
 					try {
 						trashTeamRowDao.createTrashTeamRow(trashTeamRowBean);
 					} catch (Exception ex) {
+						logger.severe("problem persisting TrashTeamRow row1");
 						throw new RuntimeException(
-								"problem creating TrashTeamRow row1");
+								"problem persisting TrashTeamRow row1");
 					}
 
 				}
@@ -1002,14 +1005,17 @@ public class ListsManagerImpl implements ListsManager {
 			if (rowsToReturnFinally.size() >= 26) {
 				break;
 			}
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy");
-			Date printableDateAsDate = null; 
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+					"MMM d, yyyy");
+			Date printableDateAsDate = null;
 			try {
-				printableDateAsDate = simpleDateFormat.parse(oneRow.getSundayDate());
+				printableDateAsDate = simpleDateFormat.parse(oneRow
+						.getSundayDate());
 			} catch (ParseException pe) {
-				throw new RuntimeException(
-						"problem parsing date string " + 
-								oneRow.getSundayDate());
+				logger.severe("problem parsing date string "
+						+ oneRow.getSundayDate());
+				throw new RuntimeException("problem parsing date string "
+						+ oneRow.getSundayDate());
 			}
 
 			if (CalendarUtils.dayEarlier(printableDateAsDate, calNow.getTime())) {
@@ -1041,8 +1047,10 @@ public class ListsManagerImpl implements ListsManager {
 				try {
 					trashCyclesDao.deleteCycle(oneCycleBean.getTrashcycleid());
 				} catch (Exception ex) {
-					throw new RuntimeException(
-							"problem deleting TrashCycle row1");
+					String errorMsg = "problem deleting TrashCycle row from database for id "
+							+ oneCycleBean.getTrashcycleid();
+					logger.severe(errorMsg);
+					throw new RuntimeException(errorMsg);
 				}
 				
 				// Next remove associated entries from the TeamRows table.
@@ -1054,9 +1062,11 @@ public class ListsManagerImpl implements ListsManager {
 					try {
 						rowDate = simpleDateFormat.parse(oneRowBean.getTrashteamrowdate());
 					} catch (ParseException pe) {
+						logger.severe("problem parsing date string "
+								+ oneRowBean.getTrashteamrowdate());
 						throw new RuntimeException(
-								"problem parsing date string " + 
-										oneRowBean.getTrashteamrowdate());
+								"problem parsing date string "
+										+ oneRowBean.getTrashteamrowdate());
 					}
 
 					// Remove the row entry if the row date is "bounded" by the start
@@ -1068,8 +1078,10 @@ public class ListsManagerImpl implements ListsManager {
 						try {
 							trashTeamRowDao.deleteTrashRow(oneRowBean.getTrashteamrowid());
 						} catch (Exception ex) {
-							throw new RuntimeException(
-									"problem deleting TrashRow for date " + oneRowBean.getTrashteamrowdate());
+							String errorMsg = "problem deleting TrashRow from database for date "
+									+ oneRowBean.getTrashteamrowdate();
+							logger.severe(errorMsg);
+							throw new RuntimeException(errorMsg);
 						}
 					}
 				}
@@ -1091,8 +1103,9 @@ public class ListsManagerImpl implements ListsManager {
 						try {
 							trashSubstitutesDao.deleteTrashSubstitute(oneSubstituteBean.getSubstitutesid());
 						} catch (Exception ex) {
-							throw new RuntimeException(
-									"problem deleting TrashRow " + oneSubstituteBean.getStartingdate());
+							String errorMsg = "problem deleting substitute TrashRow " + oneSubstituteBean.getStartingdate();
+							logger.severe(errorMsg);
+							throw new RuntimeException(errorMsg);
 						}
 					}
 				}
@@ -1316,7 +1329,7 @@ private List<TrashPerson> buildTrashPersonList() {
 		return trashPersonList;
 	}
 	
-	public List<TrashTeam> getTrashTeams(int numberOfCycles) {
+	public List<TrashTeam> getTrashTeams(int numberOfCycles) throws CohomanException {
 		
 		List<TrashCycleBean> trashCycleBeanList = trashCyclesDao.getAllTrashCycles();
 		List<TrashSubstitutesBean> trashSubstituteBeans = trashSubstitutesDao.getTrashSubstitutes();	

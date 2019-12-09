@@ -36,17 +36,20 @@
 					<br />
 					<br />
 					
-					<h:messages globalOnly="true" />
 					<h:panelGrid width="33%" columns="3">
 						<h:outputLabel value="User Name: " for="UserName" />
 						<h:inputText id="UserName" value="#{authenticateController.username}"
-							required="true" />
+							size="31" required="true">
+							<f:validateLength minimum="2" maximum="30" />
+						</h:inputText>						
 						
 						<br />						
 						<h:outputLabel value="Password: " for="Password" 
 							rendered = "#{!authenticateController.theKiosk}"/>
 						<h:inputSecret id="Password" value="#{authenticateController.password}"
-							required="true" rendered = "#{!authenticateController.theKiosk}" />
+							size="31" required="true" rendered = "#{!authenticateController.theKiosk}" >
+							<f:validateLength minimum="8" maximum="30" />
+						</h:inputSecret>
 							
 						<br />
 						<br />
@@ -55,7 +58,10 @@
 							<h:commandButton value="Login" action="#{authenticateController.authenticate}" />						
 						</h:panelGroup>
 						
+					
 					</h:panelGrid>
+					
+					<h:messages id="message" layout="table" errorClass="errors" />
 			
 		</h:form>
 		<!-- code to set the default input focus -->
