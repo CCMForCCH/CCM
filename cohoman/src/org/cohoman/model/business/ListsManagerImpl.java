@@ -880,6 +880,14 @@ public class ListsManagerImpl implements ListsManager {
 		List<TrashCycleBean> trashCycleBeanList = trashCyclesDao
 				.getAllTrashCycles();
 		
+		// Sanity check to make sure the trashcycles table are in sync 
+		// with trashrows table.
+		if (trashTeamRowBeans.isEmpty() && trashCycleBeanList.size() > 0) {
+			logger.severe("TrashCycle table has cycles but TrashTeamRows table is empty, i.e. out of sync.");
+			throw new RuntimeException(
+					"TrashCycle table has cycles but TrashTeamRows table is empty, i.e. out of sync.");
+		}
+
 		// Now let's see if there are cycles to create. If there are, drop
 		// into this code. Otherwise, ignore the loop below.
 		if (trashCycleBeanList.isEmpty() || trashCycleBeanList.size() < NUMBER_OF_TRASH_CYCLES) {
@@ -909,7 +917,10 @@ public class ListsManagerImpl implements ListsManager {
 					
 					// Date for brand new first cycle!!!!
 					Calendar calToIncrement = Calendar.getInstance();
+					
+					// <<<<<<<<<<<<<<<<<<<<<<<< Starting Date !!!!!!!  >>>>>>>>>>>>>>>>>>>
 					calToIncrement.set(2019, Calendar.DECEMBER, 15);
+					
 					trashCycleBean.setTrashcyclestartdate(calToIncrement
 							.getTime());
 					
@@ -1282,7 +1293,7 @@ private List<TrashPerson> buildTrashPersonList() {
 		List<String> usernamesInUnit = userDao.getUserUsernamesAtUnit(thisUnitBean.getUnitnumber());
 
 		for (String thisUserUsername : usernamesInUnit) {
-			
+/*		
 			// Temporarily use method to map FirstName to get Role
 			String trashRole;
 			if (thisUserUsername.equals("bonnie") || thisUserUsername.equals("carol") ||
@@ -1311,7 +1322,12 @@ private List<TrashPerson> buildTrashPersonList() {
 			{
 				trashRole = TrashRolesEnums.NOROLE.name();
 			}
-			
+*/		
+			// Get the Trash Role from the user structure from the user database table
+			String trashRole;
+			UserDTO userDTO = userDao.getUserByUsername(thisUserUsername);
+			trashRole = userDTO.getTrashrole();
+
 			// Skip over people who have no role
 			if (trashRole.equals(TrashRolesEnums.NOROLE.name())) {
 				continue;

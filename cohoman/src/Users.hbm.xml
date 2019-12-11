@@ -33,6 +33,8 @@
   	  <property name="birthmonth" />
   	  <property name="birthyear" />
   	  <property name="usertype" />
+  	  <property name="trashrole" />
+  	  <property name="allowtexting" />
 
   </class>
   

@@ -21,6 +21,8 @@ public class User {
 	private int birthmonth;
 	private int birthyear;
 	private String usertype;
+	private String trashrole;
+	private boolean allowtexting;
 		
 	public Long getUserid() {
 		return userid;
@@ -127,12 +129,24 @@ public class User {
 	}
 	public void setUsertype(String usertype) {
 		this.usertype = usertype;
+	}	
+	public String getTrashrole() {
+		return trashrole;
 	}
-	
+	public void setTrashrole(String trashrole) {
+		this.trashrole = trashrole;
+	}
+	public boolean isAllowtexting() {
+		return allowtexting;
+	}
+	public void setAllowtexting(boolean allowtexting) {
+		this.allowtexting = allowtexting;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (allowtexting ? 1231 : 1237);
 		result = prime * result + birthday;
 		result = prime * result + birthmonth;
 		result = prime * result + birthyear;
@@ -154,6 +168,8 @@ public class User {
 				+ ((lastname == null) ? 0 : lastname.hashCode());
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result
+				+ ((trashrole == null) ? 0 : trashrole.hashCode());
 		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
 		result = prime * result + ((userid == null) ? 0 : userid.hashCode());
 		result = prime * result
@@ -174,6 +190,8 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
+		if (allowtexting != other.allowtexting)
+			return false;
 		if (birthday != other.birthday)
 			return false;
 		if (birthmonth != other.birthmonth)
@@ -224,6 +242,11 @@ public class User {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
+			return false;
+		if (trashrole == null) {
+			if (other.trashrole != null)
+				return false;
+		} else if (!trashrole.equals(other.trashrole))
 			return false;
 		if (unit == null) {
 			if (other.unit != null)

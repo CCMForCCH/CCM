@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
 import org.cohoman.model.business.User;
+import org.cohoman.model.business.trash.TrashRolesEnums;
 import org.cohoman.model.integration.persistence.beans.UserTypeEnum;
 import org.cohoman.model.service.UserService;
 import org.cohoman.view.controller.utils.CalendarUtils;
@@ -33,6 +34,8 @@ public class EditUserController implements Serializable {
 	private int birthmonth;
 	private int birthyear;
 	private String usertype;
+	private boolean allowtexting;
+	private TrashRolesEnums trashrole;
 
 	public UserService getUserService() {
 		return userService;
@@ -129,6 +132,26 @@ public class EditUserController implements Serializable {
 
 	public UserTypeEnum[] getUserTypes() {
 		return UserTypeEnum.values();
+	}
+
+	public boolean isAllowtexting() {
+		return allowtexting;
+	}
+
+	public void setAllowtexting(boolean allowtexting) {
+		this.allowtexting = allowtexting;
+	}
+
+	public TrashRolesEnums getTrashrole() {
+		return trashrole;
+	}
+
+	public void setTrashrole(TrashRolesEnums trashrole) {
+		this.trashrole = trashrole;
+	}
+
+	public TrashRolesEnums[] getTrashroles() {
+		return TrashRolesEnums.values();
 	}
 
 	public String editUserView() throws Exception {

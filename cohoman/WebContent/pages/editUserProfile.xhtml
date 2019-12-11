@@ -53,6 +53,17 @@
 				<h:inputText id="workphone" value="#{editUserProfileController.currentUser.workphone}" size = "13" maxlength = "12" />
 				Food Restrictions:
 				<h:inputText id="foodrestrictions" value="#{editUserProfileController.currentUser.foodrestrictions}" size="50" maxlength = "48" />
+				
+				<h:outputText value="Trash Role:"  />				
+				<h:selectOneMenu value="#{editUserProfileController.currentUser.trashrole}" >
+    				<f:selectItems value="#{editUserProfileController.trashroles}" />
+				</h:selectOneMenu>
+	
+				<h:outputText value="Allow Text Messages:"  />				
+				<h:selectBooleanCheckbox 
+					value="#{editUserProfileController.currentUser.allowtexting}" >
+				</h:selectBooleanCheckbox>
+				
 				Emergency Contact Information:
 				<h:inputTextarea value="#{editUserProfileController.currentUser.emergencyinfo}" rows="7" cols="70">
 					<f:validateLength maximum="500" />

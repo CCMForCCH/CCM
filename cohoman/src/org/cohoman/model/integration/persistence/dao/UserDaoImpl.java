@@ -116,6 +116,8 @@ public class UserDaoImpl implements UserDao {
 			userBean.setBirthmonth(theUser.getBirthmonth());
 			userBean.setBirthyear(theUser.getBirthyear());
 			userBean.setUsertype(theUser.getUsertype());
+			userBean.setTrashrole(theUser.getTrashrole());
+			userBean.setAllowtexting(theUser.isAllowtexting());
 
 			// UserBean mergedUserBean = (UserBean)session.merge(userBean);
 			session.merge(userBean);
@@ -530,6 +532,8 @@ public class UserDaoImpl implements UserDao {
 		userBean.setBirthmonth(theUserDTO.getBirthmonth());
 		userBean.setBirthyear(theUserDTO.getBirthyear());
 		userBean.setUsertype(theUserDTO.getUsertype());
+		userBean.setTrashrole(theUserDTO.getTrashrole());
+		userBean.setAllowtexting(theUserDTO.isAllowtexting());
 		return userBean;
 	}
 
@@ -556,6 +560,8 @@ public class UserDaoImpl implements UserDao {
 			userDTO.setBirthmonth(theUserBean.getBirthmonth());
 			userDTO.setBirthyear(theUserBean.getBirthyear());
 			userDTO.setUsertype(theUserBean.getUsertype());
+			userDTO.setTrashrole(theUserBean.getTrashrole());
+			userDTO.setAllowtexting(theUserBean.isAllowtexting());
 		} catch (Exception ex) {
 			logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
 			return null;

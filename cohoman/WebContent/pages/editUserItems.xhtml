@@ -79,7 +79,17 @@
 						itemLabel="#{oneusertype}"
 						itemValue="#{oneusertype}" />
 				</h:selectOneMenu>
-				
+
+				<h:outputText value="Trash Role:"  />				
+				<h:selectOneMenu value="#{editUserController.chosenUser.trashrole}" >
+    				<f:selectItems value="#{editUserController.trashroles}" />
+				</h:selectOneMenu>
+	
+				<h:outputText value="Allow Text Messages:"  />				
+				<h:selectBooleanCheckbox 
+					value="#{editUserController.chosenUser.allowtexting}" >
+				</h:selectBooleanCheckbox>
+
 				Emergency Contact Information:
 				<h:inputTextarea value="#{editUserController.chosenUser.emergencyinfo}" rows="7" cols="70">
 					<f:validateLength maximum="500" />

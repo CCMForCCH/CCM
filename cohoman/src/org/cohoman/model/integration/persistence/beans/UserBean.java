@@ -20,6 +20,8 @@ public class UserBean {
 	private int birthmonth;
 	private int birthyear;
 	private String usertype;
+	private String trashrole;
+	private boolean allowtexting;
 
 	public UserBean() {
 	}
@@ -139,6 +141,22 @@ public class UserBean {
 
 	public void setUsertype(String usertype) {
 		this.usertype = usertype;
+	}
+
+	public String getTrashrole() {
+		return trashrole;
+	}
+
+	public void setTrashrole(String trashrole) {
+		this.trashrole = trashrole;
+	}
+
+	public boolean isAllowtexting() {
+		return allowtexting;
+	}
+
+	public void setAllowtexting(boolean allowtexting) {
+		this.allowtexting = allowtexting;
 	}
 
 }

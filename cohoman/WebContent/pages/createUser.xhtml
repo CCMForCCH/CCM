@@ -77,6 +77,16 @@
 						itemLabel="#{oneusertype}"
 						itemValue="#{oneusertype}" />
 				</h:selectOneMenu>
+
+				<h:outputText value="Trash Role:"  />				
+				<h:selectOneMenu value="#{createUserController.trashrole}" >
+    				<f:selectItems value="#{createUserController.trashroles}" />
+				</h:selectOneMenu>
+	
+				<h:outputText value="Allow Text Messages:"  />				
+				<h:selectBooleanCheckbox 
+					value="#{createUserController.allowtexting}" >
+				</h:selectBooleanCheckbox>
 				
 			</h:panelGrid>
 			<br />

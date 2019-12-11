@@ -116,6 +116,8 @@ public class UserManagerImpl implements UserManager {
 		oneUser.setBirthmonth(userDTO.getBirthmonth());
 		oneUser.setBirthyear(userDTO.getBirthyear());
 		oneUser.setUsertype(userDTO.getUsertype());
+		oneUser.setTrashrole(userDTO.getTrashrole());
+		oneUser.setAllowtexting(userDTO.isAllowtexting());
 		return oneUser;
 	}
 	

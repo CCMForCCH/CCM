@@ -10,11 +10,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
 import org.cohoman.model.business.User;
+import org.cohoman.model.business.trash.TrashRolesEnums;
 import org.cohoman.model.dto.UserDTO;
 import org.cohoman.model.integration.persistence.beans.UserTypeEnum;
 import org.cohoman.model.service.UserService;
 import org.cohoman.view.controller.utils.CalendarUtils;
 import org.cohoman.view.controller.utils.PasswordCheckingUtil;
+import org.cohoman.view.controller.utils.PotluckCategoriesEnums;
 import org.cohoman.view.controller.utils.Validators;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -40,6 +42,9 @@ public class CreateUserController implements Serializable {
 	private String birthmonth = "0"; // January starts at 0
 	private String birthday = "1";
 	private String chosenusertype;
+	private boolean allowtexting;
+	private TrashRolesEnums trashrole;
+
 
 	private UserService userService = null;
 
@@ -116,6 +121,8 @@ public class CreateUserController implements Serializable {
 		theUser.setBirthmonth(Integer.parseInt(birthmonth));
 		theUser.setBirthyear(Integer.parseInt(birthyear));
 		theUser.setUsertype(chosenusertype);
+		theUser.setTrashrole(trashrole.name());
+		theUser.setAllowtexting(allowtexting);
 		List<User> currentUsers = userService.getAllUsers();
 		for (User oneUser : currentUsers) {
 			if (oneUser.getUsername().equalsIgnoreCase(username)) {
@@ -279,6 +286,26 @@ public class CreateUserController implements Serializable {
 
 	public void setChosenusertype(String chosenusertype) {
 		this.chosenusertype = chosenusertype;
+	}
+
+	public TrashRolesEnums[] getTrashroles() {
+		return TrashRolesEnums.values();
+	}
+
+	public TrashRolesEnums getTrashrole() {
+		return trashrole;
+	}
+
+	public void setTrashrole(TrashRolesEnums trashrole) {
+		this.trashrole = trashrole;
+	}
+
+	public boolean isAllowtexting() {
+		return allowtexting;
+	}
+
+	public void setAllowtexting(boolean allowtexting) {
+		this.allowtexting = allowtexting;
 	}
 
 }

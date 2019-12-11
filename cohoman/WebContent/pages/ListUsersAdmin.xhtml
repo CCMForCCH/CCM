@@ -30,7 +30,7 @@
 
 	<h:dataTable value="#{retrieveUserListController.allUserList}" var="oneuser" 
 		styleClass="users" headerClass="usersHeader" 
-		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns" >
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns" >
  
 		<h:column>
   			<f:facet name="header">First Name</f:facet> 
@@ -82,6 +82,15 @@
   			#{oneuser.email}           
 		</h:column>
 
+ 		<h:column>
+  			<f:facet name="header">Trash Role</f:facet> 
+  			#{oneuser.trashrole}           
+		</h:column>
+
+ 		<h:column>
+  			<f:facet name="header">Allow Texts</f:facet> 
+  			#{oneuser.allowtexting}           
+		</h:column>
 
 </h:dataTable>
 

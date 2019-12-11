@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.cohoman.model.business.User;
+import org.cohoman.model.business.trash.TrashRolesEnums;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
 import org.cohoman.model.service.ConfigurationService;
 import org.cohoman.model.service.UserService;
@@ -26,6 +27,8 @@ public class EditUserProfileController implements Serializable {
 	private User currentUser;
 	private String chosenUnitString;
 	private List<UnitBean> unitBeanList;
+	private boolean allowtexting;
+	private TrashRolesEnums trashrole;
 
 	public EditUserProfileController() {
 		FacesContext ctx = FacesContext.getCurrentInstance();
@@ -73,11 +76,27 @@ public class EditUserProfileController implements Serializable {
 		unitBeanList = configurationService.getAllUnits();
 		return unitBeanList;
 	}
-/*
-	public void setUnitBeanList(List<UnitBean> unitBeanList) {
-		this.unitBeanList = unitBeanList;
+
+	public boolean isAllowtexting() {
+		return allowtexting;
 	}
-*/
+
+	public void setAllowtexting(boolean allowtexting) {
+		this.allowtexting = allowtexting;
+	}
+
+	public TrashRolesEnums getTrashrole() {
+		return trashrole;
+	}
+
+	public void setTrashrole(TrashRolesEnums trashrole) {
+		this.trashrole = trashrole;
+	}
+
+	public TrashRolesEnums[] getTrashroles() {
+		return TrashRolesEnums.values();
+	}
+
 	public String editUserProfileView() throws Exception {
 
 		// Validate email address
