@@ -367,11 +367,10 @@ public class ListsManagerImpl implements ListsManager {
 		if (sectionEnum == CchSectionTypeEnum.COMMONHOUSE) {
 			unitBeanList = unitsDao.getCommonhouseUnits();
 			
-			// Exception code to remove units 312 and 414 from the list.
+			// Exception code to remove unit 414 from the list.
 			List<UnitBean> modifiedUnitBeanList = new ArrayList<UnitBean>();
 			for (UnitBean oneUnitBean : unitBeanList) {
-				if (!(oneUnitBean.getUnitnumber().equals("312") || oneUnitBean
-						.getUnitnumber().equals("414"))) {
+				if (!(oneUnitBean.getUnitnumber().equals("414"))) {
 					modifiedUnitBeanList.add(oneUnitBean);
 				}
 			}

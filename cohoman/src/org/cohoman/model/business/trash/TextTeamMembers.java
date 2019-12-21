@@ -72,7 +72,7 @@ public class TextTeamMembers implements Runnable, Serializable {
 			if (isNowTheSelectedDayAndTime(startDate, 20, 0)) {
 				logger.info("Team0 members are: " + teamMembers0);
 				logger.info("Team1 members are: " + teamMembers1);
-				sendTextMessageToTeam(teamMembers1, "You are on the trash team next weekend.");
+				sendTextMessageToTeam(teamMembers1, "CCM: You are on the trash team next weekend.");
 			}
 
 			// Next, send messages that today is the day for trash. But
@@ -80,12 +80,12 @@ public class TextTeamMembers implements Runnable, Serializable {
 			// check for the appropriate day and time.
 			if (isNowTheSelectedDayAndTime(startDate, 9, 0)) {
 				logger.info("Team members are: " + teamMembers0);
-				sendTextMessageToTeam(teamMembers0, "You are on the trash team this evening.");				
+				sendTextMessageToTeam(teamMembers0, "CCM: You are on the trash team this evening.");				
 			}
 
 			if (isNowTheSelectedDayAndTime(startDate, 17, 0)) {
 				logger.info("Team members are: " + teamMembers0);
-				sendTextMessageToTeam(teamMembers0, "You are scheduled to do trash soon or now!");				
+				sendTextMessageToTeam(teamMembers0, "CCM: You are scheduled to do trash soon or now!");				
 			}
 			
 		} catch (Throwable th) {
@@ -190,7 +190,7 @@ public class TextTeamMembers implements Runnable, Serializable {
 					&& Validators.isValidPhoneNumber(phoneNumber)) {
 				phoneNumber = phoneNumber.replace("-", ""); // remove dashes
 															// from phone number
-				// SmsSender.sendtextMessage(phoneNumber, textMsg);
+				SmsSender.sendtextMessage(phoneNumber, textMsg);
 				SmsSender.sendtextMessage("6179902631",
 						"CCM: sending msg for " + oneMember
 								+ " to phone number " + theUser.getCellphone() + " " + textMsg);

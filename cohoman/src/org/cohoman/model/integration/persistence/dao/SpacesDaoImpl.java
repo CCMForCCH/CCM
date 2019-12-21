@@ -15,6 +15,10 @@ public class SpacesDaoImpl implements SpacesDao {
 		Query query = session.createQuery(queryString);
 		List<SpaceBean> spaceBeans = query.list();
 
+		// 12/20/2019: hack to remove the kid's room from
+		// the list of spaces w/o changing the DB
+		spaceBeans.remove(2);
+		
 		session.flush();
 		session.close();
 		return spaceBeans;
