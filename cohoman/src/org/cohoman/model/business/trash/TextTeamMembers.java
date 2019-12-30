@@ -8,8 +8,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.cohoman.model.business.ListsManagerImpl.SecurityDataForRow;
 import org.cohoman.model.business.User;
 import org.cohoman.model.integration.SMS.SmsSender;
+import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
 import org.cohoman.model.springcontext.AppContext;
@@ -55,14 +57,14 @@ public class TextTeamMembers implements Runnable, Serializable {
 			//Calendar cal = Calendar.getInstance();
 			//logger.info("timer woke up at: " + cal.getTime());
 
+			// Get trash schedule rows for date and team members
 			List<TrashRow> trashRows = listsService.getTrashSchedule();
-			List<User> usersHereNow = userService.getUsersHereNow();
 			List<String> teamMembers0 = getUsernamesForTeam(trashRows
 					.get(0));
 			List<String> teamMembers1 =
 					getUsernamesForTeam(trashRows.get(1));
 
-			// Convert date to figure out what date to send the messages
+			// Convert trash date to figure out what date to send the messages
 			String startDateString = trashRows.get(0).getSundayDate();
 			Date startDate = new SimpleDateFormat("MMM d, yyyy")
 					.parse(startDateString);
@@ -88,11 +90,27 @@ public class TextTeamMembers implements Runnable, Serializable {
 				sendTextMessageToTeam(teamMembers0, "CCM: You are scheduled to do trash soon or now!");				
 			}
 			
+			// Next get the Security schedule so we can send notices to them.
+			List<SecurityDataForRow> securityRows = listsService
+					.getSecurityListWithSubs(CchSectionTypeEnum.COMMONHOUSE);
+			
+			// Now we need to get the date and person for the security person
+			Date securityDate = securityRows.get(0).getStartingDate();
+			List<String> singleSecurityPersonList = new ArrayList<String>();
+			singleSecurityPersonList.add(securityRows.get(0).getUsername());
+			//singleSecurityPersonList.add("bill");
+			//Calendar today = Calendar.getInstance();
+			//today.set(Calendar.HOUR, 0);
+			//today.set(Calendar.MINUTE, 0);
+			//today.set(Calendar.SECOND, 0);
+			//if (isNowTheSelectedDayAndTime(today.getTime(), 0, 14)) {
+			if (isNowTheSelectedDayAndTime(securityDate, 10, 0)) {
+				sendTextMessageToTeam(singleSecurityPersonList, "CCM: You are scheduled to do security starting tonight");								
+			}
 		} catch (Throwable th) {
 			logger.severe(th.toString());
 			th.printStackTrace();
 		}
-
 	}
 
 	private boolean isNowTheSelectedDayAndTime(Date dateOnly, int hour, int minutes) {

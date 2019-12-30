@@ -41,7 +41,7 @@
  
 		<h:column>
   			<f:facet name="header">Unit-Person</f:facet> 
-  			#{onerow.unitnumber}  #{onerow.firstname}         
+  			#{onerow.unitnumber}  #{onerow.username}         
 		</h:column>
 
 		<h:column>
@@ -53,7 +53,7 @@
   			<f:facet name="header">Add Substitute</f:facet> 
   			<h:link value="add_substitute" outcome="modifySubstituteTable">
   				<f:param name="securityStartDate" value="#{onerow.startingDateString}"  />
-  				<f:param name="originalSecurityPerson" value="#{onerow.firstname}"  />  				
+  				<f:param name="originalSecurityPerson" value="#{onerow.username}"  />  				
   			</h:link> 
 		</h:column>
 
