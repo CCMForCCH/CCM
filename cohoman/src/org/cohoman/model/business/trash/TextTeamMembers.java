@@ -198,10 +198,16 @@ public class TextTeamMembers implements Runnable, Serializable {
 			if (theUser == null) {
 				logger.warning("AUDIT: Unable to find user "
 						+ oneMember
-						+ " to notify that trash team member of request; won't end a message.");
+						+ " to notify that trash team member of request; won't send a message.");
 				return;
 			}
 
+			if (!theUser.isAllowtexting()) {
+				logger.warning("AUDIT: Texting is disabled for "
+						+ oneMember
+						+ " preventing notification of trash duty.");
+				return;				
+			}
 			// OK, we know the user. Get the phone number and send the message.
 			String phoneNumber = theUser.getCellphone();
 			if (!phoneNumber.isEmpty()
