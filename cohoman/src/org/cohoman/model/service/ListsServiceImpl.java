@@ -237,7 +237,13 @@ public class ListsServiceImpl implements ListsService {
 		return listsManager.getTrashPersonListOrig();
 	}
 
-	public void deleteTrashSubstitute(Long substitutesId) {
+	public void deleteTrashSubstitute(Long substitutesId, Date startingDate, String origUsername) {
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy");
+		logger.info("AUDIT: Deleting trash substitute for date "
+				+ formatter.format(startingDate.getTime())
+				+ " and original user " + origUsername
+				+ ", being deleted by " + LoggingUtils.getCurrentUsername());
 		listsManager.deleteTrashSubstitute(substitutesId);
 	}
 

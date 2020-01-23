@@ -260,8 +260,10 @@ public class RetrieveTrashListController implements Serializable {
 				.getTrashSubstitute(trashTeamStartDate, chosenTeamMember);
 		if (theTrashSubstituteBean != null) {
 			// already have an entry. Delete it first.
-			listsService.deleteTrashSubstitute(theTrashSubstituteBean
-					.getSubstitutesid());
+			listsService.deleteTrashSubstitute(
+					theTrashSubstituteBean.getSubstitutesid(),
+					theTrashSubstituteBean.getStartingdate(),
+					theTrashSubstituteBean.getOrigusername());
 		}
 
 		if (chosenSubstitute == null || chosenSubstitute.isEmpty()) {
@@ -269,6 +271,8 @@ public class RetrieveTrashListController implements Serializable {
 			// string). If so, delete the entry from the TrashSubstitutes table.
 			// First, find out the SubstitutesId based on the date and username.
 			long substitutesId = 0;
+			Date startingDate = null;
+			String origUsername = null;
 			List<TrashSubstitutesBean> substituteBeans = listsService
 					.getTrashSubstitutes();
 			if (substituteBeans != null) {
@@ -280,11 +284,14 @@ public class RetrieveTrashListController implements Serializable {
 							&& trashSubstitutesBean.getOrigusername().equals(
 									chosenTeamMember)) {
 						substitutesId = trashSubstitutesBean.getSubstitutesid();
+						startingDate = trashSubstitutesBean.getStartingdate();
+						origUsername = trashSubstitutesBean.getOrigusername();
 						break;
 					}
 				}
 				if (substitutesId != 0) {
-					listsService.deleteTrashSubstitute(substitutesId);
+					listsService.deleteTrashSubstitute(substitutesId,
+							startingDate, origUsername);
 				}
 			}
 			// else no rows whatsoever thus nothing to delete or add; drop thru

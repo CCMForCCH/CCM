@@ -65,7 +65,7 @@ public interface ListsService {
 	public void setTrashSubstitute(Date startingDate, String originalUsername,
 			String substituteUsername) throws CohomanException;
 
-	public void deleteTrashSubstitute(Long substitutesId);
+	public void deleteTrashSubstitute(Long substitutesId, Date startingDate, String origUsername);
 
 	public List<TrashSubstitutesBean> getTrashSubstitutes();
 
