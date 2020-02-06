@@ -17,6 +17,7 @@ import org.cohoman.model.business.trash.TrashSchedule;
 import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
+import org.cohoman.model.integration.email.SendEmail;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
@@ -258,6 +259,10 @@ public class ListsServiceImpl implements ListsService {
 
 	public List<TrashRow> getTrashTeamsFromDB() {
 		return listsManager.getTrashTeamsFromDB();
+	}
+
+	public void sendEmailToAddress(String recepient, String subject, String body) {
+		listsManager.sendEmailToAddress(recepient, subject, body);
 	}
 
 }

@@ -19,6 +19,7 @@ import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.dto.SecurityStartingPointDTO;
 import org.cohoman.model.dto.UserDTO;
+import org.cohoman.model.integration.email.SendEmail;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashCycleBean;
@@ -1446,6 +1447,10 @@ public class ListsManagerImpl implements ListsManager {
 			String origUsername) {
 		return trashSubstitutesDao.getTrashSubstitute(startingDate,
 				origUsername);
+	}
+
+	public void sendEmailToAddress(String recepient, String subject, String body) {
+		SendEmail.sendEmailToAddress(recepient, subject, body);
 	}
 
 }

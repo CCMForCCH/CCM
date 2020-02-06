@@ -605,6 +605,20 @@
 		</managed-property>
 	</managed-bean>
 
+	<managed-bean>
+		<managed-bean-name>testNotifiesController</managed-bean-name>
+		<managed-bean-class>org.cohoman.view.controller.TestNotifiesController</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>userService</property-name>
+			<value>#{userService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>listsService</property-name>
+			<value>#{listsService}</value>
+		</managed-property>
+	</managed-bean>
+
 <!-- authentication stuff -->
 	<navigation-rule>
 		<navigation-case>
@@ -1413,6 +1427,15 @@
 		<navigation-case>
 			<from-outcome>deleteMaintenanceItem</from-outcome>
 			<to-view-id>/displayMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/testEmail.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>sendEmail</from-outcome>
+			<to-view-id>/indexForSuperadmin.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>

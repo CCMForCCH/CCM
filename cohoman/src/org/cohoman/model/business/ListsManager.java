@@ -71,5 +71,9 @@ public interface ListsManager {
 			String origUsername);
 
 	public List<TrashRow> getTrashTeamsFromDB();
+	
+	// Test notifications
+	public void sendEmailToAddress(String recepient, String subject, String body);
+
 
 }

@@ -11,9 +11,11 @@ import java.util.logging.Logger;
 import org.cohoman.model.business.ListsManagerImpl.SecurityDataForRow;
 import org.cohoman.model.business.User;
 import org.cohoman.model.integration.SMS.SmsSender;
+import org.cohoman.model.integration.email.SendEmail;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
+import org.cohoman.model.singletons.ConfigScalarValues;
 import org.cohoman.model.springcontext.AppContext;
 import org.cohoman.view.controller.utils.Validators;
 import org.springframework.context.ApplicationContext;
@@ -107,6 +109,10 @@ public class TextTeamMembers implements Runnable, Serializable {
 			if (isNowTheSelectedDayAndTime(securityDate, 10, 0)) {
 				sendTextMessageToTeam(singleSecurityPersonList, "CCM: You are scheduled to do security starting tonight");								
 			}
+			
+			// This is where I'd put Hofeller stuff ....
+			//logger.info("Sending email fro  TextTeammembers");
+			//SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "CCM Notification", "test body 2/3");
 		} catch (Throwable th) {
 			logger.severe(th.toString());
 			th.printStackTrace();
@@ -215,7 +221,7 @@ public class TextTeamMembers implements Runnable, Serializable {
 				phoneNumber = phoneNumber.replace("-", ""); // remove dashes
 															// from phone number
 				SmsSender.sendtextMessage(phoneNumber, textMsg);
-				SmsSender.sendtextMessage("6179902631",
+				SmsSender.sendtextMessage(ConfigScalarValues.my_phone_number,
 						"CCM: sending msg for " + oneMember
 								+ " to phone number " + theUser.getCellphone() + " " + textMsg);
 			} else {

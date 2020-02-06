@@ -74,4 +74,6 @@ public interface ListsService {
 
 	public List<TrashRow> getTrashTeamsFromDB();
 
+	// Test notifications
+	public void sendEmailToAddress(String recepient, String subject, String body);
 }

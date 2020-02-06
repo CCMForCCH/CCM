@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Test Email
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="1" title="Please Enter Email Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter Email Information"/>
+         		</f:facet>
+         		<br/> <br/>	
+         		
+          		<b>Mail Recepient:</b>
+				<h:selectOneMenu value="#{testNotifiesController.chosenUserString}"  
+					style="font-size: medium;" >
+					<f:selectItem itemValue="#{null}" itemLabel="Choose the user" />
+					<f:selectItems value="#{testNotifiesController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.firstname} #{oneuser.lastname}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+         		<br/>	
+          				
+				<b>Subject:</b>
+				<h:inputText id="Subject" value="#{testNotifiesController.emailSubject}" maxlength = "80" required="true"/>
+         		<br/>	
+											
+				<b>Message Body:</b>
+				<h:inputTextarea id="MessageBody" value="#{testNotifiesController.emailBody}" rows="14" cols="70" required="true">
+					<f:validateLength maximum="4095" />
+				</h:inputTextarea>
+ 								
+				
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center">				
+				<h:commandButton value="Submit Event" action="#{testNotifiesController.sendEmail}" />
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
