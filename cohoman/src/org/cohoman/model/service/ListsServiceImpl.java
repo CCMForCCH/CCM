@@ -261,8 +261,12 @@ public class ListsServiceImpl implements ListsService {
 		return listsManager.getTrashTeamsFromDB();
 	}
 
-	public void sendEmailToAddress(String recepient, String subject, String body) {
-		listsManager.sendEmailToAddress(recepient, subject, body);
+	public void sendEmailToAddress(String emailAddress, String subject, String body) {
+		listsManager.sendEmailToAddress(emailAddress, subject, body);
+	}
+
+	public void sendTextMessageToPerson(String cellphoneNumber, String textMessage) {
+		listsManager.sendTextMessageToPerson(cellphoneNumber, textMessage);
 	}
 
 }

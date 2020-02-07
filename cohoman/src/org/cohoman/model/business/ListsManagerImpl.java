@@ -19,6 +19,7 @@ import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.dto.SecurityStartingPointDTO;
 import org.cohoman.model.dto.UserDTO;
+import org.cohoman.model.integration.SMS.SmsSender;
 import org.cohoman.model.integration.email.SendEmail;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
@@ -1449,8 +1450,12 @@ public class ListsManagerImpl implements ListsManager {
 				origUsername);
 	}
 
-	public void sendEmailToAddress(String recepient, String subject, String body) {
-		SendEmail.sendEmailToAddress(recepient, subject, body);
+	public void sendEmailToAddress(String emailAddress, String subject, String body) {
+		SendEmail.sendEmailToAddress(emailAddress, subject, body);
+	}
+
+	public void sendTextMessageToPerson(String cellphoneNumber, String textMessage) {
+		SmsSender.sendtextMessage(cellphoneNumber, textMessage);
 	}
 
 }

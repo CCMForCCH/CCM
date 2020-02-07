@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import org.cohoman.model.business.User;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
+import org.cohoman.model.singletons.ConfigScalarValues;
 
 @ManagedBean
 @SessionScoped
@@ -21,6 +22,7 @@ public class TestNotifiesController implements Serializable {
 	private String emailSubject;
 	private String emailBody;
 	private String chosenUserString;
+	private String textMessage;
 	private UserService userService = null;
 	private ListsService listsService = null;
 
@@ -31,6 +33,7 @@ public class TestNotifiesController implements Serializable {
 		chosenUserString = "";
 		emailSubject = "";
 		emailBody = "";
+		textMessage = "";
 	}
 
 	public UserService getUserService() {
@@ -73,6 +76,14 @@ public class TestNotifiesController implements Serializable {
 		this.chosenUserString = chosenUserString;
 	}
 
+	public String getTextMessage() {
+		return textMessage;
+	}
+
+	public void setTextMessage(String textMessage) {
+		this.textMessage = textMessage;
+	}
+
 	public String sendEmail() throws Exception {
 		
 		if (chosenUserString == null || chosenUserString.isEmpty()) {
@@ -85,13 +96,51 @@ public class TestNotifiesController implements Serializable {
 
 		Long userid = Long.valueOf(chosenUserString);
 		User theUser = userService.getUser(userid);
+		if (theUser.getEmail() == null || theUser.getEmail().isEmpty()) {
+			FacesMessage message = new FacesMessage(
+					"User Error: this user has no valid email address.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
 		
+		// Actually send the email!!
 		listsService.sendEmailToAddress(theUser.getEmail(), emailSubject, emailBody);
 		
 		// clear out fields for return to the page in this session
 		clearFormFields();
 
 		return "sendEmail";
+	}
+
+	public String sendTextMessage() throws Exception {
+		
+		if (chosenUserString == null || chosenUserString.isEmpty()) {
+			FacesMessage message = new FacesMessage(
+					"User Error: you must choose a user.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+
+		Long userid = Long.valueOf(chosenUserString);
+		User theUser = userService.getUser(userid);
+
+		if (theUser.getCellphone() == null || theUser.getCellphone().isEmpty()) {
+			FacesMessage message = new FacesMessage(
+					"User Error: this user has no valid cellphone number.");
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return null;
+		}
+		
+		// Actually send the text message!!
+		listsService.sendTextMessageToPerson(theUser.getCellphone(), textMessage);
+		
+		// clear out fields for return to the page in this session
+		clearFormFields();
+
+		return "sendTextMessage";
 	}
 
 	public List<User> getUserList() {

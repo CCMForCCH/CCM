@@ -216,6 +216,12 @@ public class TextTeamMembers implements Runnable, Serializable {
 			}
 			// OK, we know the user. Get the phone number and send the message.
 			String phoneNumber = theUser.getCellphone();
+			
+			// Oh, special-case John M's phone number
+			if (phoneNumber.isEmpty() && theUser.getUsername().equals("johnm")) {
+				phoneNumber = ConfigScalarValues.johnms_phone_number;
+			}
+			
 			if (!phoneNumber.isEmpty()
 					&& Validators.isValidPhoneNumber(phoneNumber)) {
 				phoneNumber = phoneNumber.replace("-", ""); // remove dashes

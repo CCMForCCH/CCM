@@ -1440,6 +1440,15 @@
 		</navigation-case>
 	</navigation-rule>
 
+	<navigation-rule>
+		<from-view-id>/testTextMessage.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>sendTextMessage</from-outcome>
+			<to-view-id>/indexForSuperadmin.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
 <!-- Index for meal admin  -->
 	<navigation-rule>
 		<from-view-id>/indexForMealadmin.xhtml</from-view-id>
