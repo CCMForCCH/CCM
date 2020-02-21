@@ -1,6 +1,7 @@
 package org.cohoman.view.controller;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
+import org.cohoman.view.controller.utils.TaskStatusEnums;
 
 @ManagedBean
 @SessionScoped
@@ -281,7 +283,7 @@ public class MtaskController implements Serializable {
 	}
 
 	public String addMaintenanceTask() throws Exception {
-
+		
 		// Create the DTO and perform the create by calling Lists Service
 		MtaskDTO dto = createMtaskDTO();
 		try {
@@ -293,6 +295,28 @@ public class MtaskController implements Serializable {
 			return null;
 		}
 
+		// FIXME Assume false for now until I put complete checkbox on create page
+		// will also set enddate to null or something depending on user selections
+		taskcomplete = false;
+		
+		// We just created a new Mtask. Mark the Task Status in the parent
+		// item as INPROGRESS, assuming that it is not marked complete.
+		if (!taskcomplete && dto.getTaskendDate() == null) {
+
+			MaintenanceItemDTO maintenanceItemDTO = listsService
+					.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
+			maintenanceItemDTO.setTaskStatus(TaskStatusEnums.INPROGRESS.name());;
+			
+			try {
+				listsService.updateMaintenanceItem(maintenanceItemDTO);
+			} catch (CohomanException ex) {
+				FacesMessage message = new FacesMessage(ex.getErrorText());
+				message.setSeverity(FacesMessage.SEVERITY_ERROR);
+				FacesContext.getCurrentInstance().addMessage(null, message);
+				return null;
+			}
+		}
+		
 		// clear out fields for return to the page in this session
 		clearFormFields();
 
@@ -336,6 +360,19 @@ public class MtaskController implements Serializable {
 			MaintenanceItemDTO maintenanceItemDTO = listsService
 					.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
 			maintenanceItemDTO.setLastperformedDate(now.getTime());
+			
+			// And also recompute the NextServiceDate
+			Calendar nextServiceDateCal = Calendar.getInstance();
+			int freqInMonths = 
+					Integer.valueOf(maintenanceItemDTO.getFrequencyOfItem());
+			nextServiceDateCal.add(Calendar.MONTH, 
+					freqInMonths);
+			maintenanceItemDTO.setNextServiceDate(nextServiceDateCal.getTime());
+
+			// Lastly, mark the status in the parent item as UPTODATE
+			maintenanceItemDTO.setTaskStatus(TaskStatusEnums.UPTODATE.name());
+			
+			// Now write the maintenance item out to the DB
 			try {
 				listsService.updateMaintenanceItem(maintenanceItemDTO);
 			} catch (CohomanException ex) {
@@ -365,7 +402,14 @@ public class MtaskController implements Serializable {
 			throw new RuntimeException("chosenMtaskItemId is null");
 		}
 		Long chosenMtaskItemIdAsLong = Long.valueOf(chosenMtaskItemId);
+		
+		// TODO arbitarily set maintenance item task status to UPTODATE
+		MaintenanceItemDTO maintenanceItemDTO = listsService
+				.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
+		maintenanceItemDTO.setTaskStatus(TaskStatusEnums.UPTODATE.name());;
+		listsService.updateMaintenanceItem(maintenanceItemDTO);
 
+		// Now delete the maintenance task
 		listsService.deleteMtask(chosenMtaskItemIdAsLong);
 	}
 

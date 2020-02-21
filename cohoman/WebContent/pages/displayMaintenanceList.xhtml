@@ -43,35 +43,8 @@
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Item Description</f:facet> 
-  			#{oneitem.itemdescription}           
-		</h:column>
-
-		<h:column>
-  			<f:facet name="header">Created By</f:facet> 
-  			#{oneitem.username}           
-		</h:column>
-
-		<h:column>
-  			<f:facet name="header">Created On</f:facet> 
-  			#{oneitem.printableCreatedDate}           
-		</h:column>
-
-		<h:column>
-  			<f:facet name="header">Priority</f:facet> 
-  			#{oneitem.priority}           
-		</h:column>
-
-		<h:column>
-  			<f:facet name="header">Freq (Months)</f:facet> 
-  			<div align="center">
-  			#{oneitem.frequencyOfItem} 
-  			</div>          
-		</h:column>
-
-		<h:column>
-  			<f:facet name="header">Target Time</f:facet> 
-  			#{oneitem.targetTimeOfyear}           
+  			<f:facet name="header">Current Task Status</f:facet> 
+  			#{oneitem.taskStatus}
 		</h:column>
 
 		<h:column>
@@ -80,16 +53,34 @@
 		</h:column>
 
 		<h:column>
+  			<f:facet name="header">NextServiceDate</f:facet> 
+  			#{oneitem.printableNextServiceDate}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Priority</f:facet> 
+  			#{oneitem.priority}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Item Details</f:facet> 
+  			<h:link value="ItemDetails" outcome="displayMaintenanceItemDetails.xhtml">
+  				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
+ 			</h:link>          
+		</h:column>
+
+		<h:column>
   			<f:facet name="header">Create Task</f:facet> 
-  			<h:link value="createtask" outcome="createMaintenanceTask.xhtml">
+  			<h:link value="CreateTask" outcome="createMaintenanceTask.xhtml" 
+  				rendered="#{oneitem.taskStatus ne 'INPROGRESS'}">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
   				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
   			</h:link>          
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">List Tasks</f:facet> 
-  			<h:link value="listtasks" outcome="listMaintenanceTasks.xhtml">
+  			<f:facet name="header">TaskHistory</f:facet> 
+  			<h:link value="TaskHistory" outcome="listMaintenanceTasks.xhtml">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
   				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
   			</h:link>          

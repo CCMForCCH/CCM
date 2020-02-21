@@ -734,6 +734,8 @@ public class ListsManagerImpl implements ListsManager {
 					.getItemCreatedDate()));
 			oneDTO.setPrintableLastperformedDate(getPrintableDate(oneDTO
 					.getLastperformedDate()));
+			oneDTO.setPrintableNextServiceDate(getPrintableDate(oneDTO
+					.getNextServiceDate()));
 
 			// Decided not to use the last performed field, but will instead
 			// compute it based on the list of associated Mtask items which
@@ -762,6 +764,7 @@ public class ListsManagerImpl implements ListsManager {
 
 		// Hacky sorting by priority. Make 3 passes, one for High, Medium, and
 		// Low
+/*
 		List<MaintenanceItemDTO> dtoListOutFinal = new ArrayList<MaintenanceItemDTO>();
 
 		for (MaintenanceItemDTO oneDTO : dtoListOut) {
@@ -786,6 +789,8 @@ public class ListsManagerImpl implements ListsManager {
 		}
 
 		return dtoListOutFinal;
+*/
+		return dtoListOut;
 	}
 
 	// Newer, nicer versions of printable dates (3/5/17)

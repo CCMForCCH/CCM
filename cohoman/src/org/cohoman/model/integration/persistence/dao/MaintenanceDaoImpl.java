@@ -6,16 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.cohoman.model.dto.MaintenanceItemDTO;
-import org.cohoman.model.dto.MtaskDTO;
-import org.cohoman.model.integration.persistence.beans.CohoEvent;
-import org.cohoman.model.integration.persistence.beans.CohoEventBean;
-import org.cohoman.model.integration.persistence.beans.EventSpace;
 import org.cohoman.model.integration.persistence.beans.MaintenanceBean;
-import org.cohoman.model.integration.persistence.beans.MealEvent;
-import org.cohoman.model.integration.persistence.beans.MealEventBean;
 import org.cohoman.model.integration.persistence.beans.MtaskBean;
-import org.cohoman.model.integration.persistence.beans.SignupPotluckBean;
-import org.cohoman.model.integration.persistence.beans.SpaceBean;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
 import org.hibernate.Query;
@@ -43,6 +35,8 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			maintenanceBean.setLastperformedDate(null);
 			maintenanceBean.setPriority(dto.getPriority());
 			maintenanceBean.setTargetTimeOfyear(dto.getTargetTimeOfyear());
+			maintenanceBean.setTaskStatus(dto.getTaskStatus());
+			maintenanceBean.setNextServiceDate(dto.getNextServiceDate());
 			
 			session.saveOrUpdate(maintenanceBean);
 
@@ -62,7 +56,7 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 	public List<MaintenanceItemDTO> getMaintenanceItems(){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
-		String queryString = "from MaintenanceBean order by itemname";
+		String queryString = "from MaintenanceBean order by nextServiceDate";
 		Query query = session.createQuery(queryString);
 
 		List<MaintenanceBean> maintenanceBeans = query.list();
@@ -82,6 +76,8 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			oneItem.setLastperformedDate(onebean.getLastperformedDate());
 			oneItem.setPriority(onebean.getPriority());
 			oneItem.setTargetTimeOfyear(onebean.getTargetTimeOfyear());
+			oneItem.setTaskStatus(onebean.getTaskStatus());
+			oneItem.setNextServiceDate(onebean.getNextServiceDate());
 			
 			dtoList.add(oneItem);	
 		}
@@ -115,6 +111,8 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			oneItem.setLastperformedDate(onebean.getLastperformedDate());
 			oneItem.setPriority(onebean.getPriority());
 			oneItem.setTargetTimeOfyear(onebean.getTargetTimeOfyear());
+			oneItem.setTaskStatus(onebean.getTaskStatus());
+			oneItem.setNextServiceDate(onebean.getNextServiceDate());
 			tx.commit();
 			return oneItem;
 		} catch (Exception ex) {
@@ -146,6 +144,8 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 		maintenanceBean.setMaintenanceitemid(maintenanceItemDTO.getMaintenanceitemid());
 		maintenanceBean.setPriority(maintenanceItemDTO.getPriority());
 		maintenanceBean.setTargetTimeOfyear(maintenanceItemDTO.getTargetTimeOfyear());
+		maintenanceBean.setTaskStatus(maintenanceItemDTO.getTaskStatus());
+		maintenanceBean.setNextServiceDate(maintenanceItemDTO.getNextServiceDate());
 		session.merge(maintenanceBean);
 
 		tx.commit();

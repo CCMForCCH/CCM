@@ -17,6 +17,8 @@
 	  <property name="frequencyOfItem" />
 	  <property name="lastperformedDate" />
 	  <property name="targetTimeOfyear" />
+	  <property name="taskStatus" />
+	  <property name="nextServiceDate" />
 	  
   </class>
     

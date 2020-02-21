@@ -17,6 +17,7 @@ import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
 import org.cohoman.view.controller.utils.TaskPriorityEnums;
+import org.cohoman.view.controller.utils.TaskStatusEnums;
 
 @ManagedBean
 @SessionScoped
@@ -212,6 +213,8 @@ public class CreateMaintenanceItemController implements Serializable {
 		dto.setPriority(chosenpriority.name());
 		GregorianCalendar now = new GregorianCalendar();
 		dto.setItemCreatedDate(now.getTime());
+		dto.setNextServiceDate(now.getTime());   // keep this code or fix?????
+		dto.setTaskStatus(TaskStatusEnums.UPTODATE.name());   // keep this code or fix?????
 		
 		// get the userid of the current user to set the requester.
 		FacesContext ctx = FacesContext.getCurrentInstance();

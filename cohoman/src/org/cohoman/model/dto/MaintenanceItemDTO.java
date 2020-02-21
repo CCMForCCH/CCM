@@ -16,6 +16,9 @@ public class MaintenanceItemDTO {
 	private String username;
 	private String printableCreatedDate;
 	private String printableLastperformedDate;
+	private String taskStatus;
+	private Date nextServiceDate;
+	private String printableNextServiceDate;
 	
 	
 	public Long getMaintenanceitemid() {
@@ -89,6 +92,24 @@ public class MaintenanceItemDTO {
 	}
 	public void setPrintableLastperformedDate(String printableLastperformedDate) {
 		this.printableLastperformedDate = printableLastperformedDate;
+	}
+	public String getTaskStatus() {
+		return taskStatus;
+	}
+	public void setTaskStatus(String taskStatus) {
+		this.taskStatus = taskStatus;
+	}
+	public Date getNextServiceDate() {
+		return nextServiceDate;
+	}
+	public void setNextServiceDate(Date nextServiceDate) {
+		this.nextServiceDate = nextServiceDate;
+	}
+	public String getPrintableNextServiceDate() {
+		return printableNextServiceDate;
+	}
+	public void setPrintableNextServiceDate(String printableNextServiceDate) {
+		this.printableNextServiceDate = printableNextServiceDate;
 	}	
 
 }

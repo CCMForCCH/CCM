@@ -13,6 +13,8 @@ public class MaintenanceBean {
 	private String frequencyOfItem;
 	private Date lastperformedDate;
 	private String targetTimeOfyear;
+	private String taskStatus;
+	private Date nextServiceDate;
 	
 	public MaintenanceBean() {
 		
@@ -71,6 +73,22 @@ public class MaintenanceBean {
 	}
 	public void setTargetTimeOfyear(String targetTimeOfyear) {
 		this.targetTimeOfyear = targetTimeOfyear;
+	}
+
+	public String getTaskStatus() {
+		return taskStatus;
+	}
+
+	public void setTaskStatus(String taskStatus) {
+		this.taskStatus = taskStatus;
+	}
+
+	public Date getNextServiceDate() {
+		return nextServiceDate;
+	}
+
+	public void setNextServiceDate(Date nextServiceDate) {
+		this.nextServiceDate = nextServiceDate;
 	}	
 
 }

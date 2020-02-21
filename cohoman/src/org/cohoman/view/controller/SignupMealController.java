@@ -217,6 +217,11 @@ public class SignupMealController implements Serializable {
 			return "Error: unable to get name of lead cook.";
 		}
 		
+		// Error check that a meal has been chosen
+		if (chosenMealEventString.equalsIgnoreCase("1")) {
+			return null;
+		}
+
 		eventId = Long.valueOf(chosenMealEventString);
 		MealEvent chosenMealEvent = eventService.getMealEvent(eventId);
 		User dbUser = userService.getUser(chosenMealEvent.getCook1());
@@ -229,6 +234,11 @@ public class SignupMealController implements Serializable {
 		// get lead cook based on chosen meal event
 		if (chosenMealEventString == null || chosenMealEventString.isEmpty()) {
 			return "Error: unable to get menu.";
+		}
+
+		// Error check that a meal has been chosen
+		if (chosenMealEventString.equalsIgnoreCase("1")) {
+			return null;
 		}
 
 		eventId = Long.valueOf(chosenMealEventString);
@@ -260,6 +270,10 @@ public class SignupMealController implements Serializable {
 	 * appear on the display sheet.
 	 */
 	public List<SignupMealDTO> getAllMealSignups() throws CohomanException {
+
+		if (chosenMealEventString.equalsIgnoreCase("1")) {
+			return null;
+		}
 
 		// Sequence through the list to get a count of
 		// people signed-up for the meal.

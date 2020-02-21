@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit Maintenance Item Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Maintenance Item Details" 
+				headerClass="formheader" styleClass="itemdetails" >
+	     		<f:facet name="header">
+            		<h:outputText value="Details for Maintenance Item"/>
+         		</f:facet>
+         		
+         		<h:outputText value="Item Name:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveMaintenanceItemsListController.chosenMaintenanceItemDTO.itemname}" />
+         			
+         		<h:outputText value="Item Description:"  style="font-weight:bold" />				
+				<h:outputText id="ItemDescription" value="#{retrieveMaintenanceItemsListController.chosenMaintenanceItemDTO.itemdescription}" 
+					rows="3" cols="60" maxlength = "510" />
+					
+				<h:outputText value="Created By:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveMaintenanceItemsListController.chosenMaintenanceItemDTO.username}" />
+
+				<h:outputText value="Created On:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveMaintenanceItemsListController.chosenMaintenanceItemDTO.printableCreatedDate}" />
+				
+				<h:outputText value="Frequency performed (months):" style="font-weight:bold" />						
+				<h:outputText  value="#{retrieveMaintenanceItemsListController.chosenMaintenanceItemDTO.frequencyOfItem}" />
+					
+			    <h:outputText value="Priority:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveMaintenanceItemsListController.chosenMaintenanceItemDTO.priority}" />
+				<br />
+				<h:link value="Go back to Maintenance Item Table" outcome="displayMaintenanceList.xhtml" style="display:block; text-align:center"/>
+         	 						
+			</h:panelGrid>
+         	<br /> 
+			
+		    <h:messages layout="table" errorClass="errors" />
+					
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
