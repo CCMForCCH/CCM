@@ -10,6 +10,7 @@ import org.cohoman.model.integration.persistence.beans.MaintenanceBean;
 import org.cohoman.model.integration.persistence.beans.MtaskBean;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
+import org.cohoman.view.controller.utils.SortEnums;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -53,10 +54,15 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 		}
 	}
 
-	public List<MaintenanceItemDTO> getMaintenanceItems(){
+	public List<MaintenanceItemDTO> getMaintenanceItems(SortEnums sortEnum){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
-		String queryString = "from MaintenanceBean order by nextServiceDate";
+		String queryString = null;
+		if (sortEnum.equals(SortEnums.ORDERBYNAME)) {
+			queryString = "from MaintenanceBean order by itemname";			
+		} else {
+			queryString = "from MaintenanceBean order by nextServiceDate";
+		}
 		Query query = session.createQuery(queryString);
 
 		List<MaintenanceBean> maintenanceBeans = query.list();

@@ -30,12 +30,12 @@
 	<br />
 	
 	<h:outputText value="There are no Periodic Maintenance Items." 
-		rendered="#{empty retrieveMaintenanceItemsListController.maintenanceItemList}" />
+		rendered="#{empty retrieveMaintenanceItemsListController.maintenanceItemListByNames}" />
 	
-	<h:dataTable value="#{retrieveMaintenanceItemsListController.maintenanceItemList}" var="oneitem" 
+	<h:dataTable value="#{retrieveMaintenanceItemsListController.maintenanceItemListByNames}" var="oneitem" 
 		styleClass="users" headerClass="usersHeader" 
 		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
-		rendered="#{not empty retrieveMaintenanceItemsListController.maintenanceItemList}">
+		rendered="#{not empty retrieveMaintenanceItemsListController.maintenanceItemListByNames}">
  
 		<h:column>
   			<f:facet name="header">Item Name</f:facet> 
@@ -44,7 +44,7 @@
 
 		<h:column>
   			<f:facet name="header">Current Task Status</f:facet> 
-  			#{oneitem.taskStatus}
+  			#{oneitem.taskStatus}           
 		</h:column>
 
 		<h:column>
@@ -64,24 +64,14 @@
 
 		<h:column>
   			<f:facet name="header">Item Details</f:facet> 
-  			<h:link value="ItemDetails" outcome="displayMaintenanceItemDetails.xhtml">
+  			<h:link value="ItemDetails" outcome="displayMaintenanceItemDetailsOnly.xhtml">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
  			</h:link>          
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Create Task</f:facet> 
-  			<h:link value="CreateTask" outcome="createMaintenanceTask.xhtml" 
-  				rendered="#{oneitem.taskStatus ne 'INPROGRESS'}">
-  				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
-  				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
-  				<f:param name="operation" value="CreateTask" />
-  			</h:link>          
-		</h:column>
-
-		<h:column>
-  			<f:facet name="header">TaskHistory</f:facet> 
-  			<h:link value="TaskHistory" outcome="listMaintenanceTasks.xhtml">
+  			<f:facet name="header">Task History</f:facet> 
+  			<h:link value="TaskHistory" outcome="listMaintenanceTasksOnly.xhtml">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
   				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
   			</h:link>          

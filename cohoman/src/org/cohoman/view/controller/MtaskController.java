@@ -3,7 +3,6 @@ package org.cohoman.view.controller;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
 import org.cohoman.view.controller.utils.TaskStatusEnums;
+import org.primefaces.event.SelectEvent;
 
 @ManagedBean
 @SessionScoped
@@ -37,7 +37,6 @@ public class MtaskController implements Serializable {
 	private String chosenMtaskItemIdAsLong;
 	private String chosenMtaskItemIdLast;
 	private MtaskDTO currentMtaskDTO;
-	private boolean taskcomplete;
 
 	private Long mtaskitemid;
 	private String vendorname;
@@ -46,10 +45,19 @@ public class MtaskController implements Serializable {
 	private Long itemCreatedBy;
 	private String notes;
 
+	private Date chosenTaskStartDate;
+	private Date chosenTaskEndDate;
+	
 	private String username;
 	private Date printableStartdate;
 	private Date printableEnddate;
 
+	public MtaskController() {
+		// Give calendars a starting date of now
+		//Calendar cal = Calendar.getInstance();
+		//chosenTaskStartDate = cal.getTime();
+	}
+	
 	// Services
 	public ListsService getListsService() {
 		return listsService;
@@ -84,7 +92,7 @@ public class MtaskController implements Serializable {
 		this.currentMtaskDTO = currentMtaskDTO;
 	}
 
-	public boolean isTaskcomplete() {
+	public boolean isTaskcomplete(MtaskDTO currentMtaskDTO) {
 		
 		// Don't persist value, just base it on
 		// whether the task end date is filled in.
@@ -93,11 +101,6 @@ public class MtaskController implements Serializable {
 		} else {
 			return true;
 		}
-		// return taskcomplete;
-	}
-
-	public void setTaskcomplete(boolean taskcomplete) {
-		this.taskcomplete = taskcomplete;
 	}
 
 	public String getVendorname() {
@@ -114,6 +117,49 @@ public class MtaskController implements Serializable {
 
 	public void setItemCreatedBy(Long itemCreatedBy) {
 		this.itemCreatedBy = itemCreatedBy;
+	}
+
+	public Date getChosenTaskStartDate() {
+		
+		if (isCreateTask()) {
+			Calendar startingCal = Calendar.getInstance();
+			chosenTaskStartDate = startingCal.getTime();
+		}
+
+		return chosenTaskStartDate;
+	}
+	
+	private boolean isCreateTask() {
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		Map<String, String> requestParams = ctx.getExternalContext()
+				.getRequestParameterMap();
+
+		// Set Item Name for subsequent pages to use
+		String operation = requestParams
+				.get("operation");
+		if (operation == null || !operation.equalsIgnoreCase("CreateTask")) {
+			// No operation or not CreateTask => just assume editMtask
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public void setChosenTaskStartDate(Date chosenTaskStartDate) {
+		this.chosenTaskStartDate = chosenTaskStartDate;
+	}
+
+	public Date getChosenTaskEndDate() {
+		
+		if (isCreateTask()) {
+			chosenTaskEndDate = null;
+		}
+		
+		return chosenTaskEndDate;
+	}
+
+	public void setChosenTaskEndDate(Date chosenTaskEndDate) {
+		this.chosenTaskEndDate = chosenTaskEndDate;
 	}
 
 	public String getNotes() {
@@ -285,6 +331,9 @@ public class MtaskController implements Serializable {
 	public String addMaintenanceTask() throws Exception {
 		
 		// Create the DTO and perform the create by calling Lists Service
+		// Since we are creting from scratch, use now as chosen time
+		//Calendar startingCal = Calendar.getInstance();
+		//chosenTaskStartDate = startingCal.getTime();
 		MtaskDTO dto = createMtaskDTO();
 		try {
 			listsService.createMtask(dto);
@@ -295,14 +344,12 @@ public class MtaskController implements Serializable {
 			return null;
 		}
 
-		// FIXME Assume false for now until I put complete checkbox on create page
-		// will also set enddate to null or something depending on user selections
-		taskcomplete = false;
 		
 		// We just created a new Mtask. Mark the Task Status in the parent
 		// item as INPROGRESS, assuming that it is not marked complete.
-		if (!taskcomplete && dto.getTaskendDate() == null) {
+		if (!isTaskcomplete(dto)) {
 
+			// Just started the task.
 			MaintenanceItemDTO maintenanceItemDTO = listsService
 					.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
 			maintenanceItemDTO.setTaskStatus(TaskStatusEnums.INPROGRESS.name());;
@@ -315,54 +362,17 @@ public class MtaskController implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, message);
 				return null;
 			}
-		}
-		
-		// clear out fields for return to the page in this session
-		clearFormFields();
-
-		return "addMaintenanceTask";
-	}
-
-	// method to create an MtaskDTO
-	private MtaskDTO createMtaskDTO() {
-		MtaskDTO dto = new MtaskDTO();
-		dto.setVendorname(vendorname);
-		dto.setNotes(notes);
-		dto.setMaintenanceitemid(chosenMaintenanceItemIdAsLong);
-
-		// Set started time now
-		GregorianCalendar now = new GregorianCalendar();
-		dto.setTaskstartDate(now.getTime());
-
-		// Find and set the user who added the entry
-		FacesContext ctx = FacesContext.getCurrentInstance();
-		HttpSession session = (HttpSession) ctx.getExternalContext()
-				.getSession(true);
-		User dbUser = (User) session
-				.getAttribute(AuthenticateController.SESSIONVAR_USER_NAME);
-		dto.setItemCreatedBy(dbUser.getUserid());
-
-		return dto;
-	}
-
-	public String editMtask() {
-
-		// We already have the chosen DTO at this point. Just use it
-		// to do a write to the DB.
-		if (taskcomplete && currentMtaskDTO.getTaskendDate() == null) {
-
-			// Set completed time now
-			GregorianCalendar now = new GregorianCalendar();
-			currentMtaskDTO.setTaskendDate(now.getTime());
-
-			// If we've just completed a task, also update the
-			// last performed date in the maintenance item table
+		} else {
+			// Did both: just started and finished the task.
+			// Update the last performed date in the maintenance
+			// item table.
 			MaintenanceItemDTO maintenanceItemDTO = listsService
 					.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
-			maintenanceItemDTO.setLastperformedDate(now.getTime());
+			maintenanceItemDTO.setLastperformedDate(chosenTaskEndDate);
 			
 			// And also recompute the NextServiceDate
 			Calendar nextServiceDateCal = Calendar.getInstance();
+			nextServiceDateCal.setTime(chosenTaskEndDate);
 			int freqInMonths = 
 					Integer.valueOf(maintenanceItemDTO.getFrequencyOfItem());
 			nextServiceDateCal.add(Calendar.MONTH, 
@@ -382,12 +392,96 @@ public class MtaskController implements Serializable {
 				return null;
 			}
 
-		} else if (!taskcomplete && !(currentMtaskDTO.getTaskendDate() == null)) {
-			
-			// Unchecked complete, so clear the task end date
-			currentMtaskDTO.setTaskendDate(null);
 		}
+		
+		// clear out fields for return to the page in this session
+		clearFormFields();
+
+		return "addMaintenanceTask";
+	}
+
+	// method to create an MtaskDTO
+	private MtaskDTO createMtaskDTO() {
+		MtaskDTO dto = new MtaskDTO();
+		dto.setVendorname(vendorname);
+		dto.setTaskstartDate(chosenTaskStartDate);
+		dto.setTaskendDate(chosenTaskEndDate);
+		dto.setNotes(notes);
+		dto.setMaintenanceitemid(chosenMaintenanceItemIdAsLong);
+
+		// Find and set the user who added the entry
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) ctx.getExternalContext()
+				.getSession(true);
+		User dbUser = (User) session
+				.getAttribute(AuthenticateController.SESSIONVAR_USER_NAME);
+		dto.setItemCreatedBy(dbUser.getUserid());
+
+		return dto;
+	}
+
+	public String editMtask() {
+
+		// We already have the chosen DTO at this point. Just use it
+		// to do a write to the DB.
+
+		// If no entry chosen for task end date, use what we have
+		// from the DTO as the chosen value (i.e. it didn't change).
+		if (chosenTaskEndDate == null) {
+			chosenTaskEndDate = currentMtaskDTO.getTaskendDate();
+		}
+
+		// Same point for task start date. If it's null, assume that
+		// it didn't change so just use the old value from the DTO.
+		if (chosenTaskStartDate == null) {
+			chosenTaskStartDate = currentMtaskDTO.getTaskstartDate();
+		}
+		
+		// Update the start date in the DTO
+		currentMtaskDTO.setTaskstartDate(chosenTaskStartDate);
+
+		if (chosenTaskEndDate != null) {
+			// Set completed date to the one chosen
+			currentMtaskDTO.setTaskendDate(chosenTaskEndDate);
+
+			// If we've just completed a task, also update the
+			// last performed date in the maintenance item table
+			MaintenanceItemDTO maintenanceItemDTO = listsService
+					.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
+			maintenanceItemDTO.setLastperformedDate(chosenTaskEndDate);
+
+			// And also recompute the NextServiceDate
+			Calendar nextServiceDateCal = Calendar.getInstance();
+			nextServiceDateCal.setTime(chosenTaskEndDate);
+			int freqInMonths = Integer.valueOf(maintenanceItemDTO
+					.getFrequencyOfItem());
+			nextServiceDateCal.add(Calendar.MONTH, freqInMonths);
+			maintenanceItemDTO.setNextServiceDate(nextServiceDateCal.getTime());
+
+			// Lastly, mark the status in the parent item as UPTODATE
+			maintenanceItemDTO.setTaskStatus(TaskStatusEnums.UPTODATE.name());
+
+			// Now write the maintenance item out to the DB
+			try {
+				listsService.updateMaintenanceItem(maintenanceItemDTO);
+			} catch (CohomanException ex) {
+				FacesMessage message = new FacesMessage(ex.getErrorText());
+				message.setSeverity(FacesMessage.SEVERITY_ERROR);
+				FacesContext.getCurrentInstance().addMessage(null, message);
+				return null;
+			}
+		}
+		
+		// Update Mtask entry in DB
 		listsService.updateMtask(currentMtaskDTO);
+
+		// clear out fields for return to the page in this session
+		clearFormFields();
+		
+		// Set Task start date to null so next time thru it will be either overwritten
+		// by a user choosing a value or no value is given and then the 
+		// value comes from the DTO which was determined by editMtask.xhtml.
+		chosenTaskStartDate = null;
 
 		return "editMtask";
 	}
@@ -413,10 +507,23 @@ public class MtaskController implements Serializable {
 		listsService.deleteMtask(chosenMtaskItemIdAsLong);
 	}
 
+
+	public void dateStartSelect(SelectEvent event) {
+		setChosenTaskStartDate((Date)event.getObject());	
+	}
+
+	public void dateEndSelect(SelectEvent event) {
+		setChosenTaskEndDate((Date)event.getObject());	
+	}
+	
 	private void clearFormFields() {
 
 		vendorname = "";
 		notes = "";
+		chosenTaskEndDate = null;
+		Calendar cal = Calendar.getInstance();
+		//chosenTaskStartDate = cal.getTime();
+
 	}
 
 }

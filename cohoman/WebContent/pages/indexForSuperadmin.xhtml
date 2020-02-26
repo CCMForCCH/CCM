@@ -137,6 +137,22 @@
 				<table>
 					<tr>
 					<td>
+						<h:commandLink value="List all maintenance items by date" action="displayMaintenanceList"  /> 
+					</td>
+					<td>
+						<h:outputText value="List all periodic maintenance items sorted by next service date"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List all maintenance items by name" action="displayMaintenanceListByNames"  /> 
+					</td>
+					<td>
+						<h:outputText value="List all periodic maintenance items sorted by item name"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
 						<h:commandLink value="Create maintenance item" action="createMaintenanceItem"  /> 
 					</td>
 					<td>
@@ -149,14 +165,6 @@
 					</td>
 					<td>
 						<h:outputText value="Edit/Delete periodic maintenance item"/>
-					</td> 
-					</tr>
-					<tr>
-					<td>
-						<h:commandLink value="List all maintenance items" action="displayMaintenanceList"  /> 
-					</td>
-					<td>
-						<h:outputText value="List all periodic maintenance item"/>
 					</td> 
 					</tr>
 				</table>

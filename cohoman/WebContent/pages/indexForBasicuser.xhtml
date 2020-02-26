@@ -497,14 +497,25 @@
 				<table>
 					<tr>
 					<td>
-						<h:commandLink value="List all maintenance items" action="displayMaintenanceListOnly"  /> 
+						<h:commandLink value="List all maintenance items by date" action="displayMaintenanceListOnly"  /> 
 					</td>
 					<td>
 						<span style="display: inline-table; text-indent: 20px;">
-							<h:outputText value="List all periodic maintenance items."/>
+							<h:outputText value="List all periodic maintenance items sorted by next service date"/>
 						</span>
 					</td> 
 					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List all maintenance items by name" action="displayMaintenanceListOnlyByNames"  /> 
+					</td>
+					<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="List all periodic maintenance items sorted by item name"/>
+						</span>
+					</td> 
+					</tr>
+
 				</table>
 			</fieldset>
 					

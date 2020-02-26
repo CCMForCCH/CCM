@@ -861,6 +861,11 @@
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>displayMaintenanceListOnlyByNames</from-outcome>
+			<to-view-id>/displayMaintenanceListOnlyByNames.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>listMaintenanceTaskOnly</from-outcome>
 			<to-view-id>/listMaintenanceTaskOnly.xhtml</to-view-id>
 			<redirect/>
@@ -984,6 +989,11 @@
 		<navigation-case>
 			<from-outcome>displayMaintenanceList</from-outcome>
 			<to-view-id>/displayMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayMaintenanceListByNames</from-outcome>
+			<to-view-id>/displayMaintenanceListByNames.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 		<navigation-case>

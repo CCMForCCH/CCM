@@ -169,6 +169,7 @@ public class MtaskDaoImpl implements MtaskDao {
 				mtaskDTO.getMtaskitemid());
 		mtaskBean.setItemCreatedBy(mtaskDTO.getItemCreatedBy());
 		mtaskBean.setNotes(mtaskDTO.getNotes());
+		mtaskBean.setTaskstartDate(mtaskDTO.getTaskstartDate());
 		mtaskBean.setTaskendDate(mtaskDTO.getTaskendDate());
 		mtaskBean.setVendorname(mtaskDTO.getVendorname());
 		session.merge(mtaskBean);

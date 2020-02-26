@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.service.ListsService;
+import org.cohoman.view.controller.utils.SortEnums;
 
 @ManagedBean
 @SessionScoped
@@ -67,7 +68,8 @@ public class RetrieveMaintenanceItemsListController implements Serializable {
 		// new stuff
 		getChosenMaintenanceItemId();
 		long itemId = Long.parseLong(chosenMaintenanceItemId);
-		maintenanceItemDTOsList = listsService.getMaintenanceItems();
+		maintenanceItemDTOsList = 
+				listsService.getMaintenanceItems(SortEnums.ORDERBYNEXTSERVICEDATE);
 		for (MaintenanceItemDTO itemDTO:maintenanceItemDTOsList) {
 			if (itemDTO.getMaintenanceitemid() == itemId) {
 				return itemDTO;
@@ -87,12 +89,20 @@ public class RetrieveMaintenanceItemsListController implements Serializable {
 	*/
 
 	public List<MaintenanceItemDTO> getMaintenanceItemList() {
-		maintenanceItemList = listsService.getMaintenanceItems();
+		maintenanceItemList = 
+				listsService.getMaintenanceItems(SortEnums.ORDERBYNEXTSERVICEDATE);
+		return maintenanceItemList;
+	}
+
+	public List<MaintenanceItemDTO> getMaintenanceItemListByNames() {
+		maintenanceItemList = 
+				listsService.getMaintenanceItems(SortEnums.ORDERBYNAME);
 		return maintenanceItemList;
 	}
 
 	public List<MaintenanceItemDTO> getMaintenanceItemDTOsList() {
-		maintenanceItemDTOsList = listsService.getMaintenanceItems();
+		maintenanceItemDTOsList = 
+				listsService.getMaintenanceItems(SortEnums.ORDERBYNEXTSERVICEDATE);
 		return maintenanceItemDTOsList;
 	}
 

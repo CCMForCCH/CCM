@@ -30,12 +30,12 @@
 	<br />
 	
 	<h:outputText value="There are no Periodic Maintenance Items." 
-		rendered="#{empty retrieveMaintenanceItemsListController.maintenanceItemList}" />
+		rendered="#{empty retrieveMaintenanceItemsListController.maintenanceItemListByNames}" />
 	
-	<h:dataTable value="#{retrieveMaintenanceItemsListController.maintenanceItemList}" var="oneitem" 
+	<h:dataTable value="#{retrieveMaintenanceItemsListController.maintenanceItemListByNames}" var="oneitem" 
 		styleClass="users" headerClass="usersHeader" 
 		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
-		rendered="#{not empty retrieveMaintenanceItemsListController.maintenanceItemList}">
+		rendered="#{not empty retrieveMaintenanceItemsListController.maintenanceItemListByNames}">
  
 		<h:column>
   			<f:facet name="header">Item Name</f:facet> 

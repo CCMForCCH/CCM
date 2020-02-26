@@ -46,9 +46,13 @@
 			    <h:outputText value="Priority:" style="font-weight:bold" />
 				<h:outputText value="#{retrieveMaintenanceItemsListController.chosenMaintenanceItemDTO.priority}" />
 				<br />
-				<h:link value="Go back to Maintenance Item Table" outcome="displayMaintenanceList.xhtml" style="display:block; text-align:center"/>
          	 						
 			</h:panelGrid>
+			<h:panelGrid columns="1" title="Maintenance Item Details" 
+				headerClass="formheader" styleClass="itemdetails" >
+				<h:link value="Go back to Maintenance Item Table (sorted by date)" outcome="displayMaintenanceList.xhtml" style="display:block; text-align:center"/>
+				<h:link value="Go back to Maintenance Item Table (sorted by name)" outcome="displayMaintenanceListByNames.xhtml" style="display:block; text-align:center"/>
+			</h:panelGrid>			
          	<br /> 
 			
 		    <h:messages layout="table" errorClass="errors" />

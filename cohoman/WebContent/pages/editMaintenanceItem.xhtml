@@ -21,14 +21,16 @@
 		<br></br>
 		<h:form>
 
-			<h:panelGrid columns="2" title="Edit Pizza/Potluck Fields" 
+			<h:panelGrid columns="2" title="Edit Maintenance Item" 
 				headerClass="formheader" styleClass="formstyle" >
 	     		<f:facet name="header">
             		<h:outputText value="Choose what to change in the Maintenance Item:"/>
          		</f:facet>
          		
          		<h:outputText value="Item Name:" />
-				<h:inputText value="#{editMaintenanceController.chosenMaintenanceItemDTO.itemname}" />
+				<h:inputText value="#{editMaintenanceController.chosenMaintenanceItemDTO.itemname}" >
+									<f:validateLength minimum="3" maximum="31" />
+				</h:inputText>
          			
          		<h:outputText value="Item Description:"  />				
 				<h:inputTextarea id="ItemDescription" value="#{editMaintenanceController.chosenMaintenanceItemDTO.itemdescription}" 

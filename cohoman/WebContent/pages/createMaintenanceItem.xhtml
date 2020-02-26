@@ -28,7 +28,9 @@
          		</f:facet>
          		         				
 				<h:outputText value="Item Name:"  />
-				<h:inputText id="ItemName" value="#{createMaintenanceItemController.itemname}" required="true"/>
+				<h:inputText id="ItemName" value="#{createMaintenanceItemController.itemname}" required="true">
+					<f:validateLength minimum="3" maximum="31" />
+				</h:inputText>
 
 				<h:outputText value="Item Description:"  />				
 				<h:inputTextarea id="ItemDescription" value="#{createMaintenanceItemController.itemdescription}" 

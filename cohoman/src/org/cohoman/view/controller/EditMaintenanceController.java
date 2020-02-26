@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
+import org.cohoman.view.controller.utils.SortEnums;
 
 @ManagedBean
 @SessionScoped
@@ -157,7 +158,8 @@ public class EditMaintenanceController implements Serializable {
 	}
 
 	public List<MaintenanceItemDTO> getMaintenanceItemDTOsList() {
-		maintenanceItemDTOsList = listsService.getMaintenanceItems();
+		maintenanceItemDTOsList = 
+				listsService.getMaintenanceItems(SortEnums.ORDERBYNEXTSERVICEDATE);
 		return maintenanceItemDTOsList;
 	}
 

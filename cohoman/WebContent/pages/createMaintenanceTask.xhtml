@@ -4,7 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core" 
 	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  
 	  
 <head>
 	<title>IGNORED</title>
@@ -40,6 +42,22 @@
 				<h:outputText value="Vendor:"  />				
 				<h:inputText id="Vendor" value="#{mtaskController.vendorname}" 
 					 maxlength = "31" required="true" />
+				
+				<h:outputText value="Task Start Date:"  />				
+         		<p:calendar  id="popupstart" 
+         			value="#{mtaskController.chosenTaskStartDate}" required="true" 
+         			pattern="MMM d, yyyy" size="15" showOn="focus"
+         		    readonlyInput="true">
+         			<p:ajax event="dateSelect" listener="#{mtaskController.dateStartSelect}" />
+         		</p:calendar>
+	
+				<h:outputText value="Task Completion Date(if completed): "  />				
+         		<p:calendar  id="popupend" 
+         			value="#{mtaskController.chosenTaskEndDate}" 
+         			pattern="MMM d, yyyy" size="15" showOn="focus"
+         		    readonlyInput="true" showButtonPanel="true" >
+         			<p:ajax event="dateSelect" listener="#{mtaskController.dateEndSelect}" />
+         		</p:calendar>
 				
 				<h:outputText value="Notes:"  />				
 				<h:inputTextarea id="Notes" value="#{mtaskController.notes}" 

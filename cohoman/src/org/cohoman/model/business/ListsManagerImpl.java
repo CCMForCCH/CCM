@@ -39,6 +39,7 @@ import org.cohoman.model.integration.persistence.dao.UserDao;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.CalendarUtils;
+import org.cohoman.view.controller.utils.SortEnums;
 import org.cohoman.view.controller.utils.TaskPriorityEnums;
 
 public class ListsManagerImpl implements ListsManager {
@@ -718,10 +719,10 @@ public class ListsManagerImpl implements ListsManager {
 		maintenanceDao.createMaintenanceItem(maintenanceItemDTO);
 	}
 
-	public List<MaintenanceItemDTO> getMaintenanceItems() {
+	public List<MaintenanceItemDTO> getMaintenanceItems(SortEnums sortEnum) {
 		List<MaintenanceItemDTO> dtoListOut = new ArrayList<MaintenanceItemDTO>();
 		List<MaintenanceItemDTO> dtoListIn = maintenanceDao
-				.getMaintenanceItems();
+				.getMaintenanceItems(sortEnum);
 		for (MaintenanceItemDTO oneDTO : dtoListIn) {
 
 			// Convert userid to username and save in DTO
@@ -762,34 +763,6 @@ public class ListsManagerImpl implements ListsManager {
 			dtoListOut.add(oneDTO);
 		}
 
-		// Hacky sorting by priority. Make 3 passes, one for High, Medium, and
-		// Low
-/*
-		List<MaintenanceItemDTO> dtoListOutFinal = new ArrayList<MaintenanceItemDTO>();
-
-		for (MaintenanceItemDTO oneDTO : dtoListOut) {
-			if (oneDTO.getPriority().equalsIgnoreCase(
-					TaskPriorityEnums.HIGH.name())) {
-				dtoListOutFinal.add(oneDTO);
-			}
-		}
-
-		for (MaintenanceItemDTO oneDTO : dtoListOut) {
-			if (oneDTO.getPriority().equalsIgnoreCase(
-					TaskPriorityEnums.MEDIUM.name())) {
-				dtoListOutFinal.add(oneDTO);
-			}
-		}
-
-		for (MaintenanceItemDTO oneDTO : dtoListOut) {
-			if (oneDTO.getPriority().equalsIgnoreCase(
-					TaskPriorityEnums.LOW.name())) {
-				dtoListOutFinal.add(oneDTO);
-			}
-		}
-
-		return dtoListOutFinal;
-*/
 		return dtoListOut;
 	}
 
