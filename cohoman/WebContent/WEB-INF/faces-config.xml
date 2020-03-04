@@ -686,6 +686,11 @@
 			<to-view-id>/indexForSpaceadmin.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>hofelleradmin</from-outcome>
+			<to-view-id>/indexForHofelleradmin.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>	
 	</navigation-rule>
 	
 	<!-- Pages for basic user -->
@@ -1545,5 +1550,30 @@
 		</navigation-case>
 	</navigation-rule>
 
-	
+		<!--  pages for hofeller admin -->
+	<navigation-rule>
+		<from-view-id>/indexForHofelleradmin.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>displayMaintenanceList</from-outcome>
+			<to-view-id>/displayMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayMaintenanceListByNames</from-outcome>
+			<to-view-id>/displayMaintenanceListByNames.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>createMaintenanceItem</from-outcome>
+			<to-view-id>/createMaintenanceItem.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editMaintenance</from-outcome>
+			<to-view-id>/editMaintenance.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+<!--  end of pages for hofeller admin -->
+
 	</faces-config>

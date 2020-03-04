@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Main Menu
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>	
+		
+			<fieldset>
+			<legend><b>Manage Periodic Maintenance</b></legend>
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="List all maintenance items by date" action="displayMaintenanceList"  /> 
+					</td>
+					<td>
+						<h:outputText value="List all periodic maintenance items sorted by next service date"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List all maintenance items by name" action="displayMaintenanceListByNames"  /> 
+					</td>
+					<td>
+						<h:outputText value="List all periodic maintenance items sorted by item name"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Create maintenance item" action="createMaintenanceItem"  /> 
+					</td>
+					<td>
+						<h:outputText value="Create a new periodic maintenance item"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Edit/Delete periodic maintenance item" action="editMaintenance"  /> 
+					</td>
+					<td>
+						<h:outputText value="Edit/Delete periodic maintenance item"/>
+					</td> 
+					</tr>
+				</table>
+			</fieldset>
+			<br></br>
+	
+		</h:form>	
+
+	</ui:define>
+	
+</ui:composition>
+	
+</body>
+</html>

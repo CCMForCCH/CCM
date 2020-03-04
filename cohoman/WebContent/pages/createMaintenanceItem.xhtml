@@ -27,27 +27,24 @@
             		<h:outputText value="Please Enter Periodic Maintenance Item Information"/>
          		</f:facet>
          		         				
-				<h:outputText value="Item Name:"  />
+				<h:outputText value="Item Name:"  styleClass="subheading" />
 				<h:inputText id="ItemName" value="#{createMaintenanceItemController.itemname}" required="true">
 					<f:validateLength minimum="3" maximum="31" />
 				</h:inputText>
 
-				<h:outputText value="Item Description:"  />				
+				<h:outputText value="Item Description:"  styleClass="subheading" />				
 				<h:inputTextarea id="ItemDescription" value="#{createMaintenanceItemController.itemdescription}" 
 					rows="3" cols="60" maxlength = "510" required="true" />
 				
-				<h:outputText value="Frequency performed (months):"  />						
+				<h:outputText value="Frequency performed (months):"  styleClass="subheading" />						
 				<h:selectOneMenu  value="#{createMaintenanceItemController.frequencyOfItem}" >
 					<f:selectItems value="#{createMaintenanceItemController.numberOfMonths}"
 						var="onecount" 
 						itemLabel="#{onecount}"
 						itemValue="#{onecount}" />
 				</h:selectOneMenu>
-	
-			    <h:outputText value="Target time of year:"  />
-				<h:inputText id="TargetTomeOfYear" value="#{createMaintenanceItemController.targetTimeOfyear}"/>
-				
-			    <h:outputText value="Priority:"  />
+					
+			    <h:outputText value="Priority:"  styleClass="subheading" />
 				<h:selectOneMenu value="#{createMaintenanceItemController.chosenpriority}">
 					<f:selectItems value="#{createMaintenanceItemController.itempriorities}"
 						var="onepriority"

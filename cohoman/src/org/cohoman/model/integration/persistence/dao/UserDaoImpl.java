@@ -11,6 +11,7 @@ import org.cohoman.model.dto.UserDTO;
 import org.cohoman.model.integration.persistence.beans.Role;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
 import org.cohoman.model.integration.persistence.beans.UserBean;
+import org.cohoman.model.integration.persistence.beans.UserTypeEnum;
 import org.cohoman.model.integration.persistence.beans.UsersRoles;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
@@ -29,34 +30,45 @@ public class UserDaoImpl implements UserDao {
 		try {
 			tx = session.beginTransaction();
 
-			// Find unit number string from units table
-			Query query = session.createQuery(
-					"from UnitBean where unitnumber = ?").setString(0,
-					theuser.getUnit());
+			// Find unit number string from units table (unless 
+			// Hofeller person)
+			UserBean userBean = null;
+			if (!theuser.getUsertype().equals(UserTypeEnum.HOFELLER.name())) {
+				Query query = session.createQuery(
+						"from UnitBean where unitnumber = ?").setString(0,
+						theuser.getUnit());
 
-			List<UnitBean> unitBeanList = query.list();
-			if (unitBeanList == null || unitBeanList.isEmpty()) {
-				logger.log(Level.SEVERE,
-						"No such unit found: " + theuser.getUnit());
-				throw new CohomanException("No such unit found: "
-						+ theuser.getUnit());
-			}
-			UnitBean unitBean = null;
-			for (UnitBean oneUnitBean : unitBeanList) {
-				// Just one unit (???)
-				unitBean = (UnitBean) session.load(UnitBean.class,
-						oneUnitBean.getUnitid());
-			}
+				List<UnitBean> unitBeanList = query.list();
+				if (unitBeanList == null || unitBeanList.isEmpty()) {
+					logger.log(Level.SEVERE,
+							"No such unit found: " + theuser.getUnit());
+					throw new CohomanException("No such unit found: "
+							+ theuser.getUnit());
+				}
+				UnitBean unitBean = null;
+				for (UnitBean oneUnitBean : unitBeanList) {
+					// Just one unit (???)
+					unitBean = (UnitBean) session.load(UnitBean.class,
+							oneUnitBean.getUnitid());
+				}
 
-			UserBean userBean = makeUserBeanFromUserDTO(theuser,
-					unitBean.getUnitid());
+				userBean = makeUserBeanFromUserDTO(theuser,
+						unitBean.getUnitid());
+			} else {
+				userBean = makeUserBeanFromUserDTO(theuser, 0L);
+
+			}
 			System.out.println("wsh: createUser: lastlogin = "
 					+ theuser.getLastlogin());
 			session.saveOrUpdate(userBean);
 
 			// Give the newly added user a basicuser role to start with
 			UsersRoles usersRolesRow = new UsersRoles();
-			usersRolesRow.setRoleid(Role.BASICUSER_ID);
+			if (userBean.getUsertype().equals(UserTypeEnum.HOFELLER.name())) {
+				usersRolesRow.setRoleid(Role.HOFELLERADMIN_ID);
+			} else {
+				usersRolesRow.setRoleid(Role.BASICUSER_ID);
+			}
 			usersRolesRow.setUserid(userBean.getUserid());
 			session.saveOrUpdate(usersRolesRow);
 			tx.commit();
@@ -80,24 +92,28 @@ public class UserDaoImpl implements UserDao {
 		try {
 			tx = session.beginTransaction();
 
-			// Find unit number string from units table
-			Query query = session.createQuery(
-					"from UnitBean where unitnumber = ?").setString(0,
-					theUser.getUnit());
+			long unitNumber = 0;
+			if (!theUser.getUsertype().equals(UserTypeEnum.HOFELLER.name())) {
+				// Find unit number string from units table
+				Query query = session.createQuery(
+						"from UnitBean where unitnumber = ?").setString(0,
+						theUser.getUnit());
 
-			List<UnitBean> unitBeanList = query.list();
-			if (unitBeanList.isEmpty()) {
-				throw new CohomanException("Unit number does not exist: "
-						+ theUser.getUnit());
+				List<UnitBean> unitBeanList = query.list();
+				if (unitBeanList.isEmpty()) {
+					throw new CohomanException("Unit number does not exist: "
+							+ theUser.getUnit());
+				}
+
+				UnitBean unitBean = null;
+				for (UnitBean oneUnitBean : unitBeanList) {
+					// Just one unit (???)
+					unitBean = (UnitBean) session.load(UnitBean.class,
+							oneUnitBean.getUnitid());
+				}
+				unitNumber = unitBean.getUnitid();
 			}
-
-			UnitBean unitBean = null;
-			for (UnitBean oneUnitBean : unitBeanList) {
-				// Just one unit (???)
-				unitBean = (UnitBean) session.load(UnitBean.class,
-						oneUnitBean.getUnitid());
-			}
-
+			
 			UserBean userBean = (UserBean) session.load(UserBean.class,
 					theUser.getUserid());
 			userBean.setCellphone(theUser.getCellphone());
@@ -107,7 +123,7 @@ public class UserDaoImpl implements UserDao {
 			userBean.setLastlogin(theUser.getLastlogin().toString());
 			userBean.setLastname(theUser.getLastname());
 			userBean.setPassword(theUser.getPassword());
-			userBean.setUnit(unitBean.getUnitid());
+			userBean.setUnit(unitNumber);
 			userBean.setUsername(theUser.getUsername());
 			userBean.setWorkphone(theUser.getWorkphone());
 			userBean.setEmergencyinfo(theUser.getEmergencyinfo());
@@ -198,11 +214,16 @@ public class UserDaoImpl implements UserDao {
 
 		List userDTOList = new ArrayList();
 		for (UserBean oneUserBean : userBeans) {
-			UnitBean unitBean = getUnitBeanGivenUserUnitid(session,
-					oneUserBean.getUnit());
 			UserDTO userDTO = new UserDTO();
-			userDTO = makeUserDTOFromUserBean(oneUserBean,
-					unitBean.getUnitnumber());
+			// Get unit number unless it's a Hofeller user
+			if (!oneUserBean.getUsertype().equals(UserTypeEnum.HOFELLER.name())) {
+				UnitBean unitBean = getUnitBeanGivenUserUnitid(session,
+						oneUserBean.getUnit());
+				userDTO = makeUserDTOFromUserBean(oneUserBean,
+						unitBean.getUnitnumber());
+			} else {
+				userDTO = makeUserDTOFromUserBean(oneUserBean, "0");
+			}
 			userDTOList.add(userDTO);
 		}
 
@@ -296,7 +317,7 @@ public class UserDaoImpl implements UserDao {
 	public UserDTO getUserForLogin(UserDTO theUser) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		String queryString = "from UserBean " + "where USERNAME = ? " +
-			"AND (usertype = '' OR usertype = 'OWNER' OR usertype = 'LANDLORD' OR usertype = 'RENTING')";
+			"AND (usertype = '' OR usertype = 'OWNER' OR usertype = 'LANDLORD' OR usertype = 'RENTING' OR usertype = 'HOFELLER')";
 		List<UserBean> userCollection = null;
 		
 		try {
@@ -312,10 +333,15 @@ public class UserDaoImpl implements UserDao {
 			return null;
 		}
 		UserBean oneUser = userCollection.iterator().next();
-		UnitBean unitBean = getUnitBeanGivenUserUnitid(session,
-				oneUser.getUnit());
 		UserDTO userDTO = new UserDTO();
-		userDTO = makeUserDTOFromUserBean(oneUser, unitBean.getUnitnumber());
+		// Make DTO taking into consideration that a Hofeller user has no unit
+		if (!oneUser.getUsertype().equals(UserTypeEnum.HOFELLER.name())) {
+			UnitBean unitBean = getUnitBeanGivenUserUnitid(session,
+					oneUser.getUnit());
+			userDTO = makeUserDTOFromUserBean(oneUser, unitBean.getUnitnumber());
+		} else {
+			userDTO = makeUserDTOFromUserBean(oneUser, "0");			
+		}
 
 		session.flush();
 		session.close();
@@ -337,10 +363,15 @@ public class UserDaoImpl implements UserDao {
 			return null;
 		}
 		UserBean oneUser = userCollection.iterator().next();
-		UnitBean unitBean = getUnitBeanGivenUserUnitid(session,
-				oneUser.getUnit());
 		UserDTO userDTO = new UserDTO();
-		userDTO = makeUserDTOFromUserBean(oneUser, unitBean.getUnitnumber());
+		// Special-case Hofeller since it has no unit number
+		if (!oneUser.getUsertype().equals(UserTypeEnum.HOFELLER.name())) {
+			UnitBean unitBean = getUnitBeanGivenUserUnitid(session,
+					oneUser.getUnit());
+			userDTO = makeUserDTOFromUserBean(oneUser, unitBean.getUnitnumber());
+		} else {
+			userDTO = makeUserDTOFromUserBean(oneUser, "0");
+		}
 		session.flush();
 		session.close();
 		return userDTO;

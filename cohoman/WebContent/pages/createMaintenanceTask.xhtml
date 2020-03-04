@@ -30,7 +30,7 @@
             		<br />
          		</f:facet>
   
-  				<h:outputText value="Maintenance Item:"  />				
+  				<h:outputText value="Maintenance Item:"  styleClass="subheading" />				
 				<h:inputText id="MaintenanceItemName" value="#{mtaskController.maintenanceItemName}" 
 					 maxlength = "31" disabled="true" />
         		
@@ -39,11 +39,11 @@
 				<h:inputHidden id="chosenMaintenanceItemId" value="#{mtaskController.chosenMaintenanceItemId}" 
 					 maxlength = "31" required="true" rendered="true"/>
 			
-				<h:outputText value="Vendor:"  />				
+				<h:outputText value="Vendor:"  styleClass="subheading" />				
 				<h:inputText id="Vendor" value="#{mtaskController.vendorname}" 
 					 maxlength = "31" required="true" />
 				
-				<h:outputText value="Task Start Date:"  />				
+				<h:outputText value="Task Start Date:" styleClass="subheading" />				
          		<p:calendar  id="popupstart" 
          			value="#{mtaskController.chosenTaskStartDate}" required="true" 
          			pattern="MMM d, yyyy" size="15" showOn="focus"
@@ -51,7 +51,7 @@
          			<p:ajax event="dateSelect" listener="#{mtaskController.dateStartSelect}" />
          		</p:calendar>
 	
-				<h:outputText value="Task Completion Date(if completed): "  />				
+				<h:outputText value="Task Completion Date(if completed): "  styleClass="subheading" />				
          		<p:calendar  id="popupend" 
          			value="#{mtaskController.chosenTaskEndDate}" 
          			pattern="MMM d, yyyy" size="15" showOn="focus"
@@ -59,7 +59,7 @@
          			<p:ajax event="dateSelect" listener="#{mtaskController.dateEndSelect}" />
          		</p:calendar>
 				
-				<h:outputText value="Notes:"  />				
+				<h:outputText value="Notes:"  styleClass="subheading" />				
 				<h:inputTextarea id="Notes" value="#{mtaskController.notes}" 
 					rows="6" cols="60" maxlength = "2047" />
 								

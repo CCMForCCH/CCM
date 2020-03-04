@@ -31,7 +31,9 @@
 	
 	<h:outputText value="There are no Periodic Maintenance Items." 
 		rendered="#{empty retrieveMaintenanceItemsListController.maintenanceItemListByNames}" />
-	
+
+	<h:link value="Sort Maintenance Item Table By Date" outcome="displayMaintenanceListOnly.xhtml" style="display:block; text-align:center"/>
+	<br />
 	<h:dataTable value="#{retrieveMaintenanceItemsListController.maintenanceItemListByNames}" var="oneitem" 
 		styleClass="users" headerClass="usersHeader" 
 		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"

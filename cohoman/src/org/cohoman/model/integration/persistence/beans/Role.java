@@ -14,6 +14,7 @@ public class Role implements Serializable {
 	public static final Long SUPERADMIN_ID = 2L;
 	public static final Long SPACEADMIN_ID = 3L;
 	public static final Long MEALADMIN_ID = 4L;
+	public static final Long HOFELLERADMIN_ID = 5L;
 	
 	private Long roleid;
 	private String rolename;

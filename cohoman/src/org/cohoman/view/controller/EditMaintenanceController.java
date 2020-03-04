@@ -159,7 +159,7 @@ public class EditMaintenanceController implements Serializable {
 
 	public List<MaintenanceItemDTO> getMaintenanceItemDTOsList() {
 		maintenanceItemDTOsList = 
-				listsService.getMaintenanceItems(SortEnums.ORDERBYNEXTSERVICEDATE);
+				listsService.getMaintenanceItems(SortEnums.ORDERBYNAME);
 		return maintenanceItemDTOsList;
 	}
 
