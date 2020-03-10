@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Project Documents
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Project Overview Documents" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Project Overview Documents"/>
+        </f:facet>
+	<br />
+	
+	<h:outputText value="There are no Project Overview Documents." 
+		rendered="#{empty projectsController.projectDocListEdit}" />
+	
+	<br />
+	<h:dataTable value="#{projectsController.projectDocListEdit}" var="oneitem" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
+		rendered="#{not empty projectsController.projectDocListEdit}">
+ 
+		<h:column>
+  			<f:facet name="header">Project Overview Document Name</f:facet> 
+  			#{oneitem.docName}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Project Overview Document Description</f:facet> 
+  			#{oneitem.docDesc}
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Added By</f:facet> 
+  			#{oneitem.docOwner}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Link to Document</f:facet> 
+  			<a href="#{oneitem.docLink}" target="_blank">document_link</a> 			
+		</h:column>
+
+</h:dataTable>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

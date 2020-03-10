@@ -41,6 +41,7 @@ import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.CalendarUtils;
 import org.cohoman.view.controller.utils.SortEnums;
 import org.cohoman.view.controller.utils.TaskPriorityEnums;
+import org.cohoman.view.controller.utils.TaskStatusEnums;
 
 public class ListsManagerImpl implements ListsManager {
 
@@ -725,6 +726,10 @@ public class ListsManagerImpl implements ListsManager {
 				.getMaintenanceItems(sortEnum);
 		for (MaintenanceItemDTO oneDTO : dtoListIn) {
 
+			// If NextServiceDate is > current date, set task
+			// status to OVERDUE
+			oneDTO = ageCurrentTaskStatus(oneDTO);
+			
 			// Convert userid to username and save in DTO
 			Long userid = oneDTO.getItemCreatedBy();
 			UserDTO theUser = userDao.getUser(userid);
@@ -783,7 +788,38 @@ public class ListsManagerImpl implements ListsManager {
 		return formatter.format(justADate.getTime());
 	}
 
+	private MaintenanceItemDTO ageCurrentTaskStatus(MaintenanceItemDTO itemDTO) {
+		
+		Calendar calNow = Calendar.getInstance();
+		calNow.set(Calendar.HOUR_OF_DAY, 0);
+		calNow.set(Calendar.MINUTE, 0);
+		calNow.set(Calendar.SECOND, 0);
+		calNow.set(Calendar.MILLISECOND, 0);
+
+		Calendar calNextServiceDate = Calendar.getInstance();
+		calNextServiceDate.setTime(itemDTO.getNextServiceDate());
+		calNextServiceDate.set(Calendar.HOUR_OF_DAY, 0);
+		calNextServiceDate.set(Calendar.MINUTE, 0);
+		calNextServiceDate.set(Calendar.SECOND, 0);
+		calNextServiceDate.set(Calendar.MILLISECOND, 0);
+		
+		if (calNextServiceDate.before(calNow)) {
+			// Task is overdue.
+			// Change task status to OVERDUE and write to DB as well
+			// But, only due so if Task Status is UPTODATE
+			// (i.e. don't overwrite INPROGRESS)
+			if (itemDTO.getTaskStatus().equalsIgnoreCase(
+					TaskStatusEnums.UPTODATE.name())) {
+				itemDTO.setTaskStatus(TaskStatusEnums.OVERDUE.name());
+				updateMaintenanceItem(itemDTO);
+			}
+		}
+		
+		return itemDTO;
+	}
+	
 	public void updateMaintenanceItem(MaintenanceItemDTO maintenanceItemDTO) {
+		maintenanceItemDTO = ageCurrentTaskStatus(maintenanceItemDTO);
 		maintenanceDao.updateMaintenanceItem(maintenanceItemDTO);
 	}
 

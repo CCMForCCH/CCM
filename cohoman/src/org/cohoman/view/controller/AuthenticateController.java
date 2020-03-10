@@ -75,6 +75,11 @@ public class AuthenticateController implements Serializable {
 			for (Role oneRole : rolesList) {
 				if (oneRole.getRolename().equals("basicuser")) {
 					roleToKeep = oneRole;
+					break;
+				}
+				if (oneRole.getRolename().equals("hofelleradmin")) {
+					roleToKeep = oneRole;
+					break;
 				}
 			}
 			rolesList.clear();
