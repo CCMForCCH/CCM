@@ -23,6 +23,17 @@
 <h:form>
  
  <h:panelGrid columns="1" title="Cohousing Events List" 
+	headerClass="formheader" styleClass="formstyle" rendered="#{not authenticateController.theKiosk}" >
+	    <f:facet name="header">
+           <h:outputText value="Latest Coronavirus Policy at CCH"/>
+        </f:facet>
+    <a href="https://docs.google.com/document/d/1591P-2ckC-y7fECcApDZGmahQeHEAwji/edit#heading=h.gjdgxs" target="_blank"
+      style="display:block; text-align:center; font-weight: large; font-size: 125%;color: blue">click_here_for_policy</a>
+     			
+	<br />
+</h:panelGrid>
+ 
+ <h:panelGrid columns="1" title="Cohousing Events List" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
            <h:outputText value="Birthdays Coming Up this Week!"
