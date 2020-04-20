@@ -74,6 +74,15 @@ public class SignupMealController implements Serializable {
 		//chosenMealEventString = null;
 	}
 
+	// 04/16/2020
+	// Add this method to be called when a user deletes (or changes) a meal
+	// so we don't use the cached value of the last chosen event since it
+	// may no longer exist. Also, doesn't hurt to make them enter the
+	// current event again.
+	public void clearChosenEventString() {
+		chosenMealEventString = "1";   
+	}
+
 	public String getSlotNumber() {
 		return slotNumber;
 	}
@@ -106,6 +115,7 @@ public class SignupMealController implements Serializable {
 		// 06/05/2019 resetting the meal always starts with a signup
 		signupOperation = "doSignup";
 		this.chosenMealEventString = chosenMealEventString;
+		logger.log(Level.INFO, "AUDIT: Setting chosenMealEventString to " + chosenMealEventString);
 	}
 
 	public String getSignupOperation() {
@@ -161,8 +171,8 @@ public class SignupMealController implements Serializable {
 		// Get the chosen Meal Event so we can display correct information
 		// about the Meal before submittal
 
-		// Robustness check
-		if (chosenMealEventString == null) {
+		// Robustness checks
+		if (chosenMealEventString == null || chosenMealEventString.isEmpty()) {  
 			logger.log(Level.WARNING,
 					"Internal Error: unable to find chosen meal event");
 			return false;
@@ -190,7 +200,10 @@ public class SignupMealController implements Serializable {
 		// get lead cook based on chosen meal event
 		// also decided to set maxnumberattending since we can just get it
 		// from the chosen MealEvent (snuck this in on 3/26)
-		maxnumberattending = chosenMealEvent.getMaxattendees();
+		// Fixed again to not overwrite a valid maxnumberattending (4/10/2020)
+		if (maxnumberattending == 0) {
+			maxnumberattending = chosenMealEvent.getMaxattendees();
+		}
 		if (chosenMealEvent.getCook1() != null
 				&& chosenMealEvent.getCook1() > 0) {
 			if (dbUser.getUserid() == chosenMealEvent.getCook1()) {
@@ -247,7 +260,7 @@ public class SignupMealController implements Serializable {
 	}
 
 	public List<MealEvent> getMealEventList() {
-		mealEventList = eventService.getCurrentMealEvents();
+		List<MealEvent> mealEventList = eventService.getCurrentMealEvents();
 
 		// remove past meals so users can't signup for them
 		mealEventList = filterOutPastMeals(mealEventList);
@@ -260,6 +273,15 @@ public class SignupMealController implements Serializable {
 			//chosenMealEventString = mealEventList.get(0).getEventid()
 					//.toString();
 		}
+		
+		// If we're returning an empty MealEvent list, set
+		// chosenMealEventString to null to eliminate any stale value
+		// since no existing value makes sense if we have
+		// no list to return (04/09/2020) 
+		if (mealEventList == null || mealEventList.isEmpty()) {
+			chosenMealEventString = null;
+		}
+
 		return mealEventList;
 	}
 
@@ -271,7 +293,7 @@ public class SignupMealController implements Serializable {
 	 */
 	public List<SignupMealDTO> getAllMealSignups() throws CohomanException {
 
-		if (chosenMealEventString.equalsIgnoreCase("1")) {
+		if (chosenMealEventString == null || chosenMealEventString.equalsIgnoreCase("1")) {
 			return null;
 		}
 

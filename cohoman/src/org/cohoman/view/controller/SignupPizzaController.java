@@ -85,6 +85,15 @@ public class SignupPizzaController implements Serializable {
 		// chosenUserString = "";
 	}
 
+	// 04/16/2020
+	// Add this method to be called when a user deletes (or changes) a meal
+	// so we don't use the cached value of the last chosen event since it
+	// may no longer exist. Also, doesn't hurt to make them enter the
+	// current event again.
+	public void clearChosenEventString() {
+		chosenPizzaEventString = "1";  
+	}
+
 	public String getSlotNumber() {
 		return slotNumber;
 	}
@@ -117,6 +126,8 @@ public class SignupPizzaController implements Serializable {
 		// 06/05/2019 resetting the meal always starts with a signup
 		signupOperation = "doSignup";
 		this.chosenPizzaEventString = chosenPizzaEventString;
+		logger.log(Level.INFO, "AUDIT: Setting chosenPizzaEventString to " + chosenPizzaEventString);
+
 	}
 
 	public String getSignupOperation() {
@@ -279,7 +290,8 @@ public class SignupPizzaController implements Serializable {
 	public String getPrintableLeader1() {
 
 		// get lead cook based on chosen meal event
-		if (chosenPizzaEventString == null || chosenPizzaEventString.isEmpty()) {
+		if (chosenPizzaEventString == null || chosenPizzaEventString.isEmpty()
+				|| chosenPizzaEventString.equals("1")) {  // 04/11/2020
 			return "Error: unable to get name of team leader.";
 		}
 
@@ -291,7 +303,7 @@ public class SignupPizzaController implements Serializable {
 	}
 
 	public List<PizzaEvent> getPizzaEventList() {
-		pizzaEventList = eventService.getCurrentPizzaEvents();
+		List<PizzaEvent> pizzaEventList = eventService.getCurrentPizzaEvents();
 
 		// Filter out past meals for all users except for the
 		// meal admin who sees all for the period
@@ -305,6 +317,15 @@ public class SignupPizzaController implements Serializable {
 			//chosenPizzaEventString = pizzaEventList.get(0).getEventid()
 					//.toString();
 		}
+		
+		// If we're returning an empty PizzaEvent list, set
+		// chosenPizzaEventString to null to eliminate any stale value
+		// since no existing value makes sense if we have
+		// no list to return (04/10/2020) 
+		if (pizzaEventList == null || pizzaEventList.isEmpty()) {
+			chosenPizzaEventString = null;
+		}
+
 		return pizzaEventList;
 		
 	}

@@ -113,6 +113,11 @@ public class PrivateEventDaoImpl implements PrivateEventDao {
 				session.saveOrUpdate(eventSpace);
 			}
 			tx.commit();
+			
+			logger.log(Level.INFO, "AUDIT: Just created a private event with id " +
+					privateEventBean.getEventid() + " and date of " + 
+					privateEventBean.getEventDate());
+
 		} catch (CohomanException ex) {
 			if (tx != null) {
 				tx.rollback();
@@ -252,6 +257,7 @@ public class PrivateEventDaoImpl implements PrivateEventDao {
 
 		return oneEvent;
 	}
+	
 	public List<PrivateEvent> getPrivateEventsForDay(Date dateOfDay) {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd:HH:mm");
@@ -290,8 +296,10 @@ public class PrivateEventDaoImpl implements PrivateEventDao {
 			Query query = session.createQuery(queryString).setLong(0, eventId);
 			List<PrivateEventBean> privateEventBeans = query.list();
 			if (privateEventBeans.size() != 1) {
+				logger.log(Level.SEVERE, "Expected just one bean but got "
+						+ privateEventBeans.size() + " for eventId " + eventId);
 				throw new RuntimeException("Expected just one bean but got "
-						+ privateEventBeans.size());
+						+ privateEventBeans.size() + " for eventId " + eventId);
 			}
 			PrivateEventBean onebean = privateEventBeans.iterator().next();
 			oneEvent = new PrivateEvent(onebean.getEventDate());
@@ -472,6 +480,11 @@ public class PrivateEventDaoImpl implements PrivateEventDao {
 			// Lastly, do a merge with the privateEventBean
 			session.merge(privateEventBean);
 			tx.commit();
+			
+			logger.log(Level.INFO, "AUDIT: Just updated a private event with id " +
+					privateEventBean.getEventid() + " and date of " + 
+					privateEventBean.getEventDate());
+
 		} catch (CohomanException ex) {
 			if (tx != null) {
 				tx.rollback();
@@ -510,6 +523,11 @@ public class PrivateEventDaoImpl implements PrivateEventDao {
 
 			session.delete(privateEventBean);
 			tx.commit();
+			
+			logger.log(Level.INFO, "AUDIT: Just deleted a private event with id " +
+					privateEventBean.getEventid() + " and date of " + 
+					privateEventBean.getEventDate());
+
 		} catch (Exception ex) {
 			logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
 			if (tx != null) {

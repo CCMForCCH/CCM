@@ -52,7 +52,9 @@
 				<h:panelGroup style="display:block; text-align:center" 
 					rendered="#{not empty editPizzaController.pizzaEventList}">				
 					<h:commandButton value="Submit Choice" action="#{editPizzaController.editPizzaView}" 
-						onclick="return checkForPizzaDelete(this.form)"/>
+						onclick="return checkForPizzaDelete(this.form)">
+						<f:actionListener binding="#{signupPizzaController.clearChosenEventString()}" />
+					</h:commandButton>
 				</h:panelGroup>
 			</h:panelGrid>
 			

@@ -444,6 +444,21 @@ public class EventManagerImpl implements EventManager {
 
 		}
 
+		// Lastly, eliminate days with potlucks already
+		// scheduled.
+		List<PotluckEvent> potluckEventList = potluckEventDao.getPotluckEvents();
+		for (PotluckEvent potluckEvent : potluckEventList) {
+			Calendar potluckCalDate = new GregorianCalendar();
+			potluckCalDate.setTime(potluckEvent.getEventDate());
+			potluckCalDate.set(Calendar.HOUR_OF_DAY, 0);
+			potluckCalDate.set(Calendar.MINUTE, 0);
+			potluckCalDate.set(Calendar.SECOND, 0);
+			potluckCalDate.set(Calendar.MILLISECOND, 0);
+
+			anyMealEventCalList.add(potluckCalDate);
+
+		}
+
 		ConfigInfo configInfo = new ConfigInfo();
 		int year = configInfo.getMealPeriodStartYear();
 		int month = configInfo.getMealPeriodStartMonth();

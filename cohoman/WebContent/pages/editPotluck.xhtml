@@ -52,7 +52,9 @@
 				<h:panelGroup style="display:block; text-align:center" 
 					rendered="#{not empty editPotluckController.potluckEventList}">				
 					<h:commandButton value="Submit Choice" action="#{editPotluckController.editPotluckView}" 
-						onclick="return checkForPotluckDelete(this.form)"/>
+						onclick="return checkForPotluckDelete(this.form)">
+						<f:actionListener binding="#{signupPotluckController.clearChosenEventString()}" />
+					</h:commandButton>
 				</h:panelGroup>
 			</h:panelGrid>
 

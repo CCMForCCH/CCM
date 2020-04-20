@@ -68,6 +68,10 @@ public class PizzaEventDaoImpl implements PizzaEventDao {
 			session.saveOrUpdate(pizzaEventBean);
 
 			tx.commit();
+			
+			logger.log(Level.INFO, "AUDIT: Just created a pizza event with id " +
+					pizzaEventBean.getEventid());
+
 		} catch (CohomanException ex) {
 			if (tx != null) {
 				tx.rollback();
@@ -209,7 +213,7 @@ public class PizzaEventDaoImpl implements PizzaEventDao {
 			List<PizzaEventBean> pizzaEventBeans = query.list();
 			if (pizzaEventBeans.size() != 1) {
 				logger.log(Level.SEVERE, "Expected just one bean but got "
-						+ pizzaEventBeans.size());
+						+ pizzaEventBeans.size() + " for eventId " + eventId);
 				throw new CohomanException(LoggingUtils.INTERNAL_ERROR);
 			}
 			PizzaEventBean onebean = pizzaEventBeans.iterator().next();
@@ -303,6 +307,10 @@ public class PizzaEventDaoImpl implements PizzaEventDao {
 			session.delete(pizzaEventBean);
 
 			tx.commit();
+
+			logger.log(Level.INFO, "AUDIT: Just deleted a pizza event with id " +
+					pizzaEventBean.getEventid());
+
 		} catch (Exception ex) {
 			logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
 			if (tx != null) {

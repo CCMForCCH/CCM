@@ -74,6 +74,10 @@ public class MealEventDaoImpl implements MealEventDao {
 			session.saveOrUpdate(mealEventBean);
 
 			tx.commit();
+			
+			logger.log(Level.INFO, "AUDIT: Just created a meal event with id " +
+					mealEventBean.getEventid());
+
 		} catch (CohomanException ex) {
 			if (tx != null) {
 				tx.rollback();
@@ -166,6 +170,10 @@ public class MealEventDaoImpl implements MealEventDao {
 			session.delete(mealEventBean);
 
 			tx.commit();
+			
+			logger.log(Level.INFO, "AUDIT: Just deleted a meal event with id " +
+					mealEventBean.getEventid());
+
 		} catch (Exception ex) {
 			logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
 			if (tx != null) {

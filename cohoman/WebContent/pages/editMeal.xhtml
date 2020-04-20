@@ -53,7 +53,9 @@
 				<h:panelGroup style="display:block; text-align:center"
 					rendered="#{not empty editMealController.mealEventList}">				
 					<h:commandButton value="Submit Choice" action="#{editMealController.editMealView}" 
-					    onclick="return checkForMealDelete(this.form)" />
+					    onclick="return checkForMealDelete(this.form)" >
+						<f:actionListener binding="#{signupMealController.clearChosenEventString()}" />
+					</h:commandButton>
 				</h:panelGroup>
 			</h:panelGrid>
 

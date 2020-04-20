@@ -67,6 +67,10 @@ public class PotluckEventDaoImpl implements PotluckEventDao {
 			session.saveOrUpdate(potluckEventBean);
 
 			tx.commit();
+			
+			logger.log(Level.INFO, "AUDIT: Just created a potluck event with id " +
+					potluckEventBean.getEventid());
+
 		} catch (CohomanException ex) {
 			if (tx != null) {
 				tx.rollback();
@@ -204,7 +208,7 @@ public class PotluckEventDaoImpl implements PotluckEventDao {
 			List<PotluckEventBean> potluckEventBeans = query.list();
 			if (potluckEventBeans.size() != 1) {
 				logger.log(Level.SEVERE, "Expected just one bean but got "
-						+ potluckEventBeans.size());
+						+ potluckEventBeans.size() + " for eventId " + eventId);
 				throw new CohomanException(LoggingUtils.INTERNAL_ERROR);
 			}
 			PotluckEventBean onebean = potluckEventBeans.iterator().next();
@@ -308,6 +312,10 @@ public class PotluckEventDaoImpl implements PotluckEventDao {
 			session.delete(potluckEventBean);
 
 			tx.commit();
+			
+			logger.log(Level.INFO, "AUDIT: Just deleted a potluck event with id " +
+					potluckEventBean.getEventid());
+
 		} catch (Exception ex) {
 			logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
 			if (tx != null) {

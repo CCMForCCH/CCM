@@ -222,6 +222,12 @@ public class TextTeamMembers implements Runnable, Serializable {
 				phoneNumber = ConfigScalarValues.johnms_phone_number;
 			}
 			
+			// Oh, one more special-case. If the user is Meredith, use 
+			// Robin's phone.
+			if (theUser.getUsername().equalsIgnoreCase("meredith")) {
+				phoneNumber = "617-999-7716";
+			}
+			
 			if (!phoneNumber.isEmpty()
 					&& Validators.isValidPhoneNumber(phoneNumber)) {
 				phoneNumber = phoneNumber.replace("-", ""); // remove dashes
