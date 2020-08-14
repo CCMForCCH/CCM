@@ -1023,6 +1023,11 @@
 			<to-view-id>/displayMaintenanceList.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>addMaintenanceItemOWNER</from-outcome>
+			<to-view-id>/displayOwnerMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>
@@ -1099,6 +1104,11 @@
 		<navigation-case>
 			<from-outcome>deleteMaintenanceItem</from-outcome>
 			<to-view-id>/displayMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>deleteMaintenanceItemOWNER</from-outcome>
+			<to-view-id>/displayOwnerMaintenanceList.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
@@ -1550,7 +1560,7 @@
 		</navigation-case>
 	</navigation-rule>
 
-		<!--  pages for hofeller admin -->
+<!--  pages for hofeller admin -->
 	<navigation-rule>
 		<from-view-id>/indexForHofelleradmin.xhtml</from-view-id>
 		<navigation-case>

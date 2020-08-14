@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 
 @ManagedBean
@@ -159,7 +160,9 @@ public class EditMaintenanceController implements Serializable {
 
 	public List<MaintenanceItemDTO> getMaintenanceItemDTOsList() {
 		maintenanceItemDTOsList = 
-				listsService.getMaintenanceItems(SortEnums.ORDERBYNAME);
+				listsService.getMaintenanceItems(
+						SortEnums.ORDERBYNAME,
+						MaintenanceTypeEnums.ALL);
 		return maintenanceItemDTOsList;
 	}
 
@@ -209,10 +212,17 @@ public class EditMaintenanceController implements Serializable {
 		Long maintenanceItemId = Long.valueOf(chosenMaintenanceItemString);
 		chosenMaintenanceItemDTO = listsService.getMaintenanceItem(maintenanceItemId);		
 
+		String returnValue = maintenanceOperation;
 		if (maintenanceOperation.equals("deleteMaintenanceItem")) {
 			listsService.deleteMaintenanceItem(chosenMaintenanceItemDTO);
+			
+			// Kinda hacky way to return different operation strings so page
+			// displayed is either for Hofeller or Owner items (08/05/2020)
+			if (chosenMaintenanceItemDTO.getMaintenanceType().equals(MaintenanceTypeEnums.OWNER.name())) {
+				returnValue += chosenMaintenanceItemDTO.getMaintenanceType();	
+			}
 		}
-		return maintenanceOperation;
+		return returnValue;
 	}
 
 	public String editMealItemsView() throws Exception {

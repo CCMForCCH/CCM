@@ -10,6 +10,7 @@ import org.cohoman.model.integration.persistence.beans.MaintenanceBean;
 import org.cohoman.model.integration.persistence.beans.MtaskBean;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -38,6 +39,7 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			maintenanceBean.setTargetTimeOfyear(dto.getTargetTimeOfyear());
 			maintenanceBean.setTaskStatus(dto.getTaskStatus());
 			maintenanceBean.setNextServiceDate(dto.getNextServiceDate());
+			maintenanceBean.setMaintenanceType(dto.getMaintenanceType());
 			
 			session.saveOrUpdate(maintenanceBean);
 
@@ -54,17 +56,33 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 		}
 	}
 
-	public List<MaintenanceItemDTO> getMaintenanceItems(SortEnums sortEnum){
+	public List<MaintenanceItemDTO> getMaintenanceItems(
+			SortEnums sortEnum, MaintenanceTypeEnums maintenanceTypeEnum){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
-		String queryString = null;
-		if (sortEnum.equals(SortEnums.ORDERBYNAME)) {
-			queryString = "from MaintenanceBean order by itemname";			
-		} else {
-			queryString = "from MaintenanceBean order by nextServiceDate";
+		// Build query string depending on maintenance type and sort order
+		// Maintenance type will either be HOFELLER, OWNER, or ALL.
+		String queryString = "from MaintenanceBean ";
+		
+		// Do maintenance type check unless it is ALL. If it's ALL, there's
+		// nothing to do by way of filtering so nothing added to query string
+		if (maintenanceTypeEnum.name().equals(MaintenanceTypeEnums.HOFELLER.name())) {
+			// Hofeller
+			queryString += "WHERE maintenanceType='HOFELLER'";
+		} else if (maintenanceTypeEnum.name().equals(MaintenanceTypeEnums.OWNER.name())) {
+			// Owner
+			queryString += "WHERE maintenanceType='OWNER'";			
 		}
+		
+		// Now add the ORDER BY clause to sort appropriately
+		if (sortEnum.equals(SortEnums.ORDERBYNAME)) {
+			queryString += " ORDER BY itemname";			
+		} else {
+			queryString += " ORDER BY nextServiceDate";
+		}
+		
+		// Now do the actual query
 		Query query = session.createQuery(queryString);
-
 		List<MaintenanceBean> maintenanceBeans = query.list();
 		
 		// Copy data from a bean into a DTO (vs. passing a bean up to
@@ -84,6 +102,7 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			oneItem.setTargetTimeOfyear(onebean.getTargetTimeOfyear());
 			oneItem.setTaskStatus(onebean.getTaskStatus());
 			oneItem.setNextServiceDate(onebean.getNextServiceDate());
+			oneItem.setMaintenanceType(onebean.getMaintenanceType());
 			
 			dtoList.add(oneItem);	
 		}
@@ -119,6 +138,7 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			oneItem.setTargetTimeOfyear(onebean.getTargetTimeOfyear());
 			oneItem.setTaskStatus(onebean.getTaskStatus());
 			oneItem.setNextServiceDate(onebean.getNextServiceDate());
+			oneItem.setMaintenanceType(onebean.getMaintenanceType());
 			tx.commit();
 			return oneItem;
 		} catch (Exception ex) {
@@ -152,6 +172,7 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 		maintenanceBean.setTargetTimeOfyear(maintenanceItemDTO.getTargetTimeOfyear());
 		maintenanceBean.setTaskStatus(maintenanceItemDTO.getTaskStatus());
 		maintenanceBean.setNextServiceDate(maintenanceItemDTO.getNextServiceDate());
+		maintenanceBean.setMaintenanceType(maintenanceItemDTO.getMaintenanceType());
 		session.merge(maintenanceBean);
 
 		tx.commit();

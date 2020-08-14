@@ -2,12 +2,12 @@ package org.cohoman.view.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -16,6 +16,8 @@ import org.cohoman.model.business.User;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
+import org.cohoman.view.controller.utils.SortEnums;
 import org.cohoman.view.controller.utils.TaskPriorityEnums;
 import org.cohoman.view.controller.utils.TaskStatusEnums;
 
@@ -30,10 +32,6 @@ public class CreateMaintenanceItemController implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 4678206276499587830L;
-	private String mealYear;
-	private String mealMonth;
-	private String mealDay;
-	private Long maintenanceitemid;
 	private String itemname;
 	private String itemdescription;
 	private Date itemCreatedDate;
@@ -45,13 +43,10 @@ public class CreateMaintenanceItemController implements Serializable {
 	private UserService userService = null;
 	private ListsService listsService = null;
 	private TaskPriorityEnums chosenpriority;
+	private MaintenanceTypeEnums chosentype;
 
 
 	public CreateMaintenanceItemController() {
-		GregorianCalendar now = new GregorianCalendar();
-		mealYear = new Integer(now.get(Calendar.YEAR)).toString();
-		mealMonth = new Integer(now.get(Calendar.MONTH)).toString();
-		mealDay = new Integer(now.get(Calendar.DAY_OF_MONTH)).toString();
 	}
 
 	private void clearFormFields() {
@@ -156,6 +151,20 @@ public class CreateMaintenanceItemController implements Serializable {
 	public TaskPriorityEnums[] getItempriorities() {
 		return TaskPriorityEnums.values();
 	}
+	
+	public MaintenanceTypeEnums getChosentype() {
+		return chosentype;
+	}
+
+	public void setChosentype(MaintenanceTypeEnums chosentype) {
+		this.chosentype = chosentype;
+	}
+
+	public MaintenanceTypeEnums[] getItemtypes() {
+		MaintenanceTypeEnums[] types = { MaintenanceTypeEnums.HOFELLER,
+				MaintenanceTypeEnums.OWNER };
+		return types;
+	}
 
 	// Method for drop-down of expected number of months between 
 	// item performances
@@ -190,6 +199,20 @@ public class CreateMaintenanceItemController implements Serializable {
 		clearFormFields();
 */
 		MaintenanceItemDTO dto = createMaintenanceItemDTO();
+		
+		// Make sure that this is a unique maintenance item name
+		List<MaintenanceItemDTO> allMaintenanceItems = 
+				listsService.getMaintenanceItems(SortEnums.ORDERBYNAME, MaintenanceTypeEnums.ALL);
+		for (MaintenanceItemDTO oneItem : allMaintenanceItems) {
+			if (oneItem.getItemname().equalsIgnoreCase(dto.getItemname())) {
+				FacesMessage message = new FacesMessage(
+						"Already have an item name of " + dto.getItemname());
+				message.setSeverity(FacesMessage.SEVERITY_ERROR);
+				FacesContext.getCurrentInstance().addMessage(null, message);
+				return null;
+			}
+		}
+
 		//try {
 			listsService.createMaintenanceItem(dto);
 		//} catch (CohomanException ex) {
@@ -198,9 +221,17 @@ public class CreateMaintenanceItemController implements Serializable {
 			//FacesContext.getCurrentInstance().addMessage(null, message);
 			//return null;
 		//}
+
+		// Kinda hack the returned operation so we can tell which list to
+		// to display, Hofeller or Owner. (08/03/2020)
+		String returnValue = "addMaintenanceItem";
+		if (dto.getMaintenanceType().equals(MaintenanceTypeEnums.OWNER.name())) {
+			returnValue += dto.getMaintenanceType();	
+		}
+
 		// clear out fields for return to the page in this session
 		clearFormFields();
-		return "addMaintenanceItem";
+		return returnValue;
 	}
 	
 	// method to create a MealEvent
@@ -211,6 +242,7 @@ public class CreateMaintenanceItemController implements Serializable {
 		dto.setFrequencyOfItem(frequencyOfItem);
 		dto.setTargetTimeOfyear(targetTimeOfyear);
 		dto.setPriority(chosenpriority.name());
+		dto.setMaintenanceType(chosentype.name());
 		GregorianCalendar now = new GregorianCalendar();
 		dto.setItemCreatedDate(now.getTime());
 		dto.setNextServiceDate(now.getTime());   // keep this code or fix?????

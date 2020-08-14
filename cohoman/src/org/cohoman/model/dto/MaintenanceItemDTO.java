@@ -19,6 +19,7 @@ public class MaintenanceItemDTO {
 	private String taskStatus;
 	private Date nextServiceDate;
 	private String printableNextServiceDate;
+	private String maintenanceType;
 	
 	
 	public Long getMaintenanceitemid() {
@@ -110,6 +111,12 @@ public class MaintenanceItemDTO {
 	}
 	public void setPrintableNextServiceDate(String printableNextServiceDate) {
 		this.printableNextServiceDate = printableNextServiceDate;
+	}
+	public String getMaintenanceType() {
+		return maintenanceType;
+	}
+	public void setMaintenanceType(String maintenanceType) {
+		this.maintenanceType = maintenanceType;
 	}	
 
 }

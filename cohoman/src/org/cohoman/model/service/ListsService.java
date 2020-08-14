@@ -14,6 +14,7 @@ import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
 import org.cohoman.view.controller.CohomanException;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 
 public interface ListsService {
@@ -34,7 +35,8 @@ public interface ListsService {
 	public void createMaintenanceItem(MaintenanceItemDTO maintenanceItemDTO)
 			throws CohomanException;
 
-	public List<MaintenanceItemDTO> getMaintenanceItems(SortEnums sortEnum);
+	public List<MaintenanceItemDTO> getMaintenanceItems(
+			SortEnums sortEnum, MaintenanceTypeEnums maintenanceTypeEnum);
 
 	public void updateMaintenanceItem(MaintenanceItemDTO maintenanceItemDTO)
 			throws CohomanException;

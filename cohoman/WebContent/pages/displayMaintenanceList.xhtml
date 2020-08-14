@@ -14,7 +14,7 @@
 
 	<ui:composition template="/templates/masterLayout.xhtml">
 		<ui:define name="windowTitle">
-			Periodic Maintenance Items
+			Hofeller Periodic Maintenance Items
 		</ui:define>
 	
 	<ui:define name="content">
@@ -22,17 +22,17 @@
 
 <h:form>
  
-<h:panelGrid columns="1" title="Periodic Maintenance Items" 
+<h:panelGrid columns="1" title="Hofeller Periodic Maintenance Items" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
-           <h:outputText value="Periodic Maintenance Items"/>
+           <h:outputText value="Hofeller Periodic Maintenance Items (Sorted by Date)"/>
         </f:facet>
 	<br />
 	
-	<h:outputText value="There are no Periodic Maintenance Items." 
+	<h:outputText value="There are no Hofeller Periodic Maintenance Items." 
 		rendered="#{empty retrieveMaintenanceItemsListController.maintenanceItemList}" />
 	
-	<h:link value="Sort Maintenance Item Table By Name" outcome="displayMaintenanceListByNames.xhtml" style="display:block; text-align:center"/>
+	<h:link value="Sort Hofeller Maintenance Item Table By Name" outcome="displayMaintenanceListByNames.xhtml" style="display:block; text-align:center"/>
 	<br />
 	<h:dataTable value="#{retrieveMaintenanceItemsListController.maintenanceItemList}" var="oneitem" 
 		styleClass="users" headerClass="usersHeader" 

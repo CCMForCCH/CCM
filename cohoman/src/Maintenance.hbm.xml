@@ -19,6 +19,7 @@
 	  <property name="targetTimeOfyear" />
 	  <property name="taskStatus" />
 	  <property name="nextServiceDate" />
+	  <property name="maintenanceType" />
 	  
   </class>
     

@@ -14,17 +14,17 @@
 
 	<ui:composition template="/templates/masterLayout.xhtml">
 		<ui:define name="windowTitle">
-			Edit Maintenance Item Fields
+			Display Hofeller Maintenance Item Fields
 		</ui:define>
 	
 	<ui:define name="content">
 		<br></br>
 		<h:form>
 
-			<h:panelGrid columns="2" title="Maintenance Item Details" 
+			<h:panelGrid columns="2" title="Hofeller Maintenance Item Details" 
 				headerClass="formheader" styleClass="itemdetails" >
 	     		<f:facet name="header">
-            		<h:outputText value="Details for Maintenance Item"/>
+            		<h:outputText value="Details for Hofeller Maintenance Item"/>
          		</f:facet>
          		
          		<h:outputText value="Item Name:" style="font-weight:bold" />
@@ -50,10 +50,10 @@
 			</h:panelGrid>
          	<br /> 
 
-			<h:panelGrid columns="1" title="Maintenance Item Details" 
+			<h:panelGrid columns="1" title="Hofeller Maintenance Item Details" 
 				headerClass="formheader" styleClass="itemdetails" >
-				<h:link value="Go back to Maintenance Item Table (sorted by date)" outcome="displayMaintenanceListOnly.xhtml" style="display:block; text-align:center"/>
-				<h:link value="Go back to Maintenance Item Table (sorted by name)" outcome="displayMaintenanceListOnlyByNames.xhtml" style="display:block; text-align:center"/>
+				<h:link value="Go back to Hofeller Maintenance Item Table (sorted by date)" outcome="displayMaintenanceListOnly.xhtml" style="display:block; text-align:center"/>
+				<h:link value="Go back to Hofeller Maintenance Item Table (sorted by name)" outcome="displayMaintenanceListOnlyByNames.xhtml" style="display:block; text-align:center"/>
 			</h:panelGrid>
 		    <h:messages layout="table" errorClass="errors" />
 					

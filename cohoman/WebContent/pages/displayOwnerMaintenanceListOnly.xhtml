@@ -22,22 +22,22 @@
 
 <h:form>
  
-<h:panelGrid columns="1" title="Hofeller Periodic Maintenance Items" 
+<h:panelGrid columns="1" title="Owner Periodic Maintenance Items" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
-           <h:outputText value="Hofeller Periodic Maintenance Items (Sorted by Name)"/>
+           <h:outputText value="Owner Periodic Maintenance Items (Sorted by Date)"/>
         </f:facet>
 	<br />
 	
-	<h:outputText value="There are no Periodic Maintenance Items." 
-		rendered="#{empty retrieveMaintenanceItemsListController.maintenanceItemListByNames}" />
+	<h:outputText value="There are no Owner Periodic Maintenance Items." 
+		rendered="#{empty retrieveMaintenanceItemsListController.ownerMaintenanceItemList}" />
 
-	<h:link value="Sort Hofeller Maintenance Items Table By Date" outcome="displayMaintenanceListOnly.xhtml" style="display:block; text-align:center"/>
+	<h:link value="Sort Owner Maintenance Item Table By Name" outcome="displayOwnerMaintenanceListOnlyByNames.xhtml" style="display:block; text-align:center"/>
 	<br />
-	<h:dataTable value="#{retrieveMaintenanceItemsListController.maintenanceItemListByNames}" var="oneitem" 
+	<h:dataTable value="#{retrieveMaintenanceItemsListController.ownerMaintenanceItemList}" var="oneitem" 
 		styleClass="users" headerClass="usersHeader" 
 		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
-		rendered="#{not empty retrieveMaintenanceItemsListController.maintenanceItemListByNames}">
+		rendered="#{not empty retrieveMaintenanceItemsListController.ownerMaintenanceItemList}">
  
 		<h:column>
   			<f:facet name="header">Item Name</f:facet> 
@@ -66,14 +66,14 @@
 
 		<h:column>
   			<f:facet name="header">Item Details</f:facet> 
-  			<h:link value="ItemDetails" outcome="displayMaintenanceItemDetailsOnly.xhtml">
+  			<h:link value="ItemDetails" outcome="displayOwnerMaintenanceItemDetailsOnly.xhtml">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
  			</h:link>          
 		</h:column>
 
 		<h:column>
   			<f:facet name="header">Task History</f:facet> 
-  			<h:link value="TaskHistory" outcome="listMaintenanceTasksOnly.xhtml">
+  			<h:link value="TaskHistory" outcome="listOwnerMaintenanceTasksOnly.xhtml">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
   				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
   			</h:link>          

@@ -15,6 +15,7 @@ public class MaintenanceBean {
 	private String targetTimeOfyear;
 	private String taskStatus;
 	private Date nextServiceDate;
+	private String maintenanceType;
 	
 	public MaintenanceBean() {
 		
@@ -89,6 +90,14 @@ public class MaintenanceBean {
 
 	public void setNextServiceDate(Date nextServiceDate) {
 		this.nextServiceDate = nextServiceDate;
+	}
+
+	public String getMaintenanceType() {
+		return maintenanceType;
+	}
+
+	public void setMaintenanceType(String maintenanceType) {
+		this.maintenanceType = maintenanceType;
 	}	
 
 }

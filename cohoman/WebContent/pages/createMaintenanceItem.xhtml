@@ -26,7 +26,15 @@
 	     		<f:facet name="header">
             		<h:outputText value="Please Enter Periodic Maintenance Item Information"/>
          		</f:facet>
-         		         				
+         		 
+         		<h:outputText value="Item Type:"  styleClass="subheading" />
+				<h:selectOneMenu value="#{createMaintenanceItemController.chosentype}">
+					<f:selectItems value="#{createMaintenanceItemController.itemtypes}"
+						var="onetype"
+						itemLabel="#{onetype}"
+						itemValue="#{onetype}" />
+				</h:selectOneMenu>
+         		        				
 				<h:outputText value="Item Name:"  styleClass="subheading" />
 				<h:inputText id="ItemName" value="#{createMaintenanceItemController.itemname}" required="true">
 					<f:validateLength minimum="3" maximum="31" />

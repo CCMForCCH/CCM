@@ -39,6 +39,7 @@ import org.cohoman.model.integration.persistence.dao.UserDao;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.CalendarUtils;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 import org.cohoman.view.controller.utils.TaskPriorityEnums;
 import org.cohoman.view.controller.utils.TaskStatusEnums;
@@ -720,10 +721,11 @@ public class ListsManagerImpl implements ListsManager {
 		maintenanceDao.createMaintenanceItem(maintenanceItemDTO);
 	}
 
-	public List<MaintenanceItemDTO> getMaintenanceItems(SortEnums sortEnum) {
+	public List<MaintenanceItemDTO> getMaintenanceItems(
+			SortEnums sortEnum, MaintenanceTypeEnums maintenanceTypeEnum) {
 		List<MaintenanceItemDTO> dtoListOut = new ArrayList<MaintenanceItemDTO>();
 		List<MaintenanceItemDTO> dtoListIn = maintenanceDao
-				.getMaintenanceItems(sortEnum);
+				.getMaintenanceItems(sortEnum, maintenanceTypeEnum);
 		for (MaintenanceItemDTO oneDTO : dtoListIn) {
 
 			// If NextServiceDate is > current date, set task

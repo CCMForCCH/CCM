@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.view.controller.CohomanException;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 
 public interface MaintenanceDao {
 	
 	public void createMaintenanceItem(MaintenanceItemDTO dto) throws CohomanException;
 	
-	public List<MaintenanceItemDTO> getMaintenanceItems(SortEnums sortEnum);
+	public List<MaintenanceItemDTO> getMaintenanceItems(
+			SortEnums sortEnum, MaintenanceTypeEnums maintenanceTypeEnum);
 
 	public MaintenanceItemDTO getMaintenanceItem(Long maintenanceItemId);
 

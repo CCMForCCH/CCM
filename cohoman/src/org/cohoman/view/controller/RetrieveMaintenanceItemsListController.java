@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.service.ListsService;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 
 @ManagedBean
@@ -69,7 +70,9 @@ public class RetrieveMaintenanceItemsListController implements Serializable {
 		getChosenMaintenanceItemId();
 		long itemId = Long.parseLong(chosenMaintenanceItemId);
 		maintenanceItemDTOsList = 
-				listsService.getMaintenanceItems(SortEnums.ORDERBYNEXTSERVICEDATE);
+				listsService.getMaintenanceItems(
+						SortEnums.ORDERBYNEXTSERVICEDATE,
+						MaintenanceTypeEnums.ALL);
 		for (MaintenanceItemDTO itemDTO:maintenanceItemDTOsList) {
 			if (itemDTO.getMaintenanceitemid() == itemId) {
 				return itemDTO;
@@ -90,19 +93,41 @@ public class RetrieveMaintenanceItemsListController implements Serializable {
 
 	public List<MaintenanceItemDTO> getMaintenanceItemList() {
 		maintenanceItemList = 
-				listsService.getMaintenanceItems(SortEnums.ORDERBYNEXTSERVICEDATE);
+				listsService.getMaintenanceItems(
+						SortEnums.ORDERBYNEXTSERVICEDATE,
+						MaintenanceTypeEnums.HOFELLER);
 		return maintenanceItemList;
 	}
 
 	public List<MaintenanceItemDTO> getMaintenanceItemListByNames() {
 		maintenanceItemList = 
-				listsService.getMaintenanceItems(SortEnums.ORDERBYNAME);
+				listsService.getMaintenanceItems(
+						SortEnums.ORDERBYNAME,
+						MaintenanceTypeEnums.HOFELLER);
+		return maintenanceItemList;
+	}
+
+	public List<MaintenanceItemDTO> getOwnerMaintenanceItemList() {
+		maintenanceItemList = 
+				listsService.getMaintenanceItems(
+						SortEnums.ORDERBYNEXTSERVICEDATE,
+						MaintenanceTypeEnums.OWNER);
+		return maintenanceItemList;
+	}
+
+	public List<MaintenanceItemDTO> getOwnerMaintenanceItemListByNames() {
+		maintenanceItemList = 
+				listsService.getMaintenanceItems(
+						SortEnums.ORDERBYNAME,
+						MaintenanceTypeEnums.OWNER);
 		return maintenanceItemList;
 	}
 
 	public List<MaintenanceItemDTO> getMaintenanceItemDTOsList() {
 		maintenanceItemDTOsList = 
-				listsService.getMaintenanceItems(SortEnums.ORDERBYNEXTSERVICEDATE);
+				listsService.getMaintenanceItems(
+						SortEnums.ORDERBYNEXTSERVICEDATE,
+						MaintenanceTypeEnums.HOFELLER);
 		return maintenanceItemDTOsList;
 	}
 

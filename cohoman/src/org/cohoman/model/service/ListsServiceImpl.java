@@ -23,6 +23,7 @@ import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 
 public class ListsServiceImpl implements ListsService {
@@ -117,8 +118,9 @@ public class ListsServiceImpl implements ListsService {
 		listsManager.createMaintenanceItem(maintenanceItemDTO);
 	}
 
-	public List<MaintenanceItemDTO> getMaintenanceItems(SortEnums sortEnum) {
-		return listsManager.getMaintenanceItems(sortEnum);
+	public List<MaintenanceItemDTO> getMaintenanceItems(
+			SortEnums sortEnum, MaintenanceTypeEnums maintenanceTypeEnum) {
+		return listsManager.getMaintenanceItems(sortEnum, maintenanceTypeEnum);
 	}
 
 	public MaintenanceItemDTO getMaintenanceItem(Long maintenanceItemId) {
