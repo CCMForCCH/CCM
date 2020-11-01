@@ -107,11 +107,14 @@ public class TextTeamMembers implements Runnable, Serializable {
 			//today.set(Calendar.SECOND, 0);
 			//if (isNowTheSelectedDayAndTime(today.getTime(), 0, 14)) {
 			if (isNowTheSelectedDayAndTime(securityDate, 10, 0)) {
-				sendTextMessageToTeam(singleSecurityPersonList, "CCM: You are scheduled to do security starting tonight");								
+				sendTextMessageToTeam(singleSecurityPersonList, "CCM: You are scheduled to do security starting tonight");
+				singleSecurityPersonList.clear(); // empty the list
+				singleSecurityPersonList.add(securityRows.get(1).getUsername());
+				sendTextMessageToTeam(singleSecurityPersonList, "CCM: You are scheduled to do security starting one week from tonight");
 			}
 			
 			// This is where I'd put Hofeller stuff ....
-			//logger.info("Sending email fro  TextTeammembers");
+			//logger.info("Sending email from  TextTeammembers");
 			//SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "CCM Notification", "test body 2/3");
 		} catch (Throwable th) {
 			logger.severe(th.toString());

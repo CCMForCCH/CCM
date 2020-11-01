@@ -225,7 +225,7 @@ public class EditMaintenanceController implements Serializable {
 		return returnValue;
 	}
 
-	public String editMealItemsView() throws Exception {
+	public String editMaintenanceItemsView() throws Exception {
 
 		try {
 			listsService.updateMaintenanceItem(chosenMaintenanceItemDTO);
@@ -236,7 +236,15 @@ public class EditMaintenanceController implements Serializable {
 			return null;
 		}
 
-		return "listMaintenanceItems";
+		// Kinda hack the returned operation so we can tell which list to
+		// to display, Hofeller or Owner. (08/29/2020)
+		String returnValue = "listMaintenanceItems";
+		if (chosenMaintenanceItemDTO.getMaintenanceType().equals(MaintenanceTypeEnums.OWNER.name())) {
+			returnValue += chosenMaintenanceItemDTO.getMaintenanceType();	
+		}
+
+		return returnValue;
+
 	}
 
 }

@@ -42,7 +42,7 @@
 			<h:panelGrid columns="2" title="Please Enter Private Event Information" 
 				headerClass="formheader" styleClass="formstyle" >
          		
-         		Event day:
+         		<h:outputText value="Event day:" style="font-weight:bold" />
          		<p:calendar  id="popup" 
          			value="#{requestReservedEventController.privateChosenDate}" required="true" 
          			pattern="MMM d, yyyy" size="15" showOn="focus"
@@ -76,7 +76,7 @@
 				</h:selectOneMenu>
 				</ui:remove>
 				
-				Start time:
+				<h:outputText value="Start time:" style="font-weight:bold" />
 				<h:selectOneMenu id="starttimeId" value="#{requestReservedEventController.slotNumberStart}" style="font-size: medium;">
 					<f:selectItems value="#{requestReservedEventController.timeSlotsOfTheDay}"
 						var="slot" 
@@ -85,7 +85,7 @@
 					<f:ajax render="endtimeId" execute="endtimeId" event="change" />
 				</h:selectOneMenu>
 				
-				End time:
+				<h:outputText value="End time:" style="font-weight:bold" />
 				<h:selectOneMenu id="endtimeId" value="#{requestReservedEventController.slotNumberEnd}" style="font-size: medium;">
 					<f:selectItems value="#{requestReservedEventController.timeSlotsOfTheDay}"
 						var="slot" 
@@ -94,7 +94,7 @@
 					<f:ajax render="endtimeId" execute="endtimeId" event="change" />
 				</h:selectOneMenu>
 				
-				Recurring Event:
+				<h:outputText value="Recurring Event:" style="font-weight:bold" />
 				<h:panelGroup id="recurringquestion" >
 				<h:panelGrid columns="2" >
 				<h:selectBooleanCheckbox id="isRecurring"
@@ -122,7 +122,7 @@
 				</h:panelGroup>
 				
 				
-				Event Name:
+				<h:outputText value="Event Name:" style="font-weight:bold" />
 				<h:panelGroup>
 				<h:inputText id="EventName" value="#{requestReservedEventController.privateEventName}" 
 					label="EventName" maxlength = "40" required="true" />
@@ -130,14 +130,14 @@
 				</h:panelGroup>
 					
 									
-				Event Description:
+				<h:outputText value="Event Description:" style="font-weight:bold" />
 				<h:panelGroup>	
 				<h:inputText id="EventDescription" value="#{requestReservedEventController.privateEventInfo}" 
 					label="EventDescription" size = "80" maxlength = "200" required="true"/>
 				<h:message for="EventDescription" errorClass="errors" />
 				</h:panelGroup>
 			
- 				Number of Adults Expected:
+ 				<h:outputText value="Number of Adults Expected:" style="font-weight:bold" />
 				<h:selectOneMenu  value="#{requestReservedEventController.privateExpectednumberofadults}" 
 					style="font-size: medium;">
 					<f:selectItems value="#{requestReservedEventController.numberOfAdults}"
@@ -146,7 +146,7 @@
 						itemValue="#{onecount}" />
 				</h:selectOneMenu>
 
-				Number of Children Expected:
+				<h:outputText value="Number of Children Expected:" style="font-weight:bold" />
 				<h:selectOneMenu  value="#{requestReservedEventController.privateExpectednumberofchildren}"
 					style="font-size: medium;" >
 					<f:selectItems value="#{requestReservedEventController.numberOfChildren}"
@@ -155,10 +155,10 @@
 						itemValue="#{onecount}" />
 				</h:selectOneMenu>
 				
-				Organization (optional):
+				<h:outputText value="Organization (optional):" style="font-weight:bold" />
 				<h:inputText id="Organization" value="#{requestReservedEventController.privateOrganization}" required="false"/>
 
-				Spaces to use:
+				<h:outputText value="Spaces to use:" style="font-weight:bold" />
 				<h:panelGroup>
 				<h:selectManyCheckbox id="SpacesToUse" value="#{requestReservedEventController.chosenSpaceList}" 
 					label="SpacesToUse" required="true">
@@ -170,7 +170,7 @@
 				<h:message for="SpacesToUse" errorClass="errors" />
 				</h:panelGroup>
 						
-				Event Characteristics:
+				<h:outputText value="Event Characteristics:" style="font-weight:bold" />
 				<h:panelGroup>
 				<h:selectManyCheckbox id="EventCharacteristics" value="#{requestReservedEventController.chosenCharacteristicsList}" 
 					label="EventCharacteristics" required="true">
@@ -222,16 +222,28 @@
 							rendered="#{requestReservedEventController.privateIsphysicallyactiveevent}" />
 					</h:panelGrid>	
 				</h:panelGroup>
+
+				<h:outputText  value="CORONAVIRUS NOTE:" style="font-weight:bold" />
+                <b>CCH Coronavirus Policy and Guidelines</b> specifies the maximum number of people allowed for a space and other aspects of your use of the space. Click
+                <a href="https://docs.google.com/document/d/1ctVi2lbyQBsT8SNKfYfnkC_QDkldRO-kzEHK4lo-6AI/edit?ts=5f3584e3" target="_blank"
+                   style=" text-align:left; color: blue">here</a> 
+                to see the <b>CCH Coronavirus Policy and Guidelines</b>.
+
+				<br/>
 				
-				<h:outputText  value="IMPORTANT NOTE:" style="font-weight:bold" />
-				<h:outputText  value="Please tell all your guests to observe the procedures for composting and recycling that are posted in the kitchen." />
-				<br/>		
+				<h:outputText  value="EXERCISE ROOM:" style="font-weight:bold" />
+                There is a <b>separate signup sheet</b> for the exercise room.  Click
+                <a href="https://docs.google.com/spreadsheets/d/1U4MaworbhPOAW_yRmBxFmEs-nkNKebguBXxi2BXcdNY/edit#gid=0" target="_blank"
+                   style=" text-align:left; color: blue">here</a> 
+                to access that signup sheet.
+										
 			</h:panelGrid>
-				
+	
+			<br/>
+			
 			<h:panelGroup style="display:block; text-align:center">				
 				<h:commandButton value="Submit Event" action="#{requestReservedEventController.addRequestReservedEvent}" />
 			</h:panelGroup>
-			<br />
 			
 		</h:form>
 	</ui:define>

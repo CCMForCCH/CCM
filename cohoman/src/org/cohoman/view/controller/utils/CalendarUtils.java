@@ -302,4 +302,21 @@ public class CalendarUtils implements Serializable {
 		}
 	}
 
+	public static Boolean startDateBeforeOrEqualEndDate(Date startDate, Date endDate) {
+		
+		Date startDay = truncateTimeFromDate(startDate);
+		Date endDay = truncateTimeFromDate(endDate);
+		
+		Calendar calStart = Calendar.getInstance();
+		calStart.setTime(startDay);
+		Calendar calEnd = Calendar.getInstance();
+		calEnd.setTime(endDay);
+		
+		if (calStart.before(calEnd) || calStart.equals(calEnd)) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
 }

@@ -17,6 +17,8 @@ import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
+import org.cohoman.view.controller.utils.CalendarUtils;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.TaskStatusEnums;
 import org.primefaces.event.SelectEvent;
 
@@ -330,6 +332,19 @@ public class MtaskController implements Serializable {
 
 	public String addMaintenanceTask() throws Exception {
 		
+		
+		// Make sure start date is <= end date iff there is an end date
+		if (chosenTaskEndDate != null) {
+			if (!CalendarUtils.startDateBeforeOrEqualEndDate(
+					chosenTaskStartDate, chosenTaskEndDate)) {
+				FacesMessage message = new FacesMessage(
+						"Invalid dates: Starting day must be equal or before completion day.");
+				message.setSeverity(FacesMessage.SEVERITY_ERROR);
+				FacesContext.getCurrentInstance().addMessage(null, message);
+				return null;
+			}
+		}
+		
 		// Create the DTO and perform the create by calling Lists Service
 		// Since we are creting from scratch, use now as chosen time
 		//Calendar startingCal = Calendar.getInstance();
@@ -347,11 +362,11 @@ public class MtaskController implements Serializable {
 		
 		// We just created a new Mtask. Mark the Task Status in the parent
 		// item as INPROGRESS, assuming that it is not marked complete.
+		MaintenanceItemDTO maintenanceItemDTO = listsService
+				.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
 		if (!isTaskcomplete(dto)) {
 
 			// Just started the task.
-			MaintenanceItemDTO maintenanceItemDTO = listsService
-					.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
 			maintenanceItemDTO.setTaskStatus(TaskStatusEnums.INPROGRESS.name());;
 			
 			try {
@@ -366,8 +381,6 @@ public class MtaskController implements Serializable {
 			// Did both: just started and finished the task.
 			// Update the last performed date in the maintenance
 			// item table.
-			MaintenanceItemDTO maintenanceItemDTO = listsService
-					.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
 			maintenanceItemDTO.setLastperformedDate(chosenTaskEndDate);
 			
 			// And also recompute the NextServiceDate
@@ -394,10 +407,16 @@ public class MtaskController implements Serializable {
 
 		}
 		
+		// Kinda hack the returned operation so we can tell which list to
+		// to display, Hofeller or Owner. (08/29/2020)
+		String returnValue = "addMaintenanceTask";
+		if (maintenanceItemDTO.getMaintenanceType().equals(MaintenanceTypeEnums.OWNER.name())) {
+			returnValue += maintenanceItemDTO.getMaintenanceType();	
+		}
+
 		// clear out fields for return to the page in this session
 		clearFormFields();
-
-		return "addMaintenanceTask";
+		return returnValue;
 	}
 
 	// method to create an MtaskDTO
@@ -440,14 +459,15 @@ public class MtaskController implements Serializable {
 		// Update the start date in the DTO
 		currentMtaskDTO.setTaskstartDate(chosenTaskStartDate);
 
+		MaintenanceItemDTO maintenanceItemDTO = listsService
+				.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
 		if (chosenTaskEndDate != null) {
+			
 			// Set completed date to the one chosen
 			currentMtaskDTO.setTaskendDate(chosenTaskEndDate);
 
 			// If we've just completed a task, also update the
 			// last performed date in the maintenance item table
-			MaintenanceItemDTO maintenanceItemDTO = listsService
-					.getMaintenanceItem(chosenMaintenanceItemIdAsLong);
 			maintenanceItemDTO.setLastperformedDate(chosenTaskEndDate);
 
 			// And also recompute the NextServiceDate
@@ -475,6 +495,13 @@ public class MtaskController implements Serializable {
 		// Update Mtask entry in DB
 		listsService.updateMtask(currentMtaskDTO);
 
+		// Kinda hack the returned operation so we can tell which list to
+		// to display, Hofeller or Owner. (08/29/2020)
+		String returnValue = "editMtask";
+		if (maintenanceItemDTO.getMaintenanceType().equals(MaintenanceTypeEnums.OWNER.name())) {
+			returnValue += maintenanceItemDTO.getMaintenanceType();	
+		}
+		
 		// clear out fields for return to the page in this session
 		clearFormFields();
 		
@@ -483,7 +510,7 @@ public class MtaskController implements Serializable {
 		// value comes from the DTO which was determined by editMtask.xhtml.
 		chosenTaskStartDate = null;
 
-		return "editMtask";
+		return returnValue;
 	}
 
 	public void deleteMtask() throws Exception {

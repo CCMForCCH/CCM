@@ -866,6 +866,11 @@
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>displayOwnerMaintenanceListOnly</from-outcome>
+			<to-view-id>/displayOwnerMaintenanceListOnly.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>displayMaintenanceListOnlyByNames</from-outcome>
 			<to-view-id>/displayMaintenanceListOnlyByNames.xhtml</to-view-id>
 			<redirect/>
@@ -912,6 +917,11 @@
 			<to-view-id>/listMaintenanceTasks.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>editMtaskOWNER</from-outcome>
+			<to-view-id>/listOwnerMaintenanceTasks.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>
@@ -919,6 +929,11 @@
 		<navigation-case>
 			<from-outcome>addMaintenanceTask</from-outcome>
 			<to-view-id>/listMaintenanceTasks.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addMaintenanceTaskOWNER</from-outcome>
+			<to-view-id>/listOwnerMaintenanceTasks.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
@@ -1123,6 +1138,11 @@
 		<navigation-case>
 			<from-outcome>listMaintenanceItems</from-outcome>
 			<to-view-id>/displayMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>listMaintenanceItemsOWNER</from-outcome>
+			<to-view-id>/displayOwnerMaintenanceList.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
@@ -1566,6 +1586,11 @@
 		<navigation-case>
 			<from-outcome>displayMaintenanceList</from-outcome>
 			<to-view-id>/displayMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayOwnerMaintenanceList</from-outcome>
+			<to-view-id>/displayOwnerMaintenanceList.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
