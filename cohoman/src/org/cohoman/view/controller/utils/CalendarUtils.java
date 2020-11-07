@@ -191,7 +191,22 @@ public class CalendarUtils implements Serializable {
 	}
 
 	public static TimeSlot[] getTimeSlotsOfTheDay(int year, int month) {
-		GregorianCalendar gcal = new GregorianCalendar(year, month, 1, 0, 0, 0);
+
+		// Oddball way of creating the calendar in order to get around
+		// a daylight savings time bug in the Java code that somehow messed
+		// up the calendar by 1 hour (after 4 years working properly!?)
+		// https://stackoverflow.com/questions/45463059/behaviour-of-gregoriancalendar-set-with-daylight-saving-times
+		// 11/03/2020
+		GregorianCalendar gcal = new GregorianCalendar();
+		gcal.add(Calendar.YEAR, -gcal.get(Calendar.YEAR) + year);
+		gcal.add(Calendar.MONTH, -gcal.get(Calendar.MONTH) + month);
+		gcal.add(Calendar.DAY_OF_YEAR, -gcal.get(Calendar.DAY_OF_YEAR) + 1);
+		gcal.add(Calendar.HOUR, -gcal.get(Calendar.HOUR));
+		gcal.add(Calendar.MINUTE, -gcal.get(Calendar.MINUTE));
+		gcal.add(Calendar.SECOND, -gcal.get(Calendar.SECOND));
+		gcal.add(Calendar.AM_PM, -gcal.get(Calendar.AM_PM));
+		
+		//GregorianCalendar gcal = new GregorianCalendar(year, month, 1, 0, 0, 0);
 		TimeSlot[] timeSlots = new TimeSlot[36];
 		// Initialize starting slot as 6AM
 		gcal.add(Calendar.MINUTE, 12 * 30);

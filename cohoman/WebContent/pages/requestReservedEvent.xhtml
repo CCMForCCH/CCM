@@ -49,33 +49,7 @@
          			readonlyInput="true">
          			<p:ajax event="dateSelect" listener="#{requestReservedEventController.dateSelect}" />
          		</p:calendar>
-         		
-         		<ui:remove> 
-				Event month:
-				<h:selectOneMenu id="selectMonthId" value="#{requestReservedEventController.privateEventMonth}">
-					<f:selectItems value="#{requestReservedEventController.monthsOfTheYear}"
-						var="month" 
-						itemLabel="#{month.monthName}"
-						itemValue="#{month.monthNumber}" />
-					<f:ajax render="selectDayId" execute="selectDayId" event="change" />
-				</h:selectOneMenu>
-				Event day:
-				<h:selectOneMenu id="selectDayId" value="#{requestReservedEventController.privateEventDay}">
-					<f:selectItems value="#{requestReservedEventController.daysOfTheMonth}"
-						var="day" 
-						itemLabel="#{day}"
-						itemValue="#{day}" />
-				</h:selectOneMenu>
-				Event year:
-				<h:selectOneMenu value="#{requestReservedEventController.privateEventYear}">
-					<f:selectItems value="#{requestReservedEventController.years}"
-						var="year" 
-						itemLabel="#{year}"
-						itemValue="#{year}" />
-					<f:ajax render="selectDayId" execute="selectDayId" event="change" />
-				</h:selectOneMenu>
-				</ui:remove>
-				
+         						
 				<h:outputText value="Start time:" style="font-weight:bold" />
 				<h:selectOneMenu id="starttimeId" value="#{requestReservedEventController.slotNumberStart}" style="font-size: medium;">
 					<f:selectItems value="#{requestReservedEventController.timeSlotsOfTheDay}"
@@ -222,29 +196,47 @@
 							rendered="#{requestReservedEventController.privateIsphysicallyactiveevent}" />
 					</h:panelGrid>	
 				</h:panelGroup>
-
-				<h:outputText  value="CORONAVIRUS NOTE:" style="font-weight:bold" />
-                <b>CCH Coronavirus Policy and Guidelines</b> specifies the maximum number of people allowed for a space and other aspects of your use of the space. Click
-                <a href="https://docs.google.com/document/d/1ctVi2lbyQBsT8SNKfYfnkC_QDkldRO-kzEHK4lo-6AI/edit?ts=5f3584e3" target="_blank"
-                   style=" text-align:left; color: blue">here</a> 
-                to see the <b>CCH Coronavirus Policy and Guidelines</b>.
-
-				<br/>
-				
-				<h:outputText  value="EXERCISE ROOM:" style="font-weight:bold" />
-                There is a <b>separate signup sheet</b> for the exercise room.  Click
-                <a href="https://docs.google.com/spreadsheets/d/1U4MaworbhPOAW_yRmBxFmEs-nkNKebguBXxi2BXcdNY/edit#gid=0" target="_blank"
-                   style=" text-align:left; color: blue">here</a> 
-                to access that signup sheet.
-										
+							
 			</h:panelGrid>
 	
-			<br/>
 			
-			<h:panelGroup style="display:block; text-align:center">				
+			<h:panelGroup style="display:block; text-align:center">	
 				<h:commandButton value="Submit Event" action="#{requestReservedEventController.addRequestReservedEvent}" />
 			</h:panelGroup>
 			
+			<h:panelGrid columns="2"  style="display:block; " headerClass="formheader" styleClass="formstyle"> 
+				<h:panelGroup style="display:block; font-weight:bold; ">	
+					<h3 style=" color: red">Coronavirus Guidelines:</h3>
+				</h:panelGroup>
+				 
+				<h:panelGroup style="display:block;  "> 
+					<ul>
+						<li>For cohousing residents only, one hour between reservations</li>
+						<li>Limit the number of people in each room as follows: Living Room = 4, Dining Room = 6, Library = 4, Rec Room = 4, Craft Room = 3</li>
+						<li>Masks must be worn properly at all times</li>
+						<li>Practice social distancing</li>
+						<li>No eating/drinking</li>
+						<li>Keep inner doors closed</li>
+						<li>Maintain excellent ventilation - open windows and outside doors</li>
+						<li>Run HEPA filters if there is one in the room</li>
+						<li>Close and lock windows and outside doors, turn off filter, when leaving</li>
+						<li>Click
+                		<a href="https://docs.google.com/document/d/1ctVi2lbyQBsT8SNKfYfnkC_QDkldRO-kzEHK4lo-6AI/edit?ts=5f3584e3" target="_blank"
+                   		style=" text-align:left; color: blue">here</a> 
+                		to see the complete <b>CCH Coronavirus Policy and Guidelines</b></li>
+					</ul>
+				</h:panelGroup>
+				
+				<h:panelGroup style="display:block; font-weight:bold; ">	
+					<h3 style=" color: red">Exercise Room:</h3>
+				</h:panelGroup>
+								
+               	There is a <b>separate signup sheet</b> for the exercise room.  Click
+                	<a href="https://docs.google.com/spreadsheets/d/1U4MaworbhPOAW_yRmBxFmEs-nkNKebguBXxi2BXcdNY/edit#gid=0" target="_blank"
+                   	style=" text-align:left; color: blue">here</a> 
+                	to access that signup sheet and associated guidelines.
+
+			</h:panelGrid>					
 		</h:form>
 	</ui:define>
 </ui:composition>
