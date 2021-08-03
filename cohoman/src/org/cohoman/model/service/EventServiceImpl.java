@@ -8,12 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.cohoman.model.business.EventManager;
-import org.cohoman.model.business.MealRow;
 import org.cohoman.model.business.MealSchedule.MealScheduleText;
 import org.cohoman.model.business.User;
 import org.cohoman.model.business.UserManager;
 import org.cohoman.model.dto.CohoEventDTO;
-import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MealEventDTO;
 import org.cohoman.model.dto.PizzaEventDTO;
 import org.cohoman.model.dto.PotluckEventDTO;
@@ -69,7 +67,8 @@ public class EventServiceImpl implements EventService {
 				+ ", lead cook = " + getUserFullname(mealEventDTO.getCook1())
 				+ ", menu=\"" + mealEventDTO.getMenu() + "\", created by "
 				+ LoggingUtils.getCurrentUsername());
-		eventManager.createMealEvent(mealEventDTO);
+		eventManager.createMealEvent(mealEventDTO,
+				getUserFullname(mealEventDTO.getCook1()));
 	}
 
 	public void editMealEvent(MealEvent mealEvent) throws CohomanException {
@@ -172,7 +171,8 @@ public class EventServiceImpl implements EventService {
 				+ pizzaEventDTO.getEventDate() + " with leader1 "
 				+ userManager.getUser(pizzaEventDTO.getLeader1()).getUsername()
 				+ " created by " + LoggingUtils.getCurrentUsername());
-		eventManager.createPizzaEvent(pizzaEventDTO);
+		eventManager.createPizzaEvent(pizzaEventDTO,
+				getUserFullname(pizzaEventDTO.getLeader1()));
 	}
 
 	public void editPizzaEvent(PizzaEvent pizzaEvent) throws CohomanException {
@@ -227,7 +227,8 @@ public class EventServiceImpl implements EventService {
 				+ " and description \"" 
 				+ potluckEventDTO.getEventinfo()
 				+ "\" created by " + LoggingUtils.getCurrentUsername());
-		eventManager.createPotluckEvent(potluckEventDTO);
+		eventManager.createPotluckEvent(potluckEventDTO,
+				getUserFullname(potluckEventDTO.getLeader1()));
 	}
 
 	public void editPotluckEvent(PotluckEvent potluckEvent) throws CohomanException {

@@ -334,4 +334,17 @@ public class CalendarUtils implements Serializable {
 		}
 		
 	}
+	
+	public static String getPrintableEventDate(Date eventDate) {
+		SimpleDateFormat formatter;
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(eventDate);
+		if (cal.get(Calendar.HOUR_OF_DAY) == 0) {
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
+		} else {
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy h:mm aa");
+		}
+		return formatter.format(eventDate.getTime());
+	}
+
 }

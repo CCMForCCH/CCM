@@ -18,6 +18,8 @@ import org.cohoman.model.dto.PrivateEventDTO;
 import org.cohoman.model.dto.SignupMealDTO;
 import org.cohoman.model.dto.SignupPizzaDTO;
 import org.cohoman.model.dto.SignupPotluckDTO;
+import org.cohoman.model.integration.SMS.SmsSender;
+import org.cohoman.model.integration.email.SendEmail;
 import org.cohoman.model.integration.persistence.beans.CohoEvent;
 import org.cohoman.model.integration.persistence.beans.EventTypeDefs;
 import org.cohoman.model.integration.persistence.beans.MainCalendarEvent;
@@ -137,9 +139,28 @@ public class EventManagerImpl implements EventManager {
 		this.mealEventDao = mealEventDao;
 	}
 
-	public void createMealEvent(MealEventDTO mealEventDTO)
+	public void createMealEvent(MealEventDTO mealEventDTO, String leaderFullname)
 			throws CohomanException {
 		mealEventDao.createMealEvent(mealEventDTO);
+		
+		// Send email notification of meal creation.
+		String emailAddress = "cch-talk@googlegroups.com";
+		String subject = "New common meal just added!";
+		String menu = mealEventDTO.getMenu();
+		String body = 
+				"Hello Cambridge Cohousing resident,\n\n" +
+				"A new common meal has just been added to the CCM meal schedule!\n\n" +
+				"Meal Date: " + CalendarUtils.getPrintableEventDate(mealEventDTO.getEventDate()) + "\n" +
+				"Leader: " + leaderFullname + "\n" +
+				"Menu: " + menu + "\n\n" +			
+				"Use CCM to signup to attend this common meal or to see more details about the meal.\n\n" +
+				"(This is an automated message from CCM.)\n";
+
+		// String subject = "Testing out a googlegroup email issue";
+		// String body = "This is simply a test that you should ignore.";
+
+		sendEmailToAddress(emailAddress, subject, body);
+
 	}
 
 	public void editMealEvent(MealEvent mealEvent) throws CohomanException {
@@ -150,9 +171,23 @@ public class EventManagerImpl implements EventManager {
 		mealEventDao.deleteMealEvent(mealEvent);
 	}
 
-	public void createPizzaEvent(PizzaEventDTO pizzaEventDTO)
+	public void createPizzaEvent(PizzaEventDTO pizzaEventDTO, String leaderFullname)
 			throws CohomanException {
 		pizzaEventDao.createPizzaEvent(pizzaEventDTO);
+
+		// Send email notification of meal creation.
+		String emailAddress = "cch-talk@googlegroups.com";
+		String subject = "New pizza/potluck just added!";
+		String body = 
+				"Hello Cambridge Cohousing resident,\n\n" +
+				"A new pizza/potluck meal has just been added to the CCM meal schedule!\n\n" +
+				"Meal Date: " + CalendarUtils.getPrintableEventDate(pizzaEventDTO.getEventDate()) + "\n" +
+				"Leader: " + leaderFullname + "\n" +
+				"Use CCM to signup to attend this pizza/potluck meal or to see more details about the meal.\n\n" +
+				"(This is an automated message from CCM.)\n";
+
+		sendEmailToAddress(emailAddress, subject, body);
+
 	}
 
 	public void editPizzaEvent(PizzaEvent pizzaEvent) throws CohomanException {
@@ -163,8 +198,23 @@ public class EventManagerImpl implements EventManager {
 		pizzaEventDao.deletePizzaEvent(pizzaEvent);
 	}
 
-	public void createPotluckEvent(PotluckEventDTO potluckEventDTO)throws CohomanException {
+	public void createPotluckEvent(PotluckEventDTO potluckEventDTO,
+			String leaderFullname) throws CohomanException {
 		potluckEventDao.createPotluckEvent(potluckEventDTO);
+		
+		// Send email notification of meal creation.
+		String emailAddress = "cch-talk@googlegroups.com";
+		String subject = "New potluck just added!";
+		String body = 
+				"Hello Cambridge Cohousing resident,\n\n" +
+				"A new potluck meal has just been added to the CCM meal schedule!\n\n" +
+				"Meal Date: " + CalendarUtils.getPrintableEventDate(potluckEventDTO.getEventDate()) + "\n" +
+				"Leader: " + leaderFullname + "\n" +
+				"Use CCM to signup to attend this potluck meal or to see more details about the meal.\n\n" +
+				"(This is an automated message from CCM.)\n";
+
+		sendEmailToAddress(emailAddress, subject, body);
+
 	}
 
 	public void editPotluckEvent(PotluckEvent potluckEvent) throws CohomanException {
@@ -675,6 +725,10 @@ public class EventManagerImpl implements EventManager {
 
 	public List<SpaceBean> getAllSpaces() {
 		return spacesDao.getAllSpaces();
+	}
+
+	private void sendEmailToAddress(String emailAddress, String subject, String body) {
+		SendEmail.sendEmailToAddress(emailAddress, subject, body);
 	}
 
 }

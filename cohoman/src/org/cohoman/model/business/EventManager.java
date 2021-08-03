@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.cohoman.model.business.MealSchedule.MealScheduleText;
 import org.cohoman.model.dto.CohoEventDTO;
-import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MealEventDTO;
 import org.cohoman.model.dto.PizzaEventDTO;
 import org.cohoman.model.dto.PotluckEventDTO;
@@ -24,7 +23,7 @@ import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.CalendarUtils.MealDate;
 
 public interface EventManager {
-	public void createMealEvent(MealEventDTO mealEventDTO)
+	public void createMealEvent(MealEventDTO mealEventDTO, String leaderFullname)
 			throws CohomanException;
 
 	// Meal events
@@ -41,7 +40,7 @@ public interface EventManager {
 	public MealEvent getMealEvent(Long eventId);
 
 	// Pizza Events
-	public void createPizzaEvent(PizzaEventDTO pizzaEventDTO)
+	public void createPizzaEvent(PizzaEventDTO pizzaEventDTO, String leaderFullname)
 			throws CohomanException;
 
 	public void editPizzaEvent(PizzaEvent pizzaEvent) throws CohomanException;
@@ -55,7 +54,7 @@ public interface EventManager {
 	public PizzaEvent getPizzaEvent(Long eventId);
 
 	// Potluck Events
-	public void createPotluckEvent(PotluckEventDTO potluckEventDTO)
+	public void createPotluckEvent(PotluckEventDTO potluckEventDTO, String leaderFullname)
 	throws CohomanException;
 
 	public void editPotluckEvent(PotluckEvent potluckEvent) throws CohomanException;

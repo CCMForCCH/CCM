@@ -375,7 +375,7 @@ public class ListsManagerImpl implements ListsManager {
 			// Exception code to remove unit 414 from the list.
 			List<UnitBean> modifiedUnitBeanList = new ArrayList<UnitBean>();
 			for (UnitBean oneUnitBean : unitBeanList) {
-				if (!(oneUnitBean.getUnitnumber().equals("414"))) {
+				if (!(oneUnitBean.getUnitnumber().equals("414")|| oneUnitBean.getUnitnumber().equals("410"))) {
 					modifiedUnitBeanList.add(oneUnitBean);
 				}
 			}
