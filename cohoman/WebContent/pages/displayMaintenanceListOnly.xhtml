@@ -60,11 +60,6 @@
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Priority</f:facet> 
-  			#{oneitem.priority}           
-		</h:column>
-
-		<h:column>
   			<f:facet name="header">Item Details</f:facet> 
   			<h:link value="ItemDetails" outcome="displayMaintenanceItemDetailsOnly.xhtml">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
