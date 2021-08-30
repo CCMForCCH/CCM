@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.cohoman.model.business.ListsManagerImpl.SecurityDataForRow;
 import org.cohoman.model.business.User;
+import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.integration.SMS.SmsSender;
 import org.cohoman.model.integration.email.SendEmail;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
@@ -17,6 +18,9 @@ import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
 import org.cohoman.model.singletons.ConfigScalarValues;
 import org.cohoman.model.springcontext.AppContext;
+import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
+import org.cohoman.view.controller.utils.SortEnums;
+import org.cohoman.view.controller.utils.TaskStatusEnums;
 import org.cohoman.view.controller.utils.Validators;
 import org.springframework.context.ApplicationContext;
 
@@ -46,6 +50,7 @@ public class TextTeamMembers implements Runnable, Serializable {
 	Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public void run() {
+
 
 		try {
 
@@ -116,6 +121,65 @@ public class TextTeamMembers implements Runnable, Serializable {
 			// This is where I'd put Hofeller stuff ....
 			//logger.info("Sending email from  TextTeammembers");
 			//SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "CCM Notification", "test body 2/3");
+			
+			Calendar cal = Calendar.getInstance();
+			logger.info("timer woke up at: " + cal.getTime());
+		
+			// Find the Overdue Periodic Maintenance Tasks and if there are any,
+			// build and send email to the appropriate people (e.g. Managing Board)
+			// Note cheating by re-using the security date (i.e. Sunday)
+			if (isNowTheSelectedDayAndTime(securityDate, 23, 0)) {
+				buildAndSendPeriodicMaintenanceEmail();
+			}
+/*
+			List<MaintenanceItemDTO> maintenanceItemDTOList = 
+					listsService.getMaintenanceItems(SortEnums.ORDERBYNAME, MaintenanceTypeEnums.ALL);
+			
+			String hofMlines = "";
+			String ownerMlines = "";
+			int hofItemCnt = 0;
+			int ownerItemCnt = 0;
+			for (MaintenanceItemDTO mDTO : maintenanceItemDTOList) {
+				if (mDTO.getTaskStatus().equalsIgnoreCase(TaskStatusEnums.OVERDUE.name())) {
+					
+					//Split based on Hofeller item vs. Owner item.
+					if (mDTO.getMaintenanceType().equalsIgnoreCase(MaintenanceTypeEnums.HOFELLER.name()
+							)) {
+						
+						// Item is for Hofeller
+						if (hofMlines.length() == 0) {
+							hofMlines = "\n <testing without data from Hofeller>\n \nCCM has discovered that the following periodic maintenance items are due to be performed again:\n";
+						}
+						String oneline = "\n" + ++hofItemCnt +".) ITEM: " + mDTO.getItemname() +
+								", DATE LAST PERFORMED: " + mDTO.getPrintableLastperformedDate() +
+								", DATE FOR NEXT SERVICE: " + mDTO.getPrintableNextServiceDate() + "\n";
+						hofMlines += oneline;
+						
+					} else {
+						
+						// Item is for Owners.
+						if (ownerMlines.length() == 0) {
+							ownerMlines = "\n <testing with actual data>\n \nCCM has discovered that the following periodic maintenance items are due to be performed again:\n";
+						}
+						String oneline = "\n" + ++ownerItemCnt +".) ITEM: " + mDTO.getItemname() +
+								", DATE LAST PERFORMED: " + mDTO.getPrintableLastperformedDate() +
+								", DATE FOR NEXT SERVICE: " + mDTO.getPrintableNextServiceDate() + "\n";
+						ownerMlines += oneline;
+						
+					}
+				}
+			}
+			
+			hofMlines += "\n\nPlease initiate this work and notify the Managing Board when this task is completed. Login to CCM for more details.\n";
+			ownerMlines += "\n\nPlease initiate this work and notify the Managing Board when this task is completed. Login to CCM for more details.\n";
+			
+			if (hofMlines.length() > 0) {
+				SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "Overdue Hofeller periodic maintenance tasks", hofMlines);
+			}
+			if (ownerMlines.length() > 0) {
+				SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "Overdue CCH owner periodic maintenance tasks", ownerMlines);
+			}
+*/
 		} catch (Throwable th) {
 			logger.severe(th.toString());
 			th.printStackTrace();
@@ -247,4 +311,60 @@ public class TextTeamMembers implements Runnable, Serializable {
 
 	}
 
+	private void buildAndSendPeriodicMaintenanceEmail() {
+	
+		String cch_talk_emailAddress = "cch-talk@googlegroups.com";
+		String cch_mb_emailAddress = "cch-mb@googlegroups.com";
+
+		List<MaintenanceItemDTO> maintenanceItemDTOList = 
+				listsService.getMaintenanceItems(SortEnums.ORDERBYNAME, MaintenanceTypeEnums.ALL);
+		
+		String hofMlines = "";
+		String ownerMlines = "";
+		int hofItemCnt = 0;
+		int ownerItemCnt = 0;
+		for (MaintenanceItemDTO mDTO : maintenanceItemDTOList) {
+			if (mDTO.getTaskStatus().equalsIgnoreCase(TaskStatusEnums.OVERDUE.name())) {
+				
+				//Split based on Hofeller item vs. Owner item.
+				if (mDTO.getMaintenanceType().equalsIgnoreCase(MaintenanceTypeEnums.HOFELLER.name()
+						)) {
+					
+					// Item is for Hofeller
+					if (hofMlines.length() == 0) {
+						hofMlines = "\n <NOTE: testing without real data from Hofeller>\n \nCCM has discovered that the following CCH periodic maintenance items are due now to be performed again:\n";
+					}
+					String oneline = "\n" + ++hofItemCnt +".) ITEM: " + mDTO.getItemname() +
+							", DATE LAST PERFORMED: " + mDTO.getPrintableLastperformedDate() +
+							", DATE FOR NEXT SERVICE: " + mDTO.getPrintableNextServiceDate() + "\n";
+					hofMlines += oneline;
+					
+				} else {
+					
+					// Item is for Owners.
+					if (ownerMlines.length() == 0) {
+						ownerMlines = "\n <NOTE: testing with actual data>\n \nCCM has discovered that the following CCH periodic maintenance items are due now to be performed again:\n";
+					}
+					String oneline = "\n" + ++ownerItemCnt +".) ITEM: " + mDTO.getItemname() +
+							", DATE LAST PERFORMED: " + mDTO.getPrintableLastperformedDate() +
+							", DATE FOR NEXT SERVICE: " + mDTO.getPrintableNextServiceDate() + "\n";
+					ownerMlines += oneline;
+					
+				}
+			}
+		}
+		
+		hofMlines += "\n\nPlease initiate this work and notify the Managing Board when this task is completed. Login to CCM for more details.\n";
+		ownerMlines += "\n\nPlease initiate this work and notify the Managing Board when this task is completed. Login to CCM for more details.\n";
+		
+		if (hofMlines.length() > 0) {
+			SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "Overdue Hofeller periodic maintenance tasks", hofMlines);
+			SendEmail.sendEmailToAddress(cch_mb_emailAddress, "Overdue Hofeller periodic maintenance tasks", hofMlines);
+		}
+		if (ownerMlines.length() > 0) {
+			SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "Overdue CCH owner periodic maintenance tasks", ownerMlines);
+			SendEmail.sendEmailToAddress(cch_mb_emailAddress, "Overdue CCH owner periodic maintenance tasks", ownerMlines);
+		}
+
+	}
 }
