@@ -118,68 +118,16 @@ public class TextTeamMembers implements Runnable, Serializable {
 				sendTextMessageToTeam(singleSecurityPersonList, "CCM: You are scheduled to do security starting one week from tonight");
 			}
 			
-			// This is where I'd put Hofeller stuff ....
-			//logger.info("Sending email from  TextTeammembers");
-			//SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "CCM Notification", "test body 2/3");
-			
-			Calendar cal = Calendar.getInstance();
-			logger.info("timer woke up at: " + cal.getTime());
-		
+			// This is the checking for the periodic maintenance that 
+			// probably won't be used. 09/25/2021
+					
 			// Find the Overdue Periodic Maintenance Tasks and if there are any,
 			// build and send email to the appropriate people (e.g. Managing Board)
 			// Note cheating by re-using the security date (i.e. Sunday)
 			if (isNowTheSelectedDayAndTime(securityDate, 23, 0)) {
-				buildAndSendPeriodicMaintenanceEmail();
+//				buildAndSendPeriodicMaintenanceEmail();
 			}
-/*
-			List<MaintenanceItemDTO> maintenanceItemDTOList = 
-					listsService.getMaintenanceItems(SortEnums.ORDERBYNAME, MaintenanceTypeEnums.ALL);
-			
-			String hofMlines = "";
-			String ownerMlines = "";
-			int hofItemCnt = 0;
-			int ownerItemCnt = 0;
-			for (MaintenanceItemDTO mDTO : maintenanceItemDTOList) {
-				if (mDTO.getTaskStatus().equalsIgnoreCase(TaskStatusEnums.OVERDUE.name())) {
-					
-					//Split based on Hofeller item vs. Owner item.
-					if (mDTO.getMaintenanceType().equalsIgnoreCase(MaintenanceTypeEnums.HOFELLER.name()
-							)) {
-						
-						// Item is for Hofeller
-						if (hofMlines.length() == 0) {
-							hofMlines = "\n <testing without data from Hofeller>\n \nCCM has discovered that the following periodic maintenance items are due to be performed again:\n";
-						}
-						String oneline = "\n" + ++hofItemCnt +".) ITEM: " + mDTO.getItemname() +
-								", DATE LAST PERFORMED: " + mDTO.getPrintableLastperformedDate() +
-								", DATE FOR NEXT SERVICE: " + mDTO.getPrintableNextServiceDate() + "\n";
-						hofMlines += oneline;
-						
-					} else {
-						
-						// Item is for Owners.
-						if (ownerMlines.length() == 0) {
-							ownerMlines = "\n <testing with actual data>\n \nCCM has discovered that the following periodic maintenance items are due to be performed again:\n";
-						}
-						String oneline = "\n" + ++ownerItemCnt +".) ITEM: " + mDTO.getItemname() +
-								", DATE LAST PERFORMED: " + mDTO.getPrintableLastperformedDate() +
-								", DATE FOR NEXT SERVICE: " + mDTO.getPrintableNextServiceDate() + "\n";
-						ownerMlines += oneline;
-						
-					}
-				}
-			}
-			
-			hofMlines += "\n\nPlease initiate this work and notify the Managing Board when this task is completed. Login to CCM for more details.\n";
-			ownerMlines += "\n\nPlease initiate this work and notify the Managing Board when this task is completed. Login to CCM for more details.\n";
-			
-			if (hofMlines.length() > 0) {
-				SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "Overdue Hofeller periodic maintenance tasks", hofMlines);
-			}
-			if (ownerMlines.length() > 0) {
-				SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "Overdue CCH owner periodic maintenance tasks", ownerMlines);
-			}
-*/
+
 		} catch (Throwable th) {
 			logger.severe(th.toString());
 			th.printStackTrace();
@@ -272,14 +220,14 @@ public class TextTeamMembers implements Runnable, Serializable {
 				logger.warning("AUDIT: Unable to find user "
 						+ oneMember
 						+ " to notify that trash team member of request; won't send a message.");
-				return;
+				continue;
 			}
 
 			if (!theUser.isAllowtexting()) {
 				logger.warning("AUDIT: Texting is disabled for "
 						+ oneMember
 						+ " preventing notification of trash duty.");
-				return;				
+				continue;				
 			}
 			// OK, we know the user. Get the phone number and send the message.
 			String phoneNumber = theUser.getCellphone();
