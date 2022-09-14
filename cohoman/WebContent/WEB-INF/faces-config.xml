@@ -455,6 +455,16 @@
 	</managed-bean>
 
 	<managed-bean>
+		<managed-bean-name>retrieveProblemItemsListController</managed-bean-name>
+		<managed-bean-class>org.cohoman.view.controller.RetrieveProblemItemsListController</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>listsService</property-name>
+			<value>#{listsService}</value>
+		</managed-property>
+	</managed-bean>
+
+	<managed-bean>
 		<managed-bean-name>retrieveThisWeekForIndexController</managed-bean-name>
 		<managed-bean-class>org.cohoman.view.controller.RetrieveThisWeekForIndexController</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
@@ -599,6 +609,34 @@
 		<managed-bean-name>editMaintenanceController</managed-bean-name>
 		<managed-bean-class>org.cohoman.view.controller.EditMaintenanceController</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>listsService</property-name>
+			<value>#{listsService}</value>
+		</managed-property>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>createProblemItemController</managed-bean-name>
+		<managed-bean-class>org.cohoman.view.controller.CreateProblemItemController</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>listsService</property-name>
+			<value>#{listsService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>userService</property-name>
+			<value>#{userService}</value>
+		</managed-property>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>editProblemController</managed-bean-name>
+		<managed-bean-class>org.cohoman.view.controller.EditProblemController</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>userService</property-name>
+			<value>#{userService}</value>
+		</managed-property>
 		<managed-property>
 			<property-name>listsService</property-name>
 			<value>#{listsService}</value>
@@ -1026,7 +1064,22 @@
 			<to-view-id>/editMaintenance.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
-	
+		<navigation-case>
+			<from-outcome>createProblemItem</from-outcome>
+			<to-view-id>/createProblemItem.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayProblemList</from-outcome>
+			<to-view-id>/displayProblemList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editProblem</from-outcome>
+			<to-view-id>/editProblem.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+
 	</navigation-rule>
 <!--  end of pages for super admin -->
 
@@ -1041,6 +1094,15 @@
 		<navigation-case>
 			<from-outcome>addMaintenanceItemOWNER</from-outcome>
 			<to-view-id>/displayOwnerMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/createProblemItem.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>addProblemItem</from-outcome>
+			<to-view-id>/displayProblemList.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
@@ -1143,6 +1205,29 @@
 		<navigation-case>
 			<from-outcome>listMaintenanceItemsOWNER</from-outcome>
 			<to-view-id>/displayOwnerMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/editProblem.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>deleteProblemItem</from-outcome>
+			<to-view-id>/displayProblemList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>changeProblemItem</from-outcome>
+			<to-view-id>/editProblemItem.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/editProblemItem.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listProblemItems</from-outcome>
+			<to-view-id>/displayProblemList.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
@@ -1487,6 +1572,15 @@
 		<navigation-case>
 			<from-outcome>deleteMaintenanceItem</from-outcome>
 			<to-view-id>/displayMaintenanceList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/editProblemItems.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>deleteProblemItem</from-outcome>
+			<to-view-id>/displayProblemList.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>

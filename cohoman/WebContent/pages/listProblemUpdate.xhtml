@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			List problem report updates
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+    <h:panelGrid columns="1" title="Problem Updates" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Problem Report Updates"/>
+           <br />
+        </f:facet>
+	<br />
+
+	<b>
+    <h:outputText value="Updates for Problem Report: #{problemUpdateController.problemUpdateName}"
+    	style="display:block; text-align:center; font-weight: bold; font-size: 125%;color: blue"/>
+	</b>
+	<br />
+	
+	<h:outputText value="There are no tasks associated with this problem report." 
+		rendered="#{empty problemUpdateController.problemUpdateDTOList}" />
+	
+	<h:dataTable value="#{problemUpdateController.problemUpdateDTOList}" var="onetask" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
+		rendered="#{not empty problemUpdateController.problemUpdateDTOList}">
+ 
+ 		<h:column>
+  			<f:facet name="header">Update entered</f:facet> 
+  			#{onetask.printableUpdateDate}           
+		</h:column>
+ 
+		<h:column>
+  			<f:facet name="header">Added By</f:facet> 
+  			#{onetask.username}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Update Text</f:facet> 
+  			#{onetask.notes}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Edit Task</f:facet> 
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Delete Task</f:facet>  			         
+		</h:column>
+
+    </h:dataTable>
+	<br />
+	
+    </h:panelGrid>
+	<br />
+	
+    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

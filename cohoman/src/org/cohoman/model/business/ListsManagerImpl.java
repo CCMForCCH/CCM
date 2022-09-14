@@ -17,6 +17,7 @@ import org.cohoman.model.business.trash.TrashSchedule;
 import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
+import org.cohoman.model.dto.ProblemItemDTO;
 import org.cohoman.model.dto.SecurityStartingPointDTO;
 import org.cohoman.model.dto.UserDTO;
 import org.cohoman.model.integration.SMS.SmsSender;
@@ -29,6 +30,7 @@ import org.cohoman.model.integration.persistence.beans.TrashTeamRowBean;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
 import org.cohoman.model.integration.persistence.dao.MaintenanceDao;
 import org.cohoman.model.integration.persistence.dao.MtaskDao;
+import org.cohoman.model.integration.persistence.dao.ProblemsDao;
 import org.cohoman.model.integration.persistence.dao.SecurityDao;
 import org.cohoman.model.integration.persistence.dao.SubstitutesDao;
 import org.cohoman.model.integration.persistence.dao.TrashCyclesDao;
@@ -40,9 +42,14 @@ import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.CalendarUtils;
 import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
+import org.cohoman.view.controller.utils.ProblemLocationEnums;
+import org.cohoman.view.controller.utils.ProblemPriorityEnums;
+import org.cohoman.view.controller.utils.ProblemStatusEnums;
+import org.cohoman.view.controller.utils.ProblemTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 import org.cohoman.view.controller.utils.TaskPriorityEnums;
 import org.cohoman.view.controller.utils.TaskStatusEnums;
+import org.cohoman.view.controller.utils.VendorEnums;
 
 public class ListsManagerImpl implements ListsManager {
 
@@ -57,6 +64,7 @@ public class ListsManagerImpl implements ListsManager {
 	private TrashTeamRowDao trashTeamRowDao = null;
 	private MaintenanceDao maintenanceDao = null;
 	private MtaskDao mtaskDao = null;
+	private ProblemsDao problemsDao = null;
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -130,6 +138,14 @@ public class ListsManagerImpl implements ListsManager {
 
 	public void setMtaskDao(MtaskDao mtaskDao) {
 		this.mtaskDao = mtaskDao;
+	}
+
+	public ProblemsDao getProblemsDao() {
+		return problemsDao;
+	}
+
+	public void setProblemsDao(ProblemsDao problemsDao) {
+		this.problemsDao = problemsDao;
 	}
 
 	public List<UnitBean> getAllUnits() {
@@ -790,6 +806,24 @@ public class ListsManagerImpl implements ListsManager {
 		return formatter.format(justADate.getTime());
 	}
 
+	private String getPrintableDateWithTime(Date justADate) {
+
+		if (justADate == null) {
+			return "";
+		}
+		SimpleDateFormat formatter;
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(justADate);
+
+		//if (cal.get(Calendar.HOUR_OF_DAY) == 0) {
+			//formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
+		//} else {
+			formatter = new SimpleDateFormat("EEE, MMM d, yyyy h:mm aa");
+		//}
+
+		return formatter.format(justADate.getTime());
+	}
+
 	private MaintenanceItemDTO ageCurrentTaskStatus(MaintenanceItemDTO itemDTO) {
 		
 		Calendar calNow = Calendar.getInstance();
@@ -868,6 +902,95 @@ public class ListsManagerImpl implements ListsManager {
 
 	public void deleteMtask(Long mtaskitemid) {
 		mtaskDao.deleteMtask(mtaskitemid);
+	}
+
+	
+	// Problem item operations
+	public void createProblemItem(ProblemItemDTO problemItemDTO)
+			throws CohomanException {
+		problemsDao.createProblemItem(problemItemDTO);
+	}
+
+	public List<ProblemItemDTO> getProblemItems(SortEnums sortEnum) {
+		List<ProblemItemDTO> dtoListOut = new ArrayList<ProblemItemDTO>();
+		List<ProblemItemDTO> dtoListIn = problemsDao
+				.getProblemItems(sortEnum);
+		for (ProblemItemDTO oneDTO : dtoListIn) {
+			
+			// Convert userid to username and save in DTO
+			Long userid = oneDTO.getItemCreatedBy();
+			UserDTO theUser = userDao.getUser(userid);
+			oneDTO.setUsername(theUser.getUsername());
+			
+			// Now do the same for assigned user, if there is an assigned user
+			if (oneDTO.getAssignedTo() != null && oneDTO.getAssignedTo() != 0) {
+				userid = oneDTO.getAssignedTo();
+				theUser = userDao.getUser(userid);
+				oneDTO.setAssignedToString(theUser.getUsername());
+			}
+
+			// Compute the printable Created On and Completed dates
+			oneDTO.setPrintableCreatedDate(getPrintableDateWithTime(oneDTO
+					.getItemCreatedDate()));
+			oneDTO.setPrintableCompletedDate(getPrintableDateWithTime(oneDTO
+					.getItemCompletedDate()));
+			
+			// Convert Enum names to strings
+			ProblemLocationEnums locationEnum = ProblemLocationEnums.valueOf(oneDTO.getLocation());
+			oneDTO.setLocation(locationEnum.toString());
+			ProblemStatusEnums statusEnum = ProblemStatusEnums.valueOf(oneDTO.getProblemStatus());
+			oneDTO.setProblemStatus(statusEnum.toString());
+			ProblemTypeEnums typeEnum = ProblemTypeEnums.valueOf(oneDTO.getProblemType());
+			oneDTO.setProblemType(typeEnum.toString());
+			ProblemPriorityEnums priorityEnum = ProblemPriorityEnums.valueOf(oneDTO.getPriority());
+			oneDTO.setPriority(priorityEnum.toString());
+			if (oneDTO.getVendor() != null && !oneDTO.getVendor().equals("0")) {
+				VendorEnums vendorEnum = VendorEnums.valueOf(oneDTO.getVendor());
+				oneDTO.setVendor(vendorEnum.toString());
+			}
+			
+			dtoListOut.add(oneDTO);
+		}
+
+		return dtoListOut;
+	}
+	
+	public void updateProblemItem(ProblemItemDTO problemItemDTO) {
+		if (problemItemDTO.getProblemStatus().equals(ProblemStatusEnums.NEW.name()) &&
+				problemItemDTO.getAssignedToString() != null) {
+			problemItemDTO.setProblemStatus(ProblemStatusEnums.ASSIGNED.name());
+		}
+			
+		problemsDao.updateProblemItem(problemItemDTO);
+	}
+
+	public void deleteProblemItem(ProblemItemDTO problemItemDTO) {
+		problemsDao.deleteProblemItem(problemItemDTO);
+	}
+
+	public ProblemItemDTO getProblemItem(Long problemItemId) {
+		
+		ProblemItemDTO oneDTO = problemsDao.getProblemItem(problemItemId);
+		
+		// Convert userid to username and save in DTO
+		Long userid = oneDTO.getItemCreatedBy();
+		UserDTO theUser = userDao.getUser(userid);
+		oneDTO.setUsername(theUser.getUsername());
+
+		// Now do the same for assigned user, if there is one
+		if (oneDTO.getAssignedTo() != null && oneDTO.getAssignedTo() != 0) {
+			userid = oneDTO.getAssignedTo();
+			theUser = userDao.getUser(userid);
+			oneDTO.setAssignedToString(theUser.getUsername());
+		}
+
+		// Compute the printable Created On and Completed On dates
+		oneDTO.setPrintableCreatedDate(getPrintableDateWithTime(oneDTO
+				.getItemCreatedDate()));
+		oneDTO.setPrintableCompletedDate(getPrintableDateWithTime(oneDTO
+				.getItemCompletedDate()));
+
+		return oneDTO;
 	}
 
 	/*

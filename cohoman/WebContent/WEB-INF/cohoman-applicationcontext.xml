@@ -69,6 +69,7 @@
 		<property name="trashTeamRowDao" ref="trashTeamRowDao" />
 		<property name="trashSubstitutesDao" ref="trashSubstitutesDao" />
 		<property name="maintenanceDao" ref="maintenanceDao" />
+		<property name="problemsDao" ref="problemsDao" />
 		<property name="mtaskDao" ref="mtaskDao" />
 	</bean> 
 	<bean id="configurationManager"
@@ -148,6 +149,9 @@
 	</bean>
 	<bean id="configScalarsDao"
 		class="org.cohoman.model.integration.persistence.dao.ConfigScalarsDaoImpl">
+	</bean>
+	<bean id="problemsDao"
+		class="org.cohoman.model.integration.persistence.dao.ProblemsDaoImpl">
 	</bean>
 	
 	<bean id="applicationContextProvider"

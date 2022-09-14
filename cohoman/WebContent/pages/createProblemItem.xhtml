@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Create a New Problem Report
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Please Enter Problem Report Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter Problem Report Information"/>
+         		</f:facet>
+         		          		        				
+				<h:outputText value="Problem Name:"  styleClass="subheading" />
+				<h:inputText id="ItemName" value="#{createProblemItemController.itemname}" required="true">
+					<f:validateLength minimum="3" maximum="31" />
+				</h:inputText>
+
+				<h:outputText value="Problem Description:"  styleClass="subheading" />				
+				<h:inputTextarea id="ItemDescription" value="#{createProblemItemController.itemdescription}" 
+					rows="3" cols="60" maxlength = "510" required="true" />
+									
+			    <h:outputText value="Priority:"  styleClass="subheading" />
+				<h:selectOneMenu value="#{createProblemItemController.chosenpriority}">
+					<f:selectItem itemValue="#{0}" itemLabel="Choose the problem priority" />
+					<f:selectItems value="#{createProblemItemController.itempriorities}"
+						var="onepriority"
+						itemLabel="#{onepriority}"
+						itemValue="#{onepriority}" />
+				</h:selectOneMenu>
+	
+				<h:outputText value="Problem Type:"  styleClass="subheading" />
+				<h:selectOneMenu value="#{createProblemItemController.chosenproblemtype}">
+					<f:selectItem itemValue="#{0}" itemLabel="Choose the problem type" />
+					<f:selectItems value="#{createProblemItemController.itemproblemtype}"
+						var="oneproblemtype"
+						itemLabel="#{oneproblemtype}"
+						itemValue="#{oneproblemtype}" />
+				</h:selectOneMenu>
+	
+				<h:outputText value="Problem Location:"  styleClass="subheading" />
+				<h:selectOneMenu value="#{createProblemItemController.chosenproblemlocation}">
+					<f:selectItem itemValue="#{0}" itemLabel="Choose the problem location" />
+					<f:selectItems value="#{createProblemItemController.itemproblemlocation}"
+						var="onelocation"
+						itemLabel="#{onelocation}"
+						itemValue="#{onelocation}" />
+				</h:selectOneMenu>
+				
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center"  >				
+				<h:commandButton value="Submit New Problem Report" action="#{createProblemItemController.addProblemItem}" />
+			</h:panelGroup>
+			
+			<h:panelGrid columns="2"  headerClass="formheader" styleClass="formstyle"> 
+			
+				<h:panelGroup style="display:block; font-weight:bold; ">	
+					<h3 style=" color: red">Note about problem priorities:</h3>
+				</h:panelGroup>
+			
+				<h:panelGroup style="display:block;  "> 
+					<ul>
+						<li>Text messages are sent to all residents for <b>critical-priority</b> problems. <b>(Use sparingly!)</b></li>
+						<li>Text messages are sent to the emergency team for <b>emergency-priority</b> problems.</li>
+						<li>A text message is sent to the Service Coordinator for <b>high-priority</b> problems.</li>
+					</ul>
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

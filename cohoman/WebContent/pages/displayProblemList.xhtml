@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Problem Reports
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+
+<h:form>
+ 
+<h:panelGrid columns="1" title="Problem Reports" 
+	headerClass="formheader" styleClass="formstyle" >
+	    <f:facet name="header">
+           <h:outputText value="Problem Reports"/>
+        </f:facet>
+	<br />
+	
+	<h:outputText value="There are no Problem Reports." 
+		rendered="#{empty retrieveProblemItemsListController.problemItemList}" />
+	
+	<h:dataTable value="#{retrieveProblemItemsListController.problemItemList}" var="oneitem" 
+		styleClass="users" headerClass="usersHeader" 
+		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
+		rendered="#{not empty retrieveProblemItemsListController.problemItemList}">
+ 
+		<h:column>
+  			<f:facet name="header">Problem Name</f:facet> 
+  			#{oneitem.itemname}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Problem Status</f:facet> 
+  			#{oneitem.problemStatus}
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Problem Priority</f:facet> 
+  			#{oneitem.priority}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Request Created On</f:facet> 
+  			#{oneitem.printableCreatedDate}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Assigned To</f:facet> 
+  			#{oneitem.assignedToString}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Problem Details</f:facet> 
+  			<h:link value="ProblemDetails" outcome="displayProblemItemDetails.xhtml" >
+  				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
+  			</h:link> 
+   			         
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Problem Updates</f:facet> 
+  			<h:link value="ProblemUpdates" outcome="listProblemUpdate.xhtml">
+  			</h:link>          
+		</h:column>
+
+</h:dataTable>
+
+</h:panelGrid>
+
+</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+
+

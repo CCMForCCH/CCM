@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit an Existing Problem Request
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		
+		<h:outputScript library="javascript" name="checkForMealDelete.js" />
+ 
+ 		<h:form>
+
+			<h:panelGrid columns="1" title="Edit or Delete Problem Request" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Choose to Edit or Delete Problem Request"/>
+         		</f:facet>
+		
+				<h:outputText value="*** No problem requests defined ***"
+					rendered="#{empty editProblemController.problemItemDTOsList}" />
+				
+				<h:selectOneMenu value="#{editProblemController.chosenProblemItemString}"
+					rendered="#{not empty editProblemController.problemItemDTOsList}">
+					<f:selectItems value="#{editProblemController.problemItemDTOsList}"
+						var="oneitem" 
+						itemLabel="#{oneitem.itemname}"
+						itemValue="#{oneitem.problemitemid}" />
+				</h:selectOneMenu>
+		
+				<h:selectOneRadio value="#{editProblemController.problemOperation}" layout="pageDirection"
+					required="true" rendered="#{not empty editProblemController.problemItemDTOsList}">
+					<f:selectItem itemValue="changeProblemItem" itemLabel="Change Problem Item"/>
+					<f:selectItem itemValue="deleteProblemItem" itemLabel="Delete Problem Item" />			
+				</h:selectOneRadio>
+		
+				<h:panelGroup style="display:block; text-align:center"
+					rendered="#{not empty editProblemController.problemItemDTOsList}">				
+					<h:commandButton value="Submit Choice" action="#{editProblemController.editProblemView}" 
+					    onclick="return checkForMealDelete(this.form)" />
+				</h:panelGroup>
+			</h:panelGrid>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

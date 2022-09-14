@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit Problem Report Fields
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Edit Problem Report" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Choose what to change in the Problem Report:"/>
+         		</f:facet>
+         		
+         		<h:outputText value="Item Name:" styleClass="subheading"/>
+				<h:inputText value="#{editProblemController.chosenProblemItemDTO.itemname}" >
+									<f:validateLength minimum="3" maximum="31" />
+				</h:inputText>
+         			
+         		<h:outputText value="Item Description:" styleClass="subheading" />				
+				<h:inputTextarea id="ItemDescription" value="#{editProblemController.chosenProblemItemDTO.itemdescription}" 
+					rows="3" cols="60" maxlength = "510" required="true" />
+
+			    <h:outputText value="Created By:" styleClass="subheading" />
+				<h:outputText value="#{editProblemController.chosenProblemItemDTO.username}" />
+
+			    <h:outputText value="Created On:" styleClass="subheading" />
+				<h:outputText value="#{editProblemController.chosenProblemItemDTO.printableCreatedDate}" />
+				
+			    <h:outputText value="Problem Type:" styleClass="subheading" />
+				<h:selectOneMenu value="#{editProblemController.chosenProblemItemDTO.problemType}">
+					<f:selectItems value="#{createProblemItemController.itemproblemtype}"
+						var="onetype"
+						itemLabel="#{onetype}"
+						itemValue="#{onetype}" />
+				</h:selectOneMenu>
+
+			    <h:outputText value="Problem Location:" styleClass="subheading" />
+				<h:selectOneMenu value="#{editProblemController.chosenProblemItemDTO.location}">
+					<f:selectItems value="#{createProblemItemController.itemproblemlocation}"
+						var="onelocation"
+						itemLabel="#{onelocation}"
+						itemValue="#{onelocation}" />
+				</h:selectOneMenu>
+ 
+ 			    <h:outputText value="Problem Status:" styleClass="subheading" />
+				<h:selectOneMenu value="#{editProblemController.chosenProblemItemDTO.problemStatus}">
+					<f:selectItems value="#{editProblemController.itemproblemstatus}"
+						var="onestatus"
+						itemLabel="#{onestatus}"
+						itemValue="#{onestatus}" />
+				</h:selectOneMenu>
+     				
+			    <h:outputText value="Priority:" styleClass="subheading" />
+				<h:selectOneMenu value="#{editProblemController.chosenProblemItemDTO.priority}">
+					<f:selectItems value="#{createProblemItemController.itempriorities}"
+						var="onepriority"
+						itemLabel="#{onepriority}"
+						itemValue="#{onepriority}" />
+				</h:selectOneMenu>
+
+			    <h:outputText value="Assigned To:" styleClass="subheading" />
+				<h:selectOneMenu value="#{editProblemController.chosenProblemItemDTO.assignedToString}">
+					<f:selectItem itemValue="#{0}" itemLabel="Choose the assigned person" />
+					<f:selectItems value="#{editProblemController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.username}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+
+			    <h:outputText value="Vendor Name:" styleClass="subheading" />
+				<h:selectOneMenu value="#{editProblemController.chosenProblemItemDTO.vendor}">
+					<f:selectItem itemValue="#{0}" itemLabel="Choose the vendor to fix the problem" />
+					<f:selectItems value="#{editProblemController.vendors}"
+						var="onevendor"
+						itemLabel="#{onevendor}"
+						itemValue="#{onevendor}" />
+				</h:selectOneMenu>
+
+        		<h:outputText value="Invoice Number:" styleClass="subheading"/>
+				<h:inputText value="#{editProblemController.chosenProblemItemDTO.invoiceNumber}" >
+				</h:inputText>
+         			
+         		<h:outputText value="Invoice Link:" styleClass="subheading" />				
+				<h:inputTextarea id="InvoiceLink" value="#{editProblemController.chosenProblemItemDTO.invoiceLink}" 
+					rows="3" cols="60" maxlength = "127" />
+
+
+        		<h:outputText value="Total Cost:" styleClass="subheading"/>
+				<h:inputText value="#{editProblemController.chosenProblemItemDTO.cost}" >
+				</h:inputText>
+
+			    <h:outputText value="Completed On:" styleClass="subheading" />
+				<h:outputText value="#{editProblemController.chosenProblemItemDTO.printableCompletedDate}" />
+
+        		<h:outputText value="Duplicate of Another Problem:" styleClass="subheading"/>
+				<h:inputText value="#{editProblemController.chosenProblemItemDTO.duplicateproblemitemname}" >
+				</h:inputText>
+
+			</h:panelGrid>
+									
+			<br />
+			<h:panelGroup style="display:block; text-align:center">	
+					<h:commandButton value="Submit Problem Report Changes" action="#{editProblemController.editProblemItemsView}" />			
+			</h:panelGroup>
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+					
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

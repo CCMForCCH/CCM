@@ -10,6 +10,7 @@ import org.cohoman.model.business.trash.TrashRow;
 import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
+import org.cohoman.model.dto.ProblemItemDTO;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
@@ -56,6 +57,21 @@ public interface ListsService {
 	public void updateMtask(MtaskDTO mtaskDTO);
 
 	public void deleteMtask(Long mtaskitemid);
+
+	// Problem item operations
+	public void createProblemItem(ProblemItemDTO problemItemDTO)
+			throws CohomanException;
+
+	public List<ProblemItemDTO> getProblemItems(
+			SortEnums sortEnum);
+
+	public void updateProblemItem(ProblemItemDTO problemItemDTO)
+			throws CohomanException;
+
+	public void deleteProblemItem(ProblemItemDTO problemItemDTO)
+			throws CohomanException;
+
+	public ProblemItemDTO getProblemItem(Long problemItemId);
 
 	// Trash
 	public List<TrashRow> getTrashSchedule() throws CohomanException;

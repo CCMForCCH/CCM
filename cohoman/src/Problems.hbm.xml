@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.cohoman.model.integration.persistence.beans.ProblemsBean" table="problems" >
+  	
+  	  <id name="problemitemid">
+		 <generator class="increment" />
+	  </id>
+
+	  <property name="itemname" />
+	  <property name="itemdescription" />
+	  <property name="itemCreatedDate" />
+	  <property name="itemCreatedBy" />
+	  <property name="priority" />
+	  <property name="problemStatus" />
+	  <property name="problemType" />
+	  <property name="vendor" />
+	  <property name="duplicateproblemitemname" />
+	  <property name="location" />
+	  <property name="assignedTo" />
+	  <property name="cost" />
+	  <property name="invoiceNumber" />
+	  <property name="invoiceLink" />
+	  <property name="itemCompletedDate" />
+	  
+  </class>
+    
+</hibernate-mapping>

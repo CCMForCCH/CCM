@@ -18,7 +18,40 @@
 	<ui:define name="content">
 		<br></br>
 		<h:form>	
-		
+
+			<fieldset>
+			<legend><b>Problem Reporting</b></legend>
+				<table>
+				
+					<tr>
+					<td>
+						<h:commandLink value="Create problem request" action="createProblemItem"  /> 
+					</td>
+					<td>
+						<h:outputText value="Create a new problem request"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List all problem requests" action="displayProblemList"  /> 
+					</td>
+					<td>
+						<h:outputText value="List all problem requests"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Edit/Delete problem request" action="editProblem"  /> 
+					</td>
+					<td>
+						<h:outputText value="Edit/Delete problem request"/>
+					</td> 
+					</tr>
+					
+				</table>
+			</fieldset>
+			<br/>
+
 			<fieldset>
 			<legend><b>Manage Periodic Maintenance</b></legend>
 				<table>
@@ -56,14 +89,6 @@
 					</td>
 					<td>
 						<h:outputText value="Edit/Delete periodic maintenance item"/>
-					</td> 
-					</tr>
-					<tr>
-					<td>
-						<h:commandLink value="List all project overview documents" action="displayProjectDocsEdit"  /> 
-					</td>
-					<td>
-						<h:outputText value="Display a list of all project overview documents with (editable) links to the documents"/>
 					</td> 
 					</tr>
 				</table>

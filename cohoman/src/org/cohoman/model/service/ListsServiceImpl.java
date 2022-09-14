@@ -17,6 +17,7 @@ import org.cohoman.model.business.trash.TrashSchedule;
 import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
+import org.cohoman.model.dto.ProblemItemDTO;
 import org.cohoman.model.integration.email.SendEmail;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
@@ -225,6 +226,60 @@ public class ListsServiceImpl implements ListsService {
 		listsManager.deleteMtask(mtaskitemid);
 
 		// TODO Add in the auditing!!!!!!!!!!!!
+	}
+
+	// Problem Item services
+	public void createProblemItem(ProblemItemDTO problemItemDTO)
+			throws CohomanException {
+		logger.info("AUDIT: Create problem item for "
+				+ problemItemDTO.getItemname() + ", by "
+				+ getUserFullname(problemItemDTO.getItemCreatedBy())
+				+ ", description =\"" + problemItemDTO.getItemdescription()
+				+ "\", priority = " + problemItemDTO.getPriority()
+				+ "\", status = "
+				+ problemItemDTO.getProblemStatus());
+		listsManager.createProblemItem(problemItemDTO);
+	}
+
+	public List<ProblemItemDTO> getProblemItems(SortEnums sortEnum) {
+		return listsManager.getProblemItems(sortEnum);
+	}
+
+	public ProblemItemDTO getProblemItem(Long problemItemId) {
+		return listsManager.getProblemItem(problemItemId);
+	}
+
+	public void updateProblemItem(ProblemItemDTO problemItemDTO)
+			throws CohomanException {
+		logger.info("AUDIT: Create maintenance for "
+				+ problemItemDTO.getItemname() + ", by "
+				+ getUserFullname(problemItemDTO.getItemCreatedBy())
+				+ ", description =\"" + problemItemDTO.getItemdescription()
+				+ "\", priority = " + problemItemDTO.getPriority());
+		listsManager.updateProblemItem(problemItemDTO);
+	}
+
+	public void deleteProblemItem(ProblemItemDTO problemItemDTO)
+			throws CohomanException {
+
+		try {
+			listsManager.deleteProblemItem(problemItemDTO);
+		} catch (Exception ex) {
+			logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
+			throw new CohomanException("Unable to delete Problem Item = "
+					+ problemItemDTO.getItemname());
+		}
+
+/*
+		logger.info("AUDIT: Delete maintenance item for "
+				+ maintenanceItemDTO.getItemname() + ", description = \""
+				+ maintenanceItemDTO.getItemdescription()
+				+ "\", date created = "
+				+ maintenanceItemDTO.getPrintableCreatedDate()
+				+ "\", date last performed = "
+				+ maintenanceItemDTO.getLastperformedDate() + " deleted by "
+				+ LoggingUtils.getCurrentUsername());
+*/
 	}
 
 	// Trash

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Display Problem Report Details
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Problem Report Details" 
+				headerClass="formheader" styleClass="itemdetails" >
+	     		<f:facet name="header">
+            		<h:outputText value="Details for Problem Report"/>
+         		</f:facet>
+         		
+         		<h:outputText value="Name:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.itemname}" />
+         			
+         		<h:outputText value="Description:"  style="font-weight:bold" />				
+				<h:outputText id="ItemDescription" value="#{retrieveProblemItemsListController.chosenProblemItemDTO.itemdescription}" 
+					rows="3" cols="60" maxlength = "510" />
+
+				<h:outputText value="Created By:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.username}" />
+
+				<h:outputText value="Created On:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.printableCreatedDate}" />
+
+         		<h:outputText value="Problem Type:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.problemType}" />
+
+         		<h:outputText value="Location:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.location}" />
+
+         		<h:outputText value="Status:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.problemStatus}" />	
+         		
+         		<h:outputText value="Priority:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.priority}" />
+
+				<h:outputText value="Assigned To:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.assignedToString}" />
+
+				<h:outputText value="Vendor Name:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.vendor}" />
+
+				<h:outputText value="Invoice Number:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.invoiceNumber}" />
+
+				<h:outputText value="Invoice Link:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.invoiceLink}" />
+
+				<h:outputText value="Cost:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.cost}" />
+	
+				<h:outputText value="Duplicate of Problem Name:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.duplicateproblemitemname}" />
+	
+				<h:outputText value="Completed On:" style="font-weight:bold" />
+				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.printableCompletedDate}" />
+							
+				<br />
+         	 						
+			</h:panelGrid>
+        	<br /> 
+			
+		    <h:messages layout="table" errorClass="errors" />
+					
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
