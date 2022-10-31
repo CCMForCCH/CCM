@@ -18,6 +18,7 @@ import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.dto.ProblemItemDTO;
+import org.cohoman.model.dto.ProblemUpdateDTO;
 import org.cohoman.model.dto.SecurityStartingPointDTO;
 import org.cohoman.model.dto.UserDTO;
 import org.cohoman.model.integration.SMS.SmsSender;
@@ -30,6 +31,7 @@ import org.cohoman.model.integration.persistence.beans.TrashTeamRowBean;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
 import org.cohoman.model.integration.persistence.dao.MaintenanceDao;
 import org.cohoman.model.integration.persistence.dao.MtaskDao;
+import org.cohoman.model.integration.persistence.dao.ProblemUpdateDao;
 import org.cohoman.model.integration.persistence.dao.ProblemsDao;
 import org.cohoman.model.integration.persistence.dao.SecurityDao;
 import org.cohoman.model.integration.persistence.dao.SubstitutesDao;
@@ -65,6 +67,7 @@ public class ListsManagerImpl implements ListsManager {
 	private MaintenanceDao maintenanceDao = null;
 	private MtaskDao mtaskDao = null;
 	private ProblemsDao problemsDao = null;
+	private ProblemUpdateDao problemUpdateDao = null;
 
 	Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -146,6 +149,14 @@ public class ListsManagerImpl implements ListsManager {
 
 	public void setProblemsDao(ProblemsDao problemsDao) {
 		this.problemsDao = problemsDao;
+	}
+
+	public ProblemUpdateDao getProblemUpdateDao() {
+		return problemUpdateDao;
+	}
+
+	public void setProblemUpdateDao(ProblemUpdateDao problemUpdateDao) {
+		this.problemUpdateDao = problemUpdateDao;
 	}
 
 	public List<UnitBean> getAllUnits() {
@@ -388,10 +399,10 @@ public class ListsManagerImpl implements ListsManager {
 		if (sectionEnum == CchSectionTypeEnum.COMMONHOUSE) {
 			unitBeanList = unitsDao.getCommonhouseUnits();
 
-			// Exception code to remove unit 414 from the list.
+			// Exception code to remove unit 211 from the list.
 			List<UnitBean> modifiedUnitBeanList = new ArrayList<UnitBean>();
 			for (UnitBean oneUnitBean : unitBeanList) {
-				if (!(oneUnitBean.getUnitnumber().equals("414")|| oneUnitBean.getUnitnumber().equals("410"))) {
+				if (!(oneUnitBean.getUnitnumber().equals("211")|| oneUnitBean.getUnitnumber().equals("410"))) {
 					modifiedUnitBeanList.add(oneUnitBean);
 				}
 			}
@@ -904,7 +915,7 @@ public class ListsManagerImpl implements ListsManager {
 		mtaskDao.deleteMtask(mtaskitemid);
 	}
 
-	
+	/********************************************************************/
 	// Problem item operations
 	public void createProblemItem(ProblemItemDTO problemItemDTO)
 			throws CohomanException {
@@ -956,6 +967,8 @@ public class ListsManagerImpl implements ListsManager {
 	}
 	
 	public void updateProblemItem(ProblemItemDTO problemItemDTO) {
+		
+		// Automatically change the status to ASSIGNED if a new name assigned just occurred
 		if (problemItemDTO.getProblemStatus().equals(ProblemStatusEnums.NEW.name()) &&
 				problemItemDTO.getAssignedToString() != null) {
 			problemItemDTO.setProblemStatus(ProblemStatusEnums.ASSIGNED.name());
@@ -992,6 +1005,52 @@ public class ListsManagerImpl implements ListsManager {
 
 		return oneDTO;
 	}
+	/********************************************************************/
+
+	/*
+	 * Problem Update operations
+	 */
+	public void createProblemUpdate(ProblemUpdateDTO dto) throws CohomanException {
+		problemUpdateDao.createProblemUpdate(dto);
+	}
+
+	public List<ProblemUpdateDTO> getProblemUpdatesForProblemItem(
+			Long problemItemId) {
+
+		List<ProblemUpdateDTO> dtoListOut = new ArrayList<ProblemUpdateDTO>();
+		List<ProblemUpdateDTO> dtoListIn = problemUpdateDao
+				.getProblemUpdatesForProblemItem(problemItemId);
+		for (ProblemUpdateDTO oneDTO : dtoListIn) {
+
+			// Convert userid to username and save in DTO
+			Long userid = oneDTO.getItemCreatedBy();
+			UserDTO theUser = userDao.getUser(userid);
+			oneDTO.setUsername(theUser.getUsername());
+
+			// Compute the printable Created BY date
+			oneDTO.setPrintableUpdateDate(getPrintableDateWithTime(oneDTO
+					.getUpdateDate()));
+			dtoListOut.add(oneDTO);
+		}
+		return dtoListOut;
+
+	}
+
+	public ProblemUpdateDTO getProblemUpdate(Long problemUpdateId) {
+		return problemUpdateDao.getProblemUpdate(problemUpdateId);
+	}
+
+	public void updateProblemUpdate(ProblemUpdateDTO problemUpdateDTO) {
+		problemUpdateDao.updateProblemUpdate(problemUpdateDTO);
+	}
+
+	public void deleteProblemUpdate(Long problemUpdateId) {
+		problemUpdateDao.deleteProblemUpdate(problemUpdateId);
+	}
+
+
+
+	/********************************************************************/
 
 	/*
 	 * Build Trash Schedule

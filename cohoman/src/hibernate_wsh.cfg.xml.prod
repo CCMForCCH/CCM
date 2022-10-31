@@ -49,6 +49,7 @@
       <mapping resource="Mtask.hbm.xml" />
       <mapping resource="ConfigScalars.hbm.xml" />
       <mapping resource="Problems.hbm.xml" />
+      <mapping resource="ProblemUpdate.hbm.xml" />
  
 </session-factory>
 </hibernate-configuration>

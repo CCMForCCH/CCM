@@ -30,12 +30,12 @@
 	<br />
 
 	<b>
-    <h:outputText value="Updates for Problem Report: #{problemUpdateController.problemUpdateName}"
+    <h:outputText value="Updates for Problem Report: #{problemUpdateController.problemItemName}"
     	style="display:block; text-align:center; font-weight: bold; font-size: 125%;color: blue"/>
 	</b>
 	<br />
 	
-	<h:outputText value="There are no tasks associated with this problem report." 
+	<h:outputText value="There are no updates associated with this problem report." 
 		rendered="#{empty problemUpdateController.problemUpdateDTOList}" />
 	
 	<h:dataTable value="#{problemUpdateController.problemUpdateDTOList}" var="onetask" 
@@ -59,15 +59,24 @@
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Edit Task</f:facet> 
+  			<f:facet name="header">Edit Update</f:facet> 
+  			<h:link value="edit task" outcome="editProblemUpdate.xhtml" >
+  				<f:param name="chosenProblemUpdateId" value="#{onetask.problemupdateid}"  />
+  				<f:param name="chosenItemCreatedBy" value="#{onetask.itemCreatedBy}"  />
+  			</h:link>          
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Delete Task</f:facet>  			         
+  			<f:facet name="header">Delete Update</f:facet>  			         
+  			 <h:commandLink value="delete update" action="#{problemUpdateController.deleteProblemUpdate}">
+  				<f:param name="chosenProblemUpdateId" value="#{onetask.problemupdateid}"  />
+  			</h:commandLink>          
 		</h:column>
 
     </h:dataTable>
 	<br />
+	
+	<h:link value="Go back to Problem Reports Table" outcome="displayProblemList.xhtml" style="display:block; text-align:center"/>
 	
     </h:panelGrid>
 	<br />

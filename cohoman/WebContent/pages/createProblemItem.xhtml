@@ -29,12 +29,14 @@
          		          		        				
 				<h:outputText value="Problem Name:"  styleClass="subheading" />
 				<h:inputText id="ItemName" value="#{createProblemItemController.itemname}" required="true">
-					<f:validateLength minimum="3" maximum="31" />
+					<f:validateLength minimum="3" maximum="41" />
 				</h:inputText>
 
 				<h:outputText value="Problem Description:"  styleClass="subheading" />				
 				<h:inputTextarea id="ItemDescription" value="#{createProblemItemController.itemdescription}" 
-					rows="3" cols="60" maxlength = "510" required="true" />
+					rows="6" cols="60"  required="true" >
+					<f:validateLength maximum="4095"></f:validateLength>
+				</h:inputTextarea>
 									
 			    <h:outputText value="Priority:"  styleClass="subheading" />
 				<h:selectOneMenu value="#{createProblemItemController.chosenpriority}">

@@ -16,23 +16,4 @@ public interface MtaskDao {
 
 	public void deleteMtask(Long mtaskitemid);
 
-/*
-	
-	public List<MealEvent> getMealEvents();
-
-	public List<MealEvent> getAllMealEvents();
-
-	public MealEvent getMealEvent(Long eventId);
-	
-	public List<MealEvent> getMealEventsForDay(Date dateOfDay);
-
-	public void updateMealEvent(MealEvent mealEvent) throws CohomanException;
-*/
-	
-	//public List<MDTO> getMaintenanceItems();
-
-	//public MaintenanceItemDTO getMaintenanceItem(Long maintenanceItemId);
-
-	//public void deleteMaintenanceItem(MaintenanceItemDTO maintenanceItemDTO);
-
 }

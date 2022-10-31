@@ -43,13 +43,13 @@
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Problem Status</f:facet> 
-  			#{oneitem.problemStatus}
+  			<f:facet name="header">Priority</f:facet> 
+  			#{oneitem.priority}           
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Problem Priority</f:facet> 
-  			#{oneitem.priority}           
+  			<f:facet name="header">Status</f:facet> 
+  			#{oneitem.problemStatus}
 		</h:column>
 
 		<h:column>
@@ -71,8 +71,19 @@
 		</h:column>
 
 		<h:column>
+  			<f:facet name="header">Create Update</f:facet> 
+  			<h:link value="CreateUpdate" outcome="createProblemUpdate.xhtml" >
+  				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
+  				<f:param name="chosenProblemItemName" value="#{oneitem.itemname}"  />
+  				<f:param name="operation" value="CreateUpdate" />
+  			</h:link>          
+		</h:column>
+
+		<h:column>
   			<f:facet name="header">Problem Updates</f:facet> 
   			<h:link value="ProblemUpdates" outcome="listProblemUpdate.xhtml">
+  				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
+  				<f:param name="chosenProblemItemName" value="#{oneitem.itemname}"  />
   			</h:link>          
 		</h:column>
 

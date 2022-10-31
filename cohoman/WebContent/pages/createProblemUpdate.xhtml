@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Create a New Problem Update Task
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Please Enter Problem Update Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Please Enter Problem Update Information"/>
+            		<br />
+         		</f:facet>
+  
+  				<h:outputText value="Problem Report:"  styleClass="subheading" />				
+				<h:inputText id="ProblemReportItemName" value="#{problemUpdateController.problemItemName}" 
+					 maxlength = "41" disabled="true" />
+        		
+				<h:inputHidden id="junk" value="#{problemUpdateController.username}" 
+					 maxlength = "31" />
+				<h:inputHidden id="chosenProblemItemId" value="#{problemUpdateController.chosenProblemItemId}" 
+					 maxlength = "31" required="true" rendered="true"/>
+							
+				<h:outputText value="Create Date:" styleClass="subheading" />				
+         		<p:calendar  id="popupstart" 
+         			value="#{problemUpdateController.chosenProblemUpdateDate}" required="true" 
+         			pattern="MMM d, yyyy h:mm aa" size="17" showOn="focus"
+         		    readonlyInput="true">
+        		</p:calendar>
+					
+				<h:outputText value="Update Text:"  styleClass="subheading" />				
+				<h:inputTextarea id="UpdateText" value="#{problemUpdateController.notes}" 
+					rows="6" cols="60" required="true">
+					<f:validateLength maximum="4095"></f:validateLength>
+				</h:inputTextarea>
+								
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center"  >				
+				<h:commandButton value="Submit New Problem Update" action="#{problemUpdateController.addProblemUpdate}" />
+			</h:panelGroup>
+			
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

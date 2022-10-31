@@ -18,6 +18,7 @@ import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
 import org.cohoman.model.dto.ProblemItemDTO;
+import org.cohoman.model.dto.ProblemUpdateDTO;
 import org.cohoman.model.integration.email.SendEmail;
 import org.cohoman.model.integration.persistence.beans.CchSectionTypeEnum;
 import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
@@ -192,7 +193,7 @@ public class ListsServiceImpl implements ListsService {
 
 	}
 
-	// Maintenance Item services
+	// Maintenance Task services
 	public void createMtask(MtaskDTO mtaskDTO) throws CohomanException {
 		/*
 		 * logger.info("AUDIT: Create maintenance task for " +
@@ -282,7 +283,55 @@ public class ListsServiceImpl implements ListsService {
 */
 	}
 
-	// Trash
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.cohoman.model.service.ListsService#createProblemUpdate(org.cohoman.model.dto.ProblemUpdateDTO)
+	 * 
+	 * Problem Update operations
+	 */
+	public void createProblemUpdate(ProblemUpdateDTO dto) throws CohomanException {
+		/*
+		 * logger.info("AUDIT: Create maintenance task for " +
+		 * maintenanceItemDTO.getItemname() + ", by " +
+		 * getUserFullname(maintenanceItemDTO.getItemCreatedBy()) +
+		 * ", description =\"" + maintenanceItemDTO.getItemdescription() +
+		 * "\", frequency = " + maintenanceItemDTO.getFrequencyOfItem() +
+		 * "\", priority = " + maintenanceItemDTO.getPriority() +
+		 * "\", target time of year = " +
+		 * maintenanceItemDTO.getTargetTimeOfyear());
+		 */
+
+		listsManager.createProblemUpdate(dto);
+	}
+
+	public List<ProblemUpdateDTO> getProblemUpdatesForProblemItem(Long problemItemId) {
+		return listsManager.getProblemUpdatesForProblemItem(problemItemId);
+	}
+	
+	public ProblemUpdateDTO getProblemUpdate(Long problemUpdateId) {
+		return listsManager.getProblemUpdate(problemUpdateId);
+	}
+
+	public void updateProblemUpdate(ProblemUpdateDTO problemUpdateDTO) {
+		listsManager.updateProblemUpdate(problemUpdateDTO);
+
+		// TODO Add in the auditing!!!!!!!!!!
+	}
+
+	public void deleteProblemUpdate(Long problemUpdateId) {
+		listsManager.deleteProblemUpdate(problemUpdateId);
+		
+		// TODO Add in the auditing!!!!!!!!!!!!		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.cohoman.model.service.ListsService#getTrashSchedule()
+	 * 
+	 * Trash
+	 * 
+	 */
 	public List<TrashRow> getTrashSchedule() throws CohomanException {
 		return listsManager.getTrashSchedule();
 	}

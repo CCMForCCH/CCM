@@ -29,12 +29,14 @@
          		
          		<h:outputText value="Item Name:" styleClass="subheading"/>
 				<h:inputText value="#{editProblemController.chosenProblemItemDTO.itemname}" >
-									<f:validateLength minimum="3" maximum="31" />
+									<f:validateLength minimum="3" maximum="41" />
 				</h:inputText>
          			
          		<h:outputText value="Item Description:" styleClass="subheading" />				
 				<h:inputTextarea id="ItemDescription" value="#{editProblemController.chosenProblemItemDTO.itemdescription}" 
-					rows="3" cols="60" maxlength = "510" required="true" />
+					rows="6" cols="60" required="true">
+					<f:validateLength maximum="4095"></f:validateLength>
+				</h:inputTextarea>
 
 			    <h:outputText value="Created By:" styleClass="subheading" />
 				<h:outputText value="#{editProblemController.chosenProblemItemDTO.username}" />

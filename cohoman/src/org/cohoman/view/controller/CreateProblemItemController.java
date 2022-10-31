@@ -42,7 +42,7 @@ public class CreateProblemItemController implements Serializable {
 	private String priority;
 	private UserService userService = null;
 	private ListsService listsService = null;
-	private ProblemPriorityEnums chosenpriority;
+	private ProblemPriorityEnums chosenpriority = null;
 	private ProblemTypeEnums chosenproblemtype;
 	private ProblemLocationEnums chosenproblemlocation;
 
@@ -55,7 +55,6 @@ public class CreateProblemItemController implements Serializable {
 		itemname = "";
 		itemdescription = "";
 		priority = "";
-
 	}
 		
 	public UserService getUserService() {
@@ -242,13 +241,6 @@ public class CreateProblemItemController implements Serializable {
 			}
 			*/
 		}
-
-		// Kinda hack the returned operation so we can tell which list to
-		// to display, Hofeller or Owner. (08/03/2020)
-		//String returnValue = "addMaintenanceItem";
-		//if (dto.getMaintenanceType().equals(MaintenanceTypeEnums.OWNER.name())) {
-			//returnValue += dto.getMaintenanceType();	
-		//}
 
 		// clear out fields for return to the page in this session
 		clearFormFields();

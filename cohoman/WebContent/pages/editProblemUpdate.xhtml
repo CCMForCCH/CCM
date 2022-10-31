@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core" 
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+	  
+<head>
+	<title>IGNORED</title>
+</head>
+
+<body>
+
+	<ui:composition template="/templates/masterLayout.xhtml">
+		<ui:define name="windowTitle">
+			Edit a Problem Report Update
+		</ui:define>
+	
+	<ui:define name="content">
+		<br></br>
+		<h:form>
+
+			<h:panelGrid columns="2" title="Edit Problem Report Update Information" 
+				headerClass="formheader" styleClass="formstyle" >
+	     		<f:facet name="header">
+            		<h:outputText value="Edit Problem Report Update Information"/>
+         		</f:facet>
+         		
+         		<h:outputText value="Problem Report:" styleClass="subheading" />				
+				<h:inputText id="ProblemItemName" value="#{problemUpdateController.problemItemName}" 
+					 maxlength = "41" disabled="true" />
+         		         		
+				<h:outputText value="Added Date:" styleClass="subheading" />				
+         		<p:calendar  id="popupstart" 
+         			value="#{problemUpdateController.updateItem.updateDate}" required="true" 
+         			pattern="MMM d, yyyy h:mm aa" size="17" showOn="focus">  
+         			<p:ajax event="dateSelect" listener="#{problemUpdateController.dateStartSelect}" />   		  
+        		</p:calendar>
+
+			    <h:outputText value="Added By:" styleClass="subheading" />
+				<h:selectOneMenu value="#{problemUpdateController.chosenItemCreatedBy}">
+					<f:selectItems value="#{editProblemController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.username}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+
+				<h:outputText value="Update Text:"  styleClass="subheading" />				
+				<h:inputTextarea id="UpdateText" value="#{problemUpdateController.updateItem.notes}" 
+					rows="6" cols="60" maxlength="4095" required="true">
+					<f:validateLength maximum="4095"></f:validateLength>
+				</h:inputTextarea>
+								
+			</h:panelGrid>
+			<br />
+			<h:panelGroup style="display:block; text-align:center"  >				
+				<h:commandButton value="Submit Modified Problem Report Update" action="#{problemUpdateController.editProblemUpdate}" />
+			</h:panelGroup>
+			
+			<br />
+		    <h:messages layout="table" errorClass="errors" />
+         		
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
+

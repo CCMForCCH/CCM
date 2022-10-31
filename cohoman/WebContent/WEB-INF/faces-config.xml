@@ -644,6 +644,20 @@
 	</managed-bean>
 
 	<managed-bean>
+		<managed-bean-name>problemUpdateController</managed-bean-name>
+		<managed-bean-class>org.cohoman.view.controller.ProblemUpdateController</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>listsService</property-name>
+			<value>#{listsService}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>userService</property-name>
+			<value>#{userService}</value>
+		</managed-property>
+	</managed-bean>
+
+	<managed-bean>
 		<managed-bean-name>testNotifiesController</managed-bean-name>
 		<managed-bean-class>org.cohoman.view.controller.TestNotifiesController</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
@@ -972,6 +986,24 @@
 		<navigation-case>
 			<from-outcome>addMaintenanceTaskOWNER</from-outcome>
 			<to-view-id>/listOwnerMaintenanceTasks.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/createProblemUpdate.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>addProblemUpdate</from-outcome>
+			<to-view-id>/listProblemUpdate.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/editProblemUpdate.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>editProblemUpdate</from-outcome>
+			<to-view-id>/listProblemUpdate.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
@@ -1674,7 +1706,7 @@
 		</navigation-case>
 	</navigation-rule>
 
-<!--  pages for hofeller admin -->
+<!--  pages for Service Manager -->
 	<navigation-rule>
 		<from-view-id>/indexForHofelleradmin.xhtml</from-view-id>
 		<navigation-case>
@@ -1702,7 +1734,23 @@
 			<to-view-id>/editMaintenance.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>createProblemItem</from-outcome>
+			<to-view-id>/createProblemItem.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayProblemList</from-outcome>
+			<to-view-id>/displayProblemList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editProblem</from-outcome>
+			<to-view-id>/editProblem.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		
 	</navigation-rule>
-<!--  end of pages for hofeller admin -->
+<!--  end of pages for Service Manager -->
 
 	</faces-config>
