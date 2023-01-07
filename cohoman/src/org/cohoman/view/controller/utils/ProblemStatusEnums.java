@@ -3,9 +3,9 @@ package org.cohoman.view.controller.utils;
 public enum ProblemStatusEnums {
 	
 	NEW("New"),
-	ASSIGNED("Assigned"),
+	//ASSIGNED("Assigned"),
 	INPROGRESS("In-Progress"),
-	FIXED("Fixed"),
+	CLOSED("Closed"),
 	COMPLETED("Completed"); 
 	
     private final String text;

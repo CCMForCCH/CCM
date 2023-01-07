@@ -4,15 +4,14 @@ import java.util.List;
 
 import org.cohoman.model.dto.ProblemItemDTO;
 import org.cohoman.view.controller.CohomanException;
-import org.cohoman.view.controller.utils.ProblemTypeEnums;
-import org.cohoman.view.controller.utils.SortEnums;
+import org.cohoman.view.controller.utils.ProblemStateEnums;
 
 public interface ProblemsDao {
 	
 	public void createProblemItem(ProblemItemDTO dto) throws CohomanException;
 	
 	public List<ProblemItemDTO> getProblemItems(
-			SortEnums sortEnum);
+			ProblemStateEnums problemStateEnum);
 
 	public ProblemItemDTO getProblemItem(Long problemItemId);
 

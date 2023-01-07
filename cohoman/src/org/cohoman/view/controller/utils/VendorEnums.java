@@ -26,7 +26,7 @@ public enum VendorEnums {
 	MIGHTYDUCT("Mighty Duct"),
 	MINASIAN("Minasian Becker LLC"),
 	OTIS("Otis Elevator"),
-	PAIVA("Paiva Masonry and Landscping, Inc."),
+	PAIVA("Paiva Masonry and Landscaping, Inc."),
 	PEOPLESLOCK("Peoples Lock"),
 	REALPRO("RealPro Mechanical"),
 	ROSETTI("Rosetti Services Corp."),

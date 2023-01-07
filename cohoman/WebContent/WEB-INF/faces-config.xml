@@ -933,7 +933,34 @@
 			<redirect/>
 		</navigation-case>
 
+		<navigation-case>
+			<from-outcome>createProblemItem</from-outcome>
+			<to-view-id>/createProblemItem.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayProblemList</from-outcome>
+			<to-view-id>/displayProblemList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayProblemListInactive</from-outcome>
+			<to-view-id>/displayProblemListInactive.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayProblemListActive</from-outcome>
+			<to-view-id>/displayProblemListActive.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editProblem</from-outcome>
+			<to-view-id>/editProblem.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+
 	</navigation-rule>
+		
 	
 	<navigation-rule>
 		<from-view-id>/editUserProfile.xhtml</from-view-id>
@@ -1742,6 +1769,16 @@
 		<navigation-case>
 			<from-outcome>displayProblemList</from-outcome>
 			<to-view-id>/displayProblemList.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayProblemListInactive</from-outcome>
+			<to-view-id>/displayProblemListInactive.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayProblemListActive</from-outcome>
+			<to-view-id>/displayProblemListActive.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 		<navigation-case>

@@ -14,10 +14,9 @@ import org.cohoman.model.business.User;
 import org.cohoman.model.dto.ProblemItemDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
-import org.cohoman.view.controller.utils.VendorEnums;
+import org.cohoman.view.controller.utils.ProblemStateEnums;
 import org.cohoman.view.controller.utils.ProblemStatusEnums;
-import org.cohoman.view.controller.utils.ProblemTypeEnums;
-import org.cohoman.view.controller.utils.SortEnums;
+import org.cohoman.view.controller.utils.VendorEnums;
 
 @ManagedBean
 @SessionScoped
@@ -271,7 +270,7 @@ public class EditProblemController implements Serializable {
 	public List<ProblemItemDTO> getProblemItemDTOsList() {
 		problemItemDTOsList = 
 				listsService.getProblemItems(
-						SortEnums.ORDERBYNAME);
+						ProblemStateEnums.ALLPROBLEMS);
 		return problemItemDTOsList;
 	}
 
@@ -303,13 +302,7 @@ public class EditProblemController implements Serializable {
 
 		String returnValue = problemOperation;
 		if (problemOperation.equals("deleteProblemItem")) {
-			listsService.deleteProblemItem(chosenProblemItemDTO);
-			
-			// Kinda hacky way to return different operation strings so page
-			// displayed is either for Hofeller or Owner items (08/05/2020)
-			//if (chosenMaintenanceItemDTO.getMaintenanceType().equals(MaintenanceTypeEnums.OWNER.name())) {
-				//returnValue += chosenMaintenanceItemDTO.getMaintenanceType();	
-			//}
+			listsService.deleteProblemItem(chosenProblemItemDTO);	
 		}
 		return returnValue;
 	}
@@ -321,11 +314,18 @@ public class EditProblemController implements Serializable {
 		 Long userid = Long.valueOf(chosenProblemItemDTO.getAssignedToString());
 		 chosenProblemItemDTO.setAssignedTo(userid);
 
-		// If changing status to COMPLETED, set to Completed On date/time.
-		if (chosenProblemItemDTO.getItemCompletedDate() == null
-				&& chosenProblemItemDTO.getProblemStatus().equals(ProblemStatusEnums.COMPLETED.name())) {
+		// If changing status to COMPLETED or CLOSED, set to Completed On
+		// date/time.
+		// If status is anything but COMPLETED or CLOSED, reset the completion
+		// date to null
+		if (chosenProblemItemDTO.getProblemStatus().equals(
+				ProblemStatusEnums.COMPLETED.name())
+				|| chosenProblemItemDTO.getProblemStatus().equals(
+						ProblemStatusEnums.CLOSED.name())) {
 			GregorianCalendar now = new GregorianCalendar();
 			chosenProblemItemDTO.setItemCompletedDate(now.getTime());
+		} else {
+			chosenProblemItemDTO.setItemCompletedDate(null);
 		}
 
 		try {
@@ -337,12 +337,7 @@ public class EditProblemController implements Serializable {
 			return null;
 		}
 
-		// Kinda hack the returned operation so we can tell which list to
-		// to display, Hofeller or Owner. (08/29/2020)
 		String returnValue = "listProblemItems";
-		//if (chosenMaintenanceItemDTO.getMaintenanceType().equals(MaintenanceTypeEnums.OWNER.name())) {
-			//returnValue += chosenMaintenanceItemDTO.getMaintenanceType();	
-		//}
 
 		return returnValue;
 

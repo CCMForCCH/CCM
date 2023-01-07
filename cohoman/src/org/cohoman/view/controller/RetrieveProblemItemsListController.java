@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 
 import org.cohoman.model.dto.ProblemItemDTO;
 import org.cohoman.model.service.ListsService;
+import org.cohoman.view.controller.utils.ProblemStateEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 
 @ManagedBean
@@ -75,7 +76,7 @@ public class RetrieveProblemItemsListController implements Serializable {
 		long itemId = Long.parseLong(chosenProblemItemId);
 		problemItemDTOsList = 
 				listsService.getProblemItems(
-						SortEnums.ORDERBYNEXTSERVICEDATE);
+						ProblemStateEnums.ALLPROBLEMS);
 		for (ProblemItemDTO itemDTO:problemItemDTOsList) {
 			if (itemDTO.getProblemitemid() == itemId) {
 				return itemDTO;
@@ -97,10 +98,29 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 		problemItemList = 
 				listsService.getProblemItems(
-						SortEnums.ORDERBYNEXTSERVICEDATE);
+						ProblemStateEnums.ALLPROBLEMS);
 		return problemItemList;
 
 	}
+
+	public List<ProblemItemDTO> getProblemItemListActive() {
+
+		problemItemList = 
+				listsService.getProblemItems(
+						ProblemStateEnums.PROBLEMISACTIVE);
+		return problemItemList;
+
+	}
+
+	public List<ProblemItemDTO> getProblemItemListInactive() {
+
+		problemItemList = 
+				listsService.getProblemItems(
+						ProblemStateEnums.PROBLEMISINACTIVE);
+		return problemItemList;
+
+	}
+
 /*
 	public List<MaintenanceItemDTO> getMaintenanceItemListByNames() {
 		maintenanceItemList = 

@@ -14,7 +14,7 @@
 
 	<ui:composition template="/templates/masterLayout.xhtml">
 		<ui:define name="windowTitle">
-			All Problem Reports
+			Problem Reports
 		</ui:define>
 	
 	<ui:define name="content">
@@ -22,20 +22,20 @@
 
 <h:form>
  
-<h:panelGrid columns="1" title="All Problem Reports" 
+<h:panelGrid columns="1" title="Inactive Problem Reports" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
-           <h:outputText value="All Problem Reports"/>
+           <h:outputText value="Inactive Problem Reports"/>
         </f:facet>
 	<br />
 	
-	<h:outputText value="There are no Problem Reports." 
-		rendered="#{empty retrieveProblemItemsListController.problemItemList}" />
+	<h:outputText value="There are no Inactive Problem Reports." 
+		rendered="#{empty retrieveProblemItemsListController.problemItemListInactive}" />
 	
-	<h:dataTable value="#{retrieveProblemItemsListController.problemItemList}" var="oneitem" 
+	<h:dataTable value="#{retrieveProblemItemsListController.problemItemListInactive}" var="oneitem" 
 		styleClass="users" headerClass="usersHeader" 
 		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
-		rendered="#{not empty retrieveProblemItemsListController.problemItemList}">
+		rendered="#{not empty retrieveProblemItemsListController.problemItemListInactive}">
  
 		<h:column>
   			<f:facet name="header">Problem Name</f:facet> 

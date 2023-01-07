@@ -46,10 +46,10 @@ import org.cohoman.view.controller.utils.CalendarUtils;
 import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.ProblemLocationEnums;
 import org.cohoman.view.controller.utils.ProblemPriorityEnums;
+import org.cohoman.view.controller.utils.ProblemStateEnums;
 import org.cohoman.view.controller.utils.ProblemStatusEnums;
 import org.cohoman.view.controller.utils.ProblemTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
-import org.cohoman.view.controller.utils.TaskPriorityEnums;
 import org.cohoman.view.controller.utils.TaskStatusEnums;
 import org.cohoman.view.controller.utils.VendorEnums;
 
@@ -922,10 +922,10 @@ public class ListsManagerImpl implements ListsManager {
 		problemsDao.createProblemItem(problemItemDTO);
 	}
 
-	public List<ProblemItemDTO> getProblemItems(SortEnums sortEnum) {
+	public List<ProblemItemDTO> getProblemItems(ProblemStateEnums problemStateEnum) {
 		List<ProblemItemDTO> dtoListOut = new ArrayList<ProblemItemDTO>();
 		List<ProblemItemDTO> dtoListIn = problemsDao
-				.getProblemItems(sortEnum);
+				.getProblemItems(problemStateEnum);
 		for (ProblemItemDTO oneDTO : dtoListIn) {
 			
 			// Convert userid to username and save in DTO
@@ -969,10 +969,10 @@ public class ListsManagerImpl implements ListsManager {
 	public void updateProblemItem(ProblemItemDTO problemItemDTO) {
 		
 		// Automatically change the status to ASSIGNED if a new name assigned just occurred
-		if (problemItemDTO.getProblemStatus().equals(ProblemStatusEnums.NEW.name()) &&
-				problemItemDTO.getAssignedToString() != null) {
-			problemItemDTO.setProblemStatus(ProblemStatusEnums.ASSIGNED.name());
-		}
+		//if (problemItemDTO.getProblemStatus().equals(ProblemStatusEnums.NEW.name()) &&
+				//problemItemDTO.getAssignedToString() != null) {
+			//problemItemDTO.setProblemStatus(ProblemStatusEnums.ASSIGNED.name());
+		//}
 			
 		problemsDao.updateProblemItem(problemItemDTO);
 	}
@@ -1048,6 +1048,56 @@ public class ListsManagerImpl implements ListsManager {
 		problemUpdateDao.deleteProblemUpdate(problemUpdateId);
 	}
 
+	/********************************************************************/
+
+	/*
+	 * Utilties for problem reporting
+	 */
+	
+	public String getUsernameForProblemType(ProblemTypeEnums problemTypeEnum) {
+		
+		if (problemTypeEnum.equals(ProblemTypeEnums.ADMINISTRATIVE)) {
+			return ("bill");
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.BUILDINGEX)){
+			return ("annie");
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.BUILDINGIN)) {
+			return ("anne");
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.ELECTRICAL)) {
+			return ("richard");
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.ELEVATOR)) {
+			return "bill";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.FINANCIAL)) {
+			return "ira";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.FIREALARM)) {
+			return "bill";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.HEATINGCOOLING)) {
+			return "bobm";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.HOTWATER)) {
+			return "bobm";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.LANDSCAPING)) {
+			return "polly";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.LAUNDRYMACHINES)) {
+			return "priscilla";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.MECHANICAL)) {
+			return "bobm";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.NONEOFTHEABOVE)) {
+			return "bill";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.PERIODICSERVICES)) {
+			return "bill";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.PESTCONTROL)) {
+			return "joan";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.PLUMBING)) {
+			return "bobm";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.SNOWREMOVAL)) {
+			return "polly";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.TRASH)) {
+			return "dick";
+		}
+		// return null;
+		// Enum passed in does match the list we have in this method
+		throw new RuntimeException("Invalid problem type specified: "
+				+ problemTypeEnum.name());
+	}
 
 
 	/********************************************************************/

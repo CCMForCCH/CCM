@@ -10,6 +10,7 @@ import org.cohoman.model.integration.persistence.beans.ProblemUpdateBean;
 import org.cohoman.model.integration.persistence.beans.ProblemsBean;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
+import org.cohoman.view.controller.utils.ProblemStateEnums;
 import org.cohoman.view.controller.utils.ProblemTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 import org.hibernate.Query;
@@ -61,12 +62,19 @@ public class ProblemsDaoImpl implements ProblemsDao {
 	}
 
 	public List<ProblemItemDTO> getProblemItems(
-			SortEnums sortEnum){
+			ProblemStateEnums problemStateEnum){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
-		// Build query string depending on maintenance type and sort order
-		// Maintenance type will either be HOFELLER, OWNER, or ALL.
-		String queryString = "from ProblemsBean ORDER BY priority";
+		// Build query string depending on Status of the problem. 
+		String queryString;
+		
+		if (problemStateEnum.name().equals(ProblemStateEnums.PROBLEMISACTIVE.name()))
+			queryString = "FROM ProblemsBean WHERE problemstatus = 'NEW' OR problemstatus = 'INPROGRESS' ORDER BY priority";
+		else if (problemStateEnum.name().equals(ProblemStateEnums.PROBLEMISINACTIVE.name()))
+			queryString = "FROM ProblemsBean WHERE problemstatus = 'COMPLETED' OR problemstatus = 'CLOSED' ORDER BY priority";
+		else
+			queryString = "FROM ProblemsBean ORDER BY priority";
+			
 		
 		// Do maintenance type check unless it is ALL. If it's ALL, there's
 		// nothing to do by way of filtering so nothing added to query string

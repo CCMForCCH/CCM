@@ -18,6 +18,7 @@ import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
 import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.ProblemLocationEnums;
+import org.cohoman.view.controller.utils.ProblemStateEnums;
 import org.cohoman.view.controller.utils.ProblemStatusEnums;
 import org.cohoman.view.controller.utils.ProblemTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
@@ -178,7 +179,7 @@ public class CreateProblemItemController implements Serializable {
 		
 		// Make sure that this is a unique problem item name
 		List<ProblemItemDTO> allProblemItems = 
-				listsService.getProblemItems(SortEnums.ORDERBYNAME);
+				listsService.getProblemItems(ProblemStateEnums.ALLPROBLEMS);
 		for (ProblemItemDTO oneItem : allProblemItems) {
 			if (oneItem.getItemname().equalsIgnoreCase(dto.getItemname())) {
 				FacesMessage message = new FacesMessage(
@@ -203,6 +204,7 @@ public class CreateProblemItemController implements Serializable {
 		String problemPriorityText = ProblemPriorityEnums.valueOf(dto.getPriority()).toString();
 		
 		// Get all users
+	/*
 		List<User> theusers = userService.getAllUsers();
 		User foundUser = null;
 		if (problemPriority.equals(ProblemPriorityEnums.P3HIGH.name())) {
@@ -227,6 +229,7 @@ public class CreateProblemItemController implements Serializable {
 
 		} else if (problemPriority.equals(ProblemPriorityEnums.P1CRITICAL
 				.name())) {
+	*/
 			/*
 			for (User oneuser : theusers) {
 				foundUser = getUserStructure(theusers, oneuser.getUsername());
@@ -240,7 +243,7 @@ public class CreateProblemItemController implements Serializable {
 				} 
 			}
 			*/
-		}
+		//}
 
 		// clear out fields for return to the page in this session
 		clearFormFields();

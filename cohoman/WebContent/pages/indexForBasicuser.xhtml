@@ -506,6 +506,22 @@
 					</tr>
 					<tr>
 					<td>
+						<h:commandLink value="List active problem requests" action="displayProblemListActive"  /> 
+					</td>
+					<td>
+						<h:outputText value="List active problem requests (have a status of either new or in-progress)"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List inactive problem requests" action="displayProblemListInactive"  /> 
+					</td>
+					<td>
+						<h:outputText value="List inactive problem requests (have a status of either completed or closed)"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
 						<h:commandLink value="List all problem reports" action="displayProblemList"  /> 
 					</td>
 					<td>

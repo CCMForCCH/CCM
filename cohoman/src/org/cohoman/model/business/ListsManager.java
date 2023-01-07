@@ -17,6 +17,8 @@ import org.cohoman.model.integration.persistence.beans.SubstitutesBean;
 import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
 import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
+import org.cohoman.view.controller.utils.ProblemStateEnums;
+import org.cohoman.view.controller.utils.ProblemTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 
 public interface ListsManager {
@@ -62,7 +64,7 @@ public interface ListsManager {
 			throws CohomanException;
 
 	public List<ProblemItemDTO> getProblemItems(
-			SortEnums sortEnum);
+			ProblemStateEnums problemStateEnum);
 
 	public ProblemItemDTO getProblemItem(Long problemItemId);
 
@@ -80,6 +82,9 @@ public interface ListsManager {
 	public void updateProblemUpdate(ProblemUpdateDTO problemUpdateDTO);
 
 	public void deleteProblemUpdate(Long problemUpdateId);
+	
+	// Problem Reporting utilities
+	public String getUsernameForProblemType(ProblemTypeEnums problemTypeEnum);
 
 	// Trash
 	public List<TrashRow> getTrashSchedule() throws CohomanException;

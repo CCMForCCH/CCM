@@ -7,13 +7,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.cohoman.model.business.ListsManager;
-import org.cohoman.model.business.User;
-import org.cohoman.model.business.UserManager;
 import org.cohoman.model.business.ListsManagerImpl.SecurityDataForRow;
 import org.cohoman.model.business.ListsManagerImpl.SecurityRow;
+import org.cohoman.model.business.User;
+import org.cohoman.model.business.UserManager;
 import org.cohoman.model.business.trash.TrashPerson;
 import org.cohoman.model.business.trash.TrashRow;
-import org.cohoman.model.business.trash.TrashSchedule;
 import org.cohoman.model.business.trash.TrashTeam;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.dto.MtaskDTO;
@@ -26,6 +25,9 @@ import org.cohoman.model.integration.persistence.beans.TrashSubstitutesBean;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
+import org.cohoman.view.controller.utils.ProblemPriorityEnums;
+import org.cohoman.view.controller.utils.ProblemStateEnums;
+import org.cohoman.view.controller.utils.ProblemTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 
 public class ListsServiceImpl implements ListsService {
@@ -232,18 +234,247 @@ public class ListsServiceImpl implements ListsService {
 	// Problem Item services
 	public void createProblemItem(ProblemItemDTO problemItemDTO)
 			throws CohomanException {
+		
+		// Compute service manager string and user id (as long) for DTO.
+		// This will be put into the DTO as the assigned user
+		String serviceManagerAsString = getServiceManager(problemItemDTO);
+		Long serviceManagerAsLong = 0L;
+		List<User> theusers = userManager.getUsersHereNow();
+		for (User oneuser : theusers) {
+			if (oneuser.getUsername().equals(serviceManagerAsString)) { 
+				serviceManagerAsLong = oneuser.getUserid();
+				break;
+			}
+		}
+		
+		// Log audit info before call
 		logger.info("AUDIT: Create problem item for "
 				+ problemItemDTO.getItemname() + ", by "
 				+ getUserFullname(problemItemDTO.getItemCreatedBy())
 				+ ", description =\"" + problemItemDTO.getItemdescription()
-				+ "\", priority = " + problemItemDTO.getPriority()
-				+ "\", status = "
-				+ problemItemDTO.getProblemStatus());
+				+ "\", priority = \"" + problemItemDTO.getPriority()
+				+ "\", status = \""
+				+ problemItemDTO.getProblemStatus()
+				+ "\", assigned to = \""
+				+ serviceManagerAsString
+				+ "\"");
+
+		// Set assigned to field in DTO with Service Manager
+		problemItemDTO.setAssignedToString(serviceManagerAsString);
+		problemItemDTO.setAssignedTo(serviceManagerAsLong);
 		listsManager.createProblemItem(problemItemDTO);
+		notifyPeopleAboutProblem(problemItemDTO);
 	}
 
-	public List<ProblemItemDTO> getProblemItems(SortEnums sortEnum) {
-		return listsManager.getProblemItems(sortEnum);
+	public String getServiceManager(ProblemItemDTO problemItemDTO) {
+
+		// Get Service Manager with this problem type
+		String serviceManager = listsManager
+				.getUsernameForProblemType(ProblemTypeEnums
+						.valueOf(problemItemDTO.getProblemType()));
+
+		// Return username of the Service Manager
+		if (serviceManager == null) {
+
+			logger.log(Level.WARNING,
+					"Unable to determine a Service Manager to notify");
+			return "bill";
+		} else {
+			return serviceManager;
+		}
+	}
+	
+	public void notifyPeopleAboutProblem(ProblemItemDTO problemItemDTO) {
+		
+		List<User> theusers = userManager.getUsersHereNow();
+		String problemPriorityText = ProblemPriorityEnums.valueOf(problemItemDTO.getPriority()).toString();
+		User submittedUser = userManager.getUser(problemItemDTO.getItemCreatedBy());
+		String submitter = submittedUser.getUsername();
+
+		// Get Service Manager with this problem type
+		String serviceManager = listsManager
+				.getUsernameForProblemType(ProblemTypeEnums
+						.valueOf(problemItemDTO.getProblemType()));
+
+		/*
+		 * CRITICAL PRIORITY
+		 */
+		if (problemItemDTO.getPriority().equals(ProblemPriorityEnums.P1CRITICAL
+				.name())) {
+
+			// Critical problem
+			// Send text messages to all residents
+			for (User oneuser : theusers) {
+				if (oneuser.getUsername().equals("bill")) {  //temp!!!!!
+					listsManager.sendTextMessageToPerson(
+							oneuser.getCellphone(),
+							"CCM: New " + problemPriorityText
+									+ " priority problem report: "
+									+ problemItemDTO.getItemname()
+									+ ". Submitted by "
+									+ submitter
+									+ ".");
+				}
+			}
+
+		}  else if (problemItemDTO.getPriority().equals(ProblemPriorityEnums.P2EMERGENCY
+				.name())) {
+
+		/*
+		 * EMERGENCY PRIORITY
+		 */
+			// Send text messages to emergency response team
+			for (User oneuser : theusers) {
+				if (oneuser.getUsername().equals("bill")
+//						|| oneuser.getUsername().equals("bobm")
+//						|| oneuser.getUsername().equals("walter")
+//						|| oneuser.getUsername().equals("nick")
+//						|| oneuser.getUsername().equals("gwenn")) {
+						){
+					listsManager.sendTextMessageToPerson(
+							oneuser.getCellphone(), 
+							"CCM: New "
+									+ problemPriorityText
+									+ " priority problem report: "
+									+ problemItemDTO.getItemname()
+									+ ". Submitted by "
+									+ submitter
+									+ ".");
+				}
+			}
+
+			// Also, send it to the Service Manager if a text was
+			// not already sent
+			
+			// Don't send another message if the Service Manager
+			// is also part of the emergency team
+			if (serviceManager.equals("bill")
+//					|| serviceManager.equals("bobm")
+//					|| serviceManager.equals("walter")
+//					|| serviceManager.equals("nick")
+//					|| serviceManager.equals("gwenn")) {
+					) {
+				return;
+			}
+
+			// Service Manager is not part of the emergency team.
+			// So, send that person a text as well.
+			for (User oneuser : theusers) {
+
+				if (serviceManager.equals(oneuser.getUsername())) {
+		
+					listsManager.sendTextMessageToPerson(
+							// oneuser.getCellphone(), "CCM: New "     !!!!!!!!!!!!!!
+							"6179902631", "sent to " + oneuser.getUsername() + " CCM: New "  // !!!!!!!!!!
+									+ problemPriorityText
+									+ " priority problem report: "
+									+ problemItemDTO.getItemname()
+									+ ". Submitted by "
+									+ submitter
+									+ ".");
+					// There is only one service manager, so all done. 
+					return;
+				}
+
+			}
+
+		} else if (problemItemDTO.getPriority().equals(ProblemPriorityEnums.P3HIGH
+				.name())) {
+			
+		/*
+		 * HIGH PRIORITY
+		 */
+			// Send text message to both the service manager and to the Service Coordinators
+			
+			// Send text messages to Service Coordinators
+			for (User oneuser : theusers) {
+				if (oneuser.getUsername().equals("bill")
+//						|| oneuser.getUsername().equals("bobm") !!!!!!!!!
+						){
+					listsManager.sendTextMessageToPerson(
+							oneuser.getCellphone(), "CCM: New "
+									+ problemPriorityText
+									+ " priority problem report: "
+									+ problemItemDTO.getItemname()
+									+ "; Submitted by " 
+									+ submitter
+									+ ".");
+				}
+			}
+
+			// Ignore the Service Coordinators since they already got a text
+			// and if they are also the Service Manager, there are no more
+			// messages to send. Thus drop out of this loop.
+			if (serviceManager.equals("bill") 
+					// || serviceManager.equals("bobm") !!!!!!!!!!!!!!
+					) {
+				return;   
+			}
+
+			// Loop to find the user entry for the Service Manager which
+			// is NOT a Service Coordinator
+			for (User oneuser : theusers) {
+
+				// Send text message to the Service Manager 
+				if (serviceManager.equals(oneuser.getUsername())) {
+					listsManager.sendTextMessageToPerson(
+							// oneuser.getCellphone(), "CCM: New "     !!!!!!!!!!!!!!
+							"6179902631", "sent to " + oneuser.getUsername() + " CCM: New "  // !!!!!!!!!!
+									+ problemPriorityText
+									+ " priority problem report: "
+									+ problemItemDTO.getItemname()
+									+ ". Submitted by "
+									+ submitter
+									+ ".");
+					
+					// There is only one Service Manager, so all done.
+					return;
+				}
+			}
+
+		} else {
+		
+		/*
+		 * MEDIUM/LOW PRIORITY
+		 */
+			// Medium and Low priority problems simply yield an email sent to
+			// the Service Manager
+			
+			for (User oneuser : theusers) {
+
+				// Send email to the Service Manager
+				if (serviceManager.equals(oneuser.getUsername())) {
+					if (oneuser.getEmail() == null
+							|| oneuser.getEmail().isEmpty()) {
+						logger.log(Level.WARNING,
+								"Unable to determine an email for the Service Manager to notify");
+						return;
+					}
+					SendEmail.sendEmailToAddress(
+							// oneuser.getEmail(), temporary!!!!
+							"billhuber01@yahoo.com", // temporary!!!!!!
+							"New problem report just added",
+							"(sending to " + oneuser.getEmail() + ")  " +   // !!!!!!!!!!!!
+							"CCM: New " + problemPriorityText
+									+ " priority problem report: "
+									+ problemItemDTO.getItemname()
+									+ "\n Description: "
+									+ problemItemDTO.getItemdescription()
+									+ "\n Submitted by: "
+									+ submitter
+									+ ".");
+					logger.log(Level.INFO, "Problem Notifying: Sending email to user " + oneuser.getEmail());
+					
+					// Return as there is only one Service Manager
+					return;
+				}
+
+			}
+		}
+	}
+
+	public List<ProblemItemDTO> getProblemItems(ProblemStateEnums problemStateEnum) {
+		return listsManager.getProblemItems(problemStateEnum);
 	}
 
 	public ProblemItemDTO getProblemItem(Long problemItemId) {
