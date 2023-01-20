@@ -2,7 +2,9 @@ package org.cohoman.view.controller.utils;
 
 public enum SortEnums {
 	
-	ORDERBYNAME("OrderByName"), ORDERBYNEXTSERVICEDATE("OrderByNextServiceDate");
+	ORDERBYNAME("OrderByName"),
+	ORDERBYPRIORITY("OrderByPriority"),
+	ORDERBYNEXTSERVICEDATE("OrderByNextServiceDate");
 	
     private final String text;
 

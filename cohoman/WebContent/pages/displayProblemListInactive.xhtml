@@ -25,12 +25,15 @@
 <h:panelGrid columns="1" title="Inactive Problem Reports" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
-           <h:outputText value="Inactive Problem Reports"/>
+           <h:outputText value="Inactive Problem Reports (Sorted By Problem Type:Name)"/>
         </f:facet>
 	<br />
 	
 	<h:outputText value="There are no Inactive Problem Reports." 
 		rendered="#{empty retrieveProblemItemsListController.problemItemListInactive}" />
+	
+	<h:link value="Sort Problem Report Table By Priority" outcome="displayProblemListInactiveByPriority.xhtml" style="display:block; text-align:center"/>
+	<br />
 	
 	<h:dataTable value="#{retrieveProblemItemsListController.problemItemListInactive}" var="oneitem" 
 		styleClass="users" headerClass="usersHeader" 
@@ -38,8 +41,8 @@
 		rendered="#{not empty retrieveProblemItemsListController.problemItemListInactive}">
  
 		<h:column>
-  			<f:facet name="header">Problem Name</f:facet> 
-  			#{oneitem.itemname}           
+  			<f:facet name="header">Problem Type:Name</f:facet> 
+  			#{oneitem.comboTypePlusName}           
 		</h:column>
 
 		<h:column>

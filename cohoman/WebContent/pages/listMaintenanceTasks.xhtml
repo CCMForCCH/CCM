@@ -14,23 +14,23 @@
 
 	<ui:composition template="/templates/masterLayout.xhtml">
 		<ui:define name="windowTitle">
-			List tasks for a Hofeller Maintenance item
+			List tasks for a Common Area Maintenance item
 		</ui:define>
 	
 	<ui:define name="content">
 		<br></br>
 		<h:form>
 
-    <h:panelGrid columns="1" title="Hofeller Periodic Maintenance Tasks" 
+    <h:panelGrid columns="1" title="Common Area Periodic Maintenance Tasks" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
-           <h:outputText value="Hofeller Periodic Maintenance Tasks"/>
+           <h:outputText value="Common Area Periodic Maintenance Tasks"/>
            <br />
         </f:facet>
 	<br />
 
 	<b>
-    <h:outputText value="Hofeller Tasks for Maintenance Item: #{mtaskController.maintenanceItemName}"
+    <h:outputText value="Common Area Tasks for Maintenance Item: #{mtaskController.maintenanceItemName}"
     	style="display:block; text-align:center; font-weight: bold; font-size: 125%;color: blue"/>
 	</b>
 	<br />
@@ -85,8 +85,8 @@
 
     </h:dataTable>
 	<br />
-	<h:link value="Go back to Hofeller Maintenance Item Table (sorted by date)" outcome="displayMaintenanceList.xhtml" style="display:block; text-align:center"/>
-	<h:link value="Go back to Hofeller Maintenance Item Table (sorted by name)" outcome="displayMaintenanceListByNames.xhtml" style="display:block; text-align:center"/>
+	<h:link value="Go back to Common Area Maintenance Item Table (sorted by date)" outcome="displayMaintenanceList.xhtml" style="display:block; text-align:center"/>
+	<h:link value="Go back to Common Area Maintenance Item Table (sorted by name)" outcome="displayMaintenanceListByNames.xhtml" style="display:block; text-align:center"/>
 	
     </h:panelGrid>
 	<br />

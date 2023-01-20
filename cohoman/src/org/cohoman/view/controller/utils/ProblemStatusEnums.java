@@ -5,6 +5,7 @@ public enum ProblemStatusEnums {
 	NEW("New"),
 	//ASSIGNED("Assigned"),
 	INPROGRESS("In-Progress"),
+	DEFERRED("Deferred"),
 	CLOSED("Closed"),
 	COMPLETED("Completed"); 
 	

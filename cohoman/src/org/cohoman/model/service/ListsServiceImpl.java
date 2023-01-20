@@ -27,6 +27,7 @@ import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.MaintenanceTypeEnums;
 import org.cohoman.view.controller.utils.ProblemPriorityEnums;
 import org.cohoman.view.controller.utils.ProblemStateEnums;
+import org.cohoman.view.controller.utils.ProblemStatusEnums;
 import org.cohoman.view.controller.utils.ProblemTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 
@@ -305,7 +306,7 @@ public class ListsServiceImpl implements ListsService {
 			// Critical problem
 			// Send text messages to all residents
 			for (User oneuser : theusers) {
-				if (oneuser.getUsername().equals("bill")) {  //temp!!!!!
+				//if (oneuser.getUsername().equals("bill")) {  //temp!!!!!
 					listsManager.sendTextMessageToPerson(
 							oneuser.getCellphone(),
 							"CCM: New " + problemPriorityText
@@ -314,7 +315,7 @@ public class ListsServiceImpl implements ListsService {
 									+ ". Submitted by "
 									+ submitter
 									+ ".");
-				}
+				//}
 			}
 
 		}  else if (problemItemDTO.getPriority().equals(ProblemPriorityEnums.P2EMERGENCY
@@ -326,20 +327,16 @@ public class ListsServiceImpl implements ListsService {
 			// Send text messages to emergency response team
 			for (User oneuser : theusers) {
 				if (oneuser.getUsername().equals("bill")
-//						|| oneuser.getUsername().equals("bobm")
-//						|| oneuser.getUsername().equals("walter")
-//						|| oneuser.getUsername().equals("nick")
-//						|| oneuser.getUsername().equals("gwenn")) {
-						){
+						|| oneuser.getUsername().equals("bobm")
+						|| oneuser.getUsername().equals("walter")
+						|| oneuser.getUsername().equals("nick")
+						|| oneuser.getUsername().equals("gwenn")) {
 					listsManager.sendTextMessageToPerson(
-							oneuser.getCellphone(), 
-							"CCM: New "
+							oneuser.getCellphone(), "CCM: New "
 									+ problemPriorityText
 									+ " priority problem report: "
 									+ problemItemDTO.getItemname()
-									+ ". Submitted by "
-									+ submitter
-									+ ".");
+									+ ". Submitted by " + submitter + ".");
 				}
 			}
 
@@ -348,12 +345,11 @@ public class ListsServiceImpl implements ListsService {
 			
 			// Don't send another message if the Service Manager
 			// is also part of the emergency team
-			if (serviceManager.equals("bill")
-//					|| serviceManager.equals("bobm")
-//					|| serviceManager.equals("walter")
-//					|| serviceManager.equals("nick")
-//					|| serviceManager.equals("gwenn")) {
-					) {
+			if (serviceManager.equals("bill") 
+					|| serviceManager.equals("bobm")
+					|| serviceManager.equals("walter")
+					|| serviceManager.equals("nick")
+					|| serviceManager.equals("gwenn")) {
 				return;
 			}
 
@@ -364,14 +360,11 @@ public class ListsServiceImpl implements ListsService {
 				if (serviceManager.equals(oneuser.getUsername())) {
 		
 					listsManager.sendTextMessageToPerson(
-							// oneuser.getCellphone(), "CCM: New "     !!!!!!!!!!!!!!
-							"6179902631", "sent to " + oneuser.getUsername() + " CCM: New "  // !!!!!!!!!!
+							oneuser.getCellphone(), "CCM: New "
 									+ problemPriorityText
 									+ " priority problem report: "
 									+ problemItemDTO.getItemname()
-									+ ". Submitted by "
-									+ submitter
-									+ ".");
+									+ ". Submitted by " + submitter + ".");
 					// There is only one service manager, so all done. 
 					return;
 				}
@@ -389,44 +382,36 @@ public class ListsServiceImpl implements ListsService {
 			// Send text messages to Service Coordinators
 			for (User oneuser : theusers) {
 				if (oneuser.getUsername().equals("bill")
-//						|| oneuser.getUsername().equals("bobm") !!!!!!!!!
-						){
+						|| oneuser.getUsername().equals("bobm")) {
 					listsManager.sendTextMessageToPerson(
 							oneuser.getCellphone(), "CCM: New "
 									+ problemPriorityText
 									+ " priority problem report: "
 									+ problemItemDTO.getItemname()
-									+ "; Submitted by " 
-									+ submitter
-									+ ".");
+									+ "; Submitted by " + submitter + ".");
 				}
 			}
 
 			// Ignore the Service Coordinators since they already got a text
 			// and if they are also the Service Manager, there are no more
 			// messages to send. Thus drop out of this loop.
-			if (serviceManager.equals("bill") 
-					// || serviceManager.equals("bobm") !!!!!!!!!!!!!!
-					) {
-				return;   
+			if (serviceManager.equals("bill") || serviceManager.equals("bobm")) {
+				return;
 			}
 
 			// Loop to find the user entry for the Service Manager which
 			// is NOT a Service Coordinator
 			for (User oneuser : theusers) {
 
-				// Send text message to the Service Manager 
+				// Send text message to the Service Manager
 				if (serviceManager.equals(oneuser.getUsername())) {
 					listsManager.sendTextMessageToPerson(
-							// oneuser.getCellphone(), "CCM: New "     !!!!!!!!!!!!!!
-							"6179902631", "sent to " + oneuser.getUsername() + " CCM: New "  // !!!!!!!!!!
+							oneuser.getCellphone(), "CCM: New "
 									+ problemPriorityText
 									+ " priority problem report: "
 									+ problemItemDTO.getItemname()
-									+ ". Submitted by "
-									+ submitter
-									+ ".");
-					
+									+ ". Submitted by " + submitter + ".");
+
 					// There is only one Service Manager, so all done.
 					return;
 				}
@@ -451,18 +436,14 @@ public class ListsServiceImpl implements ListsService {
 						return;
 					}
 					SendEmail.sendEmailToAddress(
-							// oneuser.getEmail(), temporary!!!!
-							"billhuber01@yahoo.com", // temporary!!!!!!
+							oneuser.getEmail(),
 							"New problem report just added",
-							"(sending to " + oneuser.getEmail() + ")  " +   // !!!!!!!!!!!!
 							"CCM: New " + problemPriorityText
 									+ " priority problem report: "
 									+ problemItemDTO.getItemname()
 									+ "\n Description: "
 									+ problemItemDTO.getItemdescription()
-									+ "\n Submitted by: "
-									+ submitter
-									+ ".");
+									+ "\n Submitted by: " + submitter + ".");
 					logger.log(Level.INFO, "Problem Notifying: Sending email to user " + oneuser.getEmail());
 					
 					// Return as there is only one Service Manager
@@ -473,8 +454,8 @@ public class ListsServiceImpl implements ListsService {
 		}
 	}
 
-	public List<ProblemItemDTO> getProblemItems(ProblemStateEnums problemStateEnum) {
-		return listsManager.getProblemItems(problemStateEnum);
+	public List<ProblemItemDTO> getProblemItems(ProblemStateEnums problemStateEnum, SortEnums sortEnum) {
+		return listsManager.getProblemItems(problemStateEnum, sortEnum);
 	}
 
 	public ProblemItemDTO getProblemItem(Long problemItemId) {
@@ -483,12 +464,29 @@ public class ListsServiceImpl implements ListsService {
 
 	public void updateProblemItem(ProblemItemDTO problemItemDTO)
 			throws CohomanException {
-		logger.info("AUDIT: Create maintenance for "
+		logger.info("AUDIT: Update Problem Report for "
 				+ problemItemDTO.getItemname() + ", by "
 				+ getUserFullname(problemItemDTO.getItemCreatedBy())
 				+ ", description =\"" + problemItemDTO.getItemdescription()
-				+ "\", priority = " + problemItemDTO.getPriority());
+				+ "\", priority = " + problemItemDTO.getPriority()
+				+ "\"., status= " + problemItemDTO.getProblemStatus());
 		listsManager.updateProblemItem(problemItemDTO);
+		
+		// Check to see if status is completed or closed.
+		// If so, notify the submitter that
+		// the problem is "done".
+		User submittedUser = userManager.getUser(problemItemDTO.getItemCreatedBy());
+
+		if (problemItemDTO.getProblemStatus().equals(ProblemStatusEnums.COMPLETED.name()) ||
+				problemItemDTO.getProblemStatus().equals(ProblemStatusEnums.CLOSED.name())) {
+			listsManager.sendTextMessageToPerson(
+					submittedUser.getCellphone(),
+					"CCM: Problem Report \"" 
+							+ problemItemDTO.getItemname()
+							+ "\" has been marked "
+							+ problemItemDTO.getProblemStatus().toString()
+							+ ".");
+		}
 	}
 
 	public void deleteProblemItem(ProblemItemDTO problemItemDTO)

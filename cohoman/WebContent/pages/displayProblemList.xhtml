@@ -25,27 +25,32 @@
 <h:panelGrid columns="1" title="All Problem Reports" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
-           <h:outputText value="All Problem Reports"/>
+           <h:outputText value="All Problem Reports (Sorted By Problem Type:Name)"/>
         </f:facet>
 	<br />
 	
 	<h:outputText value="There are no Problem Reports." 
 		rendered="#{empty retrieveProblemItemsListController.problemItemList}" />
 	
+	<h:link value="Sort Problem Report Table By Priority" outcome="displayProblemListByPriority.xhtml" style="display:block; text-align:center"/>
+	<br />
+	
 	<h:dataTable value="#{retrieveProblemItemsListController.problemItemList}" var="oneitem" 
 		styleClass="users" headerClass="usersHeader" 
 		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
 		rendered="#{not empty retrieveProblemItemsListController.problemItemList}">
  
+ 
 		<h:column>
-  			<f:facet name="header">Problem Name</f:facet> 
-  			#{oneitem.itemname}           
+  			<f:facet name="header">Problem Type:Name</f:facet> 
+  			#{oneitem.comboTypePlusName}           
 		</h:column>
 
 		<h:column>
   			<f:facet name="header">Priority</f:facet> 
   			#{oneitem.priority}           
 		</h:column>
+
 
 		<h:column>
   			<f:facet name="header">Status</f:facet> 

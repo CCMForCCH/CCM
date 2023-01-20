@@ -176,10 +176,10 @@ public class CreateProblemItemController implements Serializable {
 	public String addProblemItem() throws Exception {
 
 		ProblemItemDTO dto = createProblemItemDTO();
-		
+
 		// Make sure that this is a unique problem item name
-		List<ProblemItemDTO> allProblemItems = 
-				listsService.getProblemItems(ProblemStateEnums.ALLPROBLEMS);
+		List<ProblemItemDTO> allProblemItems = listsService.getProblemItems(
+				ProblemStateEnums.ALLPROBLEMS, SortEnums.ORDERBYNAME);
 		for (ProblemItemDTO oneItem : allProblemItems) {
 			if (oneItem.getItemname().equalsIgnoreCase(dto.getItemname())) {
 				FacesMessage message = new FacesMessage(

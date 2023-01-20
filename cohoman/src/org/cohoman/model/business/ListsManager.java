@@ -64,7 +64,7 @@ public interface ListsManager {
 			throws CohomanException;
 
 	public List<ProblemItemDTO> getProblemItems(
-			ProblemStateEnums problemStateEnum);
+			ProblemStateEnums problemStateEnum, SortEnums sortEnum);
 
 	public ProblemItemDTO getProblemItem(Long problemItemId);
 

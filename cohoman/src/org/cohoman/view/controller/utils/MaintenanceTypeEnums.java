@@ -2,7 +2,7 @@ package org.cohoman.view.controller.utils;
 
 public enum MaintenanceTypeEnums {
 	
-	HOFELLER("Hofeller"), OWNER("Owner"), ALL("All");
+	HOFELLER("Common Area"), OWNER("Owner"), ALL("All");
 	
     private final String text;
 

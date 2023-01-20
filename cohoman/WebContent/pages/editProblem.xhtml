@@ -38,7 +38,7 @@
 					rendered="#{not empty editProblemController.problemItemDTOsList}">
 					<f:selectItems value="#{editProblemController.problemItemDTOsList}"
 						var="oneitem" 
-						itemLabel="#{oneitem.itemname}"
+						itemLabel="#{oneitem.comboTypePlusName}"
 						itemValue="#{oneitem.problemitemid}" />
 				</h:selectOneMenu>
 		

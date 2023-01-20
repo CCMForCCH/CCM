@@ -25,20 +25,20 @@
 <h:panelGrid columns="1" title="Active Problem Reports" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
-           <h:outputText value="Active Problem Reports (Sorted By Problem Type:Name)"/>
+           <h:outputText value="Active Problem Reports (Sorted By Priority)"/>
         </f:facet>
 	<br />
 	
-	<h:link value="Sort Problem Report Table By Priority" outcome="displayProblemListActiveByPriority.xhtml" style="display:block; text-align:center"/>
+	<h:link value="Sort Problem Report Table By Problem Type:Name" outcome="displayProblemListActive.xhtml" style="display:block; text-align:center"/>
 	<br />
 	
 	<h:outputText value="There are no Active Problem Reports." 
-		rendered="#{empty retrieveProblemItemsListController.problemItemListActive}" />
+		rendered="#{empty retrieveProblemItemsListController.problemItemListActiveByPriority}" />
 	
-	<h:dataTable value="#{retrieveProblemItemsListController.problemItemListActive}" var="oneitem" 
+	<h:dataTable value="#{retrieveProblemItemsListController.problemItemListActiveByPriority}" var="oneitem" 
 		styleClass="users" headerClass="usersHeader" 
 		rowClasses="oddRow,evenRow" columnClasses="allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns,allColumns"
-		rendered="#{not empty retrieveProblemItemsListController.problemItemListActive}">
+		rendered="#{not empty retrieveProblemItemsListController.problemItemListActiveByPriority}">
  
 		<h:column>
   			<f:facet name="header">Problem Type:Name</f:facet> 

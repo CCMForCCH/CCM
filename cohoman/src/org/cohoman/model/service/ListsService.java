@@ -65,7 +65,7 @@ public interface ListsService {
 			throws CohomanException;
 
 	public List<ProblemItemDTO> getProblemItems(
-			ProblemStateEnums problemStateEnum);
+			ProblemStateEnums problemStateEnum, SortEnums sortEnum);
 
 	public void updateProblemItem(ProblemItemDTO problemItemDTO)
 			throws CohomanException;

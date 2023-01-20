@@ -241,7 +241,7 @@ public class CreateMaintenanceItemController implements Serializable {
 		dto.setItemdescription(itemdescription);
 		dto.setFrequencyOfItem(frequencyOfItem);
 		dto.setTargetTimeOfyear(targetTimeOfyear);
-		dto.setPriority(chosenpriority.name());
+		//dto.setPriority(chosenpriority.name());
 		dto.setMaintenanceType(chosentype.name());
 		GregorianCalendar now = new GregorianCalendar();
 		dto.setItemCreatedDate(now.getTime());

@@ -147,4 +147,7 @@ public class ProblemItemDTO {
 		this.itemCompletedDate = itemCompletedDate;
 	}		
 
+	public String getComboTypePlusName() {
+		return this.problemType + ": " + this.itemname;
+	}
 }

@@ -35,7 +35,8 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			maintenanceBean.setItemdescription(dto.getItemdescription());
 			maintenanceBean.setItemname(dto.getItemname());
 			maintenanceBean.setLastperformedDate(null);
-			maintenanceBean.setPriority(dto.getPriority());
+//			maintenanceBean.setPriority(dto.getPriority());
+			maintenanceBean.setPriority("NOTUSED");    // decided not to use this.
 			maintenanceBean.setTargetTimeOfyear(dto.getTargetTimeOfyear());
 			maintenanceBean.setTaskStatus(dto.getTaskStatus());
 			maintenanceBean.setNextServiceDate(dto.getNextServiceDate());
@@ -98,7 +99,8 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			oneItem.setItemdescription(onebean.getItemdescription());
 			oneItem.setItemname(onebean.getItemname());
 			oneItem.setLastperformedDate(onebean.getLastperformedDate());
-			oneItem.setPriority(onebean.getPriority());
+//			oneItem.setPriority(onebean.getPriority());
+			oneItem.setPriority("NOTUSED");
 			oneItem.setTargetTimeOfyear(onebean.getTargetTimeOfyear());
 			oneItem.setTaskStatus(onebean.getTaskStatus());
 			oneItem.setNextServiceDate(onebean.getNextServiceDate());
@@ -134,7 +136,8 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			oneItem.setItemdescription(onebean.getItemdescription());
 			oneItem.setItemname(onebean.getItemname());
 			oneItem.setLastperformedDate(onebean.getLastperformedDate());
-			oneItem.setPriority(onebean.getPriority());
+//			oneItem.setPriority(onebean.getPriority());
+			oneItem.setPriority("NOTUSED");
 			oneItem.setTargetTimeOfyear(onebean.getTargetTimeOfyear());
 			oneItem.setTaskStatus(onebean.getTaskStatus());
 			oneItem.setNextServiceDate(onebean.getNextServiceDate());
@@ -168,7 +171,8 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 		maintenanceBean.setItemname(maintenanceItemDTO.getItemname());
 		maintenanceBean.setLastperformedDate(maintenanceItemDTO.getLastperformedDate());
 		maintenanceBean.setMaintenanceitemid(maintenanceItemDTO.getMaintenanceitemid());
-		maintenanceBean.setPriority(maintenanceItemDTO.getPriority());
+//		maintenanceBean.setPriority(maintenanceItemDTO.getPriority());
+		maintenanceBean.setPriority("NOTUSED");
 		maintenanceBean.setTargetTimeOfyear(maintenanceItemDTO.getTargetTimeOfyear());
 		maintenanceBean.setTaskStatus(maintenanceItemDTO.getTaskStatus());
 		maintenanceBean.setNextServiceDate(maintenanceItemDTO.getNextServiceDate());

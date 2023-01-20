@@ -39,7 +39,12 @@
 				</h:inputTextarea>
 
 			    <h:outputText value="Created By:" styleClass="subheading" />
-				<h:outputText value="#{editProblemController.chosenProblemItemDTO.username}" />
+				<h:selectOneMenu value="#{editProblemController.chosenProblemItemDTO.username}">
+					<f:selectItems value="#{editProblemController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.username}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
 
 			    <h:outputText value="Created On:" styleClass="subheading" />
 				<h:outputText value="#{editProblemController.chosenProblemItemDTO.printableCreatedDate}" />

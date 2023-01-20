@@ -16,6 +16,7 @@ import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
 import org.cohoman.view.controller.utils.ProblemStateEnums;
 import org.cohoman.view.controller.utils.ProblemStatusEnums;
+import org.cohoman.view.controller.utils.SortEnums;
 import org.cohoman.view.controller.utils.VendorEnums;
 
 @ManagedBean
@@ -270,7 +271,7 @@ public class EditProblemController implements Serializable {
 	public List<ProblemItemDTO> getProblemItemDTOsList() {
 		problemItemDTOsList = 
 				listsService.getProblemItems(
-						ProblemStateEnums.ALLPROBLEMS);
+						ProblemStateEnums.ALLPROBLEMS, SortEnums.ORDERBYNAME);
 		return problemItemDTOsList;
 	}
 
@@ -283,7 +284,7 @@ public class EditProblemController implements Serializable {
 	}
 	
 	public List<User> getUserList() {
-		userList = userService.getAllUsers();
+		userList = userService.getUsersHereNow();
 		return userList;
 	}
 
@@ -295,11 +296,18 @@ public class EditProblemController implements Serializable {
 		chosenProblemItemDTO = listsService.getProblemItem(problemItemId);
 		
 		// Set the default "assigned to" user in the DTO, if there is one.
+		// Note we are starting with a Long and converting that Long to
+		// a string equivalent of that number. In the method below, 
+		// that string will be converted back to a Long (after a 
+		// submit by the user).
 		Long assignedTo = chosenProblemItemDTO.getAssignedTo();
 		if (assignedTo != null) {
 			chosenProblemItemDTO.setAssignedToString(assignedTo.toString());
 		}
-
+		
+		// Do the same thing as above for the createdBy user.
+		chosenProblemItemDTO.setUsername(chosenProblemItemDTO.getItemCreatedBy().toString());
+		
 		String returnValue = problemOperation;
 		if (problemOperation.equals("deleteProblemItem")) {
 			listsService.deleteProblemItem(chosenProblemItemDTO);	
@@ -314,6 +322,8 @@ public class EditProblemController implements Serializable {
 		 Long userid = Long.valueOf(chosenProblemItemDTO.getAssignedToString());
 		 chosenProblemItemDTO.setAssignedTo(userid);
 
+		 chosenProblemItemDTO.setItemCreatedBy(Long.valueOf(chosenProblemItemDTO.getUsername()));
+		 
 		// If changing status to COMPLETED or CLOSED, set to Completed On
 		// date/time.
 		// If status is anything but COMPLETED or CLOSED, reset the completion

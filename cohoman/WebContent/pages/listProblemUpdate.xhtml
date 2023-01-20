@@ -55,7 +55,7 @@
 
 		<h:column>
   			<f:facet name="header">Update Text</f:facet> 
-  			#{onetask.notes}           
+  			<h:outputText id="UpdateText" escape="false" value="#{onetask.notes}" style="white-space: pre-wrap;"/>
 		</h:column>
 
 		<h:column>

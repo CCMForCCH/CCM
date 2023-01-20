@@ -11,7 +11,6 @@ import org.cohoman.model.integration.persistence.beans.ProblemsBean;
 import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.view.controller.CohomanException;
 import org.cohoman.view.controller.utils.ProblemStateEnums;
-import org.cohoman.view.controller.utils.ProblemTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -62,20 +61,29 @@ public class ProblemsDaoImpl implements ProblemsDao {
 	}
 
 	public List<ProblemItemDTO> getProblemItems(
-			ProblemStateEnums problemStateEnum){
+			ProblemStateEnums problemStateEnum, SortEnums sortEnum){
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		// Build query string depending on Status of the problem. 
 		String queryString;
 		
-		if (problemStateEnum.name().equals(ProblemStateEnums.PROBLEMISACTIVE.name()))
-			queryString = "FROM ProblemsBean WHERE problemstatus = 'NEW' OR problemstatus = 'INPROGRESS' ORDER BY priority";
-		else if (problemStateEnum.name().equals(ProblemStateEnums.PROBLEMISINACTIVE.name()))
-			queryString = "FROM ProblemsBean WHERE problemstatus = 'COMPLETED' OR problemstatus = 'CLOSED' ORDER BY priority";
-		else
-			queryString = "FROM ProblemsBean ORDER BY priority";
-			
+		queryString = "FROM ProblemsBean ";
 		
+		// Filter based on status if necessary
+		if (problemStateEnum.name().equals(
+				ProblemStateEnums.PROBLEMISACTIVE.name()))
+			queryString += "WHERE problemstatus = 'NEW' OR problemstatus = 'INPROGRESS' ";
+		else if (problemStateEnum.name().equals(
+				ProblemStateEnums.PROBLEMISINACTIVE.name()))
+			queryString += "WHERE problemstatus = 'COMPLETED' OR problemstatus = 'CLOSED' OR problemstatus = 'DEFERRED' ";
+		
+		// Always sort by either name or priority
+		if (sortEnum.name().equals(SortEnums.ORDERBYNAME.name())) {
+			queryString += "ORDER BY problemType, itemname";
+		} else {
+			queryString += "ORDER BY priority";
+		}
+
 		// Do maintenance type check unless it is ALL. If it's ALL, there's
 		// nothing to do by way of filtering so nothing added to query string
 /*
@@ -216,9 +224,10 @@ public class ProblemsDaoImpl implements ProblemsDao {
 		try {
 			tx = session.beginTransaction();
 
-/*
-			// Delete the tasks for this maintenance item first.
-			String queryString = "from ProblemsBean where problemitemid = ?";
+
+			// Delete the updates for this problem report item first.
+			// First, find all the updates for this problem report.
+			String queryString = "from ProblemUpdateBean where problemitemid = ?";
 			Query query = session.createQuery(queryString)
 					.setLong(0, problemItemDTO.getProblemitemid());
 			List<ProblemUpdateBean> problemUpdateBeans = query.list();
@@ -229,7 +238,7 @@ public class ProblemsDaoImpl implements ProblemsDao {
 						ProblemUpdateBean.class, oneBean.getProblemupdateid());
 				session.delete(problemUpdateBean);
 			}
-*/
+
 			
 			// Now it should be safe to delete the parent problems item.
 			ProblemsBean problemsBean = (ProblemsBean) session.load(

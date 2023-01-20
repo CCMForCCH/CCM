@@ -764,6 +764,11 @@ public class ListsManagerImpl implements ListsManager {
 			UserDTO theUser = userDao.getUser(userid);
 			oneDTO.setUsername(theUser.getUsername());
 
+			// Convert from Enum string to printable string
+			TaskStatusEnums taskStatusEnum = TaskStatusEnums.valueOf(oneDTO.getTaskStatus());
+			oneDTO.setTaskStatus(taskStatusEnum.toString());
+
+			
 			// Compute the printable Created On and last performed dates
 			oneDTO.setPrintableCreatedDate(getPrintableDate(oneDTO
 					.getItemCreatedDate()));
@@ -829,7 +834,7 @@ public class ListsManagerImpl implements ListsManager {
 		//if (cal.get(Calendar.HOUR_OF_DAY) == 0) {
 			//formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
 		//} else {
-			formatter = new SimpleDateFormat("EEE, MMM d, yyyy h:mm aa");
+			formatter = new SimpleDateFormat("MMM dd, yyyy hh:mm aa");
 		//}
 
 		return formatter.format(justADate.getTime());
@@ -922,10 +927,10 @@ public class ListsManagerImpl implements ListsManager {
 		problemsDao.createProblemItem(problemItemDTO);
 	}
 
-	public List<ProblemItemDTO> getProblemItems(ProblemStateEnums problemStateEnum) {
+	public List<ProblemItemDTO> getProblemItems(ProblemStateEnums problemStateEnum, SortEnums sortEnum) {
 		List<ProblemItemDTO> dtoListOut = new ArrayList<ProblemItemDTO>();
 		List<ProblemItemDTO> dtoListIn = problemsDao
-				.getProblemItems(problemStateEnum);
+				.getProblemItems(problemStateEnum, sortEnum);
 		for (ProblemItemDTO oneDTO : dtoListIn) {
 			
 			// Convert userid to username and save in DTO

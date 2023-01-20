@@ -306,8 +306,8 @@ public class TextTeamMembers implements Runnable, Serializable {
 		ownerMlines += "\n\nPlease initiate this work and notify the Managing Board when this task is completed. Login to CCM for more details.\n";
 		
 		if (hofMlines.length() > 0) {
-			SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "Overdue Hofeller periodic maintenance tasks", hofMlines);
-			SendEmail.sendEmailToAddress(cch_mb_emailAddress, "Overdue Hofeller periodic maintenance tasks", hofMlines);
+			SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "Overdue Common Area periodic maintenance tasks", hofMlines);
+			SendEmail.sendEmailToAddress(cch_mb_emailAddress, "Overdue Common Area periodic maintenance tasks", hofMlines);
 		}
 		if (ownerMlines.length() > 0) {
 			SendEmail.sendEmailToAddress("billhuber01@yahoo.com", "Overdue CCH owner periodic maintenance tasks", ownerMlines);

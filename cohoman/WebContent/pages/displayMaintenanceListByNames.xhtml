@@ -22,17 +22,17 @@
 
 <h:form>
  
-<h:panelGrid columns="1" title="Hofeller Periodic Maintenance Items" 
+<h:panelGrid columns="1" title="Common Area Periodic Maintenance Items" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
-           <h:outputText value="Hofeller Periodic Maintenance Items (Sorted by Name)"/>
+           <h:outputText value="Common Area Periodic Maintenance Items (Sorted by Name)"/>
         </f:facet>
 	<br />
 	
-	<h:outputText value="There are no Hofeller Periodic Maintenance Items." 
+	<h:outputText value="There are no Common Area Periodic Maintenance Items." 
 		rendered="#{empty retrieveMaintenanceItemsListController.maintenanceItemListByNames}" />
 	
-	<h:link value="Sort Hofeller Maintenance Item Table By Date" outcome="displayMaintenanceList.xhtml" style="display:block; text-align:center"/>
+	<h:link value="Sort Common Area Maintenance Item Table By Date" outcome="displayMaintenanceList.xhtml" style="display:block; text-align:center"/>
 	<br />
 	
 	<h:dataTable value="#{retrieveMaintenanceItemsListController.maintenanceItemListByNames}" var="oneitem" 
@@ -46,7 +46,7 @@
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Current Task Status</f:facet> 
+  			<f:facet name="header">Task Status</f:facet> 
   			#{oneitem.taskStatus}
 		</h:column>
 

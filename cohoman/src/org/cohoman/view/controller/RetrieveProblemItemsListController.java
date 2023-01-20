@@ -24,7 +24,6 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 	private List<ProblemItemDTO> problemItemDTOsList;
 	private ProblemItemDTO chosenProblemItemDTO;
-	private ProblemItemDTO problemItemDTO;
 	private String chosenProblemItemId;
 
 
@@ -70,22 +69,21 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 
 	public ProblemItemDTO getChosenProblemItemDTO() {
-		
+
 		// new stuff
 		getChosenProblemItemId();
 		long itemId = Long.parseLong(chosenProblemItemId);
-		problemItemDTOsList = 
-				listsService.getProblemItems(
-						ProblemStateEnums.ALLPROBLEMS);
-		for (ProblemItemDTO itemDTO:problemItemDTOsList) {
+		problemItemDTOsList = listsService.getProblemItems(
+				ProblemStateEnums.ALLPROBLEMS, SortEnums.ORDERBYNAME);
+		for (ProblemItemDTO itemDTO : problemItemDTOsList) {
 			if (itemDTO.getProblemitemid() == itemId) {
 				return itemDTO;
 			}
 		}
-		
+
 		throw new RuntimeException(
-				"chosenProblemItemId is not found in the list: " + itemId);		
-		
+				"chosenProblemItemId is not found in the list: " + itemId);
+
 	}
 	
 	public void setChosenProblemItemDTO(
@@ -96,71 +94,50 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 	public List<ProblemItemDTO> getProblemItemList() {
 
-		problemItemList = 
-				listsService.getProblemItems(
-						ProblemStateEnums.ALLPROBLEMS);
+		problemItemList = listsService.getProblemItems(
+				ProblemStateEnums.ALLPROBLEMS, SortEnums.ORDERBYNAME);
+		return problemItemList;
+
+	}
+
+	public List<ProblemItemDTO> getProblemItemListByPriority() {
+
+		problemItemList = listsService.getProblemItems(
+				ProblemStateEnums.ALLPROBLEMS, SortEnums.ORDERBYPRIORITY);
 		return problemItemList;
 
 	}
 
 	public List<ProblemItemDTO> getProblemItemListActive() {
 
-		problemItemList = 
-				listsService.getProblemItems(
-						ProblemStateEnums.PROBLEMISACTIVE);
+		problemItemList = listsService.getProblemItems(
+				ProblemStateEnums.PROBLEMISACTIVE, SortEnums.ORDERBYNAME);
+		return problemItemList;
+
+	}
+
+	public List<ProblemItemDTO> getProblemItemListActiveByPriority() {
+
+		problemItemList = listsService.getProblemItems(
+				ProblemStateEnums.PROBLEMISACTIVE, SortEnums.ORDERBYPRIORITY);
 		return problemItemList;
 
 	}
 
 	public List<ProblemItemDTO> getProblemItemListInactive() {
 
-		problemItemList = 
-				listsService.getProblemItems(
-						ProblemStateEnums.PROBLEMISINACTIVE);
+		problemItemList = listsService.getProblemItems(
+				ProblemStateEnums.PROBLEMISINACTIVE, SortEnums.ORDERBYNAME);
 		return problemItemList;
 
 	}
 
-/*
-	public List<MaintenanceItemDTO> getMaintenanceItemListByNames() {
-		maintenanceItemList = 
-				listsService.getMaintenanceItems(
-						SortEnums.ORDERBYNAME,
-						MaintenanceTypeEnums.HOFELLER);
-		return maintenanceItemList;
-	}
+	public List<ProblemItemDTO> getProblemItemListInactiveByPriority() {
 
-	public List<MaintenanceItemDTO> getOwnerMaintenanceItemList() {
-		maintenanceItemList = 
-				listsService.getMaintenanceItems(
-						SortEnums.ORDERBYNEXTSERVICEDATE,
-						MaintenanceTypeEnums.OWNER);
-		return maintenanceItemList;
-	}
+		problemItemList = listsService.getProblemItems(
+				ProblemStateEnums.PROBLEMISINACTIVE, SortEnums.ORDERBYPRIORITY);
+		return problemItemList;
 
-	public List<MaintenanceItemDTO> getOwnerMaintenanceItemListByNames() {
-		maintenanceItemList = 
-				listsService.getMaintenanceItems(
-						SortEnums.ORDERBYNAME,
-						MaintenanceTypeEnums.OWNER);
-		return maintenanceItemList;
 	}
-
-	public List<MaintenanceItemDTO> getproblemItemDTOsList() {
-		problemItemDTOsList = 
-				listsService.getMaintenanceItems(
-						SortEnums.ORDERBYNEXTSERVICEDATE,
-						MaintenanceTypeEnums.HOFELLER);
-		return problemItemDTOsList;
-	}
-
-	public MaintenanceItemDTO getMaintenanceItemDTO() {
-		return maintenanceItemDTO;
-	}
-
-	public void setMaintenanceItemDTO(MaintenanceItemDTO maintenanceItemDTO) {
-		this.maintenanceItemDTO = maintenanceItemDTO;
-	}
-*/
 	
 }
