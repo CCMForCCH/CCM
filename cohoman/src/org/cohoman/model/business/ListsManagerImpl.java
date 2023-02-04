@@ -755,6 +755,7 @@ public class ListsManagerImpl implements ListsManager {
 				.getMaintenanceItems(sortEnum, maintenanceTypeEnum);
 		for (MaintenanceItemDTO oneDTO : dtoListIn) {
 
+
 			// If NextServiceDate is > current date, set task
 			// status to OVERDUE
 			oneDTO = ageCurrentTaskStatus(oneDTO);
@@ -763,6 +764,13 @@ public class ListsManagerImpl implements ListsManager {
 			Long userid = oneDTO.getItemCreatedBy();
 			UserDTO theUser = userDao.getUser(userid);
 			oneDTO.setUsername(theUser.getUsername());
+
+			// Now do the same for assigned user, if there is an assigned user
+			if (oneDTO.getAssignedTo() != null && oneDTO.getAssignedTo() != 0) {
+				userid = oneDTO.getAssignedTo();
+				theUser = userDao.getUser(userid);
+				oneDTO.setAssignedToString(theUser.getUsername());
+			}
 
 			// Convert from Enum string to printable string
 			TaskStatusEnums taskStatusEnum = TaskStatusEnums.valueOf(oneDTO.getTaskStatus());

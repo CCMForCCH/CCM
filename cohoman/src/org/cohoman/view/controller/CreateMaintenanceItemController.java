@@ -40,10 +40,13 @@ public class CreateMaintenanceItemController implements Serializable {
 	private String frequencyOfItem;
 	private Date lastperformedDate;
 	private String targetTimeOfyear;
+	private String assignedToString;
 	private UserService userService = null;
 	private ListsService listsService = null;
 	private TaskPriorityEnums chosenpriority;
 	private MaintenanceTypeEnums chosentype;
+	private Long assignedTo; 
+	private List<User> userList;
 
 
 	public CreateMaintenanceItemController() {
@@ -166,6 +169,28 @@ public class CreateMaintenanceItemController implements Serializable {
 		return types;
 	}
 
+
+	public Long getAssignedTo() {
+		return assignedTo;
+	}
+
+	public void setAssignedTo(Long assignedTo) {
+		this.assignedTo = assignedTo;
+	}
+
+	public List<User> getUserList() {
+		userList = userService.getUsersHereNow();
+		return userList;
+	}
+
+	public String getAssignedToString() {
+		return assignedToString;
+	}
+
+	public void setAssignedToString(String assignedToString) {
+		this.assignedToString = assignedToString;
+	}
+
 	// Method for drop-down of expected number of months between 
 	// item performances
 	public List<String> getNumberOfMonths() {
@@ -234,7 +259,7 @@ public class CreateMaintenanceItemController implements Serializable {
 		return returnValue;
 	}
 	
-	// method to create a MealEvent
+	// method to create a Maintenance Item DTO
 	private MaintenanceItemDTO createMaintenanceItemDTO() {
 		MaintenanceItemDTO dto = new MaintenanceItemDTO();
 		dto.setItemname(itemname);
@@ -247,6 +272,7 @@ public class CreateMaintenanceItemController implements Serializable {
 		dto.setItemCreatedDate(now.getTime());
 		dto.setNextServiceDate(now.getTime());   // keep this code or fix?????
 		dto.setTaskStatus(TaskStatusEnums.UPTODATE.name());   // keep this code or fix?????
+		dto.setAssignedToString(assignedToString);
 		
 		// get the userid of the current user to set the requester.
 		FacesContext ctx = FacesContext.getCurrentInstance();

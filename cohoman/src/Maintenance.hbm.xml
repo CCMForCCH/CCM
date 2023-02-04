@@ -20,6 +20,7 @@
 	  <property name="taskStatus" />
 	  <property name="nextServiceDate" />
 	  <property name="maintenanceType" />
+	  <property name="assignedTo" />
 	  
   </class>
     

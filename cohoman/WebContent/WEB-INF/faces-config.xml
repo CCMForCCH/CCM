@@ -613,6 +613,10 @@
 			<property-name>listsService</property-name>
 			<value>#{listsService}</value>
 		</managed-property>
+		<managed-property>
+			<property-name>userService</property-name>
+			<value>#{userService}</value>
+		</managed-property>
 	</managed-bean>
 
 	<managed-bean>
@@ -1161,7 +1165,7 @@
 		<from-view-id>/createProblemItem.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>addProblemItem</from-outcome>
-			<to-view-id>/displayProblemList.xhtml</to-view-id>
+			<to-view-id>/displayProblemListActive.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>

@@ -112,6 +112,25 @@ public class ListsServiceImpl implements ListsService {
 	// Maintenance Item services
 	public void createMaintenanceItem(MaintenanceItemDTO maintenanceItemDTO)
 			throws CohomanException {
+		
+		// First, need to convert the assigned user as a string number into
+		// a userid and a username for the DTO.
+		// Start with the chosen userid as a string and convert it into the
+		// userid (which is Long) and username (which is a string).
+		String assignedToString = null;
+		Long userid = Long.valueOf(maintenanceItemDTO.getAssignedToString());
+		List<User> theusers = userManager.getUsersHereNow();
+		for (User oneuser : theusers) {
+			if (oneuser.getUserid().equals(userid)) {
+				assignedToString = oneuser.getUsername();
+				break;
+			}
+		}	
+		
+		// Now, put the userid and username
+		maintenanceItemDTO.setAssignedToString(assignedToString);
+		maintenanceItemDTO.setAssignedTo(userid);
+		
 		logger.info("AUDIT: Create maintenance for "
 				+ maintenanceItemDTO.getItemname() + ", by "
 				+ getUserFullname(maintenanceItemDTO.getItemCreatedBy())
@@ -119,7 +138,10 @@ public class ListsServiceImpl implements ListsService {
 				+ "\", frequency = " + maintenanceItemDTO.getFrequencyOfItem()
 				+ "\", priority = " + maintenanceItemDTO.getPriority()
 				+ "\", target time of year = "
-				+ maintenanceItemDTO.getTargetTimeOfyear());
+				+ maintenanceItemDTO.getTargetTimeOfyear()
+				+ "\", assigned to = " + getUserFullname(maintenanceItemDTO.getAssignedTo()));
+		
+		// Now, let the Manager do the work.
 		listsManager.createMaintenanceItem(maintenanceItemDTO);
 	}
 

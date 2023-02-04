@@ -41,6 +41,7 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			maintenanceBean.setTaskStatus(dto.getTaskStatus());
 			maintenanceBean.setNextServiceDate(dto.getNextServiceDate());
 			maintenanceBean.setMaintenanceType(dto.getMaintenanceType());
+			maintenanceBean.setAssignedTo(dto.getAssignedTo());
 			
 			session.saveOrUpdate(maintenanceBean);
 
@@ -105,6 +106,7 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			oneItem.setTaskStatus(onebean.getTaskStatus());
 			oneItem.setNextServiceDate(onebean.getNextServiceDate());
 			oneItem.setMaintenanceType(onebean.getMaintenanceType());
+			oneItem.setAssignedTo(onebean.getAssignedTo());
 			
 			dtoList.add(oneItem);	
 		}
@@ -142,6 +144,7 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 			oneItem.setTaskStatus(onebean.getTaskStatus());
 			oneItem.setNextServiceDate(onebean.getNextServiceDate());
 			oneItem.setMaintenanceType(onebean.getMaintenanceType());
+			oneItem.setAssignedTo(onebean.getAssignedTo());
 			tx.commit();
 			return oneItem;
 		} catch (Exception ex) {
@@ -177,6 +180,7 @@ public class MaintenanceDaoImpl implements MaintenanceDao {
 		maintenanceBean.setTaskStatus(maintenanceItemDTO.getTaskStatus());
 		maintenanceBean.setNextServiceDate(maintenanceItemDTO.getNextServiceDate());
 		maintenanceBean.setMaintenanceType(maintenanceItemDTO.getMaintenanceType());
+		maintenanceBean.setAssignedTo(maintenanceItemDTO.getAssignedTo());
 		session.merge(maintenanceBean);
 
 		tx.commit();

@@ -349,6 +349,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	public UserDTO getUser(Long userid) {
+		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		String queryString = "from UserBean " + "where userid = ?";
 		Query query = null;

@@ -51,7 +51,16 @@
 						itemLabel="#{onecount}"
 						itemValue="#{onecount}" />
 				</h:selectOneMenu>
-									
+						
+				<h:outputText value="Assigned To:" styleClass="subheading" />
+				<h:selectOneMenu value="#{createMaintenanceItemController.assignedToString}">
+					<f:selectItem itemValue="#{0}" itemLabel="Choose the assigned person" />
+					<f:selectItems value="#{createMaintenanceItemController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.username}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
+							
 			</h:panelGrid>
 			<br />
 			<h:panelGroup style="display:block; text-align:center"  >				

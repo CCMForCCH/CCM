@@ -20,6 +20,8 @@ public class MaintenanceItemDTO {
 	private Date nextServiceDate;
 	private String printableNextServiceDate;
 	private String maintenanceType;
+	private Long assignedTo;
+	private String assignedToString;
 	
 	
 	public Long getMaintenanceitemid() {
@@ -117,6 +119,18 @@ public class MaintenanceItemDTO {
 	}
 	public void setMaintenanceType(String maintenanceType) {
 		this.maintenanceType = maintenanceType;
+	}
+	public Long getAssignedTo() {
+		return assignedTo;
+	}
+	public void setAssignedTo(Long assignedTo) {
+		this.assignedTo = assignedTo;
+	}
+	public String getAssignedToString() {
+		return assignedToString;
+	}
+	public void setAssignedToString(String assignedToString) {
+		this.assignedToString = assignedToString;
 	}	
 
 }

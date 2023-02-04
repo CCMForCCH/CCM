@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import org.cohoman.model.business.User;
 import org.cohoman.model.dto.MaintenanceItemDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
@@ -36,9 +37,11 @@ public class EditMaintenanceController implements Serializable {
 	private String username;
 	private String printableCreatedDate;
 	private String printableLastperformedDate;
+	private String assignedTo;
 
 	private List<MaintenanceItemDTO> maintenanceItemDTOsList;
 	private MaintenanceItemDTO chosenMaintenanceItemDTO;
+	private List<User> userList;
 	private String chosenMaintenanceItemString;
 	//private String chosenUserString;
 	private String maintenanceOperation = "changeMaintenanceItem";
@@ -158,6 +161,14 @@ public class EditMaintenanceController implements Serializable {
 		this.printableLastperformedDate = printableLastperformedDate;
 	}
 
+	public String getAssignedTo() {
+		return assignedTo;
+	}
+
+	public void setAssignedTo(String assignedTo) {
+		this.assignedTo = assignedTo;
+	}
+
 	public List<MaintenanceItemDTO> getMaintenanceItemDTOsList() {
 		maintenanceItemDTOsList = 
 				listsService.getMaintenanceItems(
@@ -206,11 +217,26 @@ public class EditMaintenanceController implements Serializable {
 		this.chosenMaintenanceItemDTO = chosenMaintenanceItemDTO;
 	}
 
+	public List<User> getUserList() {
+		userList = userService.getUsersHereNow();
+		return userList;
+	}
+
 
 	public String editMaintenanceView() throws Exception {
 
 		Long maintenanceItemId = Long.valueOf(chosenMaintenanceItemString);
 		chosenMaintenanceItemDTO = listsService.getMaintenanceItem(maintenanceItemId);		
+
+		// Set the default "assigned to" user in the DTO, if there is one.
+		// Note we are starting with a Long and converting that Long to
+		// a string equivalent of that number. In the method below, 
+		// that string will be converted back to a Long (after a 
+		// submit by the user).
+		Long assignedTo = chosenMaintenanceItemDTO.getAssignedTo();
+		if (assignedTo != null) {
+			chosenMaintenanceItemDTO.setAssignedToString(assignedTo.toString());
+		}
 
 		String returnValue = maintenanceOperation;
 		if (maintenanceOperation.equals("deleteMaintenanceItem")) {
@@ -226,6 +252,11 @@ public class EditMaintenanceController implements Serializable {
 	}
 
 	public String editMaintenanceItemsView() throws Exception {
+
+		// Compute the assigned user from the DTO user string and use that
+		// userid to write into the AssignedTo field of the DB.
+		 Long userid = Long.valueOf(chosenMaintenanceItemDTO.getAssignedToString());
+		 chosenMaintenanceItemDTO.setAssignedTo(userid);
 
 		try {
 			listsService.updateMaintenanceItem(chosenMaintenanceItemDTO);
