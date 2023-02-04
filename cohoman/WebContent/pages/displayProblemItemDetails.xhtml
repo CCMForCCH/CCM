@@ -26,7 +26,6 @@
 	     		<f:facet name="header">
             		<h:outputText value="Details for Problem Report"/>
          		</f:facet>
-         		
          		<h:outputText value="Name:" style="font-weight:bold" />
 				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.itemname}" />
          			
@@ -71,7 +70,9 @@
 				<h:outputText value="#{retrieveProblemItemsListController.chosenProblemItemDTO.printableCompletedDate}" />
 							
 				<br />
-         	 						
+				<br />
+         	 	
+         	 	<h:link value="Return to Problem Report List" outcome="#{retrieveProblemItemsListController.callingPage}" />				
 			</h:panelGrid>
         	<br /> 
 			

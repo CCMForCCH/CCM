@@ -48,6 +48,8 @@ public class ProblemUpdateController implements Serializable {
 	private Date printableProblemUpdateDate;
 
 	private String chosenProblemUpdateItemId;
+	private String callingPage;
+
 
 	public ProblemUpdateController() {
 		// Give calendars a starting date of now
@@ -97,6 +99,27 @@ public class ProblemUpdateController implements Serializable {
 	public void setChosenProblemItemId(String chosenProblemItemId) {
 		this.chosenProblemItemId = chosenProblemItemId;
 		chosenProblemItemIdAsLong = Long.valueOf(chosenProblemItemId);
+	}
+
+	public String getCallingPage() {
+		
+		// Get the associated problem item id that's passed
+		// as a parameter from the displayProblemReportList page
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		Map<String, String> requestParams = ctx.getExternalContext()
+				.getRequestParameterMap();
+		callingPage = requestParams.get("callingPage");
+		if (callingPage == null) {
+			// If there's no value, just give it one. It seems that
+			// it will be overwritten anyway from the form. 10/19/2017
+			callingPage = "displayProblemListActive.xhtml";
+		}
+
+		return callingPage;
+	}
+
+	public void setCallingPage(String callingPage) {
+		this.callingPage = callingPage;
 	}
 
 	public ProblemUpdateDTO getCurrentProblemUpdateDTO() {

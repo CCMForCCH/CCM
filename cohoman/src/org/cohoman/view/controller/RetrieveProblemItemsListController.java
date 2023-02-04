@@ -25,6 +25,7 @@ public class RetrieveProblemItemsListController implements Serializable {
 	private List<ProblemItemDTO> problemItemDTOsList;
 	private ProblemItemDTO chosenProblemItemDTO;
 	private String chosenProblemItemId;
+	private String callingPage;
 
 
 	public ListsService getListsService() {
@@ -35,17 +36,11 @@ public class RetrieveProblemItemsListController implements Serializable {
 		this.listsService = listsService;
 	}
 
-/*
-	public String getchosenProblemItemId() {
-		//return "0";
-		return chosenProblemItemId;
-	}
-*/
 	
 	public String getChosenProblemItemId() {
 
-		// Get the associated maintenance item id that's passe
-		// as a parameter from the displayMaintenanceList page
+		// Get the associated problem item id that's passe
+		// as a parameter from the displayProblemReportList page
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		Map<String, String> requestParams = ctx.getExternalContext()
 				.getRequestParameterMap();
@@ -67,6 +62,28 @@ public class RetrieveProblemItemsListController implements Serializable {
 		this.chosenProblemItemId = chosenProblemItemId;
 	}
 
+
+
+	public String getCallingPage() {
+		
+		// Get the associated problem item id that's passed
+		// as a parameter from the displayProblemReportList page
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		Map<String, String> requestParams = ctx.getExternalContext()
+				.getRequestParameterMap();
+		callingPage = requestParams.get("callingPage");
+		if (callingPage == null) {
+			// If there's no value, just give it one. It seems that
+			// it will be overwritten anyway from the form. 10/19/2017
+			callingPage = "displayProblemListActive.xhtml";
+		}
+
+		return callingPage;
+	}
+
+	public void setCallingPage(String callingPage) {
+		this.callingPage = callingPage;
+	}
 
 	public ProblemItemDTO getChosenProblemItemDTO() {
 

@@ -42,7 +42,10 @@
  
 		<h:column>
   			<f:facet name="header">Problem Type:Name</f:facet> 
-  			#{oneitem.comboTypePlusName}           
+  			<h:link value="#{oneitem.comboTypePlusName}" outcome="displayProblemItemDetails.xhtml" >
+  				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
+  				<f:param name="callingPage" value="displayProblemListActive.xhtml"  />
+  			</h:link> 
 		</h:column>
 
 		<h:column>
@@ -66,14 +69,6 @@
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Problem Details</f:facet> 
-  			<h:link value="ProblemDetails" outcome="displayProblemItemDetails.xhtml" >
-  				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
-  			</h:link> 
-   			         
-		</h:column>
-
-		<h:column>
   			<f:facet name="header">Create Update</f:facet> 
   			<h:link value="CreateUpdate" outcome="createProblemUpdate.xhtml" >
   				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
@@ -87,6 +82,7 @@
   			<h:link value="ProblemUpdates" outcome="listProblemUpdate.xhtml">
   				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
   				<f:param name="chosenProblemItemName" value="#{oneitem.itemname}"  />
+  				<f:param name="callingPage" value="displayProblemListActive.xhtml"  />
   			</h:link>          
 		</h:column>
 
