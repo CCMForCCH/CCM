@@ -41,7 +41,10 @@
  
 		<h:column>
   			<f:facet name="header">Item Name</f:facet> 
-  			#{oneitem.itemname}           
+  			<h:link value="#{oneitem.itemname}" outcome="displayOwnerMaintenanceItemDetailsOnly.xhtml">
+  				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
+  				<f:param name="callingPage" value="displayOwnerMaintenanceListOnlyByNames.xhtml"  />
+ 			</h:link>          
 		</h:column>
 
 		<h:column>
@@ -65,17 +68,11 @@
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Item Details</f:facet> 
-  			<h:link value="ItemDetails" outcome="displayOwnerMaintenanceItemDetailsOnly.xhtml">
-  				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
- 			</h:link>          
-		</h:column>
-
-		<h:column>
   			<f:facet name="header">Task History</f:facet> 
   			<h:link value="TaskHistory" outcome="listOwnerMaintenanceTasksOnly.xhtml">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
   				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
+  				<f:param name="callingPage" value="displayOwnerMaintenanceListOnlyByNames.xhtml"  />
   			</h:link>          
 		</h:column>
 

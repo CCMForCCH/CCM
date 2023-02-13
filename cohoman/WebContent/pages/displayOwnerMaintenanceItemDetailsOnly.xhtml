@@ -53,8 +53,7 @@
 
 			<h:panelGrid columns="1" title="Maintenance Item Details" 
 				headerClass="formheader" styleClass="itemdetails" >
-				<h:link value="Go back to Owner Maintenance Item Table (sorted by date)" outcome="displayOwnerMaintenanceListOnly.xhtml" style="display:block; text-align:center"/>
-				<h:link value="Go back to Owner Maintenance Item Table (sorted by name)" outcome="displayOwnerMaintenanceListOnlyByNames.xhtml" style="display:block; text-align:center"/>
+				<h:link value="Return to Owner Maintenance List" outcome="#{retrieveMaintenanceItemsListController.callingPage}" style="display:block; text-align:center"/>				
 			</h:panelGrid>
 		    <h:messages layout="table" errorClass="errors" />
 					

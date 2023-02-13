@@ -26,6 +26,7 @@ public class RetrieveMaintenanceItemsListController implements Serializable {
 	//private MaintenanceItemDTO chosenMaintenanceItemDTO;
 	private MaintenanceItemDTO maintenanceItemDTO;
 	private String chosenMaintenanceItemId;
+	private String callingPage;
 
 
 	public ListsService getListsService() {
@@ -62,6 +63,27 @@ public class RetrieveMaintenanceItemsListController implements Serializable {
 
 	public void setChosenMaintenanceItemId(String chosenMaintenanceItemId) {
 		this.chosenMaintenanceItemId = chosenMaintenanceItemId;
+	}
+
+	public String getCallingPage() {
+		
+		// Get the associated problem item id that's passed
+		// as a parameter from the displayProblemReportList page
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		Map<String, String> requestParams = ctx.getExternalContext()
+				.getRequestParameterMap();
+		callingPage = requestParams.get("callingPage");
+		if (callingPage == null) {
+			// If there's no value, just give it one. It seems that
+			// it will be overwritten anyway from the form. 10/19/2017
+			callingPage = "displayMaintenanceListActive.xhtml";
+		}
+
+		return callingPage;
+	}
+
+	public void setCallingPage(String callingPage) {
+		this.callingPage = callingPage;
 	}
 
 	public MaintenanceItemDTO getChosenMaintenanceItemDTO() {

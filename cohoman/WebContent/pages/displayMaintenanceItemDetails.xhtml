@@ -49,10 +49,10 @@
 				<br />
          	 						
 			</h:panelGrid>
+			
 			<h:panelGrid columns="1" title="Maintenance Item Details" 
 				headerClass="formheader" styleClass="itemdetails" >
-				<h:link value="Go back to Common Area Maintenance Item Table (sorted by date)" outcome="displayMaintenanceList.xhtml" style="display:block; text-align:center"/>
-				<h:link value="Go back to Common Area Maintenance Item Table (sorted by name)" outcome="displayMaintenanceListByNames.xhtml" style="display:block; text-align:center"/>
+				<h:link value="Return to Common Area Maintenance List" outcome="#{retrieveMaintenanceItemsListController.callingPage}" style="display:block; text-align:center"/>				
 			</h:panelGrid>			
          	<br /> 
 			

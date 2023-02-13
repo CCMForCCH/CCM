@@ -40,8 +40,10 @@
 		rendered="#{not empty retrieveMaintenanceItemsListController.maintenanceItemList}">
  
 		<h:column>
-  			<f:facet name="header">Item Name</f:facet> 
-  			#{oneitem.itemname}           
+  			<h:link value="#{oneitem.itemname}" outcome="displayMaintenanceItemDetails.xhtml">
+  				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
+  				<f:param name="callingPage" value="displayMaintenanceList.xhtml"  />
+ 			</h:link>          
 		</h:column>
 
 		<h:column>
@@ -65,19 +67,13 @@
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Item Details</f:facet> 
-  			<h:link value="ItemDetails" outcome="displayMaintenanceItemDetails.xhtml">
-  				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
- 			</h:link>          
-		</h:column>
-
-		<h:column>
   			<f:facet name="header">Create Task</f:facet> 
   			<h:link value="CreateTask" outcome="createMaintenanceTask.xhtml" 
   				rendered="#{oneitem.taskStatus ne 'INPROGRESS'}">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
   				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
   				<f:param name="operation" value="CreateTask" />
+  				<f:param name="callingPage" value="displayMaintenanceList.xhtml"  />
   			</h:link>          
 		</h:column>
 
@@ -86,6 +82,7 @@
   			<h:link value="TaskHistory" outcome="listMaintenanceTasks.xhtml">
   				<f:param name="chosenMaintenanceItemId" value="#{oneitem.maintenanceitemid}"  />
   				<f:param name="chosenMaintenanceItemName" value="#{oneitem.itemname}"  />
+  				<f:param name="callingPage" value="displayMaintenanceList.xhtml"  />
   			</h:link>          
 		</h:column>
 
