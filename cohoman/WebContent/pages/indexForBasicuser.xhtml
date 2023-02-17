@@ -76,6 +76,84 @@
 				</table>
 				</div>				
 			</fieldset>
+			<br/>
+			
+			
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Problem Reporting</b></legend>
+			  <div class="column1">
+			  <img src="images/hofeller.jpg" style="width: 100%" />
+			  </div>
+				<table>
+				
+					<tr>
+					<td>
+						<h:commandLink value="Create problem report" action="createProblemItem"  /> 
+					</td>
+					<td>
+						<h:outputText value="Create a new problem report"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List active problem requests" action="displayProblemListActive"  /> 
+					</td>
+					<td>
+						<h:outputText value="List active problem requests (have a status of either new or in-progress)"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List inactive problem requests" action="displayProblemListInactive"  /> 
+					</td>
+					<td>
+						<h:outputText value="List inactive problem requests (have a status of either completed or closed)"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List all problem reports" action="displayProblemList"  /> 
+					</td>
+					<td>
+						<h:outputText value="List all problem reports"/>
+					</td> 
+					</tr>
+					
+				</table>
+			</fieldset>
+			<br/>
+			
+			<fieldset style="border: 4px solid #F00;">
+			<legend><b>Periodic Maintenance</b></legend>
+			  <div class="column1">
+			  <img src="images/hofeller.jpg" style="width: 100%" />
+			  </div>
+			
+				<table>
+					<tr>
+					<td>
+						<h:commandLink value="List common area maintenance items" action="displayMaintenanceListOnlyByNames"  /> 
+					</td>
+					<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="List common area periodic maintenance items sorted by name"/>
+						</span>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="List owner maintenance items" action="displayOwnerMaintenanceListOnlyByNames"  /> 
+					</td>
+					<td>
+						<span style="display: inline-table; text-indent: 20px;">
+							<h:outputText value="List owner periodic maintenance items sorted by name"/>
+						</span>
+					</td> 
+					</tr>
+
+				</table>
+			</fieldset>
+			
 			
 			<br/>
 			<fieldset style="border: 4px solid #F00;">
@@ -500,80 +578,6 @@
 			<br/>
 		
 		
-			<fieldset style="border: 4px solid #F00;">
-			<legend><b>Problem Reporting</b></legend>
-			  <div class="column1">
-			  <img src="images/hofeller.jpg" style="width: 100%" />
-			  </div>
-				<table>
-				
-					<tr>
-					<td>
-						<h:commandLink value="Create problem report" action="createProblemItem"  /> 
-					</td>
-					<td>
-						<h:outputText value="Create a new problem report"/>
-					</td> 
-					</tr>
-					<tr>
-					<td>
-						<h:commandLink value="List active problem requests" action="displayProblemListActive"  /> 
-					</td>
-					<td>
-						<h:outputText value="List active problem requests (have a status of either new or in-progress)"/>
-					</td> 
-					</tr>
-					<tr>
-					<td>
-						<h:commandLink value="List inactive problem requests" action="displayProblemListInactive"  /> 
-					</td>
-					<td>
-						<h:outputText value="List inactive problem requests (have a status of either completed or closed)"/>
-					</td> 
-					</tr>
-					<tr>
-					<td>
-						<h:commandLink value="List all problem reports" action="displayProblemList"  /> 
-					</td>
-					<td>
-						<h:outputText value="List all problem reports"/>
-					</td> 
-					</tr>
-					
-				</table>
-			</fieldset>
-			<br/>
-			
-			<fieldset style="border: 4px solid #F00;">
-			<legend><b>Periodic Maintenance</b></legend>
-			  <div class="column1">
-			  <img src="images/hofeller.jpg" style="width: 100%" />
-			  </div>
-			
-				<table>
-					<tr>
-					<td>
-						<h:commandLink value="List common area maintenance items" action="displayMaintenanceListOnlyByNames"  /> 
-					</td>
-					<td>
-						<span style="display: inline-table; text-indent: 20px;">
-							<h:outputText value="List common area periodic maintenance items sorted by name"/>
-						</span>
-					</td> 
-					</tr>
-					<tr>
-					<td>
-						<h:commandLink value="List owner maintenance items" action="displayOwnerMaintenanceListOnlyByNames"  /> 
-					</td>
-					<td>
-						<span style="display: inline-table; text-indent: 20px;">
-							<h:outputText value="List owner periodic maintenance items sorted by name"/>
-						</span>
-					</td> 
-					</tr>
-
-				</table>
-			</fieldset>
 			
 			
 			

@@ -276,6 +276,8 @@ public class ListsServiceImpl implements ListsService {
 				+ getUserFullname(problemItemDTO.getItemCreatedBy())
 				+ ", description =\"" + problemItemDTO.getItemdescription()
 				+ "\", priority = \"" + problemItemDTO.getPriority()
+				+ "\", type = \"" + problemItemDTO.getProblemType()
+				+ "\", location = \"" + problemItemDTO.getLocation()
 				+ "\", status = \""
 				+ problemItemDTO.getProblemStatus()
 				+ "\", assigned to = \""
@@ -329,6 +331,7 @@ public class ListsServiceImpl implements ListsService {
 			// Send text messages to all residents
 			for (User oneuser : theusers) {
 				//if (oneuser.getUsername().equals("bill")) {  //temp!!!!!
+				if (!oneuser.getCellphone().isEmpty()) {
 					listsManager.sendTextMessageToPerson(
 							oneuser.getCellphone(),
 							"CCM: New " + problemPriorityText
@@ -337,6 +340,12 @@ public class ListsServiceImpl implements ListsService {
 									+ ". Submitted by "
 									+ submitter
 									+ ".");
+				}
+				else {
+					logger.log(Level.WARNING,
+							"Critical Report: No cellphone number for " + oneuser.getUsername());
+
+				}
 				//}
 			}
 
@@ -486,12 +495,22 @@ public class ListsServiceImpl implements ListsService {
 
 	public void updateProblemItem(ProblemItemDTO problemItemDTO)
 			throws CohomanException {
+
+		// Audit the updated report first
 		logger.info("AUDIT: Update Problem Report for "
 				+ problemItemDTO.getItemname() + ", by "
 				+ getUserFullname(problemItemDTO.getItemCreatedBy())
 				+ ", description =\"" + problemItemDTO.getItemdescription()
-				+ "\", priority = " + problemItemDTO.getPriority()
-				+ "\"., status= " + problemItemDTO.getProblemStatus());
+				+ "\", priority = \"" + problemItemDTO.getPriority()
+				+ "\", type = \"" + problemItemDTO.getProblemType()
+				+ "\", location = \"" + problemItemDTO.getLocation()
+				+ "\", status = \""
+				+ problemItemDTO.getProblemStatus()
+				+ "\", assigned to = \""
+				+ getUserFullname(problemItemDTO.getAssignedTo())
+				+ "\"");
+
+		// Now do the actual update
 		listsManager.updateProblemItem(problemItemDTO);
 		
 		// Check to see if status is completed or closed.
@@ -514,6 +533,15 @@ public class ListsServiceImpl implements ListsService {
 	public void deleteProblemItem(ProblemItemDTO problemItemDTO)
 			throws CohomanException {
 
+		// Audit the delete
+		logger.info("AUDIT: Delete Problem Report: "
+				+ problemItemDTO.getItemname() + ", description = \""
+				+ problemItemDTO.getItemdescription()
+				+ "\", date created = "
+				+ problemItemDTO.getPrintableCreatedDate()
+				+ "\" deleted by "
+				+ LoggingUtils.getCurrentUsername());
+
 		try {
 			listsManager.deleteProblemItem(problemItemDTO);
 		} catch (Exception ex) {
@@ -522,16 +550,6 @@ public class ListsServiceImpl implements ListsService {
 					+ problemItemDTO.getItemname());
 		}
 
-/*
-		logger.info("AUDIT: Delete maintenance item for "
-				+ maintenanceItemDTO.getItemname() + ", description = \""
-				+ maintenanceItemDTO.getItemdescription()
-				+ "\", date created = "
-				+ maintenanceItemDTO.getPrintableCreatedDate()
-				+ "\", date last performed = "
-				+ maintenanceItemDTO.getLastperformedDate() + " deleted by "
-				+ LoggingUtils.getCurrentUsername());
-*/
 	}
 
 	
@@ -542,17 +560,14 @@ public class ListsServiceImpl implements ListsService {
 	 * Problem Update operations
 	 */
 	public void createProblemUpdate(ProblemUpdateDTO dto) throws CohomanException {
-		/*
-		 * logger.info("AUDIT: Create maintenance task for " +
-		 * maintenanceItemDTO.getItemname() + ", by " +
-		 * getUserFullname(maintenanceItemDTO.getItemCreatedBy()) +
-		 * ", description =\"" + maintenanceItemDTO.getItemdescription() +
-		 * "\", frequency = " + maintenanceItemDTO.getFrequencyOfItem() +
-		 * "\", priority = " + maintenanceItemDTO.getPriority() +
-		 * "\", target time of year = " +
-		 * maintenanceItemDTO.getTargetTimeOfyear());
-		 */
+		
+		// Audit the new problem update
+		logger.info("AUDIT: Create Problem Report update for "
+				+ getProblemItem(dto.getProblemitemid()).getItemname()
+				+ ", by " + getUserFullname(dto.getItemCreatedBy())
+				+ ", notes =\"" + dto.getNotes());
 
+		// Now do the real update
 		listsManager.createProblemUpdate(dto);
 	}
 
@@ -565,15 +580,38 @@ public class ListsServiceImpl implements ListsService {
 	}
 
 	public void updateProblemUpdate(ProblemUpdateDTO problemUpdateDTO) {
+		
+		// Audit the modified update
+		try {
+			logger.info("AUDIT: Modify Problem Report update for "
+					+ getProblemItem(problemUpdateDTO.getProblemitemid())
+							.getItemname() + ", by "
+					+ getUserFullname(problemUpdateDTO.getItemCreatedBy())
+					+ ", notes =\"" + problemUpdateDTO.getNotes());
+		} catch (CohomanException ex) {
+			// ???
+		}
+
+		// Now do the real update
 		listsManager.updateProblemUpdate(problemUpdateDTO);
 
-		// TODO Add in the auditing!!!!!!!!!!
 	}
 
 	public void deleteProblemUpdate(Long problemUpdateId) {
+
+		// Audit the delete of this update
+		try {
+		logger.info("AUDIT: delete Problem Report update added by "
+				+ getUserFullname(getProblemUpdate(problemUpdateId).getItemCreatedBy())
+				+ ", added on = " + getProblemUpdate(problemUpdateId).getUpdateDate()
+				+ ", notes =\"" + getProblemUpdate(problemUpdateId).getNotes());
+		} catch (CohomanException ex) {
+			// ???
+		}
+		
+		// Now do the delete
 		listsManager.deleteProblemUpdate(problemUpdateId);
 		
-		// TODO Add in the auditing!!!!!!!!!!!!		
 	}
 
 	/*
