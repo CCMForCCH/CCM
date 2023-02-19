@@ -91,23 +91,23 @@
 						<h:commandLink value="Create problem report" action="createProblemItem"  /> 
 					</td>
 					<td>
-						<h:outputText value="Create a new problem report"/>
+						<h:outputText value="Create a new problem report (priority can be as high as emergency or critical or down to low)"/>
 					</td> 
 					</tr>
 					<tr>
 					<td>
-						<h:commandLink value="List active problem requests" action="displayProblemListActive"  /> 
+						<h:commandLink value="List active problem reports" action="displayProblemListActive"  /> 
 					</td>
 					<td>
-						<h:outputText value="List active problem requests (have a status of either new or in-progress)"/>
+						<h:outputText value="List active problem reports (have a status of either new or in-progress)"/>
 					</td> 
 					</tr>
 					<tr>
 					<td>
-						<h:commandLink value="List inactive problem requests" action="displayProblemListInactive"  /> 
+						<h:commandLink value="List inactive problem reports" action="displayProblemListInactive"  /> 
 					</td>
 					<td>
-						<h:outputText value="List inactive problem requests (have a status of either completed or closed)"/>
+						<h:outputText value="List inactive problem reports (have a status of either completed, deferred or closed)"/>
 					</td> 
 					</tr>
 					<tr>
@@ -115,7 +115,15 @@
 						<h:commandLink value="List all problem reports" action="displayProblemList"  /> 
 					</td>
 					<td>
-						<h:outputText value="List all problem reports"/>
+						<h:outputText value="List all problem reports regardless of their status"/>
+					</td> 
+					</tr>
+					<tr>
+					<td>
+						<h:commandLink value="Broadcast a text message" action="sendTextMessageToMany"  /> 
+					</td>
+					<td>
+						<h:outputText value="Broadcast a text message to the entire community. (Use sparingly!)"/>
 					</td> 
 					</tr>
 					

@@ -2,6 +2,8 @@ package org.cohoman.view.controller;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -9,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
 import org.cohoman.model.business.User;
+import org.cohoman.model.integration.utils.LoggingUtils;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
 import org.cohoman.model.singletons.ConfigScalarValues;
@@ -16,6 +19,8 @@ import org.cohoman.model.singletons.ConfigScalarValues;
 @ManagedBean
 @SessionScoped
 public class TestNotifiesController implements Serializable {
+
+	Logger logger = Logger.getLogger(this.getClass().getName());
 
 	private static final long serialVersionUID = 5716065327257928138L;
 
@@ -137,6 +142,36 @@ public class TestNotifiesController implements Serializable {
 		// Actually send the text message!!
 		listsService.sendTextMessageToPerson(theUser.getCellphone(), textMessage);
 		
+		// clear out fields for return to the page in this session
+		clearFormFields();
+
+		return "sendTextMessage";
+	}
+
+	public String sendTextMessageToMany() throws Exception {
+
+		List<User> theusers = userService.getUsersHereNow();
+		String submitter = LoggingUtils.getCurrentUsername();
+
+		String messageToSend = "CCM: Broadcast text from  " + submitter
+				+ ": \n" + textMessage;
+
+		for (User oneuser : theusers) {
+			if (!(oneuser.getCellphone() == null || oneuser.getCellphone()
+					.isEmpty())) {
+				// if (oneuser.getUsername().equals("bill")) { //temp!!!!!
+				listsService.sendTextMessageToPerson(oneuser.getCellphone(),
+						messageToSend);
+				//}
+			} else {
+				logger.log(
+						Level.WARNING,
+						"Broadcast message: No cellphone number for "
+								+ oneuser.getUsername());
+
+			}
+		}
+
 		// clear out fields for return to the page in this session
 		clearFormFields();
 
