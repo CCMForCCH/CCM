@@ -156,14 +156,13 @@ public class ListsServiceImpl implements ListsService {
 
 	public void updateMaintenanceItem(MaintenanceItemDTO maintenanceItemDTO)
 			throws CohomanException {
-		logger.info("AUDIT: Create maintenance for "
+		logger.info("AUDIT: Update maintenance for "
 				+ maintenanceItemDTO.getItemname() + ", by "
 				+ getUserFullname(maintenanceItemDTO.getItemCreatedBy())
 				+ ", description =\"" + maintenanceItemDTO.getItemdescription()
 				+ "\", frequency = " + maintenanceItemDTO.getFrequencyOfItem()
 				+ "\", priority = " + maintenanceItemDTO.getPriority()
-				+ "\", target time of year = "
-				+ maintenanceItemDTO.getTargetTimeOfyear());
+				+ "\", status = " + maintenanceItemDTO.getTaskStatus());
 		listsManager.updateMaintenanceItem(maintenanceItemDTO);
 	}
 
@@ -171,34 +170,7 @@ public class ListsServiceImpl implements ListsService {
 			throws CohomanException {
 
 		// public void deleteMealEvent(MealEvent mealEvent) throws Exception {
-		/*
-		 * String cook2 = ""; String cook3 = ""; String cook4 = ""; String
-		 * cleaner1 = ""; String cleaner2 = ""; String cleaner3 = ""; if
-		 * (mealEvent.getCook2() != null) { cook2 =
-		 * getUserFullname(mealEvent.getCook2()); } if (mealEvent.getCook3() !=
-		 * null) { cook3 = getUserFullname(mealEvent.getCook3()); } if
-		 * (mealEvent.getCook4() != null) { cook4 =
-		 * getUserFullname(mealEvent.getCook4()); } if (mealEvent.getCleaner1()
-		 * != null) { cleaner1 = getUserFullname(mealEvent.getCleaner1()); } if
-		 * (mealEvent.getCleaner2() != null) { cleaner2 =
-		 * getUserFullname(mealEvent.getCleaner2()); } if
-		 * (mealEvent.getCleaner3() != null) { cleaner3 =
-		 * getUserFullname(mealEvent.getCleaner3()); }
-		 * 
-		 * logger.info("AUDIT: Delete meal for " + mealEvent.getEventDate() +
-		 * ", menu = \"" + mealEvent.getMenu() + "\", lead cook = " +
-		 * getUserFullname(mealEvent.getCook1()) + ", cook2 = " + cook2 +
-		 * ", cook3 = " + cook3 + ", cook4 = " + cook4 + ", cleaner1 = " +
-		 * cleaner1 + ", cleaner2 = " + cleaner2 + ", cleaner3 = " + cleaner3 +
-		 * ", maxattendees = " + mealEvent.getMaxattendees() +
-		 * ", ismealclosed = " + mealEvent.isIsmealclosed() + " deleted by " +
-		 * LoggingUtils.getCurrentUsername());
-		 * 
-		 * try { eventManager.deleteMealEvent(mealEvent); } catch (Exception ex)
-		 * { logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
-		 * throw new CohomanException("Unable to delete Meal Event = " +
-		 * mealEvent.getEventDate()); }
-		 */
+		
 		try {
 			listsManager.deleteMaintenanceItem(maintenanceItemDTO);
 		} catch (Exception ex) {
@@ -220,16 +192,16 @@ public class ListsServiceImpl implements ListsService {
 
 	// Maintenance Task services
 	public void createMtask(MtaskDTO mtaskDTO) throws CohomanException {
-		/*
-		 * logger.info("AUDIT: Create maintenance task for " +
-		 * maintenanceItemDTO.getItemname() + ", by " +
-		 * getUserFullname(maintenanceItemDTO.getItemCreatedBy()) +
-		 * ", description =\"" + maintenanceItemDTO.getItemdescription() +
-		 * "\", frequency = " + maintenanceItemDTO.getFrequencyOfItem() +
-		 * "\", priority = " + maintenanceItemDTO.getPriority() +
-		 * "\", target time of year = " +
-		 * maintenanceItemDTO.getTargetTimeOfyear());
-		 */
+	
+		logger.info("AUDIT: Create maintenance task for item "
+				+ getMaintenanceItem(mtaskDTO.getMaintenanceitemid())
+						.getItemname() + "\", Task Start =\""
+				+ mtaskDTO.getTaskstartDate() + "\", Vendor Name =\""
+				+ mtaskDTO.getVendorname() + "\", Added By =\""
+				+ getUserFullname(mtaskDTO.getItemCreatedBy())
+				+ "\", Task Completed On =\"" + mtaskDTO.getTaskendDate()
+				+ "\", Notes =\"" + mtaskDTO.getNotes()
+				+ "\"");
 
 		listsManager.createMtask(mtaskDTO);
 	}
@@ -243,9 +215,22 @@ public class ListsServiceImpl implements ListsService {
 	}
 
 	public void updateMtask(MtaskDTO mtaskDTO) {
+		
+		try {
+			logger.info("AUDIT: Update maintenance task for item "
+					+ getMaintenanceItem(mtaskDTO.getMaintenanceitemid())
+							.getItemname() + "\", Task Start =\""
+					+ mtaskDTO.getTaskstartDate() + "\", Vendor Name =\""
+					+ mtaskDTO.getVendorname() + "\", Added By =\""
+					+ getUserFullname(mtaskDTO.getItemCreatedBy())
+					+ "\", Task Completed On =\"" + mtaskDTO.getTaskendDate()
+					+ "\", Notes =\"" + mtaskDTO.getNotes());
+		} catch (Exception ex) {
+			logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
+		}
+
 		listsManager.updateMtask(mtaskDTO);
 
-		// TODO Add in the auditing!!!!!!!!!!
 	}
 
 	public void deleteMtask(Long mtaskitemid) {

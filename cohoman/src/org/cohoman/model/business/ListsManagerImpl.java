@@ -403,8 +403,7 @@ public class ListsManagerImpl implements ListsManager {
 			List<UnitBean> modifiedUnitBeanList = new ArrayList<UnitBean>();
 			for (UnitBean oneUnitBean : unitBeanList) {
 				if (!(oneUnitBean.getUnitnumber().equals("211")|| 
-						oneUnitBean.getUnitnumber().equals("410") ||
-						oneUnitBean.getUnitnumber().equals("312") )) {
+						oneUnitBean.getUnitnumber().equals("410") )) {
 					modifiedUnitBeanList.add(oneUnitBean);
 				}
 			}
