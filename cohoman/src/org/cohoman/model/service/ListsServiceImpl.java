@@ -309,6 +309,7 @@ public class ListsServiceImpl implements ListsService {
 		/*
 		 * CRITICAL PRIORITY
 		 */
+/*
 		if (problemItemDTO.getPriority().equals(ProblemPriorityEnums.P1CRITICAL
 				.name())) {
 
@@ -334,7 +335,10 @@ public class ListsServiceImpl implements ListsService {
 				//}
 			}
 
-		}  else if (problemItemDTO.getPriority().equals(ProblemPriorityEnums.P2EMERGENCY
+		}  else 
+*/
+		
+		if (problemItemDTO.getPriority().equals(ProblemPriorityEnums.P2EMERGENCY
 				.name())) {
 
 		/*
@@ -398,7 +402,8 @@ public class ListsServiceImpl implements ListsService {
 			// Send text messages to Service Coordinators
 			for (User oneuser : theusers) {
 				if (oneuser.getUsername().equals("bill")
-						|| oneuser.getUsername().equals("bobm")) {
+						|| oneuser.getUsername().equals("bobm")
+						|| oneuser.getUsername().equals("allison")) {
 					listsManager.sendTextMessageToPerson(
 							oneuser.getCellphone(), "CCM: New "
 									+ problemPriorityText
@@ -411,7 +416,8 @@ public class ListsServiceImpl implements ListsService {
 			// Ignore the Service Coordinators since they already got a text
 			// and if they are also the Service Manager, there are no more
 			// messages to send. Thus drop out of this loop.
-			if (serviceManager.equals("bill") || serviceManager.equals("bobm")) {
+			if (serviceManager.equals("bill") || serviceManager.equals("bobm")
+					|| serviceManager.equals("allison")) {
 				return;
 			}
 

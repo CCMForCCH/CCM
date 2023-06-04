@@ -2,7 +2,7 @@ package org.cohoman.view.controller.utils;
 
 public enum ProblemPriorityEnums {
 	
-	P1CRITICAL("Critical"), 
+	// P1CRITICAL("Critical"), 
 	P2EMERGENCY("Emergency"), 
 	P3HIGH("High"), 
 	P4MEDIUM("Medium"), 

@@ -24,11 +24,11 @@
 			<h:panelGrid columns="1" title="Please Enter the Text Message" 
 				headerClass="formheader" styleClass="formstyle" >
 	     		<f:facet name="header">
-            		<h:outputText value="Please Enter the Text Message to Broadcast"/>
+            		<h:outputText value="Please Enter the Text Message to Broadcast (to everyone!!)"/>
          		</f:facet>
          		<br/> <br/>	
          		          															
-				<b>Text Message:</b>
+				<b>Enter Text Message for all to receive:</b>
 				<h:inputTextarea id="TextMessage" value="#{testNotifiesController.textMessage}" rows="14" cols="70" required="true">
 					<f:validateLength maximum="1024" />
 				</h:inputTextarea>

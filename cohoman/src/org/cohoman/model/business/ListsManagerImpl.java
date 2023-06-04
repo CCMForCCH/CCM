@@ -1077,11 +1077,11 @@ public class ListsManagerImpl implements ListsManager {
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.BUILDINGIN)) {
 			return ("anne");
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.ELECTRICAL)) {
-			return ("richard");
+			return ("katie");
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.ELEVATOR)) {
 			return "bill";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.FINANCIAL)) {
-			return "ira";
+			return "bill";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.FIREALARM)) {
 			return "bill";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.HEATINGCOOLING)) {
@@ -1093,7 +1093,7 @@ public class ListsManagerImpl implements ListsManager {
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.LAUNDRYMACHINES)) {
 			return "priscilla";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.MECHANICAL)) {
-			return "bobm";
+			return "bill";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.NONEOFTHEABOVE)) {
 			return "bill";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.PERIODICSERVICES)) {
@@ -1101,7 +1101,7 @@ public class ListsManagerImpl implements ListsManager {
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.PESTCONTROL)) {
 			return "joan";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.PLUMBING)) {
-			return "bobm";
+			return "steve";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.SNOWREMOVAL)) {
 			return "polly";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.TRASH)) {
