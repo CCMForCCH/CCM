@@ -19,6 +19,8 @@ public enum ProblemLocationEnums {
 	ELEVATOR("West End, Elevator"),
 	EXERCISE("West End, Exercise Room"),
 	GARAGE("West End, Garage"),
+	GUESTBATHROOM("West End, Guest Rooms Bathroom"),
+	GUESTROOMS("West End, Guest Rooms"),
 	HALLWAYWE("West End, Hallway"),
 	HVACROOM("West End, HVAC Room"),
 	COMMONBRKIDS("West End, Kids Bathroom"),

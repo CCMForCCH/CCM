@@ -403,7 +403,8 @@ public class ListsManagerImpl implements ListsManager {
 			List<UnitBean> modifiedUnitBeanList = new ArrayList<UnitBean>();
 			for (UnitBean oneUnitBean : unitBeanList) {
 				if (!(oneUnitBean.getUnitnumber().equals("211")|| 
-						oneUnitBean.getUnitnumber().equals("410") )) {
+						oneUnitBean.getUnitnumber().equals("410")||
+						oneUnitBean.getUnitnumber().equals("411") )) {
 					modifiedUnitBeanList.add(oneUnitBean);
 				}
 			}
@@ -1073,11 +1074,11 @@ public class ListsManagerImpl implements ListsManager {
 		if (problemTypeEnum.equals(ProblemTypeEnums.ADMINISTRATIVE)) {
 			return ("bill");
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.BUILDINGEX)){
-			return ("annie");
+			return ("bill");
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.BUILDINGIN)) {
 			return ("anne");
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.ELECTRICAL)) {
-			return ("katie");
+			return ("michael");
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.ELEVATOR)) {
 			return "bill";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.FINANCIAL)) {

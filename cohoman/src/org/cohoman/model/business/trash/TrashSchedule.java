@@ -133,6 +133,10 @@ public class TrashSchedule {
 
 		teamsInOneCycle = teamsInOneCycle / 4;
 		int daysInCycle = teamsInOneCycle * 7;
+		logger.info("Trash teams in one cycle = "
+				+ teamsInOneCycle);
+		logger.info("Total days in one trash cycle = "
+				+ daysInCycle);
 
 		// See if there "ever" was a nextPersonToSkip so we can continue
 		// with that user.
@@ -145,6 +149,8 @@ public class TrashSchedule {
 		// Base next cycle on values from the last/current cycle
 		Date currentCycleStartingDate = trashCycleBeanIn
 				.getTrashcyclestartdate();
+		Date currentCycleEndingDate = trashCycleBeanIn
+				.getTrashcycleenddate();
 		String currentNextUseridToSkip = trashCycleBeanIn.getNextusertoskip();
 		if (currentNextUseridToSkip == null) {
 			currentNextUseridToSkip = oldNextUserToSkip;
@@ -162,10 +168,10 @@ public class TrashSchedule {
 				currentNextUseridToSkip);
 
 		// Create a new TrashCycle bean for another cycle.
-		Calendar calCycleStartingDate = Calendar.getInstance();
-		calCycleStartingDate.setTime(currentCycleStartingDate);
-		calCycleStartingDate.add(Calendar.DAY_OF_YEAR, daysInCycle);
-		Date newCycleStartingDate = calCycleStartingDate.getTime();
+		Calendar calNewCycleStartingDate = Calendar.getInstance();
+		calNewCycleStartingDate.setTime(currentCycleEndingDate);
+		calNewCycleStartingDate.add(Calendar.DAY_OF_YEAR, 1); // 1 more than last
+		Date newCycleStartingDate = calNewCycleStartingDate.getTime();
 
 		TrashCycleBean trashCycleBeanOut = new TrashCycleBean();
 		trashCycleBeanOut.setTrashcyclestartdate(newCycleStartingDate);
@@ -177,8 +183,8 @@ public class TrashSchedule {
 		trashCycleBeanOut.setLastunitskipped(unitNumber);
 
 		// Advance date to show the last row in the cycle
-		calCycleStartingDate.add(Calendar.DAY_OF_YEAR, daysInCycle - 1);
-		trashCycleBeanOut.setTrashcycleenddate(calCycleStartingDate.getTime());
+		calNewCycleStartingDate.add(Calendar.DAY_OF_YEAR, daysInCycle - 1);
+		trashCycleBeanOut.setTrashcycleenddate(calNewCycleStartingDate.getTime());
 		return trashCycleBeanOut;
 
 	}

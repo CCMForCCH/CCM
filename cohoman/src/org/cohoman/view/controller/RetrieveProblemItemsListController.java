@@ -26,6 +26,7 @@ public class RetrieveProblemItemsListController implements Serializable {
 	private ProblemItemDTO chosenProblemItemDTO;
 	private String chosenProblemItemId;
 	private String callingPage;
+	private int numberOfItems = 0;
 
 
 	public ListsService getListsService() {
@@ -63,7 +64,15 @@ public class RetrieveProblemItemsListController implements Serializable {
 	}
 
 
+	public int getNumberOfItems() {
+		return numberOfItems;
+	}
 
+	public void setNumberOfItems(int numberOfItems) {
+		this.numberOfItems = numberOfItems;
+	}
+
+	
 	public String getCallingPage() {
 		
 		// Get the associated problem item id that's passed
@@ -113,6 +122,7 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 		problemItemList = listsService.getProblemItems(
 				ProblemStateEnums.ALLPROBLEMS, SortEnums.ORDERBYNAME);
+		numberOfItems = problemItemList.size();
 		return problemItemList;
 
 	}
@@ -121,6 +131,7 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 		problemItemList = listsService.getProblemItems(
 				ProblemStateEnums.ALLPROBLEMS, SortEnums.ORDERBYPRIORITY);
+		numberOfItems = problemItemList.size();
 		return problemItemList;
 
 	}
@@ -129,6 +140,7 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 		problemItemList = listsService.getProblemItems(
 				ProblemStateEnums.PROBLEMISACTIVE, SortEnums.ORDERBYNAME);
+		numberOfItems = problemItemList.size();
 		return problemItemList;
 
 	}
@@ -137,6 +149,7 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 		problemItemList = listsService.getProblemItems(
 				ProblemStateEnums.PROBLEMISACTIVE, SortEnums.ORDERBYPRIORITY);
+		numberOfItems = problemItemList.size();
 		return problemItemList;
 
 	}
@@ -145,6 +158,7 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 		problemItemList = listsService.getProblemItems(
 				ProblemStateEnums.PROBLEMISINACTIVE, SortEnums.ORDERBYNAME);
+		numberOfItems = problemItemList.size();
 		return problemItemList;
 
 	}
@@ -153,6 +167,7 @@ public class RetrieveProblemItemsListController implements Serializable {
 
 		problemItemList = listsService.getProblemItems(
 				ProblemStateEnums.PROBLEMISINACTIVE, SortEnums.ORDERBYPRIORITY);
+		numberOfItems = problemItemList.size();
 		return problemItemList;
 
 	}

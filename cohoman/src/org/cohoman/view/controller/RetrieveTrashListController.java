@@ -235,6 +235,9 @@ public class RetrieveTrashListController implements Serializable {
 			userList.add(trashPerson.getUsername());
 		}
 
+		// Special case!!! Just add in Katie even though she's from the East End.
+		userList.add("katie");
+		
 		// Sort the list for the display
 		Collections.sort(userList);
 		return userList;
