@@ -35,6 +35,14 @@
 				<h:outputText value="Vendor:"  styleClass="subheading" />				
 				<h:inputText id="vendorname" value="#{mtaskController.mtaskItem.vendorname}" 
 					 maxlength = "31" required="true" />
+					
+				<h:outputText value="Added By:" styleClass="subheading" />
+				<h:selectOneMenu value="#{mtaskController.chosenItemCreatedBy}">
+					<f:selectItems value="#{editProblemController.userList}"
+						var="oneuser" 
+						itemLabel="#{oneuser.username}"
+						itemValue="#{oneuser.userid}" />
+				</h:selectOneMenu>
 					 
 				<h:outputText value="Task Start Date:" styleClass="subheading" />				
          		<p:calendar  id="popupstart" 

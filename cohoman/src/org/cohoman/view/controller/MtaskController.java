@@ -50,6 +50,7 @@ public class MtaskController implements Serializable {
 
 	private Date chosenTaskStartDate;
 	private Date chosenTaskEndDate;
+	private Long chosenItemCreatedBy;
 	
 	private String username;
 	private Date printableStartdate;
@@ -85,6 +86,14 @@ public class MtaskController implements Serializable {
 
 	public void setChosenMtaskItemId(String chosenMtaskItemId) {
 		this.chosenMtaskItemId = chosenMtaskItemId;
+	}
+
+	public Long getChosenItemCreatedBy() {
+		return chosenItemCreatedBy;
+	}
+
+	public void setChosenItemCreatedBy(Long chosenItemCreatedBy) {
+		this.chosenItemCreatedBy = chosenItemCreatedBy;
 	}
 
 	public MtaskDTO getCurrentMtaskDTO() {
@@ -266,10 +275,36 @@ public class MtaskController implements Serializable {
 				chosenMtaskItemId = chosenMtaskItemIdLast;
 			}
 		}
+		
+		// Also get the user that created the entry, ItemCreatedBy
+		// First time thru chosenItemCreatedBy will be null and thus
+		// we have to get the value from the parameter passed in. 
+		// But after that, subsequent calls needn't set it.
+		String chosenItemCreatedByAsString = requestParams
+				.get("chosenItemCreatedBy");
+		if (chosenItemCreatedBy == null) {
+			if (chosenItemCreatedByAsString == null) {
+				throw new RuntimeException(
+						"chosenItemCreatedByAsString is null!!");
+			}
+		}
+		if (chosenItemCreatedByAsString != null) {
+			chosenItemCreatedBy = Long.valueOf(chosenItemCreatedByAsString);
+		}		
+		
 		chosenMtaskItemIdLast = chosenMtaskItemId;
 		Long chosenMtaskItemIdAsLong = Long.valueOf(chosenMtaskItemId);
 		// save away the current Mtask entry so we can later edit it
 		currentMtaskDTO = listsService.getMtask(chosenMtaskItemIdAsLong);
+		
+		// Now set the user who created the update entry.
+		currentMtaskDTO.setItemCreatedBy(chosenItemCreatedBy);
+		
+		// Calculate the username for the DTO
+		User theuser = userService.getUser(currentMtaskDTO.getItemCreatedBy());
+		currentMtaskDTO.setUsername(theuser.getUsername());
+
+		
 		return currentMtaskDTO;
 	}
 
@@ -480,6 +515,8 @@ public class MtaskController implements Serializable {
 		
 		// Update the start date in the DTO
 		currentMtaskDTO.setTaskstartDate(chosenTaskStartDate);
+
+		currentMtaskDTO.setItemCreatedBy(chosenItemCreatedBy);
 
 		MaintenanceItemDTO maintenanceItemDTO = listsService
 				.getMaintenanceItem(chosenMaintenanceItemIdAsLong);

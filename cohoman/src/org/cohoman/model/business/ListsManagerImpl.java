@@ -1093,6 +1093,8 @@ public class ListsManagerImpl implements ListsManager {
 			return "polly";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.LAUNDRYMACHINES)) {
 			return "priscilla";
+		} else if (problemTypeEnum.equals(ProblemTypeEnums.LIGHTING)) {
+			return "bill";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.MECHANICAL)) {
 			return "bill";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.NONEOFTHEABOVE)) {
@@ -1102,7 +1104,7 @@ public class ListsManagerImpl implements ListsManager {
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.PESTCONTROL)) {
 			return "joan";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.PLUMBING)) {
-			return "steve";
+			return "bill";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.SNOWREMOVAL)) {
 			return "polly";
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.TRASH)) {

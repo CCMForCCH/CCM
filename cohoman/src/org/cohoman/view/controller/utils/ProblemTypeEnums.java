@@ -13,6 +13,7 @@ public enum ProblemTypeEnums {
 	HOTWATER("Hot water"), 
 	LANDSCAPING("Landscaping"),
 	LAUNDRYMACHINES("Laundry Machines"),
+	LIGHTING("Lighting"),
 	MECHANICAL("Mechanical"),
 	PERIODICSERVICES("Periodic Services"),
 	PESTCONTROL("Pest Control"),
