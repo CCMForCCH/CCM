@@ -9,6 +9,7 @@ public class ProblemItemDTO {
 	private String itemdescription;
 	private Date itemCreatedDate;
 	private Long itemCreatedBy;
+	private String itemCreatedByString;
 	private String priority;
 	private String printableCreatedDate;
 	private String printableCompletedDate;
@@ -55,6 +56,12 @@ public class ProblemItemDTO {
 	}
 	public void setItemCreatedBy(Long itemCreatedBy) {
 		this.itemCreatedBy = itemCreatedBy;
+	}
+	public String getItemCreatedByString() {
+		return itemCreatedByString;
+	}
+	public void setItemCreatedByString(String itemCreatedByString) {
+		this.itemCreatedByString = itemCreatedByString;
 	}
 	public String getPriority() {
 		return priority;

@@ -43,8 +43,9 @@
  
 		<h:column>
   			<f:facet name="header">Problem Type:Name</f:facet> 
-  			<h:link value="#{oneitem.comboTypePlusName}" outcome="displayProblemItemDetails.xhtml" >
+  			<h:link value="#{oneitem.comboTypePlusName}" outcome="listProblemUpdate.xhtml" >
   				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
+  				<f:param name="chosenProblemItemName" value="#{oneitem.itemname}"  />
   				<f:param name="callingPage" value="displayProblemList.xhtml"  />
   			</h:link> 
 		</h:column>
@@ -54,38 +55,24 @@
   			#{oneitem.priority}           
 		</h:column>
 
-
 		<h:column>
   			<f:facet name="header">Status</f:facet> 
   			#{oneitem.problemStatus}
 		</h:column>
 
 		<h:column>
-  			<f:facet name="header">Request Created On</f:facet> 
+  			<f:facet name="header">Report Created On</f:facet> 
   			#{oneitem.printableCreatedDate}           
+		</h:column>
+
+		<h:column>
+  			<f:facet name="header">Created By</f:facet> 
+  			#{oneitem.itemCreatedByString}           
 		</h:column>
 
 		<h:column>
   			<f:facet name="header">Assigned To</f:facet> 
   			#{oneitem.assignedToString}           
-		</h:column>
-
-		<h:column>
-  			<f:facet name="header">Create Update</f:facet> 
-  			<h:link value="CreateUpdate" outcome="createProblemUpdate.xhtml" >
-  				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
-  				<f:param name="chosenProblemItemName" value="#{oneitem.itemname}"  />
-  				<f:param name="operation" value="CreateUpdate" />
-  			</h:link>          
-		</h:column>
-
-		<h:column>
-  			<f:facet name="header">Problem Updates</f:facet> 
-  			<h:link value="ProblemUpdates" outcome="listProblemUpdate.xhtml">
-  				<f:param name="chosenProblemItemId" value="#{oneitem.problemitemid}"  />
-  				<f:param name="chosenProblemItemName" value="#{oneitem.itemname}"  />
-  				<f:param name="callingPage" value="displayProblemList.xhtml"  />
-  			</h:link>          
 		</h:column>
 
 </h:dataTable>

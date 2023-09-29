@@ -24,13 +24,13 @@
     <h:panelGrid columns="1" title="Problem Updates" 
 	headerClass="formheader" styleClass="formstyle" >
 	    <f:facet name="header">
-           <h:outputText value="Problem Report Updates"/>
+           <h:outputText value="Problem Report: #{problemUpdateController.problemItemName}"/>
            <br />
         </f:facet>
 	<br />
 
 	<b>
-    <h:outputText value="Updates for Problem Report: #{problemUpdateController.problemItemName}"
+    <h:outputText value="Problem Report Updates"
     	style="display:block; text-align:center; font-weight: bold; font-size: 125%;color: blue"/>
 	</b>
 	<br />
@@ -75,11 +75,76 @@
 
     </h:dataTable>
 	<br />
+
+	   		<h:link value="Create a new Problem Report Update" outcome="createProblemUpdate.xhtml" 
+	   			style="display:block; text-align:center; font-weight: bold; font-size: 100%;">
+  				<f:param name="chosenProblemItemId" value="#{problemUpdateController.chosenProblemItemId}"  />
+  				<f:param name="chosenProblemItemName" value="#{problemUpdateController.chosenProblemItemName}"  />
+  				<f:param name="operation" value="CreateUpdate" />
+  			</h:link>          
 	
-	<h:link value="Return to Problem Report List" outcome="#{problemUpdateController.callingPage}" style="display:block; text-align:center"/>				
+	 </h:panelGrid>
+	 
+	 
+	 
+-       <br />
+	
+    <h:outputText value="Problem Report Details"
+    	style="display:block; text-align:center; font-weight: bold; font-size: 125%;color: blue"/>
+	<b></b>
+	
+			<h:panelGrid columns="2" title="Problem Report Details" 
+				headerClass="formheader" styleClass="itemdetails" >
+         		<h:outputText value="Name:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.itemname}" />
+         			
+         		<h:outputText value="Description:"  style="font-weight:bold" />				
+				<h:outputText id="ItemDescription" value="#{problemUpdateController.chosenProblemItemDTO.itemdescription}" 
+					rows="3" cols="60" maxlength = "4095" escape="false" style="white-space: pre-wrap;"/>
+
+				<h:outputText value="Created By:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.username}" />
+
+				<h:outputText value="Created On:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.printableCreatedDate}" />
+
+         		<h:outputText value="Problem Type:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.problemType}" />
+
+         		<h:outputText value="Location:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.location}" />
+
+         		<h:outputText value="Status:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.problemStatus}" />	
+         		
+         		<h:outputText value="Priority:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.priority}" />
+
+				<h:outputText value="Assigned To:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.assignedToString}" />
+
+				<h:outputText value="Vendor Name:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.vendor}" />
+
+				<h:outputText value="Invoice Number:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.invoiceNumber}" />
+
+				<h:outputText value="Invoice Link:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.invoiceLink}" />
+
+				<h:outputText value="Cost:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.cost}" />
 		
-    </h:panelGrid>
-	<br />
+				<h:outputText value="Completed On:" style="font-weight:bold" />
+				<h:outputText value="#{problemUpdateController.chosenProblemItemDTO.printableCompletedDate}" />
+							
+				<br />
+				<br />
+         	 	
+         	 	<h:link value="Return to Problem Report List" outcome="#{problemUpdateController.callingPage}" />				
+			</h:panelGrid>
+
+	
 	
     <h:messages layout="table" errorClass="errors" />
          		

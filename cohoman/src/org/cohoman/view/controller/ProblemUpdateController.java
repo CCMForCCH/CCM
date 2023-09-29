@@ -13,9 +13,12 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.cohoman.model.business.User;
+import org.cohoman.model.dto.ProblemItemDTO;
 import org.cohoman.model.dto.ProblemUpdateDTO;
 import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
+import org.cohoman.view.controller.utils.ProblemStateEnums;
+import org.cohoman.view.controller.utils.SortEnums;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean
@@ -37,6 +40,8 @@ public class ProblemUpdateController implements Serializable {
 	private Date chosenProblemUpdateDate;
 	private Long chosenItemCreatedBy;
 	
+	private List<ProblemItemDTO> problemItemDTOsList;
+
 	private ProblemUpdateDTO currentProblemUpdateDTO;
 
 	private Long problemUpdateid;
@@ -82,11 +87,21 @@ public class ProblemUpdateController implements Serializable {
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		Map<String, String> requestParams = ctx.getExternalContext()
 				.getRequestParameterMap();
-		chosenProblemItemId = requestParams.get("chosenProblemItemId");
-		if (chosenProblemItemId == null) {
-			// If there's no value, just give it one. It seems that
-			// it will be overwritten anyway from the form. 10/19/2017
-			chosenProblemItemId = "0";
+		String chosenProblemItemIdTemp = requestParams.get("chosenProblemItemId");
+		if (chosenProblemItemIdTemp == null) {
+			// No parameter passed
+			if (chosenProblemItemId == null) {
+				// No previous value to use
+				// If there's no value, just give it one. It seems that
+				// it will be overwritten anyway from the form. 10/19/2017
+//				chosenProblemItemId = "0";
+				chosenProblemItemId = Long.toString(chosenProblemItemIdAsLong);
+			} else {
+				// just stick with the previous value
+			}
+		} else {
+			// new parameter passed on the command line; use it!
+			chosenProblemItemId = chosenProblemItemIdTemp;			
 		}
 
 		// Save the Id of the chosen item so we can so it can be saved as
@@ -99,6 +114,15 @@ public class ProblemUpdateController implements Serializable {
 	public void setChosenProblemItemId(String chosenProblemItemId) {
 		this.chosenProblemItemId = chosenProblemItemId;
 		chosenProblemItemIdAsLong = Long.valueOf(chosenProblemItemId);
+	}
+
+	
+	public String getChosenProblemItemName() {
+		return chosenProblemItemName;
+	}
+
+	public void setChosenProblemItemName(String chosenProblemItemName) {
+		this.chosenProblemItemName = chosenProblemItemName;
 	}
 
 	public String getCallingPage() {
@@ -292,6 +316,26 @@ public class ProblemUpdateController implements Serializable {
 				
 		return currentProblemUpdateDTO;
 	}
+	
+	
+	public ProblemItemDTO getChosenProblemItemDTO() {
+
+		// new stuff
+		getChosenProblemItemId();
+		long itemId = Long.parseLong(chosenProblemItemId);
+		problemItemDTOsList = listsService.getProblemItems(
+				ProblemStateEnums.ALLPROBLEMS, SortEnums.ORDERBYNAME);
+		for (ProblemItemDTO itemDTO : problemItemDTOsList) {
+			if (itemDTO.getProblemitemid() == itemId) {
+				return itemDTO;
+			}
+		}
+
+		throw new RuntimeException(
+				"chosenProblemItemId is not found in the list: " + itemId);
+
+	}
+
 	
 	
 	public List<ProblemUpdateDTO> getProblemUpdateDTOList() {

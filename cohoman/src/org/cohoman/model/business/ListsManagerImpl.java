@@ -955,6 +955,13 @@ public class ListsManagerImpl implements ListsManager {
 				oneDTO.setAssignedToString(theUser.getUsername());
 			}
 
+			// And again do the same for Created By user, if there is an Created By user (likely!)
+			if (oneDTO.getItemCreatedBy() != null && oneDTO.getItemCreatedBy() != 0) {
+				userid = oneDTO.getItemCreatedBy();
+				theUser = userDao.getUser(userid);
+				oneDTO.setItemCreatedByString(theUser.getUsername());
+			}
+
 			// Compute the printable Created On and Completed dates
 			oneDTO.setPrintableCreatedDate(getPrintableDateWithTime(oneDTO
 					.getItemCreatedDate()));

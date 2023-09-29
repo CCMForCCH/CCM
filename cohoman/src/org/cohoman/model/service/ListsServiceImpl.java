@@ -131,15 +131,19 @@ public class ListsServiceImpl implements ListsService {
 		maintenanceItemDTO.setAssignedToString(assignedToString);
 		maintenanceItemDTO.setAssignedTo(userid);
 		
-		logger.info("AUDIT: Create maintenance for "
-				+ maintenanceItemDTO.getItemname() + ", by "
-				+ getUserFullname(maintenanceItemDTO.getItemCreatedBy())
-				+ ", description =\"" + maintenanceItemDTO.getItemdescription()
-				+ "\", frequency = " + maintenanceItemDTO.getFrequencyOfItem()
-				+ "\", priority = " + maintenanceItemDTO.getPriority()
-				+ "\", target time of year = "
-				+ maintenanceItemDTO.getTargetTimeOfyear()
-				+ "\", assigned to = " + getUserFullname(maintenanceItemDTO.getAssignedTo()));
+		String assignedTo = "";
+		if (maintenanceItemDTO.getAssignedTo() != null && maintenanceItemDTO.getAssignedTo() != 0) {
+			assignedTo = getUserFullname(maintenanceItemDTO.getAssignedTo());
+		}
+
+		logger.info("AUDIT: Create maintenance item for "
+				+ "\"" + maintenanceItemDTO.getItemname() + "\", "
+				+ "by \"" + getUserFullname(maintenanceItemDTO.getItemCreatedBy()) + "\", "
+				+ "description = \"" + maintenanceItemDTO.getItemdescription() + "\", "
+				+ "frequency = \"" + maintenanceItemDTO.getFrequencyOfItem() + "\", "
+				+ "priority = \"" + maintenanceItemDTO.getPriority() + "\", "
+				+ "target time of year = \"" + maintenanceItemDTO.getTargetTimeOfyear() + "\", "
+				+ "assigned to = \"" + assignedTo + "\"");
 		
 		// Now, let the Manager do the work.
 		listsManager.createMaintenanceItem(maintenanceItemDTO);
@@ -156,13 +160,20 @@ public class ListsServiceImpl implements ListsService {
 
 	public void updateMaintenanceItem(MaintenanceItemDTO maintenanceItemDTO)
 			throws CohomanException {
-		logger.info("AUDIT: Update maintenance for "
-				+ maintenanceItemDTO.getItemname() + ", by "
-				+ getUserFullname(maintenanceItemDTO.getItemCreatedBy())
-				+ ", description =\"" + maintenanceItemDTO.getItemdescription()
-				+ "\", frequency = " + maintenanceItemDTO.getFrequencyOfItem()
-				+ "\", priority = " + maintenanceItemDTO.getPriority()
-				+ "\", status = " + maintenanceItemDTO.getTaskStatus());
+		String assignedTo = "";
+		if (maintenanceItemDTO.getAssignedTo() != null && maintenanceItemDTO.getAssignedTo() != 0) {
+			assignedTo = getUserFullname(maintenanceItemDTO.getAssignedTo());
+		}
+		
+		logger.info("AUDIT: Update maintenance item for "
+				+ "\"" + maintenanceItemDTO.getItemname() + "\", "
+				+ "by \"" + getUserFullname(maintenanceItemDTO.getItemCreatedBy()) + "\", "
+				+ "description = \"" + maintenanceItemDTO.getItemdescription() + "\", "
+				+ "frequency = \"" + maintenanceItemDTO.getFrequencyOfItem() + "\", "
+				+ "priority = \"" + maintenanceItemDTO.getPriority() + "\", "
+				+ "target time of year = \"" + maintenanceItemDTO.getTargetTimeOfyear() + "\", "
+				+ "assigned to = \"" + assignedTo + "\", "
+				+ "status = \"" + maintenanceItemDTO.getTaskStatus() + "\"");
 		listsManager.updateMaintenanceItem(maintenanceItemDTO);
 	}
 
@@ -179,28 +190,33 @@ public class ListsServiceImpl implements ListsService {
 					+ maintenanceItemDTO.getItemname());
 		}
 
+		String assignedTo = "";
+		if (maintenanceItemDTO.getAssignedTo() != null && maintenanceItemDTO.getAssignedTo() != 0) {
+			assignedTo = getUserFullname(maintenanceItemDTO.getAssignedTo());
+		}
+
 		logger.info("AUDIT: Delete maintenance item for "
-				+ maintenanceItemDTO.getItemname() + ", description = \""
-				+ maintenanceItemDTO.getItemdescription()
-				+ "\", date created = "
-				+ maintenanceItemDTO.getPrintableCreatedDate()
-				+ "\", date last performed = "
-				+ maintenanceItemDTO.getLastperformedDate() + " deleted by "
-				+ LoggingUtils.getCurrentUsername());
+				+ "\"" + maintenanceItemDTO.getItemname() + "\", "
+				+ "by \"" + getUserFullname(maintenanceItemDTO.getItemCreatedBy()) + "\", "
+				+ "description = \"" + maintenanceItemDTO.getItemdescription() + "\", "
+				+ "date created = \"" + maintenanceItemDTO.getPrintableCreatedDate() + "\", "
+				+ "date last performed = \"" + maintenanceItemDTO.getLastperformedDate() + "\", "
+				+ "assigned to = \"" + assignedTo + "\", "
+				+ "deleted by \"" + LoggingUtils.getCurrentUsername() + "\"");
 
 	}
 
 	// Maintenance Task services
 	public void createMtask(MtaskDTO mtaskDTO) throws CohomanException {
 	
-		logger.info("AUDIT: Create maintenance task for item "
+		logger.info("AUDIT: Create maintenance task for item \""
 				+ getMaintenanceItem(mtaskDTO.getMaintenanceitemid())
-						.getItemname() + "\", Task Start =\""
-				+ mtaskDTO.getTaskstartDate() + "\", Vendor Name =\""
-				+ mtaskDTO.getVendorname() + "\", Added By =\""
+						.getItemname() + "\", Task Start = \""
+				+ mtaskDTO.getTaskstartDate() + "\", Vendor Name = \""
+				+ mtaskDTO.getVendorname() + "\", Added By = \""
 				+ getUserFullname(mtaskDTO.getItemCreatedBy())
-				+ "\", Task Completed On =\"" + mtaskDTO.getTaskendDate()
-				+ "\", Notes =\"" + mtaskDTO.getNotes()
+				+ "\", Task Completed On = \"" + mtaskDTO.getTaskendDate()
+				+ "\", Notes = \"" + mtaskDTO.getNotes()
 				+ "\"");
 
 		listsManager.createMtask(mtaskDTO);
@@ -217,14 +233,14 @@ public class ListsServiceImpl implements ListsService {
 	public void updateMtask(MtaskDTO mtaskDTO) {
 		
 		try {
-			logger.info("AUDIT: Update maintenance task for item "
+			logger.info("AUDIT: Update maintenance task for item \""
 					+ getMaintenanceItem(mtaskDTO.getMaintenanceitemid())
-							.getItemname() + "\", Task Start =\""
-					+ mtaskDTO.getTaskstartDate() + "\", Vendor Name =\""
-					+ mtaskDTO.getVendorname() + "\", Added By =\""
+							.getItemname() + "\", Task Start = \""
+					+ mtaskDTO.getTaskstartDate() + "\", Vendor Name = \""
+					+ mtaskDTO.getVendorname() + "\", Added By = \""
 					+ getUserFullname(mtaskDTO.getItemCreatedBy())
-					+ "\", Task Completed On =\"" + mtaskDTO.getTaskendDate()
-					+ "\", Notes =\"" + mtaskDTO.getNotes());
+					+ "\", Task Completed On = \"" + mtaskDTO.getTaskendDate()
+					+ "\", Notes = \"" + mtaskDTO.getNotes());
 		} catch (Exception ex) {
 			logger.log(Level.SEVERE, LoggingUtils.displayExceptionInfo(ex));
 		}
@@ -234,9 +250,20 @@ public class ListsServiceImpl implements ListsService {
 	}
 
 	public void deleteMtask(Long mtaskitemid) {
+		
+		MtaskDTO mtaskDTO = getMtask(mtaskitemid);
 		listsManager.deleteMtask(mtaskitemid);
 
-		// TODO Add in the auditing!!!!!!!!!!!!
+		try {
+		logger.info("AUDIT: delete maintenance task update added by \""
+				+ getUserFullname(mtaskDTO.getItemCreatedBy())
+				+ "\", vendor name = \"" + mtaskDTO.getVendorname()
+				+ "\", start date = \"" + mtaskDTO.getPrintableStartdate()
+				+ "\", notes = \"" + mtaskDTO.getNotes());
+		} catch (CohomanException ex) {
+			// ???
+		}
+
 	}
 
 	// Problem Item services
@@ -488,6 +515,11 @@ public class ListsServiceImpl implements ListsService {
 			throws CohomanException {
 
 		// Audit the updated report first
+		String assignedTo = "";
+		if (problemItemDTO.getAssignedTo() != null && problemItemDTO.getAssignedTo() != 0) {
+			assignedTo = getUserFullname(problemItemDTO.getAssignedTo());
+		}
+
 		logger.info("AUDIT: Update Problem Report for "
 				+ problemItemDTO.getItemname() + ", by "
 				+ getUserFullname(problemItemDTO.getItemCreatedBy())
@@ -498,7 +530,7 @@ public class ListsServiceImpl implements ListsService {
 				+ "\", status = \""
 				+ problemItemDTO.getProblemStatus()
 				+ "\", assigned to = \""
-				+ getUserFullname(problemItemDTO.getAssignedTo())
+				+ assignedTo
 				+ "\"");
 
 		// Now do the actual update
