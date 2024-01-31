@@ -520,6 +520,8 @@ public class ListsServiceImpl implements ListsService {
 			assignedTo = getUserFullname(problemItemDTO.getAssignedTo());
 		}
 
+		ProblemItemDTO originalProblemItemDTO = listsManager.getProblemItem(problemItemDTO.getProblemitemid());
+		
 		logger.info("AUDIT: Update Problem Report for "
 				+ problemItemDTO.getItemname() + ", by "
 				+ getUserFullname(problemItemDTO.getItemCreatedBy())
@@ -541,6 +543,10 @@ public class ListsServiceImpl implements ListsService {
 		// the problem is "done".
 		User submittedUser = userManager.getUser(problemItemDTO.getItemCreatedBy());
 
+		// First make sure the status has actually changed. If not, just return.
+		if (originalProblemItemDTO.getProblemStatus().equals(problemItemDTO.getProblemStatus())) {
+			return;
+		}
 		if (problemItemDTO.getProblemStatus().equals(ProblemStatusEnums.COMPLETED.name()) ||
 				problemItemDTO.getProblemStatus().equals(ProblemStatusEnums.CLOSED.name())) {
 			listsManager.sendTextMessageToPerson(

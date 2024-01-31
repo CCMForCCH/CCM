@@ -45,7 +45,7 @@ public class SignupPizzaController implements Serializable {
 	private String signupOperation = "doSignup";
 	private PizzaEventDTO pizzaEventDTO;
 	private String slotNumber;
-	private int numberattendingpizza = 1; // set default to 0
+	private int numberattendingpizza = 0; // set default to 0
 	private int numberattendingpotluck = 0; // set default to 0
 	private String pizzatopping1;
 	private String pizzatopping2;
@@ -67,7 +67,7 @@ public class SignupPizzaController implements Serializable {
 		slotNumber = "";
 		signupOperation = "doSignup";
 
-		numberattendingpizza = 1; // set default to 0
+		numberattendingpizza = 0; // set default to 0
 		numberattendingpotluck = 0; // set default to 0
 		pizzatopping1 = "";
 		pizzatopping2 = "";
@@ -187,46 +187,6 @@ public class SignupPizzaController implements Serializable {
 		this.configurationService = configurationService;
 	}
 
-	// Seems to be completely replaced satisfactorily by
-	// getleaders(). Comment out for now (12/08/2017)
-/*
-	public Boolean getLeader1() {
-
-		// get the userid of the current user to compare against the lead cook
-		FacesContext ctx = FacesContext.getCurrentInstance();
-		HttpSession session = (HttpSession) ctx.getExternalContext()
-				.getSession(true);
-		User dbUser = (User) session
-				.getAttribute(AuthenticateController.SESSIONVAR_USER_NAME);
-
-		// Robustness check
-		if (chosenPizzaEventString == null) {
-			return false;
-		}
-
-		// Get the chosen Meal Event so we can display correct information
-		// about the Meal before submittal
-		eventId = Long.valueOf(chosenPizzaEventString);
-		PizzaEvent chosenPizzaEvent = eventService.getPizzaEvent(eventId);
-
-		// Need to check for null value in case event was just deleted
-		// (3/31/17).
-		// In which case, simply conclude it's not the leader
-		if (chosenPizzaEvent == null) {
-			return false;
-		}
-
-		// get lead cook based on chosen meal event
-		if (chosenPizzaEvent.getLeader1() != null
-				&& chosenPizzaEvent.getLeader1() > 0) {
-			if (dbUser.getUserid() == chosenPizzaEvent.getLeader1()) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-*/
 	
 	// A replacement for getLeader1() which will allow any of
 	// leader1, leader2, or meal admin to signup other users

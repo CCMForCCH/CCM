@@ -332,9 +332,17 @@ public class EditProblemController implements Serializable {
 				ProblemStatusEnums.COMPLETED.name())
 				|| chosenProblemItemDTO.getProblemStatus().equals(
 						ProblemStatusEnums.CLOSED.name())) {
-			GregorianCalendar now = new GregorianCalendar();
-			chosenProblemItemDTO.setItemCompletedDate(now.getTime());
+
+			// COMPLETED or CLOSED: set completed date unless already set
+			if (chosenProblemItemDTO.getItemCompletedDate() == null) {
+
+				GregorianCalendar now = new GregorianCalendar();
+				chosenProblemItemDTO.setItemCompletedDate(now.getTime());
+			} else {
+				// Completed date already set. Leave it alone.
+			}
 		} else {
+			// Status is neither CLOSED nor COMPLETED. Reset it to null.
 			chosenProblemItemDTO.setItemCompletedDate(null);
 		}
 

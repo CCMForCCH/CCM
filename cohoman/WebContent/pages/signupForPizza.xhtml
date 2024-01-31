@@ -40,10 +40,10 @@
 						var="onemeal" 
 						itemLabel="#{onemeal.choosableEventDate}"
 						itemValue="#{onemeal.usableEventid}" />
-					<f:ajax render="chooseoptions signupforwhom numberquestionpizza numberquestionpotluck sorryClosedLead topping1 willbring submitbutton" 
-						execute="chooseoptions signupforwhom numberquestionpizza numberquestionpotluck sorryClosedLead topping1 willbring submitbutton" event="change" />
+					<f:ajax render="chooseoptions signupforwhom numberquestionpizza numberquestionpotluck sorryClosedLead pizzapreference willbring submitbutton" 
+						execute="chooseoptions signupforwhom numberquestionpizza numberquestionpotluck sorryClosedLead pizzapreference willbring submitbutton" event="change" />
 				</h:selectOneMenu>
-				
+								   		
 				<h:panelGroup id="chooseoptions" layout="block" rendered="#{not empty signupPizzaController.pizzaEventList}" >
 				
 					<h:outputText value="&lt;br/&gt;As Leader, choose to signup yourself, someone else, or close the pizza/potluck" 
@@ -58,7 +58,7 @@
 						<f:selectItem itemValue="doSignupSomeoneElse" itemLabel="Signup someone else for the pizza/potluck" 
 							itemDisabled="#{signupPizzaController.mealClosed}" />			
 						<f:selectItem itemValue="closePizzaNow" itemLabel="Close signups for this pizza/potluck" />
-						<f:ajax render="numberquestionpizza numberquestionpotluck topping1 willbring signupforwhom" />
+						<f:ajax render="pizzapreference numberquestionpizza numberquestionpotluck  willbring signupforwhom" />
 					</h:selectOneRadio>
 
 			    	<h:selectOneRadio value="#{signupPizzaController.signupOperation}" layout="pageDirection"
@@ -68,7 +68,7 @@
 						<f:selectItem itemValue="doSignupSomeoneElse" itemLabel="Signup someone else for the pizza/potluck" 
 							itemDisabled="#{signupPizzaController.mealClosed}" />			
 						<f:selectItem itemValue="openPizzaNow" itemLabel="Open signups for this pizza/potluck" />
-						<f:ajax render="numberquestionpizza numberquestionpotluck topping1 willbring signupforwhom" />
+						<f:ajax render="pizzapreference numberquestionpizza numberquestionpotluck willbring signupforwhom" />
 					</h:selectOneRadio>
 
 				</h:panelGroup>
@@ -86,48 +86,43 @@
 							itemValue="#{oneuser.userid}" />
 					</h:selectOneMenu>
 				</h:panelGroup>
- 	
+ 
+ 				<h:panelGroup id="pizzapreference" layout="block" rendered="#{not empty signupPizzaController.pizzaEventList}" >
+					<h:outputText  value="&lt;br/&gt;Enter pizza type preference (optional):&lt;br/&gt;" 
+						styleClass="subheading"  rendered="#{(signupPizzaController.chosenPizzaEventString ne '1') and
+				   			(signupPizzaController.signupOperation eq 'doSignup' ||
+				   			signupPizzaController.signupOperation eq 'doSignupSomeoneElse') and
+				   			!signupPizzaController.mealClosed}" escape="false" />
+					<h:inputText value="#{signupPizzaController.pizzatopping1}"  rendered="#{(signupPizzaController.chosenPizzaEventString ne '1') and
+				   			(signupPizzaController.signupOperation eq 'doSignup' ||
+				   			signupPizzaController.signupOperation eq 'doSignupSomeoneElse') and
+				   			!signupPizzaController.mealClosed}" size = "46" maxlength = "47"  />
+ 				</h:panelGroup>
+ 
 				<h:panelGroup id="numberquestionpizza" layout="block" rendered="#{not empty signupPizzaController.pizzaEventList}" >
-					<h:outputText  value="&lt;br/&gt;Choose number attending for pizza (enter 0 to delete signup):&lt;br/&gt;" 
+				
+					<h:outputText  value="&lt;br/&gt;Choose number attending that pay for pizza (enter 0 to delete pizza signups):&lt;br/&gt;" 
 						styleClass="subheading"
 				   		rendered="#{(signupPizzaController.chosenPizzaEventString ne '1') and
 				   			(signupPizzaController.signupOperation eq 'doSignup' ||
 				   			signupPizzaController.signupOperation eq 'doSignupSomeoneElse') and
-				   			!signupPizzaController.mealClosed}" escape="false" />					
-					
-					<h:selectOneMenu  value="#{signupPizzaController.numberattendingpizza}" styleClass="dropdowns"
-				 	rendered="#{ (signupPizzaController.chosenPizzaEventString ne '1') and
-				 		(signupPizzaController.signupOperation eq 'doSignup' ||
-				 		signupPizzaController.signupOperation eq 'doSignupSomeoneElse') and
-				 		!signupPizzaController.mealClosed}" >
-						<f:selectItems value="#{signupPizzaController.attendingCount}"
-							var="onecount" 
-							itemLabel="#{onecount}"
-							itemValue="#{onecount}" />
-							<f:ajax render="topping1" execute="topping1" event="change"/>
-					</h:selectOneMenu>				   		 		
-					
-				</h:panelGroup>
-
-				<h:panelGroup id="topping1" layout="block" rendered="#{not empty signupPizzaController.pizzaEventList}" >
-					<h:outputText  value="&lt;br/&gt;Enter pizza type preference (optional):&lt;br/&gt;" 
-						styleClass="subheading" 
-				   		rendered="#{(signupPizzaController.chosenPizzaEventString ne '1') and
-				   			(signupPizzaController.signupOperation eq 'doSignup' ||
-				   			signupPizzaController.signupOperation eq 'doSignupSomeoneElse') and
-				   			!signupPizzaController.mealClosed and 
-				   			signupPizzaController.numberattendingpizza ne '0'}" escape="false" />
-				
-					<h:inputText value="#{signupPizzaController.pizzatopping1}"  size = "46" maxlength = "47" 
-				   	rendered="#{(signupPizzaController.chosenPizzaEventString ne '1') and
-				   		(signupPizzaController.signupOperation eq 'doSignup' ||
-				   		signupPizzaController.signupOperation eq 'doSignupSomeoneElse') and
-				   		!signupPizzaController.mealClosed and 
-				   		signupPizzaController.numberattendingpizza ne '0'}" />
+				   			!signupPizzaController.mealClosed}" escape="false" />
+				   			
+				   <h:selectOneMenu  value="#{signupPizzaController.numberattendingpizza}" styleClass="dropdowns"
+                        rendered="#{ (signupPizzaController.chosenPizzaEventString ne '1') and
+                                     (signupPizzaController.signupOperation eq 'doSignup' ||
+                                      signupPizzaController.signupOperation eq 'doSignupSomeoneElse') and
+                                      !signupPizzaController.mealClosed}" >
+                                         <f:selectItems value="#{signupPizzaController.attendingCount}"
+                                               var="onecount"
+                                               itemLabel="#{onecount}"
+                                               itemValue="#{onecount}" />
+                  </h:selectOneMenu>
+				   											
 				</h:panelGroup>
 
 				<h:panelGroup id="numberquestionpotluck" layout="block" rendered="#{not empty signupPizzaController.pizzaEventList}" >
-					<h:outputText  value="&lt;br/&gt;Choose number attending with a potluck (enter 0 to delete signup):&lt;br/&gt;"
+					<h:outputText  value="&lt;br/&gt;Choose number attending that contribute a potluck dish (enter 0 to delete potluck signups):&lt;br/&gt;"
 						styleClass="subheading" 
 				   		rendered="#{ (signupPizzaController.chosenPizzaEventString ne '1') and
 				   			(signupPizzaController.signupOperation eq 'doSignup' ||
