@@ -1083,7 +1083,7 @@ public class ListsManagerImpl implements ListsManager {
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.BUILDINGEX)){
 			return ("bill");
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.BUILDINGIN)) {
-			return ("anne");
+			return ("bill");
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.ELECTRICAL)) {
 			return ("michael");
 		} else if (problemTypeEnum.equals(ProblemTypeEnums.ELEVATOR)) {

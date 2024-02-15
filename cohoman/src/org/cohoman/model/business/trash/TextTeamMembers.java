@@ -104,7 +104,14 @@ public class TextTeamMembers implements Runnable, Serializable {
 			// Now we need to get the date and person for the security person
 			Date securityDate = securityRows.get(0).getStartingDate();
 			List<String> singleSecurityPersonList = new ArrayList<String>();
-			singleSecurityPersonList.add(securityRows.get(0).getUsername());
+			
+			// Check if there's a substitute, and if so, add that to the list 
+			String substituteName = securityRows.get(0).getSubstitute();
+			if (substituteName == null || substituteName.isEmpty()) {
+				singleSecurityPersonList.add(securityRows.get(0).getUsername());
+			} else {
+				singleSecurityPersonList.add(substituteName);				
+			}
 			//singleSecurityPersonList.add("bill");
 			//Calendar today = Calendar.getInstance();
 			//today.set(Calendar.HOUR, 0);
@@ -114,7 +121,12 @@ public class TextTeamMembers implements Runnable, Serializable {
 			if (isNowTheSelectedDayAndTime(securityDate, 10, 0)) {
 				sendTextMessageToTeam(singleSecurityPersonList, "CCM: You are scheduled to do security starting tonight");
 				singleSecurityPersonList.clear(); // empty the list
-				singleSecurityPersonList.add(securityRows.get(1).getUsername());
+				substituteName = securityRows.get(1).getSubstitute();
+				if (substituteName == null || substituteName.isEmpty()) {
+					singleSecurityPersonList.add(securityRows.get(1).getUsername());
+				} else {
+					singleSecurityPersonList.add(substituteName);				
+				}
 				sendTextMessageToTeam(singleSecurityPersonList, "CCM: You are scheduled to do security starting one week from tonight");
 			}
 			
