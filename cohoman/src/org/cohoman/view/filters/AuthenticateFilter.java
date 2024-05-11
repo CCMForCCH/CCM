@@ -89,7 +89,7 @@ public class AuthenticateFilter implements Filter {
 				if (kioskKeyParameter
 						.equalsIgnoreCase(AuthenticateController.SESSIONVAR_KIOSK_VALUE)
 						&& servletRequest.getRemoteAddr().equals(
-								"64.112.178.26")) {
+								"64.112.177.182")) {
 					logger.log(Level.INFO, "DEBUG: remote address (client) = "
 							+ servletRequest.getRemoteAddr());
 
