@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -43,6 +44,7 @@ public class CreatePotluckController implements Serializable {
 	private String potluckInfo = null;
 	private String chosenUserString;
 	private UserService userService = null;
+	private long lastPotluckDaysLoadedTime;
 
 	
 	public CreatePotluckController() {
@@ -98,7 +100,7 @@ public class CreatePotluckController implements Serializable {
 				return;
 			}
 		}
-		throw new RuntimeException ("Cannot find selected MealDate object.");
+		throw new RuntimeException ("Cannot find selected PotluckDate object.");
 	}
 
 	public String getLeader1() {
@@ -178,11 +180,39 @@ public class CreatePotluckController implements Serializable {
 	
 	public List<MealDate> getPotluckDaysForPeriod() {
 
-		potluckDaysForPeriod = eventService.getPotluckDaysForPeriod();
+		// Only go to the database once per page. Do this by setting up
+		// a cache of sorts. If more than 500 ms have passed since last 
+		// access to the database, read it in again. Otherwise, just 
+		// return the list we got from the database before.
+
+		Logger logger = Logger.getLogger(this.getClass().getName());
+		//if (potluckDaysForPeriod == null) {
+		//	logger.info("AUDIT: inside getPotluckDaysForPeriod() with potluckDaysForPeriod being null.");
+		//} else {
+		//	logger.info("AUDIT: inside getPotluckDaysForPeriod() with isEmpty = " + potluckDaysForPeriod.isEmpty() );
+		//}
+
+		Calendar calNow = Calendar.getInstance();
+		long currentTimeInMS = calNow.getTimeInMillis();
 		
-		// Filter out days that have passed for everyone 
-		// except the meal admin
-		potluckDaysForPeriod = filterOutPastMeals(potluckDaysForPeriod);
+		// If the list is empty or the 2 times differ by more
+		// than 500 ms., read from the database. Otherwise, use
+		// the list we just recently got from the database.
+		long timeDiff = (currentTimeInMS - lastPotluckDaysLoadedTime);
+		lastPotluckDaysLoadedTime = currentTimeInMS;
+		//logger.info("AUDIT: inside getPotluckDaysForPeriod() with timediff1 = " + timeDiff );
+		
+		if (potluckDaysForPeriod == null || potluckDaysForPeriod.isEmpty() || timeDiff > 500L) {
+
+			logger.info("AUDIT: inside getPotluckDaysForPeriod() with timediff2 = " + timeDiff );
+
+			// Get all potluck days from database.
+			potluckDaysForPeriod = eventService.getPotluckDaysForPeriod();
+
+			// Filter out days that have passed for everyone
+			// except the meal admin
+			potluckDaysForPeriod = filterOutPastMeals(potluckDaysForPeriod);
+		}
 		return potluckDaysForPeriod;
 	}
 

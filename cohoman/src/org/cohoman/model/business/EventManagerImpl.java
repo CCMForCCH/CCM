@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.cohoman.model.business.MealSchedule.MealScheduleText;
 import org.cohoman.model.dto.CohoEventDTO;
@@ -156,7 +157,8 @@ public class EventManagerImpl implements EventManager {
 		// String subject = "Testing out a googlegroup email issue";
 		// String body = "This is simply a test that you should ignore.";
 
-		sendEmailToAddress(emailAddress, subject, body);
+		// Temporarily stop sending email notifications 5/12/2024
+		//sendEmailToAddress(emailAddress, subject, body);
 
 	}
 
@@ -183,7 +185,8 @@ public class EventManagerImpl implements EventManager {
 				"Use CCM to signup to attend this pizza/potluck meal or to see more details about the meal.\n\n" +
 				"(This is an automated message from CCM.)\n";
 
-		sendEmailToAddress(emailAddress, subject, body);
+		// Temporarily stop sending email notifications 5/12/2024
+		//sendEmailToAddress(emailAddress, subject, body);
 
 	}
 
@@ -209,8 +212,9 @@ public class EventManagerImpl implements EventManager {
 				"Leader: " + leaderFullname + "\n" +
 				"Use CCM to signup to attend this potluck meal or to see more details about the meal.\n\n" +
 				"(This is an automated message from CCM.)\n";
-
-		sendEmailToAddress(emailAddress, subject, body);
+		
+		// Temporarily stop sending email notifications 5/12/2024
+		//sendEmailToAddress(emailAddress, subject, body);
 
 	}
 
@@ -458,6 +462,10 @@ public class EventManagerImpl implements EventManager {
 	}
 
 	public List<MealDate> getPotluckDaysForPeriod() {
+		
+		Logger logger = Logger.getLogger(this.getClass().getName());
+		logger.info("AUDIT: calling getPotluckDaysForPeriod() " );
+		
 		List<MealDate> mealDates = new ArrayList<CalendarUtils.MealDate>();
 
 		// Start with list of already scheduled meals. For each day

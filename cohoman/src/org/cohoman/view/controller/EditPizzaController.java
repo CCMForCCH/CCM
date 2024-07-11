@@ -42,6 +42,7 @@ public class EditPizzaController implements Serializable {
 	private PizzaEventDTO pizzaEventDTO;
 	private String slotNumber;
 	private String chosenUserString;
+	private long lastPizzaDaysLoadedTime;
 	private UserService userService = null;
 	
 	private void clearFormFields() {
@@ -120,16 +121,45 @@ public class EditPizzaController implements Serializable {
 
 	public List<PizzaEvent> getPizzaEventList() {
 		
-		pizzaEventList = eventService.getCurrentPizzaEvents();
+		// Only go to the database once per page. Do this by setting up
+		// a cache of sorts. If more than 500 ms have passed since last 
+		// access to the database, read it in again. Otherwise, just 
+		// return the list we got from the database before.
 
-		// filter out meals that have passed for all users
-		// except the meal admin
-		pizzaEventList = filterOutPastMeals(pizzaEventList);
+		Logger logger = Logger.getLogger(this.getClass().getName());
+		if (pizzaEventList == null) {
+			logger.info("AUDIT: inside getPizzaEventList() with pizzaEventList being null.");
+		} else {
+			//logger.info("AUDIT: inside getPizzaEventList() with isEmpty = " + getPizzaEventList.isEmpty() );
+		}
+
+		Calendar calNow = Calendar.getInstance();
+		long currentTimeInMS = calNow.getTimeInMillis();
 		
-		// added 12/28/18 to make users choose the meal
-		if (pizzaEventList != null && !pizzaEventList.isEmpty()
-				&& chosenPizzaEventString == null) {
-			chosenPizzaEventString = "1";
+		// If the list is empty or the 2 times differ by more
+		// than 500 ms., read from the database. Otherwise, use
+		// the list we just recently got from the database.
+		long timeDiff = (currentTimeInMS - lastPizzaDaysLoadedTime);
+		lastPizzaDaysLoadedTime = currentTimeInMS;
+		//logger.info("AUDIT: inside getPizzaEventList() with timediff1 = " + timeDiff );
+
+		if (pizzaEventList == null || pizzaEventList.isEmpty()
+				|| timeDiff > 500L) {
+
+			logger.info("AUDIT: inside getPizzaDaysForPeriod() with timediff2 = "
+					+ timeDiff);
+
+			pizzaEventList = eventService.getCurrentPizzaEvents();
+
+			// filter out meals that have passed for all users
+			// except the meal admin
+			pizzaEventList = filterOutPastMeals(pizzaEventList);
+
+			// added 12/28/18 to make users choose the meal
+			if (pizzaEventList != null && !pizzaEventList.isEmpty()
+					&& chosenPizzaEventString == null) {
+				chosenPizzaEventString = "1";
+			}
 		}
 
 		return pizzaEventList;

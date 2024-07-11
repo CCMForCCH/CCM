@@ -56,6 +56,7 @@ public class SignupPizzaController implements Serializable {
 	private int totalPeopleAttending;
 	private int totalPizzaMeals;
 	private int totalPotluckMeals;
+	private long lastPizzaListLoadedTime;
 
 	private EventService eventService = null;
 	private String chosenUserString;
@@ -263,27 +264,57 @@ public class SignupPizzaController implements Serializable {
 	}
 
 	public List<PizzaEvent> getPizzaEventList() {
-		List<PizzaEvent> pizzaEventList = eventService.getCurrentPizzaEvents();
-
-		// Filter out past meals for all users except for the
-		// meal admin who sees all for the period
-		pizzaEventList = filterOutPastMeals(pizzaEventList);
-
-		// First time thru, set meal to first of list as that's what's
-		// displayed.
-		if (pizzaEventList != null && !pizzaEventList.isEmpty()
-				&& chosenPizzaEventString == null) {
-			chosenPizzaEventString = "1";  //12/29/18 choose
-			//chosenPizzaEventString = pizzaEventList.get(0).getEventid()
-					//.toString();
-		}
 		
-		// If we're returning an empty PizzaEvent list, set
-		// chosenPizzaEventString to null to eliminate any stale value
-		// since no existing value makes sense if we have
-		// no list to return (04/10/2020) 
-		if (pizzaEventList == null || pizzaEventList.isEmpty()) {
-			chosenPizzaEventString = null;
+		// Only go to the database once per page. Do this by setting up
+		// a cache of sorts. If more than 500 ms have passed since last 
+		// access to the database, read it in again. Otherwise, just 
+		// return the list we got from the database before.
+
+		Logger logger = Logger.getLogger(this.getClass().getName());
+		if (pizzaEventList == null) {
+			logger.info("AUDIT: inside getPizzaEventList() with getPizzaEventList being null.");
+		} else {
+			//logger.info("AUDIT: inside getPizzaEventList() with isEmpty = " + pizzaEventList.isEmpty() );
+		}
+
+		Calendar calNow = Calendar.getInstance();
+		long currentTimeInMS = calNow.getTimeInMillis();
+		
+		// If the list is empty or the 2 times differ by more
+		// than 500 ms., read from the database. Otherwise, use
+		// the list we just recently got from the database.
+		long timeDiff = (currentTimeInMS - lastPizzaListLoadedTime);
+		lastPizzaListLoadedTime = currentTimeInMS;
+		//logger.info("AUDIT: inside getPizzaEventList() with timediff1 = " + timeDiff );
+
+		if (pizzaEventList == null || pizzaEventList.isEmpty() || timeDiff > 500L) {
+
+			logger.info("AUDIT: inside getPizzaEventList() with timediff2 = " + timeDiff );
+
+			// Get list of all pizza events from database.
+			pizzaEventList = eventService.getCurrentPizzaEvents();
+
+			// Filter out past meals for all users except for the
+			// meal admin who sees all for the period
+			pizzaEventList = filterOutPastMeals(pizzaEventList);
+			
+			// First time thru, set meal to first of list as that's what's
+			// displayed.
+			if (pizzaEventList != null && !pizzaEventList.isEmpty()
+					&& chosenPizzaEventString == null) {
+				chosenPizzaEventString = "1";  //12/29/18 choose
+				//chosenPizzaEventString = pizzaEventList.get(0).getEventid()
+						//.toString();
+			}
+			
+			// If we're returning an empty PizzaEvent list, set
+			// chosenPizzaEventString to null to eliminate any stale value
+			// since no existing value makes sense if we have
+			// no list to return (04/10/2020) 
+			if (pizzaEventList == null || pizzaEventList.isEmpty()) {
+				chosenPizzaEventString = null;
+			}
+
 		}
 
 		return pizzaEventList;

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import org.cohoman.model.business.User;
 import org.cohoman.model.dto.SignupPotluckDTO;
 import org.cohoman.model.dto.SignupPotluckRow;
-import org.cohoman.model.integration.persistence.beans.PizzaEvent;
 import org.cohoman.model.integration.persistence.beans.PotluckEvent;
 import org.cohoman.model.integration.persistence.beans.Role;
 import org.cohoman.model.integration.persistence.beans.UnitBean;
@@ -51,6 +50,7 @@ public class SignupPotluckController implements Serializable {
 	private String itemdescription = "";
 	private String printableEventDate;
 	private int totalPeopleAttending;
+	private long lastPotluckListLoadedTime;
 
 	private EventService eventService = null;
 	private String chosenUserString;
@@ -284,29 +284,63 @@ public class SignupPotluckController implements Serializable {
 
 	public List<PotluckEvent> getPotluckEventList() {
 
-		List<PotluckEvent> potluckEventList = eventService.getCurrentPotluckEvents();
+		// Only go to the database once per page. Do this by setting up
+		// a cache of sorts. If more than 500 ms have passed since last
+		// access to the database, read it in again. Otherwise, just
+		// return the list we got from the database before.
 
-		// Filter out past meals for all users except for the
-		// meal admin who sees all for the period
-		potluckEventList = filterOutPastMeals(potluckEventList);
+		Logger logger = Logger.getLogger(this.getClass().getName());
+		if (potluckEventList == null) {
+			logger.info("AUDIT: inside getPotluckEventList() with getPotluckEventList being null.");
+		} else {
+			//logger.info("AUDIT: inside getPotluckEventList() with isEmpty = "
+			//		+ potluckEventList.isEmpty());
+		}
 
+		Calendar calNow = Calendar.getInstance();
+		long currentTimeInMS = calNow.getTimeInMillis();
+
+		// If the list is empty or the 2 times differ by more
+		// than 500 ms., read from the database. Otherwise, use
+		// the list we just recently got from the database.
+		long timeDiff = (currentTimeInMS - lastPotluckListLoadedTime);
+		lastPotluckListLoadedTime = currentTimeInMS;
+		//logger.info("AUDIT: inside getPotluckEventList() with timediff1 = "
+		//		+ timeDiff);
+
+		if (potluckEventList == null || potluckEventList.isEmpty()
+				|| timeDiff > 500L) {
+
+			logger.info("AUDIT: inside getPotluckEventList() with timediff2 = "
+					+ timeDiff);
+
+			// Get list of all potluck events from database.
+
+			potluckEventList = eventService.getCurrentPotluckEvents();
+
+			// Filter out past meals for all users except for the
+			// meal admin who sees all for the period
+			potluckEventList = filterOutPastMeals(potluckEventList);
+
+		}
+		
 		// First time thru, set meal to first of list as that's what's
 		// displayed.
 		if (potluckEventList != null && !potluckEventList.isEmpty()
 				&& chosenPotluckEventString == null) {
-			chosenPotluckEventString = "1";  //12/29/18 choose
-			//chosenPotluckEventString = potluckEventList.get(0).getEventid()
-					//.toString();
+			chosenPotluckEventString = "1"; // 12/29/18 choose
+			// chosenPotluckEventString =
+			// potluckEventList.get(0).getEventid()
+			// .toString();
 		}
 
 		// If we're returning an empty PizzaEvent list, set
 		// chosenPizzaEventString to null to eliminate any stale value
 		// since no existing value makes sense if we have
-		// no list to return (04/10/2020) 
+		// no list to return (04/10/2020)
 		if (potluckEventList == null || potluckEventList.isEmpty()) {
 			chosenPotluckEventString = null;
 		}
-
 		return potluckEventList;
 	}
 

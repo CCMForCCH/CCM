@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -43,6 +44,7 @@ public class CreatePizzaController implements Serializable {
 	private String leader1 = null;
 	private String chosenUserString;
 	private UserService userService = null;
+	private long lastPizzaDaysLoadedTime;
 
 	
 	public CreatePizzaController() {
@@ -174,12 +176,42 @@ public class CreatePizzaController implements Serializable {
 	}
 	
 	public List<MealDate> getPizzaDaysForPeriod() {
-		pizzaDaysForPeriod = eventService.getPizzaDaysForPeriod();
 		
-		// Filter out days that have passed for everyone 
-		// except the meal admin
-		pizzaDaysForPeriod = filterOutPastMeals(pizzaDaysForPeriod);
+		// Only go to the database once per page. Do this by setting up
+		// a cache of sorts. If more than 500 ms have passed since last 
+		// access to the database, read it in again. Otherwise, just 
+		// return the list we got from the database before.
+
+		Logger logger = Logger.getLogger(this.getClass().getName());
+		if (pizzaDaysForPeriod == null) {
+			logger.info("AUDIT: inside getPizzaDaysForPeriod() with pizzaDaysForPeriod being null.");
+		} else {
+			//logger.info("AUDIT: inside getPizzaDaysForPeriod() with isEmpty = " + pizzaDaysForPeriod.isEmpty() );
+		}
+
+		Calendar calNow = Calendar.getInstance();
+		long currentTimeInMS = calNow.getTimeInMillis();
+		
+		// If the list is empty or the 2 times differ by more
+		// than 500 ms., read from the database. Otherwise, use
+		// the list we just recently got from the database.
+		long timeDiff = (currentTimeInMS - lastPizzaDaysLoadedTime);
+		lastPizzaDaysLoadedTime = currentTimeInMS;
+		//logger.info("AUDIT: inside getPizzaDaysForPeriod() with timediff1 = " + timeDiff );
+		
+		if (pizzaDaysForPeriod == null || pizzaDaysForPeriod.isEmpty() || timeDiff > 500L) {
+
+			logger.info("AUDIT: inside getPizzaDaysForPeriod() with timediff2 = " + timeDiff );
+
+			// Get all pizza days from database.
+			pizzaDaysForPeriod = eventService.getPizzaDaysForPeriod();
+
+			// Filter out days that have passed for everyone
+			// except the meal admin
+			pizzaDaysForPeriod = filterOutPastMeals(pizzaDaysForPeriod);
+		}
 		return pizzaDaysForPeriod;
+
 	}
 
 	public List<User> getUserList() {
