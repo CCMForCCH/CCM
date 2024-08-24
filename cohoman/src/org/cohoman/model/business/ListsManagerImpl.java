@@ -1019,11 +1019,33 @@ public class ListsManagerImpl implements ListsManager {
 			oneDTO.setAssignedToString(theUser.getUsername());
 		}
 
+		// And again do the same for Created By user, if there is an Created By user (likely!)
+		if (oneDTO.getItemCreatedBy() != null && oneDTO.getItemCreatedBy() != 0) {
+			userid = oneDTO.getItemCreatedBy();
+			theUser = userDao.getUser(userid);
+			oneDTO.setItemCreatedByString(theUser.getUsername());
+		}
+
 		// Compute the printable Created On and Completed On dates
 		oneDTO.setPrintableCreatedDate(getPrintableDateWithTime(oneDTO
 				.getItemCreatedDate()));
 		oneDTO.setPrintableCompletedDate(getPrintableDateWithTime(oneDTO
 				.getItemCompletedDate()));
+
+		// Convert Enum names to strings
+		ProblemLocationEnums locationEnum = ProblemLocationEnums.valueOf(oneDTO.getLocation());
+		oneDTO.setLocationToPrint(locationEnum.toString());
+		ProblemStatusEnums statusEnum = ProblemStatusEnums.valueOf(oneDTO.getProblemStatus());
+		oneDTO.setProblemStatusToPrint(statusEnum.toString());
+		ProblemTypeEnums typeEnum = ProblemTypeEnums.valueOf(oneDTO.getProblemType());
+		oneDTO.setProblemTypeToPrint(typeEnum.toString());
+		ProblemPriorityEnums priorityEnum = ProblemPriorityEnums.valueOf(oneDTO.getPriority());
+		oneDTO.setPriorityToPrint(priorityEnum.toString());
+		
+		if (oneDTO.getVendor() != null && !oneDTO.getVendor().equals("0")) {
+			VendorEnums vendorEnum = VendorEnums.valueOf(oneDTO.getVendor());
+			oneDTO.setVendor(vendorEnum.toString());
+		}
 
 		return oneDTO;
 	}

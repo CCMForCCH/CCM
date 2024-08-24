@@ -92,8 +92,8 @@ public class CalendarUtils implements Serializable {
 
 	public static String[] getBirthYears() {
 		int startingYear = 1920;
-		int numberOfYears = 100;
-		String [] years = new String[101];
+		int numberOfYears = 110;
+		String [] years = new String[111];
 		years[0] = "0";
 		int idx = 1;
 		for (int year = startingYear; year < startingYear + numberOfYears; year++) {

@@ -11,14 +11,18 @@ public class ProblemItemDTO {
 	private Long itemCreatedBy;
 	private String itemCreatedByString;
 	private String priority;
+	private String priorityToPrint;
 	private String printableCreatedDate;
 	private String printableCompletedDate;
 	private String problemStatus;
+	private String problemStatusToPrint;
 	private String problemType;
+	private String problemTypeToPrint;
 	private String username;
 	private String vendor;
 	private String duplicateproblemitemname;
 	private String location;
+	private String locationToPrint;
 	private Long assignedTo;
 	private String assignedToString;
 	private String cost;
@@ -69,6 +73,12 @@ public class ProblemItemDTO {
 	public void setPriority(String priority) {
 		this.priority = priority;
 	}
+	public String getPriorityToPrint() {
+		return priorityToPrint;
+	}
+	public void setPriorityToPrint(String priorityToPrint) {
+		this.priorityToPrint = priorityToPrint;
+	}
 	public String getPrintableCreatedDate() {
 		return printableCreatedDate;
 	}
@@ -87,11 +97,23 @@ public class ProblemItemDTO {
 	public void setProblemStatus(String problemStatus) {
 		this.problemStatus = problemStatus;
 	}
+	public String getProblemStatusToPrint() {
+		return problemStatusToPrint;
+	}
+	public void setProblemStatusToPrint(String problemStatusToPrint) {
+		this.problemStatusToPrint = problemStatusToPrint;
+	}
 	public String getProblemType() {
 		return problemType;
 	}
 	public void setProblemType(String problemType) {
 		this.problemType = problemType;
+	}
+	public String getProblemTypeToPrint() {
+		return problemTypeToPrint;
+	}
+	public void setProblemTypeToPrint(String problemTypeToPrint) {
+		this.problemTypeToPrint = problemTypeToPrint;
 	}
 	public String getUsername() {
 		return username;
@@ -116,6 +138,12 @@ public class ProblemItemDTO {
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	public String getLocationToPrint() {
+		return locationToPrint;
+	}
+	public void setLocationToPrint(String locationToPrint) {
+		this.locationToPrint = locationToPrint;
 	}
 	public Long getAssignedTo() {
 		return assignedTo;

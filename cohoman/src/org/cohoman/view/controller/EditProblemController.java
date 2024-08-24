@@ -1,6 +1,7 @@
 package org.cohoman.view.controller;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.cohoman.model.service.ListsService;
 import org.cohoman.model.service.UserService;
 import org.cohoman.view.controller.utils.ProblemStateEnums;
 import org.cohoman.view.controller.utils.ProblemStatusEnums;
+import org.cohoman.view.controller.utils.ProblemTypeEnums;
 import org.cohoman.view.controller.utils.SortEnums;
 import org.cohoman.view.controller.utils.VendorEnums;
 
@@ -288,7 +290,18 @@ public class EditProblemController implements Serializable {
 		return userList;
 	}
 
-
+	
+	public ProblemTypeEnums[] getItemproblemtype() {
+		ProblemTypeEnums[] itemproblemytpe = ProblemTypeEnums.values();
+		return ProblemTypeEnums.values();
+	}
+	
+	/*
+	public List<ProblemTypeEnums> getItemproblemtype() {
+		return Arrays.asList(ProblemTypeEnums.values());
+	}
+	*/
+	
 	public String editProblemView() throws Exception {
 
 		// Get the chosen DTO

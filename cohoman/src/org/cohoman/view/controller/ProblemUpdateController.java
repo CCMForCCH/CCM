@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -52,9 +53,7 @@ public class ProblemUpdateController implements Serializable {
 	private String username;
 	private Date printableProblemUpdateDate;
 
-	private String chosenProblemUpdateItemId;
 	private String callingPage;
-
 
 	public ProblemUpdateController() {
 		// Give calendars a starting date of now
@@ -323,17 +322,20 @@ public class ProblemUpdateController implements Serializable {
 		// new stuff
 		getChosenProblemItemId();
 		long itemId = Long.parseLong(chosenProblemItemId);
-		problemItemDTOsList = listsService.getProblemItems(
-				ProblemStateEnums.ALLPROBLEMS, SortEnums.ORDERBYNAME);
-		for (ProblemItemDTO itemDTO : problemItemDTOsList) {
-			if (itemDTO.getProblemitemid() == itemId) {
-				return itemDTO;
-			}
+
+		if (itemId < 0) {
+			throw new RuntimeException(
+					"chosenProblemItemId is < 0: " + itemId);
 		}
-
-		throw new RuntimeException(
-				"chosenProblemItemId is not found in the list: " + itemId);
-
+		
+		ProblemItemDTO itemDTO = listsService.getProblemItem(itemId);
+		if (itemDTO == null) {
+			throw new RuntimeException(
+					"chosenProblemItemDTO is not found for itemId: " + itemId);
+		}
+		
+		return itemDTO;
+		
 	}
 
 	

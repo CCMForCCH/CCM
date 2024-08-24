@@ -157,8 +157,8 @@ public class EventManagerImpl implements EventManager {
 		// String subject = "Testing out a googlegroup email issue";
 		// String body = "This is simply a test that you should ignore.";
 
-		// Temporarily stop sending email notifications 5/12/2024
-		//sendEmailToAddress(emailAddress, subject, body);
+		// Comment out to Temporarily stop sending email notifications
+		sendEmailToAddress(emailAddress, subject, body);
 
 	}
 
@@ -185,8 +185,8 @@ public class EventManagerImpl implements EventManager {
 				"Use CCM to signup to attend this pizza/potluck meal or to see more details about the meal.\n\n" +
 				"(This is an automated message from CCM.)\n";
 
-		// Temporarily stop sending email notifications 5/12/2024
-		//sendEmailToAddress(emailAddress, subject, body);
+		// Comment out to temporarily stop sending email notifications
+		sendEmailToAddress(emailAddress, subject, body);
 
 	}
 
@@ -213,8 +213,8 @@ public class EventManagerImpl implements EventManager {
 				"Use CCM to signup to attend this potluck meal or to see more details about the meal.\n\n" +
 				"(This is an automated message from CCM.)\n";
 		
-		// Temporarily stop sending email notifications 5/12/2024
-		//sendEmailToAddress(emailAddress, subject, body);
+		// Comment out to temporarily stop sending email notifications
+		sendEmailToAddress(emailAddress, subject, body);
 
 	}
 

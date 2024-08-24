@@ -51,7 +51,7 @@
 				
 			    <h:outputText value="Problem Type:" styleClass="subheading" />
 				<h:selectOneMenu value="#{editProblemController.chosenProblemItemDTO.problemType}">
-					<f:selectItems value="#{createProblemItemController.itemproblemtype}"
+					<f:selectItems value="#{editProblemController.itemproblemtype}"
 						var="onetype"
 						itemLabel="#{onetype}"
 						itemValue="#{onetype}" />
