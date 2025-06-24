@@ -291,7 +291,7 @@ public class SignupPotluckController implements Serializable {
 
 		Logger logger = Logger.getLogger(this.getClass().getName());
 		if (potluckEventList == null) {
-			logger.info("AUDIT: inside getPotluckEventList() with getPotluckEventList being null.");
+			//logger.info("AUDIT: inside getPotluckEventList() with getPotluckEventList being null.");
 		} else {
 			//logger.info("AUDIT: inside getPotluckEventList() with isEmpty = "
 			//		+ potluckEventList.isEmpty());
@@ -311,8 +311,8 @@ public class SignupPotluckController implements Serializable {
 		if (potluckEventList == null || potluckEventList.isEmpty()
 				|| timeDiff > 500L) {
 
-			logger.info("AUDIT: inside getPotluckEventList() with timediff2 = "
-					+ timeDiff);
+			//logger.info("AUDIT: inside getPotluckEventList() with timediff2 = "
+			//		+ timeDiff);
 
 			// Get list of all potluck events from database.
 

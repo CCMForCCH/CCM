@@ -128,7 +128,7 @@ public class EditPizzaController implements Serializable {
 
 		Logger logger = Logger.getLogger(this.getClass().getName());
 		if (pizzaEventList == null) {
-			logger.info("AUDIT: inside getPizzaEventList() with pizzaEventList being null.");
+			//logger.info("AUDIT: inside getPizzaEventList() with pizzaEventList being null.");
 		} else {
 			//logger.info("AUDIT: inside getPizzaEventList() with isEmpty = " + getPizzaEventList.isEmpty() );
 		}
@@ -146,8 +146,8 @@ public class EditPizzaController implements Serializable {
 		if (pizzaEventList == null || pizzaEventList.isEmpty()
 				|| timeDiff > 500L) {
 
-			logger.info("AUDIT: inside getPizzaDaysForPeriod() with timediff2 = "
-					+ timeDiff);
+			//logger.info("AUDIT: inside getPizzaDaysForPeriod() with timediff2 = "
+			//		+ timeDiff);
 
 			pizzaEventList = eventService.getCurrentPizzaEvents();
 

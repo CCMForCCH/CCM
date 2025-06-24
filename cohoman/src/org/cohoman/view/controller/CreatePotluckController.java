@@ -204,7 +204,7 @@ public class CreatePotluckController implements Serializable {
 		
 		if (potluckDaysForPeriod == null || potluckDaysForPeriod.isEmpty() || timeDiff > 500L) {
 
-			logger.info("AUDIT: inside getPotluckDaysForPeriod() with timediff2 = " + timeDiff );
+			//logger.info("AUDIT: inside getPotluckDaysForPeriod() with timediff2 = " + timeDiff );
 
 			// Get all potluck days from database.
 			potluckDaysForPeriod = eventService.getPotluckDaysForPeriod();

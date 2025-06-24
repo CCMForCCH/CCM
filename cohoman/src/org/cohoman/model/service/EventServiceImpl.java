@@ -387,10 +387,10 @@ public class EventServiceImpl implements EventService {
 			}
 		}
 
-		// Ninian's phone number
-		userSpaceAdmin = userManager.getUserByUsername("ninian");
+		// Laura's phone number
+		userSpaceAdmin = userManager.getUserByUsername("laura");
 		if (userSpaceAdmin == null) {
-			logger.info("AUDIT: Unable to find user " + "ninian" +
+			logger.info("AUDIT: Unable to find user " + "laura" +
 					" to notify that Space Administrator of request, but request has been made.");
 		} else {
 			String phoneNumber = userSpaceAdmin.getCellphone();
@@ -398,7 +398,7 @@ public class EventServiceImpl implements EventService {
 				phoneNumber = phoneNumber.replace("-",  "");  // remove dashes from phone number
 				SmsSender.sendtextMessage(phoneNumber, textMsg);
 			} else {
-				logger.info("AUDIT: phone number for " + "ninian" +
+				logger.info("AUDIT: phone number for " + "laura" +
 					" is not valid: " + phoneNumber);
 			}
 		}
